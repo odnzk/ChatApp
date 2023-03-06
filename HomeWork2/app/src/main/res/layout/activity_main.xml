@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_color"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <com.study.tinkoff.views.MessageViewGroup
+        android:id="@+id/activity_mv_test"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:padding="4dp" />
+
+    <com.study.tinkoff.views.FlexBoxLayout
+        android:id="@+id/activity_fl_test"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="2dp"
+        app:item_spacing="5"
+        app:line_spacing="4">
+
+        <com.study.tinkoff.views.EmojiView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:emoji="😵‍"
+            app:emoji_count="1" />
+
+        <com.study.tinkoff.views.EmojiView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:emoji="😵‍💫"
+            app:emoji_count="0" />
+
+    </com.study.tinkoff.views.FlexBoxLayout>
+
+    <com.study.tinkoff.views.EmojiView
+        android:id="@+id/activity_ev_test"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:emoji="😭"
+        app:emoji_count="99" />
+</LinearLayout>

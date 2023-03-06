@@ -1,0 +1,22 @@
+<resources>
+
+    <style name="Base.V25.Theme.Messenger" parent="Theme.MaterialComponents.DayNight.NoActionBar.Bridge">
+        <item name="colorPrimary">@color/purple_500</item>
+        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorSecondaryVariant">@color/teal_700</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+
+        <item name="android:textAppearanceLarge">@style/TextAppearance.Messenger.Body</item>
+        <item name="android:textAppearanceMedium">@style/TextAppearance.Messenger.Body</item>
+        <item name="android:textAppearanceSmall">@style/TextAppearance.Messenger.Body</item>
+
+        <item name="fontFamily">@font/inter_regular</item>
+    </style>
+
+    <style name="Theme.Messenger" parent="Base.Theme.Messenger" />
+
+    <style name="Base.Theme.Messenger" parent="Base.V25.Theme.Messenger" />
+</resources>
