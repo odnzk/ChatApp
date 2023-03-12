@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:background="@color/background_color"
+    tools:parentTag="com.study.tinkoff.core.ui.views.ScreenStateView">
+
+    <androidx.core.widget.ContentLoadingProgressBar
+        android:id="@+id/view_screen_state_pb_loading"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminate="true" />
+
+    <TextView
+        android:id="@+id/view_screen_state_tv_error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.Messenger.Body"
+        tools:text="@string/error_connection_lost" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/view_screen_state_btn_try_again"
+        style="@style/TryAgainButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</merge>

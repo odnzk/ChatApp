@@ -1,0 +1,39 @@
+[versions]
+# Project
+android_gradle_plugin = "7.4.2"
+kotlin = "1.7.20"
+
+# AndroidX
+core = "1.9.0"
+appcompat = "1.6.1"
+material = "1.8.0"
+constraint = "2.1.4"
+
+# Test
+test_junit = "4.13.2"
+test_runner = "1.5.2"
+test_core = "1.5.0"
+
+navigation = "2.5.3"
+coroutines = "1.6.4"
+
+[libraries]
+android_gradle_plugin = { module = "com.android.tools.build:gradle", version.ref = "android_gradle_plugin" }
+kotlin_gradle_plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+navigation_plugin = { module = "androidx.navigation:navigation-safe-args-gradle-plugin", version.ref = "navigation" }
+# AndroidX
+androidx_core = { module = "androidx.core:core", version.ref = "core" }
+androidx_appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
+androidx_material = { module = "com.google.android.material:material", version.ref = "material" }
+androidx_constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraint" }
+# Test
+test_junit = { module = "junit:junit", version.ref = "test_junit" }
+test_runner = { module = "androidx.test:runner", version.ref = "test_runner" }
+test_core = { module = "androidx.test:core", version.ref = "test_core" }
+#Navigation
+navigation_fragment = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigation" }
+navigation_ui_ktx = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigation" }
+
+coroutines_android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
+fragment_ktx = "androidx.fragment:fragment-ktx:1.5.5"
+#[plugins] todo
