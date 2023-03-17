@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="message_view_default_margin_horizontal">14dp</dimen>
+    <dimen name="default_screen_paddings">8dp</dimen>
+    <dimen name="default_text_input_layout_corner_radius">24dp</dimen>
+    <dimen name="primary_round_button_size">48dp</dimen>
+</resources>
