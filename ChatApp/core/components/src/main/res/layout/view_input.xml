@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:parentTag="com.study.components.view.InputView">
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/view_input_til_message"
+        style="@style/PrimaryTextInputLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="8dp"
+        android:layout_marginStart="@dimen/default_screen_paddings"
+        android:layout_marginEnd="12dp"
+        android:hint="@string/fragment_chat_et_hint_send_message">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/view_input_et_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="1" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/view_input_btn_send_message"
+        style="@style/RoundButton"
+        android:layout_width="@dimen/primary_round_button_size"
+        android:layout_height="@dimen/primary_round_button_size"
+        android:layout_marginVertical="10dp"
+        android:layout_marginEnd="@dimen/default_screen_paddings"
+        android:backgroundTint="@android:color/transparent"
+        android:contentDescription="@string/fragment_chat_btn_send_message_content_description"
+        app:icon="@drawable/ic_baseline_add_24"
+        app:iconTint="@color/light_grey"
+        app:strokeColor="@color/light_grey"
+        app:strokeWidth="3dp" />
+</merge>

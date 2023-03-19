@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <color name="accent_color">#2A9D8F</color>
+    <color name="item_background_color">#1C1C1C</color>
+    <color name="light_item_background_color">#C1C1C1</color>
+    <color name="dark_theme_background_color">#121212</color>
+    <color name="light_theme_background_color">#F0F0F0</color>
+    <color name="bottom_nav_background_color">#1E1E1E</color>
+    <color name="bottom_nav_item_not_selected_color">#919191</color>
+    <color name="light_grey">#999999</color>
+    <color name="light_green">#4AB54D</color>
+    <color name="dark_button_background_color">#1B1B1B</color>
+</resources>

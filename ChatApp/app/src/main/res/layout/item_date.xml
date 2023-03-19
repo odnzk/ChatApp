@@ -6,7 +6,6 @@
 
     <com.google.android.material.chip.Chip
         android:id="@+id/date_item_title"
-        style="@style/PrimaryChipFilterStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"

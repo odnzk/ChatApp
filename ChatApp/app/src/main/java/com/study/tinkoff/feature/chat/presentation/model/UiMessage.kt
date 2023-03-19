@@ -1,6 +1,6 @@
 package com.study.tinkoff.feature.chat.presentation.model
 
-import com.study.tinkoff.core.domain.model.Reaction
+import com.study.domain.model.Reaction
 import java.util.Calendar
 
 sealed class UiMessage(

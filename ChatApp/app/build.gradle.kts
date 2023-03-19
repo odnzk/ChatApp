@@ -47,8 +47,14 @@ dependencies {
     testImplementation(libs.test.junit)
     androidTestImplementation(libs.test.core)
 
+    implementation(project(":core:ui"))
+    implementation(project(":core:components"))
+    implementation(project(":core:common"))
+    implementation(project(":core:domain"))
+
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui.ktx)
     implementation(libs.coroutines.android)
     implementation(libs.fragment.ktx)
+    debugImplementation(libs.leak.canary)
 }

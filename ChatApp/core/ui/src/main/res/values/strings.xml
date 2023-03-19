@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">Messenger</string>
+
+    <string name="date_delegate_item_title_format">%1$d %2$s</string>
+    <string name="error_connection_lost">Соединение потеряно</string>
+    <string name="btn_try_again">Перезагрузить</string>
+
+    <string name="fragment_chat_et_hint_send_message">Написать…</string>
+    <string name="fragment_chat_btn_send_message_content_description">Отправить сообщение</string>
+
+    <string name="fragment_profile_btn_logout">Выйти</string>
+
+    <string name="fragment_channels_tab_subscribed_channels">Subscribed</string>
+    <string name="fragment_channels_tab_all_channels">All streams</string>
+
+    <string name="activity_main_bottom_nav_item_channels">Каналы</string>
+    <string name="activity_main_bottom_nav_item_people">Люди</string>
+    <string name="activity_main_bottom_nav_item_profile">Профиль</string>
+
+    <string name="user_is_active_status_online">онлайн</string>
+    <string name="user_is_active_status_offline">оффлайн</string>
+    <string name="user_is_on_meeting_status_on_meeting">На собрании</string>
+    <string name="user_is_on_meeting_status_somewhere_else">Не на собрании</string>
+
+    <string name="item_channel_iv_show_topics_content_description">Показать список топиков стрима</string>
+    <string name="item_channel_topic_messages_count">%1$d сооб</string>
+
+    <string name="_test_message_sender">Darrell Steward</string>
+    <string name="_test_message_content">Привет! lorem ipsum test message dalshe zabil</string>
+    <string name="_test_user_email">darrel@company.com</string>
+</resources>
