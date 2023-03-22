@@ -15,6 +15,7 @@ test_runner = "1.5.2"
 test_core = "1.5.0"
 
 navigation = "2.5.3"
+cicerone = "7.1"
 coroutines = "1.6.4"
 
 [libraries]
@@ -30,10 +31,19 @@ androidx_constraintlayout = { module = "androidx.constraintlayout:constraintlayo
 test_junit = { module = "junit:junit", version.ref = "test_junit" }
 test_runner = { module = "androidx.test:runner", version.ref = "test_runner" }
 test_core = { module = "androidx.test:core", version.ref = "test_core" }
-#Navigation
+# Navigation
 navigation_fragment = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigation" }
 navigation_ui_ktx = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigation" }
+cicerone = { module = "com.github.terrakok:cicerone", version.ref = "cicerone" }
 
 coroutines_android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 fragment_ktx = "androidx.fragment:fragment-ktx:1.5.5"
-#[plugins] todo
+
+leak_canary = "com.squareup.leakcanary:leakcanary-android:2.10"
+timber = "com.jakewharton.timber:timber:5.0.1"
+
+[plugins]
+android_application = { id = "com.android.application", version.ref = "android_gradle_plugin" }
+kotlin_application = { id = "kotlin-android", version.ref = "kotlin" }
+kotlin_parcelize_plugin = { id = "kotlin-parcelize" }
+

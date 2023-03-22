@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="TextAppearance.Messenger.Body.Small" parent="TextAppearance.AppCompat.Medium">
+        <item name="android:textColor">@color/accent_color</item>
+        <item name="android:textSize">14sp</item>
+        <item name="fontWeight">400</item>
+        <item name="lineHeight">17sp</item>
+    </style>
+
+    <style name="TextAppearance.Messenger.Body.Large" parent="TextAppearance.AppCompat.Medium">
+        <item name="android:textSize">20sp</item>
+        <item name="fontWeight">400</item>
+        <item name="lineHeight">24sp</item>
+    </style>
+
+    <style name="TextAppearance.Messenger.Body" parent="TextAppearance.AppCompat.Small">
+        <item name="android:textSize">16sp</item>
+        <item name="fontWeight">400</item>
+        <item name="lineHeight">20sp</item>
+    </style>
+
+    <style name="TextAppearance.Messenger.Title.Large" parent="TextAppearance.AppCompat.Large">
+        <item name="android:textSize">32sp</item>
+        <item name="fontWeight">500</item>
+        <item name="lineHeight">38sp</item>
+        <item name="fontFamily">@font/inter_medium</item>
+    </style>
+
+    <style name="TextAppearance.Messenger.Title" parent="TextAppearance.AppCompat.Large">
+        <item name="android:textSize">22sp</item>
+        <item name="fontWeight">400</item>
+        <item name="fontFamily">@font/inter_medium</item>
+        <item name="lineHeight">18sp</item>
+    </style>
+
+    <style name="TextAppearance.Messenger.Title.Small" parent="TextAppearance.AppCompat.Medium">
+        <item name="android:textSize">18sp</item>
+        <item name="fontWeight">400</item>
+        <item name="lineHeight">26sp</item>
+        <item name="fontFamily">@font/inter_medium</item>
+    </style>
+
+</resources>

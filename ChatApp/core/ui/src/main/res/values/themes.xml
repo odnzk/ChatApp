@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Base.V25.Theme.Messenger" parent="Theme.MaterialComponents.DayNight.NoActionBar.Bridge">
+        <item name="colorPrimary">@color/accent_color</item>
+        <item name="colorPrimaryVariant">@color/white</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorSecondary">@color/accent_color</item>
+        <item name="colorSecondaryVariant">@color/light_grey</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <item name="android:statusBarColor">@color/light_theme_background_color</item>
+
+        <item name="android:textAppearanceLarge">@style/TextAppearance.Messenger.Body</item>
+        <item name="android:textAppearanceMedium">@style/TextAppearance.Messenger.Body</item>
+        <item name="android:textAppearanceSmall">@style/TextAppearance.Messenger.Body</item>
+
+        <item name="colorOnBackground">@color/white</item>
+        <item name="backgroundColor">@color/light_item_background_color</item>
+        <item name="chipBackgroundColor">@color/light_grey</item>>
+
+        <item name="android:textColor">@color/black</item>
+
+        <item name="fontFamily">@font/inter_regular</item>
+        <item name="android:windowBackground">@color/light_theme_background_color</item>
+    </style>
+
+    <style name="Theme.Messenger" parent="Base.Theme.Messenger" />
+
+    <style name="Base.Theme.Messenger" parent="Base.V25.Theme.Messenger" />
+
+</resources>

@@ -1,7 +1,7 @@
 package com.study.tinkoff.feature.chat.presentation.util
 
-import com.study.tinkoff.core.domain.model.message.IncomeMessage
-import com.study.tinkoff.core.ui.extensions.toCalendar
+import com.study.common.extensions.toCalendar
+import com.study.domain.model.IncomeMessage
 import com.study.tinkoff.feature.chat.presentation.model.UiMessage
 
 fun IncomeMessage.toChatMessage(): UiMessage.ChatMessage = UiMessage.ChatMessage(

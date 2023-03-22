@@ -3,7 +3,7 @@ package com.study.tinkoff.feature.chat.presentation.delegates.message
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.study.tinkoff.core.ui.views.MessageView
+import com.study.components.view.MessageView
 import com.study.tinkoff.feature.chat.presentation.model.UiMessage
 
 class MessageViewHolder(

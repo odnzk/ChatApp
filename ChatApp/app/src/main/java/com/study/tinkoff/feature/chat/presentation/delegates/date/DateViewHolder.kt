@@ -3,8 +3,8 @@ package com.study.tinkoff.feature.chat.presentation.delegates.date
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.study.tinkoff.R
 import com.study.tinkoff.databinding.ItemDateBinding
+import com.study.ui.R
 import java.util.Calendar
 import java.util.Locale
 

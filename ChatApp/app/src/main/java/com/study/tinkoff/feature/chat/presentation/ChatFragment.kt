@@ -4,29 +4,32 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.clearFragmentResultListener
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.study.tinkoff.R
-import com.study.tinkoff.core.ui.BaseScreenStateFragment
-import com.study.tinkoff.core.ui.rv.delegates.MainAdapter
+import androidx.recyclerview.widget.RecyclerView
+import com.study.common.rv.decorator.StickyHeaderItemDecoration
+import com.study.common.rv.delegates.Delegate
+import com.study.common.rv.delegates.GeneralAdapterDelegate
+import com.study.components.BaseScreenStateFragment
+import com.study.components.view.ScreenStateView
 import com.study.tinkoff.databinding.FragmentChatBinding
-import com.study.tinkoff.feature.chat.presentation.delegates.date.DateDelegateAdapter
-import com.study.tinkoff.feature.chat.presentation.delegates.message.MessageDelegateAdapter
-import com.study.tinkoff.feature.chat.presentation.delegates.message.toMessageDelegateItemsWithDateGrouping
+import com.study.tinkoff.feature.chat.presentation.delegates.date.DateDelegate
+import com.study.tinkoff.feature.chat.presentation.delegates.date.DateViewHolder
+import com.study.tinkoff.feature.chat.presentation.delegates.message.MessageDelegate
 import com.study.tinkoff.feature.chat.presentation.model.UiMessage
 import com.study.tinkoff.feature.chat.presentation.navigation.toSelectEmojiFragment
+import java.util.Calendar
 
 class ChatFragment :
     BaseScreenStateFragment<ChatViewModel, FragmentChatBinding, List<UiMessage>>() {
     private var _binding: FragmentChatBinding? = null
     override val viewModel: ChatViewModel by viewModels()
     override val binding: FragmentChatBinding get() = _binding!!
-
-    private var chatAdapter: MainAdapter? = MainAdapter()
+    override val screenStateView: ScreenStateView get() = binding.fragmentChatScreenStateView
+    private var chatAdapter: GeneralAdapterDelegate? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -35,76 +38,85 @@ class ChatFragment :
         return binding.root
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        clearFragmentResultListener(SELECTED_EMOJI_RESULT_KEY)
+        chatAdapter = null
+        _binding = null
+    }
+
     override fun observeState() {
-        viewModel.state.collectStateFlowSafely()
+        viewModel.state.collectScreenStateSafely()
     }
 
     override fun setupListeners() {
         with(binding) {
-            fragmentChatEtMessage.addTextChangedListener {
-                val resId = if (it.isNullOrBlank()) {
-                    R.drawable.ic_round_add
-                } else {
-                    R.drawable.baseline_send_24
-                }
-                fragmentChatBtnSendMessage.setIconResource(resId)
-            }
-
-            fragmentChatBtnSendMessage.setOnClickListener {
-                val text = fragmentChatEtMessage.text.toString()
-                fragmentChatEtMessage.setText("")
-                viewModel.onEvent(ChatFragmentEvent.SendMessage(text))
+            fragmentChatViewInputMessage.btnSubmitClickListener = { inputText ->
+                viewModel.onEvent(ChatFragmentEvent.SendMessage(inputText))
             }
         }
     }
 
     override fun initUI() {
-        chatAdapter?.apply {
-            addDelegate(DateDelegateAdapter())
-            val messageDelegateAdapter = MessageDelegateAdapter().apply {
-                onLongClickListener = { messageId -> selectEmoji(messageId) }
-                onAddReactionClickListener = { messageId -> selectEmoji(messageId) }
-                onReactionClick = { messageId, emojiName ->
-                    viewModel.onEvent(ChatFragmentEvent.UpdateReaction(messageId, emojiName))
-                }
-            }
-            addDelegate(messageDelegateAdapter)
-        }
+        chatAdapter = GeneralAdapterDelegate(
+            listOf(
+                DateDelegate(), MessageDelegate(onLongClickListener = { messageId ->
+                    selectEmoji(messageId)
+                },
+                    onAddReactionClickListener = { messageId -> selectEmoji(messageId) },
+                    onReactionClick = { messageId, emojiName ->
+                        viewModel.onEvent(
+                            ChatFragmentEvent.UpdateReaction(
+                                messageId, emojiName
+                            )
+                        )
+                    })
+            ) as List<Delegate<RecyclerView.ViewHolder, Any>>
+        )
         with(binding.fragmentChatRvChat) {
+            addItemDecoration(StickyHeaderItemDecoration<DateViewHolder>())
+            isNestedScrollingEnabled = false
             adapter = chatAdapter
             layoutManager = LinearLayoutManager(context)
         }
-        with(binding.fragmentChatRvChat) {
-            adapter = chatAdapter
-            layoutManager = LinearLayoutManager(context)
-        }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        clearFragmentResultListener(SELECTED_EMOJI_RESULT)
-        chatAdapter = null
-        _binding = null
     }
 
     override fun onError(error: Throwable) = Unit
     override fun onLoading() = Unit
 
     override fun onSuccess(data: List<UiMessage>) {
-        chatAdapter?.submitList(data.toMessageDelegateItemsWithDateGrouping())
+        chatAdapter?.submitList(data.toMessageWithDateGrouping())
     }
 
     private fun selectEmoji(messageId: Int) {
-        setFragmentResultListener(SELECTED_EMOJI_RESULT) { _, bundle ->
-            bundle.getString(SELECTED_EMOJI_NAME_KEY)?.let { selectedEmojiName ->
+        setFragmentResultListener(SELECTED_EMOJI_RESULT_KEY) { _, bundle ->
+            bundle.getString(SELECTED_EMOJI_RESULT_KEY)?.let { selectedEmojiName ->
                 viewModel.onEvent(ChatFragmentEvent.UpdateReaction(messageId, selectedEmojiName))
             }
         }
-        findNavController().toSelectEmojiFragment()
+        findNavController().toSelectEmojiFragment(SELECTED_EMOJI_RESULT_KEY)
+    }
+
+    private fun List<UiMessage>.toMessageWithDateGrouping(): List<Any> {
+        if (isEmpty()) return emptyList()
+        val resultList = mutableListOf<Any>()
+        var lastAddedDate: Calendar = Calendar.getInstance().apply { timeInMillis = 0 }
+        for (message in sortedBy { it.calendar.time }) {
+            if (lastAddedDate.get(Calendar.DATE) != message.calendar.get(Calendar.DATE) || lastAddedDate.get(
+                    Calendar.MONTH
+                ) != message.calendar.get(Calendar.MONTH) || lastAddedDate.get(Calendar.YEAR) != message.calendar.get(
+                    Calendar.YEAR
+                )
+            ) {
+                lastAddedDate = message.calendar
+                resultList.add(lastAddedDate)
+            }
+            resultList.add(message)
+        }
+        return resultList
     }
 
     companion object {
-        const val SELECTED_EMOJI_RESULT = "selected-emoji-result"
-        const val SELECTED_EMOJI_NAME_KEY = "selected-emoji"
+        private const val SELECTED_EMOJI_RESULT_KEY = "selected-emoji-result"
     }
 }

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@id/holderChannelsFragment"
+        android:icon="@drawable/ic_baseline_channels_24"
+        android:title="@string/activity_main_bottom_nav_item_channels"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@id/usersFragment"
+        android:icon="@drawable/ic_baseline_people_24"
+        android:title="@string/activity_main_bottom_nav_item_people"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@id/profileFragment"
+        android:icon="@drawable/ic_baseline_profile_24"
+        android:title="@string/activity_main_bottom_nav_item_profile"
+        app:showAsAction="ifRoom" />
+</menu>
