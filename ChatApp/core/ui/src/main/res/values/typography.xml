@@ -2,7 +2,7 @@
 <resources>
 
     <style name="TextAppearance.Messenger.Body.Small" parent="TextAppearance.AppCompat.Medium">
-        <item name="android:textColor">@color/accent_color</item>
+        <item name="android:textColor">@color/navy_light</item>
         <item name="android:textSize">14sp</item>
         <item name="fontWeight">400</item>
         <item name="lineHeight">17sp</item>
@@ -28,7 +28,7 @@
     </style>
 
     <style name="TextAppearance.Messenger.Title" parent="TextAppearance.AppCompat.Large">
-        <item name="android:textSize">22sp</item>
+        <item name="android:textSize">21sp</item>
         <item name="fontWeight">400</item>
         <item name="fontFamily">@font/inter_medium</item>
         <item name="lineHeight">18sp</item>

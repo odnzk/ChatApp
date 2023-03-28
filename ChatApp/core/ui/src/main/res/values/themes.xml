@@ -2,26 +2,21 @@
 <resources>
 
     <style name="Base.V25.Theme.Messenger" parent="Theme.MaterialComponents.DayNight.NoActionBar.Bridge">
-        <item name="colorPrimary">@color/accent_color</item>
+        <item name="colorPrimary">@color/navy_light</item>
         <item name="colorPrimaryVariant">@color/white</item>
         <item name="colorOnPrimary">@color/white</item>
-        <item name="colorSecondary">@color/accent_color</item>
-        <item name="colorSecondaryVariant">@color/light_grey</item>
-        <item name="colorOnSecondary">@color/white</item>
-        <item name="android:statusBarColor">@color/light_theme_background_color</item>
-
-        <item name="android:textAppearanceLarge">@style/TextAppearance.Messenger.Body</item>
-        <item name="android:textAppearanceMedium">@style/TextAppearance.Messenger.Body</item>
-        <item name="android:textAppearanceSmall">@style/TextAppearance.Messenger.Body</item>
+        <item name="colorSecondary">@color/navy_light</item>
+        <item name="colorSecondaryVariant">@color/white</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <item name="android:statusBarColor">@color/bottom_nav_background_color</item>
 
         <item name="colorOnBackground">@color/white</item>
-        <item name="backgroundColor">@color/light_item_background_color</item>
-        <item name="chipBackgroundColor">@color/light_grey</item>>
+        <item name="backgroundColor">@color/item_background_color</item>
 
-        <item name="android:textColor">@color/black</item>
+        <item name="android:textColor">@color/white</item>
 
         <item name="fontFamily">@font/inter_regular</item>
-        <item name="android:windowBackground">@color/light_theme_background_color</item>
+        <item name="android:windowBackground">@color/dark_theme_background_color</item>
     </style>
 
     <style name="Theme.Messenger" parent="Base.Theme.Messenger" />

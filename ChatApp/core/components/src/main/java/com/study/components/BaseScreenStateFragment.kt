@@ -1,5 +1,6 @@
 package com.study.components
 
+import android.view.View.OnClickListener
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
@@ -13,13 +14,15 @@ import kotlinx.coroutines.launch
 abstract class BaseScreenStateFragment<FragmentViewModel : ViewModel, Binding : ViewBinding, Data : Any> :
     BaseFragment<FragmentViewModel, Binding>() {
     protected abstract val screenStateView: ScreenStateView?
-    abstract fun onError(error: Throwable)
+    protected abstract val onTryAgainClick: OnClickListener?
+    protected open fun onError(error: Throwable) = Unit
     abstract fun onSuccess(data: Data)
-    abstract fun onLoading()
+    protected open fun onLoading() = Unit
 
     protected fun Flow<ScreenState<Data>>.collectScreenStateSafely(
         lifecycleState: Lifecycle.State = Lifecycle.State.STARTED
     ) {
+        onTryAgainClick?.let { screenStateView?.onTryAgainClickListener = it }
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(lifecycleState) {
                 this@collectScreenStateSafely.collectLatest { state ->

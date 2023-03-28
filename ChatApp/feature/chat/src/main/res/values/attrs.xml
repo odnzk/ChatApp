@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="EmojiView">
+        <attr name="emoji" format="string" />
+        <attr name="emoji_count" format="integer" />
+    </declare-styleable>
+
+    <declare-styleable name="MessageView">
+        <attr name="maxWidthPercent" format="float" />
+    </declare-styleable>
+</resources>

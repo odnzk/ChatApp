@@ -40,9 +40,6 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.material)
     implementation(libs.androidx.constraintlayout)
-    testImplementation(libs.test.junit)
-    androidTestImplementation(libs.test.core)
 
-    implementation(project(":core:domain"))
     implementation(project(":core:ui"))
 }

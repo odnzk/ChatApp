@@ -3,14 +3,16 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <color name="accent_color">#2A9D8F</color>
-    <color name="item_background_color">#1C1C1C</color>
-    <color name="light_item_background_color">#C1C1C1</color>
+    <color name="navy_light">#2A9D8F</color>
+    <color name="navy_dark">#03806D</color>
     <color name="dark_theme_background_color">#121212</color>
-    <color name="light_theme_background_color">#F0F0F0</color>
     <color name="bottom_nav_background_color">#1E1E1E</color>
-    <color name="bottom_nav_item_not_selected_color">#919191</color>
-    <color name="light_grey">#999999</color>
-    <color name="light_green">#4AB54D</color>
+    <color name="item_background_color">#1C1C1C</color>
+    <color name="chip_message_date_background">#070707</color>
+    <color name="input_field_background_color">#282828</color>
     <color name="dark_button_background_color">#1B1B1B</color>
+    <color name="grey_light">#919191</color>
+    <color name="grey_lightest">#999999</color>
+    <color name="grey">#464646</color>
+    <color name="green_light">#4AB54D</color>
 </resources>

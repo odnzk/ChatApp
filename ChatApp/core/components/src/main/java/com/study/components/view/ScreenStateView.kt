@@ -2,6 +2,7 @@ package com.study.components.view
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.View.OnClickListener
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
@@ -13,6 +14,7 @@ import androidx.core.view.marginTop
 import androidx.core.widget.ContentLoadingProgressBar
 import com.study.components.R
 import com.study.components.ScreenState
+import com.study.components.extensions.handle
 import java.lang.Integer.max
 
 class ScreenStateView @JvmOverloads constructor(
@@ -22,8 +24,12 @@ class ScreenStateView @JvmOverloads constructor(
     private val pbLoading: ContentLoadingProgressBar
     private val tvError: TextView
     private val btnTryAgain: Button
-
     private var widthMiddle: Int = 0
+    var onTryAgainClickListener: OnClickListener = OnClickListener { }
+        set(value) {
+            field = value
+            btnTryAgain.setOnClickListener(field)
+        }
 
     init {
         inflate(context, R.layout.view_screen_state, this)
@@ -37,7 +43,7 @@ class ScreenStateView @JvmOverloads constructor(
             is ScreenState.Error -> {
                 isVisible = true
                 pbLoading.hide()
-                tvError.text = state.error.message.orEmpty()
+                tvError.text = state.error.handle(context)
                 tvError.isVisible = true
                 btnTryAgain.isVisible = true
             }
@@ -68,12 +74,11 @@ class ScreenStateView @JvmOverloads constructor(
             )
         )
         val totalHeight =
-            paddingTop + paddingBottom + pbLoading.measuredHeight + pbLoading.marginTop + pbLoading.marginBottom + tvError.measuredHeight + tvError.marginTop + tvError.marginBottom + btnTryAgain.measuredHeight + btnTryAgain.marginTop + btnTryAgain.marginBottom
+            (paddingTop + paddingBottom + pbLoading.measuredHeight + pbLoading.marginTop + pbLoading.marginBottom + tvError.measuredHeight + tvError.marginTop + tvError.marginBottom + btnTryAgain.measuredHeight + btnTryAgain.marginTop + btnTryAgain.marginBottom)
 
         widthMiddle = totalWidth / 2
         setMeasuredDimension(
-            resolveSize(totalWidth, widthMeasureSpec),
-            resolveSize(totalHeight, heightMeasureSpec)
+            resolveSize(totalWidth, widthMeasureSpec), resolveSize(totalHeight, heightMeasureSpec)
         )
     }
 

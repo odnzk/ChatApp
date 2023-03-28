@@ -1,7 +1,7 @@
 plugins {
     id("com.android.application")
     id("kotlin-android")
-    id("kotlin-parcelize")
+    id("kotlin-kapt")
     id("androidx.navigation.safeargs.kotlin")
 }
 
@@ -44,17 +44,18 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.material)
     implementation(libs.androidx.constraintlayout)
-    testImplementation(libs.test.junit)
-    androidTestImplementation(libs.test.core)
-
-    implementation(project(":core:ui"))
-    implementation(project(":core:components"))
-    implementation(project(":core:common"))
-    implementation(project(":core:domain"))
 
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui.ktx)
     implementation(libs.coroutines.android)
     implementation(libs.fragment.ktx)
     debugImplementation(libs.leak.canary)
+
+    implementation(project(":core:ui"))
+    implementation(project(":core:components"))
+    implementation(project(":core:common"))
+    implementation(project(":feature:channels"))
+    implementation(project(":feature:chat"))
+    implementation(project(":feature:profile"))
+    implementation(project(":feature:users"))
 }
