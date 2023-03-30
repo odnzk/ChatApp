@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:padding="2dp"
+    tools:parentTag="com.study.chat.presentation.chat.view.MessageView">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/view_message_iv_avatar"
+        android:layout_width="@dimen/avatar_size_small"
+        android:layout_height="@dimen/avatar_size_small"
+        android:layout_marginHorizontal="9dp"
+        android:src="@color/navy_light"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.ImageView.Circle" />
+
+    <TextView
+        android:id="@+id/view_message_tv_user"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/message_view_margin_horizontal"
+        android:layout_marginTop="8dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textAppearance="@style/TextAppearance.Messenger.Body.Small"
+        android:textColor="@color/navy_light"
+        tools:text="@string/_test_message_sender" />
+
+    <TextView
+        android:id="@+id/view_message_tv_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/message_view_margin_horizontal"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="8dp"
+        android:textAppearance="@style/TextAppearance.Messenger.Body"
+        tools:text="@string/_test_message_content" />
+
+
+    <com.study.components.view.FlexBoxLayout
+        android:id="@+id/view_message_fl_emoji"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="5dp"
+        app:item_spacing="2"
+        app:line_spacing="4" />
+</merge>

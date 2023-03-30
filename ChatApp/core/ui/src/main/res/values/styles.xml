@@ -4,31 +4,23 @@
     <style name="PrimaryButton" parent="Widget.MaterialComponents.Button">
         <item name="android:textAppearance">@style/TextAppearance.Messenger.Body.Small</item>
         <item name="textAllCaps">false</item>
-        <item name="cornerRadius">@dimen/base_button_corner_radius</item>
-        <item name="android:paddingHorizontal">56dp</item>
-        <item name="android:paddingVertical">14dp</item>
+        <item name="cornerRadius">@dimen/primary_button_corner_radius</item>
+        <item name="android:paddingEnd">28dp</item>
+        <item name="android:paddingStart">28dp</item>
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingBottom">12dp</item>
     </style>
 
     <style name="TryAgainButton" parent="PrimaryButton">
         <item name="android:text">@string/btn_try_again</item>
     </style>
 
-    <style name="RoundButton" parent="Widget.Material3.Button.Icon">
-        <item name="iconPadding">0dp</item>
-        <item name="android:insetTop">0dp</item>
-        <item name="android:insetBottom">0dp</item>
-        <item name="android:insetRight">0dp</item>
-        <item name="android:insetLeft">0dp</item>
-        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.ImageView.Circle</item>
-    </style>
-
     <style name="PrimaryTextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
-        <item name="boxCornerRadiusBottomEnd">@dimen/default_text_input_layout_corner_radius</item>
-        <item name="boxCornerRadiusBottomStart">@dimen/default_text_input_layout_corner_radius
-        </item>
-        <item name="boxBackgroundColor">@color/light_grey</item>
-        <item name="boxCornerRadiusTopEnd">@dimen/default_text_input_layout_corner_radius</item>
-        <item name="boxCornerRadiusTopStart">@dimen/default_text_input_layout_corner_radius</item>
+        <item name="boxCornerRadiusBottomEnd">@dimen/text_input_layout_corner_radius</item>
+        <item name="boxCornerRadiusBottomStart">@dimen/text_input_layout_corner_radius</item>
+        <item name="boxBackgroundColor">@color/grey_lightest</item>
+        <item name="boxCornerRadiusTopEnd">@dimen/text_input_layout_corner_radius</item>
+        <item name="boxCornerRadiusTopStart">@dimen/text_input_layout_corner_radius</item>
     </style>
 
 </resources>

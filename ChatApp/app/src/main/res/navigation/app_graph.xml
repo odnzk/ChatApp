@@ -3,36 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/app_graph"
-    app:startDestination="@id/chatFragment">
+    app:startDestination="@id/holderChannelsFragment">
 
     <fragment
-        android:id="@+id/chatFragment"
-        android:name="com.study.tinkoff.feature.chat.presentation.ChatFragment"
-        android:label="ChatFragment"
-        tools:layout="@layout/fragment_chat">
-        <argument
-            android:name="channelId"
-            app:argType="integer" />
-        <argument
-            android:name="lastMessageId"
-            app:argType="integer" />
-        <action
-            android:id="@+id/action_chatFragment_to_selectEmojiFragment"
-            app:destination="@id/selectEmojiFragment" />
-    </fragment>
-    <dialog
-        android:id="@+id/selectEmojiFragment"
-        android:name="com.study.tinkoff.feature.emoji.presentation.SelectEmojiFragment"
-        android:label="SelectEmojiFragment"
-        tools:layout="@layout/fragment_recycler_view">
-        <argument
-            android:name="resultKey"
-            app:argType="string"
-            app:nullable="false" />
-    </dialog>
-    <fragment
         android:id="@+id/profileFragment"
-        android:name="com.study.tinkoff.feature.profile.presentation.ProfileFragment"
+        android:name="com.study.profile.presentation.ProfileFragment"
         android:label="ProfileFragment"
         tools:layout="@layout/fragment_profile">
         <argument
@@ -42,12 +17,12 @@
     </fragment>
     <fragment
         android:id="@+id/channelsFragment"
-        android:name="com.study.tinkoff.feature.channels.presentation.ChannelsFragment"
+        android:name="com.study.channels.presentation.ChannelsFragment"
         android:label="ChannelsFragment"
-        tools:layout="@layout/fragment_recycler_view" />
+        tools:layout="@layout/fragment_recycler_view"></fragment>
     <fragment
         android:id="@+id/usersFragment"
-        android:name="com.study.tinkoff.feature.users.presentation.UsersFragment"
+        android:name="com.study.users.presentation.UsersFragment"
         android:label="PeopleFragment"
         tools:layout="@layout/fragment_recycler_view">
         <action
@@ -56,11 +31,15 @@
     </fragment>
     <fragment
         android:id="@+id/holderChannelsFragment"
-        android:name="com.study.tinkoff.feature.channels.presentation.HolderChannelsFragment"
+        android:name="com.study.channels.presentation.holder.HolderChannelsFragment"
         android:label="HolderChannelsFragment"
-        tools:layout="@layout/fragment_channels">
-        <action
-            android:id="@+id/action_holderChannelsFragment_to_chatFragment"
-            app:destination="@id/chatFragment" />
+        tools:layout="@layout/fragment_channels" />
+    <fragment
+        android:id="@+id/chatFragment"
+        android:name="com.study.chat.presentation.chat.ChatFragment"
+        android:label="ChatFragment"
+        tools:layout="@layout/fragment_chat">
+        <deepLink app:uri="@string/deeplink_chat" />
     </fragment>
+
 </navigation>

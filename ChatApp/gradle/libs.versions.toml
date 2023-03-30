@@ -1,7 +1,7 @@
 [versions]
 # Project
 android_gradle_plugin = "7.4.2"
-kotlin = "1.7.20"
+kotlin = "1.8.0"
 
 # AndroidX
 core = "1.9.0"
@@ -14,36 +14,54 @@ test_junit = "4.13.2"
 test_runner = "1.5.2"
 test_core = "1.5.0"
 
+#Navaigation
 navigation = "2.5.3"
 cicerone = "7.1"
+
 coroutines = "1.6.4"
+dagger = "2.45"
+
 
 [libraries]
 android_gradle_plugin = { module = "com.android.tools.build:gradle", version.ref = "android_gradle_plugin" }
 kotlin_gradle_plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 navigation_plugin = { module = "androidx.navigation:navigation-safe-args-gradle-plugin", version.ref = "navigation" }
+
 # AndroidX
 androidx_core = { module = "androidx.core:core", version.ref = "core" }
 androidx_appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
 androidx_material = { module = "com.google.android.material:material", version.ref = "material" }
 androidx_constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraint" }
+
 # Test
 test_junit = { module = "junit:junit", version.ref = "test_junit" }
 test_runner = { module = "androidx.test:runner", version.ref = "test_runner" }
 test_core = { module = "androidx.test:core", version.ref = "test_core" }
+
 # Navigation
 navigation_fragment = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigation" }
 navigation_ui_ktx = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigation" }
 cicerone = { module = "com.github.terrakok:cicerone", version.ref = "cicerone" }
 
+# Coroutines
 coroutines_android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 fragment_ktx = "androidx.fragment:fragment-ktx:1.5.5"
 
+# DI: Dagger
+dagger2 = { module = "com.google.dagger:dagger", version.ref = "dagger" }
+dagger2_compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "dagger" }
+
+# Additional
 leak_canary = "com.squareup.leakcanary:leakcanary-android:2.10"
 timber = "com.jakewharton.timber:timber:5.0.1"
+datastore = "androidx.datastore:datastore-preferences:1.0.0"
+shimmers = "com.facebook.shimmer:shimmer:0.5.0"
 
 [plugins]
 android_application = { id = "com.android.application", version.ref = "android_gradle_plugin" }
+android_library = { id = "com.android.library", version.ref = "android_gradle_plugin" }
 kotlin_application = { id = "kotlin-android", version.ref = "kotlin" }
 kotlin_parcelize_plugin = { id = "kotlin-parcelize" }
+android_kotlin = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin_jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 

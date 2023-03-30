@@ -1,4 +1,4 @@
-package com.study.components
+package com.study.components.extensions
 
 import android.content.Context
 import android.util.TypedValue

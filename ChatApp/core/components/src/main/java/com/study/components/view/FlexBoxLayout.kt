@@ -11,24 +11,25 @@ import androidx.core.view.isVisible
 import com.google.android.material.color.MaterialColors
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.shape.ShapeAppearanceModel
-import com.study.components.dp
-import com.study.ui.R
+import com.study.components.R
+import com.study.components.extensions.dp
 import java.lang.Integer.max
+import com.study.ui.R as CoreResources
 
 class FlexBoxLayout @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : ViewGroup(context, attrs, defStyleAttr) {
 
     private val ivPlus = ShapeableImageView(context).apply {
-        imageTintList = ColorStateList.valueOf(context.getColor(R.color.white))
+        imageTintList = ColorStateList.valueOf(context.getColor(CoreResources.color.white))
         setBackgroundColor(
             MaterialColors.getColor(
                 context,
                 com.google.android.material.R.attr.backgroundColor,
-                context.getColor(R.color.item_background_color)
+                context.getColor(CoreResources.color.item_background_color)
             )
         )
-        setImageResource(R.drawable.ic_baseline_add_24)
+        setImageResource(CoreResources.drawable.ic_baseline_add_24)
         shapeAppearanceModel = ShapeAppearanceModel().withCornerSize(ICON_PLUS_CORNERS)
         post {
             setContentPadding(
@@ -39,13 +40,13 @@ class FlexBoxLayout @JvmOverloads constructor(
             )
         }
     }
+    private var lineSpacing = DEFAULT_LINE_SPACING
+    private var itemSpacing = DEFAULT_ITEM_SPACING
     var onPlusClickListener = OnClickListener {}
         set(value) {
             field = value
             ivPlus.setOnClickListener(field)
         }
-    private var lineSpacing = DEFAULT_LINE_SPACING
-    private var itemSpacing = DEFAULT_ITEM_SPACING
 
     init {
         context.withStyledAttributes(attrs, R.styleable.FlexBoxLayout) {

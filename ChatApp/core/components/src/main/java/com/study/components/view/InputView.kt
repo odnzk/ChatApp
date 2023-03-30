@@ -9,13 +9,14 @@ import androidx.core.view.marginBottom
 import androidx.core.view.marginLeft
 import androidx.core.view.marginRight
 import androidx.core.view.marginTop
+import androidx.core.view.setPadding
 import androidx.core.widget.addTextChangedListener
-import com.google.android.material.button.MaterialButton
 import com.google.android.material.color.MaterialColors
+import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.study.components.R
-import com.study.components.dp
+import com.study.components.extensions.dp
 import com.study.components.extensions.hideKeyboard
 import java.lang.Integer.max
 import com.study.ui.R as CoreResources
@@ -26,13 +27,17 @@ class InputView @JvmOverloads constructor(
 
     private val tilInputBox: TextInputLayout
     private val etInputField: TextInputEditText
-    private val btnSubmitData: MaterialButton
-
-    private val colorAccent = MaterialColors.getColor(
-        context, androidx.appcompat.R.attr.colorPrimary,
-        context.getColor(CoreResources.color.accent_color)
+    private val btnSubmitData: ShapeableImageView
+    private val colorBackgroundSendMessage = MaterialColors.getColor(
+        context,
+        androidx.appcompat.R.attr.colorPrimary,
+        context.getColor(CoreResources.color.navy_light)
     )
-    private val colorAdditional = context.getColor(CoreResources.color.light_grey)
+    private val iconSendMessagePadding = 12.dp(context)
+    private val colorBackgroundAddContent =
+        context.getColor(CoreResources.color.bottom_nav_background_color)
+    private val tintIconAddContent = context.getColor(CoreResources.color.grey)
+    private val tintIconSendMessage = Color.BLACK
 
     var btnSubmitClickListener: (inputText: String) -> Unit = {}
         set(value) {
@@ -40,7 +45,7 @@ class InputView @JvmOverloads constructor(
             btnSubmitData.setOnClickListener {
                 field.invoke(etInputField.text.toString())
                 etInputField.setText("")
-                this.focusedChild?.hideKeyboard()
+                focusedChild?.hideKeyboard()
             }
         }
 
@@ -49,23 +54,12 @@ class InputView @JvmOverloads constructor(
         tilInputBox = findViewById(R.id.view_input_til_message)
         etInputField = findViewById(R.id.view_input_et_message)
         btnSubmitData = findViewById(R.id.view_input_btn_send_message)
+
+        setState(State.ADD_CONTENT)
+        setBackgroundColor(colorBackgroundAddContent)
+
         etInputField.addTextChangedListener { textInput ->
-            if (textInput.isNullOrBlank()) {
-                btnSubmitData.run {
-                    backgroundTintList = ColorStateList.valueOf(Color.TRANSPARENT)
-                    setIconResource(CoreResources.drawable.ic_baseline_add_24)
-                    strokeColor = ColorStateList.valueOf(colorAdditional)
-                    strokeWidth = 4f.dp(context)
-                    iconTint = ColorStateList.valueOf(Color.WHITE)
-                }
-            } else {
-                btnSubmitData.run {
-                    backgroundTintList = ColorStateList.valueOf(colorAccent)
-                    setIconResource(CoreResources.drawable.ic_baseline_send_24)
-                    strokeWidth = 0
-                    iconTint = ColorStateList.valueOf(Color.BLACK)
-                }
-            }
+            setState(if (textInput.isNullOrBlank()) State.ADD_CONTENT else State.SEND_MESSAGE)
         }
     }
 
@@ -75,7 +69,7 @@ class InputView @JvmOverloads constructor(
             btnSubmitData.measuredWidth + btnSubmitData.marginLeft + btnSubmitData.marginRight
         measureChildWithMargins(tilInputBox, widthMeasureSpec, usedWidth, heightMeasureSpec, 0)
         val totalWidth =
-            paddingLeft + paddingRight + tilInputBox.marginLeft + tilInputBox.marginRight + tilInputBox.measuredWidth + btnSubmitData.marginLeft + btnSubmitData.marginRight + btnSubmitData.measuredWidth
+            (paddingLeft + paddingRight + tilInputBox.marginLeft + tilInputBox.marginRight + tilInputBox.measuredWidth + btnSubmitData.marginLeft + btnSubmitData.marginRight + btnSubmitData.measuredWidth)
         val totalHeight = paddingTop + paddingBottom + max(
             tilInputBox.marginTop + tilInputBox.marginBottom + tilInputBox.measuredHeight,
             btnSubmitData.marginTop + btnSubmitData.marginBottom + btnSubmitData.measuredHeight
@@ -116,5 +110,31 @@ class InputView @JvmOverloads constructor(
 
     override fun checkLayoutParams(p: LayoutParams): Boolean {
         return p is MarginLayoutParams
+    }
+
+    private enum class State {
+        SEND_MESSAGE, ADD_CONTENT
+    }
+
+    private fun setState(state: State) {
+        when (state) {
+            State.SEND_MESSAGE -> {
+                btnSubmitData.run {
+                    setBackgroundColor(colorBackgroundSendMessage)
+                    setPadding(iconSendMessagePadding)
+                    imageTintList = ColorStateList.valueOf(tintIconSendMessage)
+                    setImageResource(R.drawable.ic_baseline_send_24)
+                }
+            }
+            State.ADD_CONTENT -> {
+                btnSubmitData.run {
+                    setPadding(0)
+                    setBackgroundColor(colorBackgroundAddContent)
+                    imageTintList = ColorStateList.valueOf(tintIconAddContent)
+                    setImageResource(R.drawable.ic_add_content)
+                }
+            }
+
+        }
     }
 }

@@ -6,7 +6,7 @@ sealed interface ScreenState<out T> {
     class Error(val error: Throwable) : ScreenState<Nothing>
 }
 
-inline fun <T, R> ScreenState<T>.map(crossinline transform: (value: T) -> R): ScreenState<R> =
+suspend inline fun <T, R> ScreenState<T>.map(crossinline transform: suspend (value: T) -> R): ScreenState<R> =
     when (this) {
         is ScreenState.Error -> ScreenState.Error(this.error)
         ScreenState.Loading -> ScreenState.Loading

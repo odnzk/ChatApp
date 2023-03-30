@@ -17,7 +17,7 @@ class AvatarImageView @JvmOverloads constructor(
     private var circleStart: Float = 0f
     private var circleTop: Float = 0f
     private val circlePaint = Paint().apply {
-        color = context.getColor(com.study.ui.R.color.light_green)
+        color = context.getColor(CoreResources.color.green_light)
     }
     private var circleStrokePaint = Paint().apply {
         style = Paint.Style.STROKE

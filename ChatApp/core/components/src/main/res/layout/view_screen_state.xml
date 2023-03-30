@@ -17,6 +17,7 @@
         android:layout_height="wrap_content"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.Messenger.Body"
+        android:textColor="@color/white"
         tools:text="@string/error_connection_lost" />
 
     <com.google.android.material.button.MaterialButton

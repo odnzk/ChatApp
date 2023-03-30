@@ -15,7 +15,6 @@ abstract class BaseFragment<FragmentViewModel : ViewModel, Binding : ViewBinding
 
     final override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         initUI()
         setupListeners()
         observeState()

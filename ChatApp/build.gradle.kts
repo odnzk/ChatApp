@@ -10,7 +10,9 @@ buildscript {
     }
 }
 plugins {
-    id("com.android.library") version "7.4.2" apply false
-    id("org.jetbrains.kotlin.android") version "1.8.0" apply false
-    id("org.jetbrains.kotlin.jvm") version "1.8.0" apply false
+    alias(libs.plugins.android.library) apply false
+    alias(libs.plugins.android.kotlin) apply false
+    alias(libs.plugins.kotlin.jvm) apply false
+}
+subprojects {
 }

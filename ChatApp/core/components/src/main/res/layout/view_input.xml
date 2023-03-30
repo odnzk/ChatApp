@@ -12,28 +12,27 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginVertical="8dp"
-        android:layout_marginStart="@dimen/default_screen_paddings"
+        android:layout_marginStart="@dimen/paddings_medium"
         android:layout_marginEnd="12dp"
-        android:hint="@string/fragment_chat_et_hint_send_message">
+        android:hint="@string/fragment_chat_et_hint_send_message"
+        app:boxStrokeWidth="0dp"
+        app:boxStrokeWidthFocused="0dp">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/view_input_et_message"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/input_field_background_color"
             android:maxLines="1" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.button.MaterialButton
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/view_input_btn_send_message"
-        style="@style/RoundButton"
         android:layout_width="@dimen/primary_round_button_size"
         android:layout_height="@dimen/primary_round_button_size"
         android:layout_marginVertical="10dp"
-        android:layout_marginEnd="@dimen/default_screen_paddings"
-        android:backgroundTint="@android:color/transparent"
+        android:layout_marginEnd="@dimen/paddings_medium"
         android:contentDescription="@string/fragment_chat_btn_send_message_content_description"
-        app:icon="@drawable/ic_baseline_add_24"
-        app:iconTint="@color/light_grey"
-        app:strokeColor="@color/light_grey"
-        app:strokeWidth="3dp" />
+        android:scaleType="fitCenter"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.ImageView.Circle" />
 </merge>
