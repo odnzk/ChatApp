@@ -3,7 +3,6 @@
 
     <style name="PrimaryButton" parent="Widget.MaterialComponents.Button">
         <item name="android:textAppearance">@style/TextAppearance.Messenger.Body.Small</item>
-        <item name="textAllCaps">false</item>
         <item name="cornerRadius">@dimen/primary_button_corner_radius</item>
         <item name="android:paddingEnd">28dp</item>
         <item name="android:paddingStart">28dp</item>

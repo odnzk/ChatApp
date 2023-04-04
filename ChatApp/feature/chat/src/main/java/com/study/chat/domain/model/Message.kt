@@ -1,25 +1,22 @@
 package com.study.chat.domain.model
 
+import com.study.network.model.request.message.MessageType
+import java.util.Calendar
+
 data class IncomeMessage(
+    val id: Int,
     val senderAvatarUrl: String?,
     val senderName: String,
+    val senderId: Int,
     val content: String,
-    val contentType: MessageContentType,
-    val displayRecipient: Any,
-    val messageId: Int,
-    val isMeMessage: Boolean,
-    val lastEditedTimestamp: Int,
-    val reactions: MutableList<Reaction>
+    val calendar: Calendar,
+    val reactions: List<Reaction>
 )
+
 
 data class OutcomeMessage(
-    val type: MessageType, val to: Any, val content: String, val topic: String?
+    val channelTitle: String,
+    val content: String,
+    val topicTitle: String,
+    val type: MessageType = MessageType.STREAM
 )
-
-enum class MessageType {
-    PRIVATE, STREAM
-}
-
-enum class MessageContentType {
-    TEXT, MARKDOWN
-}

@@ -15,4 +15,6 @@
     <color name="grey_lightest">#999999</color>
     <color name="grey">#464646</color>
     <color name="green_light">#4AB54D</color>
+    <color name="_test_orange">#FF6736</color>
+    <color name="_test_red">#F44336</color>
 </resources>

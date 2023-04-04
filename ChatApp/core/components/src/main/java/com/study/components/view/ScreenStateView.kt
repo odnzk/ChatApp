@@ -12,8 +12,8 @@ import androidx.core.view.marginEnd
 import androidx.core.view.marginStart
 import androidx.core.view.marginTop
 import androidx.core.widget.ContentLoadingProgressBar
+import com.study.common.ScreenState
 import com.study.components.R
-import com.study.components.ScreenState
 import com.study.components.extensions.handle
 import java.lang.Integer.max
 
@@ -36,6 +36,7 @@ class ScreenStateView @JvmOverloads constructor(
         pbLoading = findViewById(R.id.view_screen_state_pb_loading)
         tvError = findViewById(R.id.view_screen_state_tv_error)
         btnTryAgain = findViewById(R.id.view_screen_state_btn_try_again)
+        setState(ScreenState.Loading)
     }
 
     fun setState(state: ScreenState<*>) {

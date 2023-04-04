@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="user_status_active">Active</string>
+    <string name="user_status_idle">Idle</string>
+    <string name="user_status_offline">Offline</string>
+</resources>

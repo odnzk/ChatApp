@@ -2,7 +2,10 @@ package com.study.components
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.study.common.ScreenState
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,7 +27,9 @@ abstract class BaseViewModel<T> : ViewModel() {
         _state.value = ScreenState.Error(e)
     }
 
-    protected inline fun ViewModel.safeLaunch(crossinline action: suspend () -> Unit): Job =
-        viewModelScope.launch(baseExceptionHandler) { action() }
+    protected inline fun ViewModel.safeLaunch(
+        dispatcher: CoroutineDispatcher = Dispatchers.Default,
+        crossinline action: suspend () -> Unit
+    ): Job = viewModelScope.launch(baseExceptionHandler + dispatcher) { action() }
 
 }

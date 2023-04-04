@@ -1,5 +1,5 @@
 package com.study.profile.domain.util
 
-sealed class ProfileException : Exception()
-class UserNotAuthorizedException : ProfileException()
-class UserNotFoundException : ProfileException()
+internal sealed class ProfileException : Exception()
+internal class UserNotAuthorizedException : ProfileException()
+internal class UserNotFoundException : ProfileException()

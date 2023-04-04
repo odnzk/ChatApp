@@ -3,6 +3,7 @@ plugins {
     id("kotlin-android")
     id("kotlin-kapt")
     id("androidx.navigation.safeargs.kotlin")
+    id("org.jetbrains.kotlin.android")
 }
 
 android {
@@ -50,6 +51,7 @@ dependencies {
     implementation(libs.coroutines.android)
     implementation(libs.fragment.ktx)
     debugImplementation(libs.leak.canary)
+    implementation(libs.timber)
 
     implementation(project(":core:ui"))
     implementation(project(":core:components"))

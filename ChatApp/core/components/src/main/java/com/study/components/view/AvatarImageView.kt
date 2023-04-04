@@ -6,8 +6,10 @@ import android.graphics.Paint
 import android.util.AttributeSet
 import com.google.android.material.color.MaterialColors
 import com.google.android.material.imageview.ShapeableImageView
+import com.study.components.model.UserPresenceStatus
 import java.lang.Integer.min
-import com.study.ui.R as CoreResources
+import com.google.android.material.R as AndroidR
+import com.study.ui.R as CoreR
 
 class AvatarImageView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
@@ -16,45 +18,53 @@ class AvatarImageView @JvmOverloads constructor(
     private var circleRadius: Float = 0f
     private var circleStart: Float = 0f
     private var circleTop: Float = 0f
-    private val circlePaint = Paint().apply {
-        color = context.getColor(CoreResources.color.green_light)
-    }
+    private val activeColor = getColor(UserPresenceStatus.ACTIVE)
+    private val idleColor = getColor(UserPresenceStatus.IDLE)
+    private val offlineColor = getColor(UserPresenceStatus.OFFLINE)
+    private val strokeColor = MaterialColors.getColor(
+        context,
+        AndroidR.attr.backgroundColor,
+        context.getColor(CoreR.color.item_background_color)
+    )
+    private var circlePaint: Paint = Paint()
     private var circleStrokePaint = Paint().apply {
         style = Paint.Style.STROKE
-        color = MaterialColors.getColor(
-            context,
-            com.google.android.material.R.attr.backgroundColor,
-            context.getColor(CoreResources.color.item_background_color)
-        )
+        color = strokeColor
     }
-    var status: Status = Status.OFFLINE
-
-    enum class Status {
-        ONLINE, OFFLINE
-    }
+    var status: UserPresenceStatus? = null
+        set(value) {
+            field = value
+            invalidate()
+        }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-        if (status == Status.ONLINE) {
-            val minSideSize =
-                min(MeasureSpec.getSize(widthMeasureSpec), MeasureSpec.getSize(heightMeasureSpec))
-            circleRadius = (minSideSize / CIRCLE_SIZE_DIVIDER).toFloat()
-            circleStrokePaint.strokeWidth = circleRadius / CIRCLE_STROKE_SIZE_DIVIDER
-            circleStart = measuredWidth - circleRadius - circleStrokePaint.strokeWidth
-            circleTop = measuredHeight - circleRadius - circleStrokePaint.strokeWidth
-        }
+        val minSideSize =
+            min(MeasureSpec.getSize(widthMeasureSpec), MeasureSpec.getSize(heightMeasureSpec))
+        circleRadius = (minSideSize / CIRCLE_SIZE_DIVIDER).toFloat()
+        circleStrokePaint.strokeWidth = circleRadius / CIRCLE_STROKE_SIZE_DIVIDER
+        circleStart = measuredWidth - circleRadius - circleStrokePaint.strokeWidth
+        circleTop = measuredHeight - circleRadius
     }
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
-        if (status == Status.ONLINE) {
-            canvas?.drawCircle(circleStart, circleTop, circleRadius, circlePaint)
-            canvas?.drawCircle(circleStart, circleTop, circleRadius, circleStrokePaint)
+        circlePaint.color = when (status) {
+            UserPresenceStatus.ACTIVE -> activeColor
+            UserPresenceStatus.IDLE -> idleColor
+            UserPresenceStatus.OFFLINE -> offlineColor
+            else -> strokeColor
         }
+        canvas?.drawCircle(circleStart, circleTop, circleRadius, circlePaint)
+        canvas?.drawCircle(circleStart, circleTop, circleRadius, circleStrokePaint)
     }
 
     companion object {
         private const val CIRCLE_SIZE_DIVIDER = 7
-        private const val CIRCLE_STROKE_SIZE_DIVIDER = 4
+        private const val CIRCLE_STROKE_SIZE_DIVIDER = 3
+    }
+
+    private fun getColor(status: UserPresenceStatus): Int {
+        return context.getColor(status.colorResId)
     }
 }

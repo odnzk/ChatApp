@@ -1,24 +1,26 @@
 package com.study.users.presentation
 
 import androidx.lifecycle.SavedStateHandle
-import com.study.components.ScreenState
+import com.study.common.ScreenState
 import com.study.search.SearchViewModel
-import com.study.users.data.StubUsersRepository
-import com.study.users.domain.model.User
+import com.study.users.data.RemoteUserRepository
 import com.study.users.domain.repository.UsersRepository
-import kotlinx.coroutines.Job
+import com.study.users.domain.usecase.GetUsersUseCase
+import com.study.users.presentation.model.UiUser
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
 
-class UsersViewModel(savedStateHandle: SavedStateHandle) :
-    SearchViewModel<List<User>>(savedStateHandle) {
-    private val usersRepository: UsersRepository = StubUsersRepository()
-    private var jobObservingUsers: Job? = null
-    override val searchAction: suspend (query: String) -> List<User>
-        get() = { usersRepository.getUsersByEmail(it) }
+internal class UsersViewModel(savedStateHandle: SavedStateHandle) :
+    SearchViewModel<List<UiUser>>(savedStateHandle) {
+    private val repository: UsersRepository = RemoteUserRepository()
+    private val getUsersUseCase = GetUsersUseCase(repository, Dispatchers.Default)
+
+    private var fullUserList: List<UiUser> = emptyList()
+    override val searchAction: suspend (query: String) -> List<UiUser>
+        get() = { query -> fullUserList.filter { it.name.startsWith(query) } }
     override val lastSearchedKey: String? = null
-    override val _state: MutableStateFlow<ScreenState<List<User>>> =
+    override val _state: MutableStateFlow<ScreenState<List<UiUser>>> =
         MutableStateFlow(ScreenState.Loading)
     val state = _state.asStateFlow()
 
@@ -36,13 +38,10 @@ class UsersViewModel(savedStateHandle: SavedStateHandle) :
         }
     }
 
-    private fun loadData() {
-        jobObservingUsers?.cancel()
-        jobObservingUsers = safeLaunch {
-            usersRepository.getUsers().collectLatest { users ->
-                _state.value = ScreenState.Success(users)
-            }
-        }
+    private fun loadData() = safeLaunch {
+        val result = getUsersUseCase()
+        _state.value = ScreenState.Success(result)
+        fullUserList = result
     }
 
 }

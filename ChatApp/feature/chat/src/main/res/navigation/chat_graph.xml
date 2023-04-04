@@ -10,17 +10,25 @@
         android:name="com.study.chat.presentation.chat.ChatFragment"
         android:label="ChatFragment"
         tools:layout="@layout/fragment_chat">
+        <deepLink app:uri="@string/deeplink_chat" />
+        <argument
+            android:name="channelTitle"
+            app:argType="string" />
+        <argument
+            android:name="topicTitle"
+            app:argType="string" />
         <action
-            android:id="@+id/action_chatFragment_to_selectEmojiFragment"
-            app:destination="@id/selectEmojiFragment" />
+            android:id="@+id/action_chatFragment_to_emojiListFragment"
+            app:destination="@id/emojiListFragment" />
     </fragment>
     <dialog
-        android:id="@+id/selectEmojiFragment"
-        android:name="com.study.chat.presentation.emoji.SelectEmojiFragment"
-        android:label="SelectEmojiFragment"
+        android:id="@+id/emojiListFragment"
+        android:name="com.study.chat.presentation.emoji.EmojiListFragment"
+        android:label="EmojiListFragment"
         tools:layout="@layout/fragment_recycler_view">
         <argument
             android:name="resultKey"
             app:argType="string" />
     </dialog>
+
 </navigation>

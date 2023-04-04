@@ -19,7 +19,7 @@ import kotlin.math.min
 import kotlin.math.roundToInt
 import com.study.ui.R as CoreResources
 
-class ReactionView @JvmOverloads constructor(
+internal class ReactionView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0, defStyleRes: Int = 0
 ) : View(context, attrs, defStyleAttr, defStyleRes) {
     private val defaultPadding = 6.dp(context)
@@ -117,9 +117,7 @@ class ReactionView @JvmOverloads constructor(
         val r = (Color.red(this) * factor).roundToInt()
         val g = (Color.green(this) * factor).roundToInt()
         val b = (Color.blue(this) * factor).roundToInt()
-        return Color.argb(
-            a, min(r, 255), min(g, 255), min(b, 255)
-        )
+        return Color.argb(a, min(r, 255), min(g, 255), min(b, 255))
     }
 
 }

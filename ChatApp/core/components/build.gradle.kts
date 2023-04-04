@@ -41,8 +41,12 @@ dependencies {
     implementation(libs.androidx.material)
     implementation(libs.androidx.constraintlayout)
 
+    implementation(libs.coil)
+    implementation(libs.shimmers)
+    implementation(libs.fragment.ktx)
+    implementation(libs.timber)
+    implementation(libs.pagination)
+
     implementation(project(":core:ui"))
     implementation(project(":core:common"))
-
-    implementation(libs.fragment.ktx)
 }

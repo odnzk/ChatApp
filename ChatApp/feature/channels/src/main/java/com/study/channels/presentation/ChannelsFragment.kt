@@ -7,28 +7,26 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.study.channels.presentation.delegates.channel.ChannelDelegate
-import com.study.channels.presentation.delegates.topic.ChannelTopicDelegate
-import com.study.channels.presentation.holder.HolderChannelViewModel
 import com.study.channels.presentation.model.UiChannelModel
-import com.study.channels.presentation.navigation.toChannelTopic
-import com.study.common.extensions.safeGetParcelable
-import com.study.common.rv.delegates.Delegate
-import com.study.common.rv.delegates.GeneralAdapterDelegate
+import com.study.channels.presentation.model.UiChannelShimmer
+import com.study.channels.presentation.util.delegates.channel.ChannelDelegate
+import com.study.channels.presentation.util.delegates.topic.ChannelTopicDelegate
+import com.study.channels.presentation.util.holder.HolderChannelViewModel
+import com.study.channels.presentation.util.navigation.navigateToChannelTopic
 import com.study.components.BaseScreenStateFragment
 import com.study.components.databinding.FragmentRecyclerViewBinding
-import com.study.components.view.ScreenStateView
+import com.study.components.extensions.safeGetParcelable
+import com.study.components.recycler.delegates.Delegate
+import com.study.components.recycler.delegates.GeneralAdapterDelegate
 import kotlinx.parcelize.Parcelize
 
 internal class ChannelsFragment :
     BaseScreenStateFragment<ChannelsViewModel, FragmentRecyclerViewBinding, List<UiChannelModel>>() {
     override val binding: FragmentRecyclerViewBinding get() = _binding!!
     override val viewModel: ChannelsViewModel by viewModels()
-    override val screenStateView: ScreenStateView get() = binding.fragmentScreenStateView
     override val onTryAgainClick: View.OnClickListener
         get() = View.OnClickListener { viewModel.onEvent(ChannelFragmentEvent.Reload) }
     private var _binding: FragmentRecyclerViewBinding? = null
@@ -47,13 +45,21 @@ internal class ChannelsFragment :
         arguments?.safeGetParcelable<ChannelsSettings>(CHANNEL_SETTING_KEY)?.let { settings ->
             viewModel.updateChannelSettings(settings)
         }
+        screenStateView = binding.fragmentScreenStateView
         return binding.root
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
+        screenStateView = null
         channelsAdapter = null
         _binding = null
+    }
+
+    override fun onLoading() {
+        val shimmers: List<UiChannelModel> =
+            List(UiChannelShimmer.DEFAULT_SHIMMER_COUNT) { UiChannelShimmer }
+        channelsAdapter?.submitList(shimmers)
     }
 
     override fun onSuccess(data: List<UiChannelModel>) {
@@ -67,14 +73,12 @@ internal class ChannelsFragment :
         }
     }
 
-    override fun setupListeners() = Unit
-
     override fun initUI() {
         channelsAdapter =
             GeneralAdapterDelegate(listOf(ChannelDelegate(onChannelClick = { channelId ->
                 viewModel.onEvent(ChannelFragmentEvent.UpdateChannelTopics(channelId))
-            }), ChannelTopicDelegate(onTopicClick = { channelId, lastMessageId ->
-                findNavController().toChannelTopic(channelId, lastMessageId)
+            }), ChannelTopicDelegate(onTopicClick = { channelTitle, topicTitle ->
+                navigateToChannelTopic(channelTitle = channelTitle, topicTitle = topicTitle)
             })
             ) as List<Delegate<RecyclerView.ViewHolder, Any>>
             )
