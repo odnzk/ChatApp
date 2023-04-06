@@ -40,8 +40,10 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.material)
     implementation(libs.androidx.constraintlayout)
+
     implementation(libs.fragment.ktx)
 
     implementation(project(":core:components"))
+    implementation(project(":core:common"))
     implementation(project(":core:ui"))
 }

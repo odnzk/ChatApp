@@ -42,12 +42,16 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.material)
     implementation(libs.androidx.constraintlayout)
+
     implementation(libs.fragment.ktx)
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui.ktx)
+    implementation(libs.retrofit)
+    implementation(libs.shimmers)
 
     implementation(project(":core:common"))
     implementation(project(":core:components"))
     implementation(project(":core:ui"))
+    implementation(project(":core:network"))
     implementation(project(":feature:search"))
 }

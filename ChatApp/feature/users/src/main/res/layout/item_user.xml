@@ -15,7 +15,6 @@
             android:id="@+id/item_user_iv_avatar"
             android:layout_width="@dimen/avatar_size_medium"
             android:layout_height="@dimen/avatar_size_medium"
-            android:background="@color/bottom_nav_background_color"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.ImageView.Circle"
@@ -26,8 +25,7 @@
             android:id="@+id/item_user_tv_username"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:background="@color/bottom_nav_background_color"
+            android:layout_marginStart="@dimen/margin_medium"
             android:ellipsize="end"
             android:maxLines="1"
             android:textAppearance="@style/TextAppearance.Messenger.Title"
@@ -41,16 +39,15 @@
             android:id="@+id/item_user_tv_email"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@color/bottom_nav_background_color"
             android:ellipsize="end"
-            android:maxLines="1"
+            android:maxLines="2"
             android:textAppearance="@style/TextAppearance.Messenger.Title.Small"
             android:textColor="@color/grey_lightest"
             app:layout_constraintBottom_toBottomOf="@id/item_user_iv_avatar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/item_user_tv_username"
             app:layout_constraintTop_toBottomOf="@id/item_user_tv_username"
-            tools:text="@string/_test_user_email" />
+            tools:text="@tools:sample/lorem/random[20]" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

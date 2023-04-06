@@ -1,6 +1,7 @@
 package com.study.chat.presentation.emoji.delegates
 
 import android.view.ViewGroup
+import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.study.chat.domain.model.Emoji
@@ -26,14 +27,10 @@ internal class EmojiViewHolder(
             parent: ViewGroup, onEmojiClickListener: ((String) -> Unit)? = null
         ): EmojiViewHolder {
             val itemView = TextView(parent.context).apply {
-                layoutParams = ViewGroup.LayoutParams(
-                    ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT
-                )
+                layoutParams = ViewGroup.LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
                 setTextAppearance(R.style.TextAppearance_Messenger_Title_Large)
             }
-            return EmojiViewHolder(
-                itemView, onEmojiClickListener = onEmojiClickListener
-            )
+            return EmojiViewHolder(itemView, onEmojiClickListener = onEmojiClickListener)
         }
     }
 }

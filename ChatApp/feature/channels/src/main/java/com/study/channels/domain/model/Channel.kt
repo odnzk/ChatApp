@@ -4,10 +4,6 @@ data class Channel(
     val id: Int,
     val title: String,
     val description: String,
-    val isPrivate: Boolean,
-    val streamPostPolicy: StreamPostPolicy
+    val isPrivate: Boolean
 )
 
-enum class StreamPostPolicy {
-    ANY_USERS, ONLY_ADMISTRATORS, ONLY_FULL_MEMBERS, ONLY_MODERATORS
-}

@@ -18,10 +18,10 @@ import androidx.core.view.marginLeft
 import androidx.core.view.marginRight
 import androidx.core.view.marginTop
 import com.google.android.material.color.MaterialColors
-import com.study.chat.domain.model.Reaction
 import com.study.chat.presentation.chat.model.UiMessage
-import com.study.common.extensions.loadUrl
+import com.study.chat.presentation.chat.model.UiReaction
 import com.study.components.extensions.dp
+import com.study.components.extensions.loadFromUrl
 import com.study.components.view.FlexBoxLayout
 import com.study.feature.R
 import java.lang.Integer.max
@@ -72,7 +72,8 @@ internal class MessageView @JvmOverloads constructor(
     }
 
     fun setMessage(
-        message: UiMessage, onReactionClick: ((messageId: Int, emojiName: String) -> Unit)? = null
+        message: UiMessage,
+        onReactionClick: ((messageId: Int, emojiName: String) -> Unit)? = null
     ) {
         when (message) {
             is UiMessage.ChatMessage -> setChatMessage(message, onReactionClick)
@@ -296,7 +297,7 @@ internal class MessageView @JvmOverloads constructor(
         message: UiMessage.ChatMessage,
         onReactionClick: ((messageId: Int, emojiName: String) -> Unit)? = null
     ) {
-        ivAvatar.loadUrl(message.senderAvatarUrl)
+        ivAvatar.loadFromUrl(message.senderAvatarUrl)
         tvSender.text = message.senderName
         tvContent.text = message.content
         ivAvatar.isVisible = true
@@ -317,7 +318,7 @@ internal class MessageView @JvmOverloads constructor(
     }
 
     private fun addReactionsToFlexBox(
-        reactions: List<Reaction>,
+        reactions: List<UiReaction>,
         messageId: Int,
         onReactionClick: ((messageId: Int, emojiName: String) -> Unit)? = null
     ) {
@@ -327,29 +328,26 @@ internal class MessageView @JvmOverloads constructor(
         }
     }
 
-    private fun Reaction.toMessageEmojiView(
+    private fun UiReaction.toMessageEmojiView(
         context: Context, count: Int
     ): ReactionView = ReactionView(context).apply {
         setEmoji(emojiUnicode = emoji.code, count = count)
     }
 
-    private fun List<Reaction>.toMessageEmojiViews(
+    private fun List<UiReaction>.toMessageEmojiViews(
         context: Context,
         messageId: Int,
         onReactionClick: ((messageId: Int, emojiName: String) -> Unit)? = null
     ): List<ReactionView> {
-        return asSequence().groupBy { it.emoji.code }.map { it.value.first() to it.value.size }
-            .sortedByDescending { it.second }.map { reactionWithCount ->
-                reactionWithCount.first.toMessageEmojiView(
-                    context, reactionWithCount.second
-                ).apply {
-                    setOnClickListener {
-                        isSelected = !isSelected
-                        onReactionClick?.invoke(
-                            messageId, reactionWithCount.first.emoji.name
-                        )
-                    }
+        return map { reaction ->
+            reaction.toMessageEmojiView(context, reaction.count).apply {
+                isSelected = reaction.isSelected
+                setOnClickListener {
+                    onReactionClick?.invoke(
+                        messageId, reaction.emoji.name
+                    )
                 }
             }
+        }
     }
 }

@@ -6,35 +6,41 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.study.components.BaseScreenStateFragment
-import com.study.components.view.ScreenStateView
+import com.study.components.recycler.delegates.Delegate
+import com.study.components.recycler.delegates.GeneralAdapterDelegate
 import com.study.search.databinding.FragmentSearchBinding
 import com.study.ui.R
-import com.study.users.domain.model.User
-import com.study.users.presentation.mapper.toUserState
-import com.study.users.presentation.rv.UserState
-import com.study.users.presentation.rv.UsersAdapter
+import com.study.users.presentation.model.UiUser
+import com.study.users.presentation.model.UserShimmer
+import com.study.users.presentation.util.delegates.UserDelegate
+import com.study.users.presentation.util.navigation.navigateToProfileFragment
 
 internal class UsersFragment :
-    BaseScreenStateFragment<UsersViewModel, FragmentSearchBinding, List<User>>() {
+    BaseScreenStateFragment<UsersViewModel, FragmentSearchBinding, List<UiUser>>() {
     override val viewModel: UsersViewModel by viewModels()
     override val binding: FragmentSearchBinding get() = _binding!!
     override val onTryAgainClick: View.OnClickListener
-        get() = View.OnClickListener { viewModel.onEvent(UsersFragmentEvent.Reload) }
-    override val screenStateView: ScreenStateView get() = binding.fragmentSearchScreenStateView
+        get() = View.OnClickListener {
+            viewModel.onEvent(UsersFragmentEvent.Reload)
+        }
+
     private var _binding: FragmentSearchBinding? = null
-    private var usersAdapter: UsersAdapter? = UsersAdapter()
+    private var adapter: GeneralAdapterDelegate? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
+        screenStateView = binding.fragmentSearchScreenStateView
         return binding.root
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        usersAdapter = null
+        screenStateView = null
+        adapter = null
         _binding = null
     }
 
@@ -43,12 +49,7 @@ internal class UsersFragment :
     }
 
     override fun onLoading() {
-        val shimmerList = buildList<UserState> {
-            repeat(DEFAULT_SHIMMER_COUNT) {
-                add(UserState.Loading)
-            }
-        }
-        usersAdapter?.submitList(shimmerList)
+        adapter?.submitList(List(UserShimmer.DEFAULT_SHIMMER_COUNT) { UserShimmer })
     }
 
     override fun setupListeners() {
@@ -58,22 +59,22 @@ internal class UsersFragment :
                 query?.let { viewModel.onEvent(UsersFragmentEvent.Search(it.toString())) }
             }
         }
-        usersAdapter?.onUserClick = { userId -> }
+        val userDelegate = UserDelegate { userId ->
+            navigateToProfileFragment(userId)
+        }
+        adapter =
+            GeneralAdapterDelegate(listOf(userDelegate) as List<Delegate<RecyclerView.ViewHolder, Any>>)
+        binding.fragmentSearchRvData.adapter = adapter
     }
 
     override fun initUI() {
         with(binding.fragmentSearchRvData) {
             layoutManager = LinearLayoutManager(context)
-            adapter = usersAdapter
+            adapter = adapter
         }
     }
 
-    override fun onSuccess(data: List<User>) {
-        usersAdapter?.submitList(data.toUserState())
-    }
-
-
-    companion object {
-        private const val DEFAULT_SHIMMER_COUNT = 8
+    override fun onSuccess(data: List<UiUser>) {
+        adapter?.submitList(data)
     }
 }

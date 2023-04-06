@@ -22,9 +22,9 @@ abstract class BaseFragment<FragmentViewModel : ViewModel, Binding : ViewBinding
 
     protected abstract fun observeState()
 
-    protected abstract fun setupListeners()
+    protected open fun setupListeners() = Unit
 
-    protected abstract fun initUI()
+    protected open fun initUI() = Unit
 
     protected inline fun <T : Any> Flow<T>.collectFlowSafely(
         lifecycleState: Lifecycle.State = Lifecycle.State.STARTED,

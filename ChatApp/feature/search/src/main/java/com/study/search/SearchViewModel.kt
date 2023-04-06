@@ -2,9 +2,9 @@ package com.study.search
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
+import com.study.common.ScreenState
+import com.study.common.extensions.runCatchingNonCancellation
 import com.study.components.BaseViewModel
-import com.study.components.ScreenState
-import com.study.components.extensions.runCatchingNonCancellation
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
