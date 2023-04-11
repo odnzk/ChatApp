@@ -3,6 +3,7 @@ package com.study.components
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.study.common.ScreenState
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
@@ -11,7 +12,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
-import java.util.concurrent.CancellationException
 
 abstract class BaseViewModel<T> : ViewModel() {
     protected abstract val _state: MutableStateFlow<ScreenState<T>>

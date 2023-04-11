@@ -1,13 +1,15 @@
 package com.study.chat.presentation.chat.util.delegates.message
 
+import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.DiffUtil
-import com.study.chat.presentation.chat.model.UiMessage
+import com.study.chat.domain.model.Emoji
+import com.study.chat.presentation.chat.util.model.UiMessage
 import com.study.components.recycler.delegates.Delegate
 
 internal class MessageDelegate(
-    onLongClickListener: ((Int) -> Unit)?,
-    onAddReactionClickListener: ((Int) -> Unit)?,
-    onReactionClick: ((messageId: Int, emojiName: String) -> Unit)?
+    onLongClickListener: ((message: UiMessage) -> Unit)?,
+    onAddReactionClickListener: ((message: UiMessage) -> Unit)?,
+    onReactionClick: ((message: UiMessage, emoji: Emoji) -> Unit)?
 ) : Delegate<MessageViewHolder, UiMessage>(
     isType = { it is UiMessage },
     viewHolderCreator = {
@@ -17,7 +19,15 @@ internal class MessageDelegate(
             onAddReactionClickListener = onAddReactionClickListener,
             onReactionClick = onReactionClick
         )
-    }, comparator = object : DiffUtil.ItemCallback<UiMessage>() {
+    },
+    viewBinder = { viewHolder, item -> viewHolder.bind(item) },
+    viewBinderWithPayloads = { holder, message, payloads ->
+        holder.bindWithPayloads(
+            message,
+            payloads
+        )
+    },
+    comparator = object : DiffUtil.ItemCallback<UiMessage>() {
         override fun areItemsTheSame(oldItem: UiMessage, newItem: UiMessage): Boolean {
             return oldItem.id == newItem.id && oldItem::class == newItem::class
         }
@@ -35,5 +45,11 @@ internal class MessageDelegate(
                 is UiMessage.MeMessage -> oldItem.content == newItem.content
             }
         }
-    }, viewBinder = { viewHolder, item -> viewHolder.bind(item) })
+
+        override fun getChangePayload(oldItem: UiMessage, newItem: UiMessage): Any? {
+            return if (oldItem.reactions != newItem.reactions) {
+                bundleOf(MessageViewHolder.PAYLOAD_EMOJI_LIST_CHANGED to true)
+            } else null
+        }
+    })
 

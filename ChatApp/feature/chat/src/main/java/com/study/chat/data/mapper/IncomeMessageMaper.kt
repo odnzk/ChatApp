@@ -4,15 +4,16 @@ import com.study.chat.domain.model.Emoji
 import com.study.chat.domain.model.IncomeMessage
 import com.study.chat.domain.model.Reaction
 import com.study.common.extensions.unixToCalendar
-import com.study.network.model.response.message.AllMessagesResponse
-import com.study.network.model.response.message.MessageDto
-import com.study.network.model.response.message.ReactionDto
+import com.study.network.impl.model.response.message.AllMessagesResponse
+import com.study.network.impl.model.response.message.MessageDto
+import com.study.network.impl.model.response.message.ReactionDto
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 internal suspend fun AllMessagesResponse.toMessageList(): List<IncomeMessage> =
     withContext(Dispatchers.Default) {
-        messages?.filterNotNull()?.map { it.toIncomeMessage() } ?: emptyList()
+        messages?.filterNotNull()?.map { it.toIncomeMessage() }?.sortedByDescending { it.calendar }
+            ?: emptyList()
     }
 
 internal suspend fun MessageDto.toIncomeMessage(): IncomeMessage =

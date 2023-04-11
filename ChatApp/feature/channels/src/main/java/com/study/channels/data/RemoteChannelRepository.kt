@@ -5,20 +5,18 @@ import com.study.channels.data.mapper.toChannelTopicList
 import com.study.channels.domain.model.Channel
 import com.study.channels.domain.model.ChannelTopic
 import com.study.channels.domain.repository.ChannelRepository
-import com.study.network.NetworkModule
+import com.study.network.impl.ZulipApi
 
-internal class RemoteChannelRepository : ChannelRepository {
-    private val api = NetworkModule.providesApi()
-
-    override suspend fun getAll(): List<Channel> {
+internal class RemoteChannelRepository(private val api: ZulipApi) : ChannelRepository {
+    override suspend fun getAllChannels(): List<Channel> {
         return api.getAllStreams().toChannelList()
     }
 
-    override suspend fun getSubscribedStreams(): List<Channel> {
+    override suspend fun getSubscribedChannels(): List<Channel> {
         return api.getSubscribedStreams().toChannelList()
     }
 
-    override suspend fun getStreamTopics(streamId: Int): List<ChannelTopic> {
+    override suspend fun getChannelTopics(streamId: Int): List<ChannelTopic> {
         return api.getStreamTopics(streamId).toChannelTopicList()
     }
 }

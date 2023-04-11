@@ -10,7 +10,7 @@ import com.study.ui.R
 abstract class ShimmerItemViewHolder<T : Any>(private val binding: ViewBinding) :
     RecyclerView.ViewHolder(binding.root) {
     protected open val shimmerBackgroundColor: Int =
-        itemView.context.getColor(R.color.bottom_nav_background_color)
+        itemView.context.getColor(R.color.darkest_nero)
     protected open val transparentColor: Int =
         itemView.context.getColor((android.R.color.transparent))
 

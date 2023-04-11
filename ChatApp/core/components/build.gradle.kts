@@ -46,6 +46,7 @@ dependencies {
     implementation(libs.fragment.ktx)
     implementation(libs.timber)
     implementation(libs.pagination)
+    implementation(libs.bundles.elmslie)
 
     implementation(project(":core:ui"))
     implementation(project(":core:common"))

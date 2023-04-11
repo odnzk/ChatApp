@@ -4,21 +4,20 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.study.chat.data.mapper.toIncomeMessage
-import com.study.chat.data.pagination.LatestMessagesPagingSource
+import com.study.chat.data.pagination.MessagesPagingSource
 import com.study.chat.domain.model.IncomeMessage
 import com.study.chat.domain.model.OutcomeMessage
 import com.study.chat.domain.repository.MessageRepository
-import com.study.network.NetworkModule
+import com.study.network.impl.ZulipApi
 import kotlinx.coroutines.flow.Flow
 
-internal class RemoteMessageRepository : MessageRepository {
-    private val api = NetworkModule.providesApi()
-
+internal class RemoteMessageRepository(private val api: ZulipApi) : MessageRepository {
     override fun getMessages(
         channelTitle: String,
-        topicName: String
+        topicName: String,
+        searchQuery: String
     ): Flow<PagingData<IncomeMessage>> {
-        return createLatestMessagesPager(channelTitle, topicName).flow
+        return createLatestMessagesPager(channelTitle, topicName, searchQuery).flow
     }
 
     override suspend fun sendMessage(message: OutcomeMessage): Int {
@@ -45,10 +44,18 @@ internal class RemoteMessageRepository : MessageRepository {
 
     private fun createLatestMessagesPager(
         channelTitle: String,
-        topicName: String
+        topicName: String,
+        searchQuery: String
     ): Pager<Int, IncomeMessage> {
-        return Pager(PagingConfig(PAGE_SIZE, enablePlaceholders = true, maxSize = MAX_PAGER_SIZE))
-        { LatestMessagesPagingSource(channelTitle, topicName) }
+        return Pager(
+            PagingConfig(
+                PAGE_SIZE,
+                enablePlaceholders = false,
+                maxSize = MAX_PAGER_SIZE,
+                prefetchDistance = 2
+            )
+        )
+        { MessagesPagingSource(channelTitle, topicName, searchQuery) }
     }
 
     companion object {

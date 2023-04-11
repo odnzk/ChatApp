@@ -1,5 +1,6 @@
 package com.study.components.recycler.delegates
 
+import android.os.Bundle
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -21,6 +22,23 @@ class GeneralAdapterDelegate(private val delegates: List<Delegate<RecyclerView.V
         delegates[getItemViewType(position)].viewBinder(holder, getItem(position))
     }
 
+    override fun onBindViewHolder(
+        holder: RecyclerView.ViewHolder,
+        position: Int,
+        payloads: MutableList<Any>
+    ) {
+        if (payloads.isEmpty()) {
+            super.onBindViewHolder(holder, position, payloads)
+        } else {
+            payloads.last().takeIf { it is Bundle }?.let {
+                delegates[getItemViewType(position)].viewBinderWithPayloads?.invoke(
+                    holder,
+                    getItem(position),
+                    it
+                )
+            }
+        }
+    }
 }
 
 internal class GeneralItemCallback(private val delegates: List<Delegate<RecyclerView.ViewHolder, Any>>) :
@@ -35,5 +53,9 @@ internal class GeneralItemCallback(private val delegates: List<Delegate<Recycler
         return delegates.find { it.isType(oldItem) }?.comparator?.areContentsTheSame(
             newItem, oldItem
         ) == true
+    }
+
+    override fun getChangePayload(oldItem: Any, newItem: Any): Any? {
+        return delegates.find { it.isType(oldItem) }?.comparator?.getChangePayload(oldItem, newItem)
     }
 }

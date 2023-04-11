@@ -3,28 +3,26 @@ package com.study.components.view
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View.OnClickListener
-import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.annotation.StringRes
+import androidx.core.view.children
 import androidx.core.view.isVisible
-import androidx.core.view.marginBottom
-import androidx.core.view.marginEnd
-import androidx.core.view.marginStart
-import androidx.core.view.marginTop
 import androidx.core.widget.ContentLoadingProgressBar
-import com.study.common.ScreenState
 import com.study.components.R
-import com.study.components.extensions.handle
-import java.lang.Integer.max
+import com.study.components.extensions.UserFriendlyError
 
 class ScreenStateView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0, defStyleRes: Int = 0
-) : ViewGroup(context, attrs, defStyleAttr, defStyleRes) {
+) : LinearLayout(context, attrs, defStyleAttr, defStyleRes) {
 
     private val pbLoading: ContentLoadingProgressBar
+    private val ivError: ImageView
     private val tvError: TextView
+    private val tvErrorDescription: TextView
     private val btnTryAgain: Button
-    private var widthMiddle: Int = 0
     var onTryAgainClickListener: OnClickListener = OnClickListener { }
         set(value) {
             field = value
@@ -34,95 +32,44 @@ class ScreenStateView @JvmOverloads constructor(
     init {
         inflate(context, R.layout.view_screen_state, this)
         pbLoading = findViewById(R.id.view_screen_state_pb_loading)
+        ivError = findViewById(R.id.view_screen_state_iv_error)
         tvError = findViewById(R.id.view_screen_state_tv_error)
+        tvErrorDescription = findViewById(R.id.view_screen_state_tv_error_description)
         btnTryAgain = findViewById(R.id.view_screen_state_btn_try_again)
-        setState(ScreenState.Loading)
+        orientation = VERTICAL
     }
 
-    fun setState(state: ScreenState<*>) {
+    sealed interface ViewState {
+        object Loading : ViewState
+        class Error(val error: UserFriendlyError) : ViewState
+        object Success : ViewState
+    }
+
+    fun setState(state: ViewState) {
         when (state) {
-            is ScreenState.Error -> {
-                isVisible = true
-                pbLoading.hide()
-                tvError.text = state.error.handle(context)
-                tvError.isVisible = true
-                btnTryAgain.isVisible = true
+            is ViewState.Error -> {
+                val userError = state.error
+                tvError.text = getString(userError.messageRes)
+                setChildrenVisibility(true)
+                userError.descriptionRes?.let {
+                    tvErrorDescription.text = getString(it)
+                } ?: run { tvErrorDescription.isVisible = false }
+                userError.imageRes?.let {
+                    ivError.setImageResource(it)
+                } ?: run { ivError.isVisible = false }
+                pbLoading.isVisible = false
             }
-            ScreenState.Loading -> {
-                isVisible = true
-                pbLoading.show()
-                tvError.isVisible = false
-                btnTryAgain.isVisible = false
+            ViewState.Loading -> {
+                setChildrenVisibility(false)
+                pbLoading.isVisible = true
             }
-            is ScreenState.Success -> isVisible = false
+            ViewState.Success -> setChildrenVisibility(false)
         }
     }
 
-    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        measureChildWithMargins(
-            pbLoading, widthMeasureSpec, 0, heightMeasureSpec, 0
-        )
-        val usedHeight = pbLoading.measuredHeight + pbLoading.marginTop + pbLoading.marginBottom
-        measureChildWithMargins(tvError, widthMeasureSpec, 0, heightMeasureSpec, usedHeight)
-        measureChildWithMargins(
-            btnTryAgain, widthMeasureSpec, 0, heightMeasureSpec, usedHeight
-        )
-
-        val totalWidth = paddingLeft + paddingRight + max(
-            pbLoading.measuredWidth + pbLoading.marginStart + pbLoading.marginEnd, max(
-                tvError.measuredWidth + tvError.marginEnd + tvError.marginStart,
-                btnTryAgain.measuredWidth + btnTryAgain.marginStart + btnTryAgain.marginEnd
-            )
-        )
-        val totalHeight =
-            (paddingTop + paddingBottom + pbLoading.measuredHeight + pbLoading.marginTop + pbLoading.marginBottom + tvError.measuredHeight + tvError.marginTop + tvError.marginBottom + btnTryAgain.measuredHeight + btnTryAgain.marginTop + btnTryAgain.marginBottom)
-
-        widthMiddle = totalWidth / 2
-        setMeasuredDimension(
-            resolveSize(totalWidth, widthMeasureSpec), resolveSize(totalHeight, heightMeasureSpec)
-        )
+    private fun setChildrenVisibility(isChildVisible: Boolean) {
+        children.forEach { child -> child.isVisible = isChildVisible }
     }
 
-
-    override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
-        val offsetX = paddingLeft
-        var offsetY = paddingTop
-        pbLoading.layout(
-            offsetX + widthMiddle - pbLoading.measuredWidth / 2 + pbLoading.marginStart,
-            offsetY + pbLoading.marginTop,
-            offsetX + widthMiddle + pbLoading.measuredWidth / 2 - pbLoading.marginEnd,
-            offsetY + pbLoading.measuredHeight + pbLoading.marginTop
-        )
-        offsetY += pbLoading.measuredHeight + pbLoading.marginTop + pbLoading.marginBottom
-        tvError.layout(
-            offsetX + widthMiddle - tvError.measuredWidth / 2 + tvError.marginStart,
-            offsetY + tvError.marginTop,
-            offsetX + widthMiddle + tvError.measuredWidth / 2 - tvError.marginEnd,
-            offsetY + tvError.measuredHeight + tvError.marginTop
-        )
-        offsetY += tvError.measuredHeight + tvError.marginTop + tvError.marginBottom
-        btnTryAgain.layout(
-            offsetX + widthMiddle - btnTryAgain.measuredWidth / 2 + btnTryAgain.marginStart,
-            offsetY + btnTryAgain.marginTop,
-            offsetX + widthMiddle + btnTryAgain.measuredWidth / 2 - btnTryAgain.marginEnd,
-            offsetY + btnTryAgain.marginTop + btnTryAgain.measuredHeight
-        )
-    }
-
-    override fun generateDefaultLayoutParams(): LayoutParams {
-        return MarginLayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
-    }
-
-    override fun generateLayoutParams(p: LayoutParams): LayoutParams {
-        return MarginLayoutParams(p)
-    }
-
-    override fun generateLayoutParams(attrs: AttributeSet?): LayoutParams {
-        return MarginLayoutParams(context, attrs)
-    }
-
-    override fun checkLayoutParams(p: LayoutParams): Boolean {
-        return p is MarginLayoutParams
-    }
-
+    private fun getString(@StringRes res: Int): String = context.getString(res)
 }

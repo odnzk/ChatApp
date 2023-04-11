@@ -22,6 +22,7 @@ import com.google.android.material.textfield.TextInputLayout
 import com.study.components.extensions.dp
 import com.study.search.R
 import java.lang.Integer.max
+import com.google.android.material.R as AndroidR
 
 class SimpleSearchView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0, defStyleRes: Int = 0
@@ -33,8 +34,8 @@ class SimpleSearchView @JvmOverloads constructor(
     private val defaultPaddings = 16.dp(context)
     private val colorViewNotFocused = MaterialColors.getColor(
         context,
-        com.google.android.material.R.attr.backgroundColor,
-        context.getColor(com.study.ui.R.color.item_background_color)
+        AndroidR.attr.backgroundColor,
+        context.getColor(com.study.ui.R.color.dark_nero)
     )
     private val colorViewFocused = MaterialColors.getColor(
         context,

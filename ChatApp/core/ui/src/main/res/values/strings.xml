@@ -21,8 +21,15 @@
     <string name="item_channel_iv_show_topics_content_description">Show channel topics</string>
     <string name="item_channel_topic_messages_count">%1$d mes</string>
 
-    <string name="error_connection_lost">Error while loading data</string>
+    <string name="error_connection_lost">Connection lost</string>
+    <string name="error_description_connection_lost">You may have lost your connection, please check your internet connection</string>
     <string name="error_unknown">Unknown error</string>
+    <string name="error_description_unknown">An unknown error occurred, try to restart the app</string>
+    <string name="error_not_found">Nothing found</string>
+    <string name="error_description_not_found">It looks like nothing was found for this query</string>
+    <string name="error_http">Error while communicating with the server</string>
+    <string name="error_description_http">Check validity of your requests to server</string>
+
 
     <string name="_test_message_sender">Darrell Steward</string>
     <string name="_test_message_content">Привет! lorem ipsum test message dalshe zabil</string>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginHorizontal="@dimen/margin_medium"
+    android:orientation="vertical">
+
+    <View
+        style="@style/BottomSheetHelperView"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/margin_small" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/fragment_emoji_list_rv_emoji"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/fragment_emoji_list_rv_margin_top" />
+</LinearLayout>

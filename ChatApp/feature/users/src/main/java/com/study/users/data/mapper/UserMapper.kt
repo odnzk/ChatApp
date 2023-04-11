@@ -1,7 +1,8 @@
 package com.study.users.data.mapper
 
-import com.study.network.model.response.user.AllUsersResponse
-import com.study.network.model.response.user.DetailedUserDto
+
+import com.study.network.impl.model.response.user.AllUsersResponse
+import com.study.network.impl.model.response.user.DetailedUserDto
 import com.study.users.domain.model.User
 
 internal fun AllUsersResponse.toUserList(): List<User> =

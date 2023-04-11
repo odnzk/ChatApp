@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="fragment_emoji_list_rv_margin_top">28dp</dimen>
+</resources>

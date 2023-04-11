@@ -26,7 +26,7 @@ class FlexBoxLayout @JvmOverloads constructor(
             MaterialColors.getColor(
                 context,
                 com.google.android.material.R.attr.backgroundColor,
-                context.getColor(CoreResources.color.item_background_color)
+                context.getColor(CoreResources.color.dark_nero)
             )
         )
         setImageResource(CoreResources.drawable.ic_baseline_add_24)

@@ -46,18 +46,20 @@ dependencies {
     implementation(libs.androidx.material)
     implementation(libs.androidx.constraintlayout)
 
-    implementation(libs.navigation.fragment)
-    implementation(libs.navigation.ui.ktx)
     implementation(libs.coroutines.android)
     implementation(libs.fragment.ktx)
     debugImplementation(libs.leak.canary)
     implementation(libs.timber)
+
+    implementation(libs.bundles.navigation)
+    implementation(libs.bundles.elmslie)
 
     implementation(project(":core:ui"))
     implementation(project(":core:components"))
     implementation(project(":core:common"))
     implementation(project(":feature:channels"))
     implementation(project(":feature:chat"))
+    implementation(project(":feature:search"))
     implementation(project(":feature:profile"))
     implementation(project(":feature:users"))
 }

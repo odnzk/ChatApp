@@ -2,6 +2,7 @@ plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
     id("androidx.navigation.safeargs.kotlin")
+    id("kotlin-parcelize")
 }
 
 android {
@@ -43,14 +44,16 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
 
     implementation(libs.fragment.ktx)
-    implementation(libs.navigation.fragment)
-    implementation(libs.navigation.ui.ktx)
     implementation(libs.retrofit)
     implementation(libs.pagination)
     implementation(libs.timber)
+
+    implementation(libs.bundles.elmslie)
+    implementation(libs.bundles.navigation)
 
     implementation(project(":core:common"))
     implementation(project(":core:ui"))
     implementation(project(":core:components"))
     implementation(project(":core:network"))
+    implementation(project(":feature:auth"))
 }

@@ -22,7 +22,7 @@
             android:id="@+id/view_input_et_message"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/input_field_background_color"
+            android:backgroundTint="@color/nero"
             android:maxLines="1" />
     </com.google.android.material.textfield.TextInputLayout>
 

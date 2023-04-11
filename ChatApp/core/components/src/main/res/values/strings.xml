@@ -3,4 +3,6 @@
     <string name="user_status_active">Active</string>
     <string name="user_status_idle">Idle</string>
     <string name="user_status_offline">Offline</string>
+
+    <string name="error_snackbar_action">Reload</string>
 </resources>

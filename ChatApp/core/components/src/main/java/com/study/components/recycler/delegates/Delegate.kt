@@ -8,5 +8,6 @@ open class Delegate<in ViewHolder : RecyclerView.ViewHolder, Delegate : Any>(
     val isType: (Any) -> Boolean,
     val viewHolderCreator: (ViewGroup) -> RecyclerView.ViewHolder,
     val viewBinder: (ViewHolder, Delegate) -> Unit,
-    val comparator: DiffUtil.ItemCallback<Delegate>
+    val comparator: DiffUtil.ItemCallback<Delegate>,
+    val viewBinderWithPayloads: ((ViewHolder, Delegate, Any) -> Unit)? = null
 )

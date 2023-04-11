@@ -1,6 +1,5 @@
 package com.study.components.extensions
 
-import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -8,13 +7,20 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.lifecycle.viewModelScope
 import coil.load
-import com.study.ui.R
+import coil.request.CachePolicy
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import com.study.ui.R as CoreR
 
 fun View.hideKeyboard() {
     context?.getSystemService(InputMethodManager::class.java)
@@ -33,11 +39,18 @@ inline fun <T : Any> Fragment.collectFlowSafely(
     }
 }
 
+inline fun ViewModel.safeLaunch(
+    dispatcher: CoroutineDispatcher = Dispatchers.Default,
+    exceptionHandler: CoroutineExceptionHandler,
+    crossinline action: suspend () -> Unit
+): Job = viewModelScope.launch(exceptionHandler + dispatcher) { action() }
+
 fun ImageView.loadFromUrl(url: String) {
     load(url) {
+        memoryCachePolicy(CachePolicy.ENABLED)
         crossfade(true)
-        error(R.color.bottom_nav_background_color)
-        placeholder(R.color.bottom_nav_background_color)
+        error(CoreR.color.darkest_nero)
+        placeholder(CoreR.color.darkest_nero)
     }
 }
 
@@ -47,11 +60,4 @@ inline fun <reified T> Bundle.safeGetParcelable(key: String): T? {
     } else {
         getParcelable(key)
     }
-}
-
-fun Throwable.handle(context: Context): String {
-    val resId = when (this) {
-        else -> R.string.error_unknown
-    }
-    return context.getString(resId)
 }

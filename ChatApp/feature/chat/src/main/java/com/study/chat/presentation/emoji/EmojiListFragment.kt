@@ -6,37 +6,56 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.study.chat.domain.exceptions.toErrorMessage
+import com.study.chat.domain.repository.EmojiRepository
 import com.study.chat.presentation.emoji.delegates.EmojiDelegate
-import com.study.common.ScreenState
-import com.study.components.databinding.FragmentRecyclerViewBinding
-import com.study.components.extensions.collectFlowSafely
+import com.study.chat.presentation.emoji.elm.EmojiListEffect
+import com.study.chat.presentation.emoji.elm.EmojiListEvent
+import com.study.chat.presentation.emoji.elm.EmojiListFactory
+import com.study.chat.presentation.emoji.elm.EmojiListState
+import com.study.common.extensions.fastLazy
+import com.study.components.extensions.createStoreHolder
+import com.study.components.extensions.delegatesToList
 import com.study.components.extensions.dp
-import com.study.components.recycler.delegates.Delegate
+import com.study.components.extensions.showErrorSnackbar
 import com.study.components.recycler.delegates.GeneralAdapterDelegate
 import com.study.components.recycler.manager.VarSpanGridLayoutManager
+import com.study.feature.R
+import com.study.feature.databinding.FragmentEmojiListBinding
+import vivid.money.elmslie.android.screen.ElmDelegate
+import vivid.money.elmslie.android.screen.ElmScreen
+import vivid.money.elmslie.android.storeholder.StoreHolder
 
-internal class EmojiListFragment : BottomSheetDialogFragment() {
-    private var _binding: FragmentRecyclerViewBinding? = null
+internal class EmojiListFragment : BottomSheetDialogFragment(),
+    ElmDelegate<EmojiListEvent, EmojiListEffect, EmojiListState> {
+    private var _binding: FragmentEmojiListBinding? = null
     private val binding get() = _binding!!
     private var mainEmojiAdapter: GeneralAdapterDelegate? = null
-    private val viewModel: EmojiListViewModel by viewModels()
     private val args by navArgs<EmojiListFragmentArgs>()
+
+    override val initEvent: EmojiListEvent = EmojiListEvent.Ui.Init
+    override val storeHolder: StoreHolder<EmojiListEvent, EmojiListEffect, EmojiListState> by fastLazy {
+        createStoreHolder(lifecycle, EmojiListFactory(EmojiRepository()).create())
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        ElmScreen(this, lifecycle) { requireActivity() }
+        setStyle(STYLE_NORMAL, R.style.ChatBottomSheetDialogTheme)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentRecyclerViewBinding.inflate(inflater, container, false)
+        _binding = FragmentEmojiListBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initUI()
-        observeState()
     }
 
     override fun onDestroyView() {
@@ -45,35 +64,44 @@ internal class EmojiListFragment : BottomSheetDialogFragment() {
         _binding = null
     }
 
-    private fun observeState() {
-        collectFlowSafely(viewModel.state) { state ->
-            binding.fragmentScreenStateView.setState(state)
-            if (state is ScreenState.Success) {
-                mainEmojiAdapter?.submitList(state.data)
+
+    override fun render(state: EmojiListState) {
+        when {
+            state.error != null -> {
+                showErrorSnackbar(binding.root, state.error, Throwable::toErrorMessage)
+            }
+            state.emojis.isNotEmpty() -> {
+                mainEmojiAdapter?.submitList(state.emojis)
             }
         }
     }
 
     private fun initUI() {
-        mainEmojiAdapter = GeneralAdapterDelegate(listOf(EmojiDelegate(onEmojiClick = { emojiName ->
-            setFragmentResult(
-                args.resultKey,
-                bundleOf(args.resultKey to emojiName)
+        mainEmojiAdapter = GeneralAdapterDelegate(
+            delegatesToList(
+                EmojiDelegate(onEmojiClick = { emoji ->
+                    setFragmentResult(
+                        args.resultKey,
+                        bundleOf(args.resultKey to emoji)
+                    )
+                    dismiss()
+                }
+                )
             )
-            dismiss()
-        }
-        )) as List<Delegate<RecyclerView.ViewHolder, Any>>)
-        with(binding.fragmentRvDataList) {
-            adapter = mainEmojiAdapter
-            layoutManager = VarSpanGridLayoutManager(
-                context,
-                80f.dp(context),
-                MIN_GRID_COLUMNS
-            )
+        )
+        with(binding) {
+            fragmentEmojiListRvEmoji.run {
+                adapter = mainEmojiAdapter
+                layoutManager = VarSpanGridLayoutManager(
+                    context,
+                    80f.dp(context),
+                    MIN_GRID_COLUMNS
+                )
+            }
         }
     }
 
     companion object {
-        private const val MIN_GRID_COLUMNS = 8
+        private const val MIN_GRID_COLUMNS = 7
     }
 }

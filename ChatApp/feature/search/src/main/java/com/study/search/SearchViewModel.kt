@@ -6,6 +6,8 @@ import com.study.common.ScreenState
 import com.study.common.extensions.runCatchingNonCancellation
 import com.study.components.BaseViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.debounce
@@ -24,6 +26,7 @@ abstract class SearchViewModel<T : Any>(private val savedStateHandle: SavedState
 
     protected suspend fun search(query: String) = searchQuery.emit(query)
 
+    @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
     protected fun observeSearchQuery() {
         jobObservingQuery?.cancel()
         jobObservingQuery =

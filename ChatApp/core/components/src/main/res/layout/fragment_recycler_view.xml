@@ -9,7 +9,7 @@
         android:layout_height="match_parent" />
 
     <com.study.components.view.ScreenStateView
-        android:id="@+id/fragment_screen_state_view"
+        android:id="@+id/screen_state_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center" />

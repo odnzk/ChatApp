@@ -10,6 +10,7 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven { url = uri("https://www.jitpack.io") }
     }
 }
 rootProject.name = "ChatApp"
@@ -23,3 +24,4 @@ include(":feature:profile")
 include(":feature:channels")
 include(":feature:search")
 include(":core:network")
+include(":feature:auth")
