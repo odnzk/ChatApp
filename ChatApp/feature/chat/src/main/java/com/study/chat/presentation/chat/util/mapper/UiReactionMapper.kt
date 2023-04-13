@@ -1,8 +1,12 @@
 package com.study.chat.presentation.chat.util.mapper
 
 
+import android.content.Context
+import com.study.chat.domain.model.Emoji
 import com.study.chat.domain.model.IncomeMessage
-import com.study.chat.presentation.chat.model.UiReaction
+import com.study.chat.presentation.chat.util.model.UiMessage
+import com.study.chat.presentation.chat.util.model.UiReaction
+import com.study.chat.presentation.chat.util.view.ReactionView
 
 internal fun IncomeMessage.mapUiReactions(currentUserId: Int): List<UiReaction> {
     return reactions.groupBy { it.emoji.code }.map { group ->
@@ -14,7 +18,22 @@ internal fun IncomeMessage.mapUiReactions(currentUserId: Int): List<UiReaction> 
             count = reactions.size,
             isSelected
         )
-    }.sortedByDescending { it.count }
+    }
 }
 
+private fun UiReaction.toMessageEmojiView(
+    context: Context, count: Int, isSelected: Boolean
+): ReactionView = ReactionView(context).apply { setEmoji(emoji.code, count, isSelected) }
 
+internal fun List<UiReaction>.toMessageEmojiViews(
+    context: Context,
+    message: UiMessage,
+    onReactionClick: ((message: UiMessage, emoji: Emoji) -> Unit)? = null
+): List<ReactionView> {
+    return sortedByDescending { it.count }.map { reaction ->
+        reaction.toMessageEmojiView(context, reaction.count, reaction.isSelected).apply {
+            isSelected = reaction.isSelected
+            setOnClickListener { onReactionClick?.invoke(message, reaction.emoji) }
+        }
+    }
+}

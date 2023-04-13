@@ -4,7 +4,7 @@ import androidx.paging.PagingData
 import androidx.paging.insertSeparators
 import androidx.paging.map
 import com.study.chat.domain.model.IncomeMessage
-import com.study.chat.presentation.chat.model.UiMessage
+import com.study.chat.presentation.chat.util.model.UiMessage
 import com.study.common.extensions.isSameDay
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers

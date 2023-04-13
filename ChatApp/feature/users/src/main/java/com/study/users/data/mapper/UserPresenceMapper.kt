@@ -1,7 +1,8 @@
 package com.study.users.data.mapper
 
-import com.study.network.model.response.user.AllUserPresenceDto
-import com.study.network.model.response.user.PresenceStatusDto
+
+import com.study.network.impl.model.response.user.AllUserPresenceDto
+import com.study.network.impl.model.response.user.PresenceStatusDto
 import com.study.users.domain.model.UserPresence
 
 internal fun AllUserPresenceDto.toUserPresenceList(): List<UserPresence> {

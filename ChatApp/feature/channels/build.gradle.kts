@@ -44,10 +44,12 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
 
     implementation(libs.fragment.ktx)
-    implementation(libs.navigation.fragment)
-    implementation(libs.navigation.ui.ktx)
     implementation(libs.retrofit)
     implementation(libs.shimmers)
+    implementation(libs.timber)
+
+    implementation(libs.bundles.elmslie)
+    implementation(libs.bundles.navigation)
 
     implementation(project(":core:common"))
     implementation(project(":core:components"))

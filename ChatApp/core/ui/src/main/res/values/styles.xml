@@ -17,7 +17,7 @@
     <style name="PrimaryTextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
         <item name="boxCornerRadiusBottomEnd">@dimen/text_input_layout_corner_radius</item>
         <item name="boxCornerRadiusBottomStart">@dimen/text_input_layout_corner_radius</item>
-        <item name="boxBackgroundColor">@color/grey_lightest</item>
+        <item name="boxBackgroundColor">@color/gray60</item>
         <item name="boxCornerRadiusTopEnd">@dimen/text_input_layout_corner_radius</item>
         <item name="boxCornerRadiusTopStart">@dimen/text_input_layout_corner_radius</item>
     </style>

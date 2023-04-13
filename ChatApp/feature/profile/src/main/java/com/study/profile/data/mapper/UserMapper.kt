@@ -1,9 +1,10 @@
 package com.study.profile.data.mapper
 
 import com.study.components.model.UserPresenceStatus
-import com.study.network.model.response.user.DetailedUserDto
-import com.study.network.model.response.user.PresenceStatusDto
-import com.study.network.model.response.user.UserPresenceResponse
+import com.study.network.impl.model.response.user.DetailedUserDto
+import com.study.network.impl.model.response.user.PresenceStatusDto
+import com.study.network.impl.model.response.user.UserPresenceResponse
+
 import com.study.profile.domain.model.UserDetailed
 
 internal fun DetailedUserDto.toDetailedUser(): UserDetailed = UserDetailed(

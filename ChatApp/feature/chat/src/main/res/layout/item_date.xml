@@ -11,8 +11,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:gravity="center"
-        android:textColor="@color/grey_lightest"
-        app:chipBackgroundColor="@color/chip_message_date_background"
+        android:textColor="@color/gray60"
+        app:chipBackgroundColor="@color/black07"
         tools:text="10 Фев" />
 </FrameLayout>
 

@@ -1,6 +1,6 @@
 package com.study.chat.domain.model
 
-import com.study.network.model.request.message.MessageType
+import com.study.network.impl.model.request.message.MessageType
 import java.util.Calendar
 
 data class IncomeMessage(

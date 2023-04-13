@@ -8,24 +8,38 @@ core = "1.9.0"
 appcompat = "1.6.1"
 material = "1.8.0"
 constraint = "2.1.4"
+fragments = "1.5.5"
 
 # Test
 test_junit = "4.13.2"
 test_runner = "1.5.2"
 test_core = "1.5.0"
 
-#Network
-retrofitVersion = "2.9.0"
-okHttpVersion = "4.10.0"
-
-#Navaigation
+#Navigation
 navigation = "2.5.3"
-cicerone = "7.1"
 
+#Network
+retrofit = "2.9.0"
+okHttp = "4.10.0"
+kotlinx_serialization = "0.8.0"
+kotlinx_serialization_gson = "1.5.0"
+coil = "2.3.0"
+
+# Coroutines
 coroutines = "1.6.4"
-dagger = "2.45"
-pagination = "3.1.1"
 
+# DI: Dagger
+dagger = "2.45"
+
+# MVI
+elmslie = "2.1.0"
+
+# Additional
+pagination = "3.1.1"
+leak_canary = "2.10"
+timber = "5.0.1"
+datastore = "1.0.0"
+shimmer = "0.5.0"
 
 
 [libraries]
@@ -47,32 +61,40 @@ test_core = { module = "androidx.test:core", version.ref = "test_core" }
 # Navigation
 navigation_fragment = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigation" }
 navigation_ui_ktx = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigation" }
-cicerone = { module = "com.github.terrakok:cicerone", version.ref = "cicerone" }
 
 # Coroutines
 coroutines_core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 coroutines_android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
-fragment_ktx = "androidx.fragment:fragment-ktx:1.5.5"
+fragment_ktx = { module = "androidx.fragment:fragment-ktx", version.ref = "fragments" }
 
 # DI: Dagger
 dagger2 = { module = "com.google.dagger:dagger", version.ref = "dagger" }
 dagger2_compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "dagger" }
 
 # Network
-retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofitVersion" }
-retrofit_kotlinx_serialization = "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0"
-okHttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okHttpVersion" }
-httpLoggigInterceptor = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "okHttpVersion" }
+retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+retrofit_kotlinx_serialization = { module = "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter", version.ref = "kotlinx_serialization" }
+okHttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okHttp" }
+httpLoggigInterceptor = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "okHttp" }
 kotlinx_serialization = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "kotlin" }
-kotlinx_serialization_gson = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0"
-coil = "io.coil-kt:coil:2.3.0"
+kotlinx_serialization_gson = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx_serialization_gson" }
+coil = { module = "io.coil-kt:coil", version.ref = "coil" }
+
+# MVI
+elmslie_core = { module = "com.github.vivid-money.elmslie:elmslie-core", version.ref = "elmslie" }
+elmslie_android = { module = "com.github.vivid-money.elmslie:elmslie-android", version.ref = "elmslie" }
+elmslie_coroutines = { module = "com.github.vivid-money.elmslie:elmslie-coroutines", version.ref = "elmslie" }
 
 # Additional
-leak_canary = "com.squareup.leakcanary:leakcanary-android:2.10"
-timber = "com.jakewharton.timber:timber:5.0.1"
-datastore = "androidx.datastore:datastore-preferences:1.0.0"
-shimmers = "com.facebook.shimmer:shimmer:0.5.0"
+leak_canary = { module = "com.squareup.leakcanary:leakcanary-android", version.ref = "leak_canary" }
+timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
+datastore = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore" }
+shimmers = { module = "com.facebook.shimmer:shimmer", version.ref = "shimmer" }
 pagination = { module = "androidx.paging:paging-runtime", version.ref = "pagination" }
+
+[bundles]
+elmslie = ["elmslie_core", "elmslie_android", "elmslie_coroutines"]
+navigation = ["navigation_fragment", "navigation_ui_ktx"]
 
 [plugins]
 android_application = { id = "com.android.application", version.ref = "android_gradle_plugin" }

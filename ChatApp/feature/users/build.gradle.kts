@@ -44,9 +44,10 @@ dependencies {
     implementation(libs.fragment.ktx)
     implementation(libs.shimmers)
     implementation(libs.retrofit)
-    implementation(libs.navigation.ui.ktx)
-    implementation(libs.navigation.fragment)
     implementation(libs.timber)
+
+    implementation(libs.bundles.elmslie)
+    implementation(libs.bundles.navigation)
 
     implementation(project(":core:components"))
     implementation(project(":core:common"))

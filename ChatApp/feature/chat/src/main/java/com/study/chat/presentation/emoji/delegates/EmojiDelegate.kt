@@ -4,7 +4,7 @@ import androidx.recyclerview.widget.DiffUtil
 import com.study.chat.domain.model.Emoji
 import com.study.components.recycler.delegates.Delegate
 
-internal class EmojiDelegate(onEmojiClick: (emojiName: String) -> Unit) :
+internal class EmojiDelegate(onEmojiClick: (emoji: Emoji) -> Unit) :
     Delegate<EmojiViewHolder, Emoji>(
         isType = { it is Emoji },
         viewHolderCreator = {

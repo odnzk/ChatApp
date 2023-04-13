@@ -3,15 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:padding="2dp"
-    tools:parentTag="com.study.chat.presentation.chat.view.MessageView">
+    tools:parentTag="com.study.chat.presentation.chat.util.view.MessageView">
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/view_message_iv_avatar"
         android:layout_width="@dimen/avatar_size_small"
         android:layout_height="@dimen/avatar_size_small"
         android:layout_marginHorizontal="9dp"
-        android:src="@color/navy_light"
-        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.ImageView.Circle" />
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.ImageView.Circle"
+        tools:src="@color/navy_light" />
 
     <TextView
         android:id="@+id/view_message_tv_user"

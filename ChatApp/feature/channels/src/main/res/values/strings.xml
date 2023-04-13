@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="error_channel_not_found">Invalid channel id</string>
+    <string name="error_description_channel_not_found">Cannot load data for this channel, please reload channels</string>
+    <string name="error_channel_does_not_have_topics">Channel does not have topics yet</string>
+</resources>

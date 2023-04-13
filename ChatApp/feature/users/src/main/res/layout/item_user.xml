@@ -42,7 +42,7 @@
             android:ellipsize="end"
             android:maxLines="2"
             android:textAppearance="@style/TextAppearance.Messenger.Title.Small"
-            android:textColor="@color/grey_lightest"
+            android:textColor="@color/gray60"
             app:layout_constraintBottom_toBottomOf="@id/item_user_iv_avatar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/item_user_tv_username"

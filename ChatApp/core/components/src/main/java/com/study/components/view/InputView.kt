@@ -35,8 +35,8 @@ class InputView @JvmOverloads constructor(
     )
     private val iconSendMessagePadding = 12.dp(context)
     private val colorBackgroundAddContent =
-        context.getColor(CoreResources.color.bottom_nav_background_color)
-    private val tintIconAddContent = context.getColor(CoreResources.color.grey)
+        context.getColor(CoreResources.color.darkest_nero)
+    private val tintIconAddContent = context.getColor(CoreResources.color.charcoal)
     private val tintIconSendMessage = Color.BLACK
 
     var btnSubmitClickListener: (inputText: String) -> Unit = {}

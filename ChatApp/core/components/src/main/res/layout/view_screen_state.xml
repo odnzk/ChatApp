@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:background="@color/dark_theme_background_color"
+    tools:background="@color/gray7"
     tools:parentTag="com.study.components.view.ScreenStateView">
 
     <androidx.core.widget.ContentLoadingProgressBar
@@ -9,20 +10,44 @@
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:indeterminate="true" />
+
+    <ImageView
+        android:id="@+id/view_screen_state_iv_error"
+        android:layout_width="@dimen/screen_state_view_error_image_size"
+        android:layout_height="@dimen/screen_state_view_error_image_size"
+        android:layout_gravity="center_horizontal"
+        android:contentDescription="@string/error_unknown"
+        android:scaleType="fitCenter"
+        app:tint="@color/gray57" />
 
     <TextView
         android:id="@+id/view_screen_state_tv_error"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:maxLines="1"
+        android:textAppearance="@style/TextAppearance.Messenger.Body.Large"
+        tools:text="@string/error_connection_lost" />
+
+    <TextView
+        android:id="@+id/view_screen_state_tv_error_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/margin_small"
+        android:maxWidth="@dimen/screen_state_view_max_width"
         android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.Messenger.Body"
-        android:textColor="@color/white"
+        android:textAppearance="@style/TextAppearance.Messenger.Body.Small"
         tools:text="@string/error_connection_lost" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/view_screen_state_btn_try_again"
         style="@style/TryAgainButton"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/margin_medium" />
 </merge>

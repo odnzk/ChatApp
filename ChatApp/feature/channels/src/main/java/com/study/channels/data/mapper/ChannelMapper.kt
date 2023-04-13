@@ -1,10 +1,10 @@
 package com.study.channels.data.mapper
 
 import com.study.channels.domain.model.Channel
-import com.study.network.model.response.stream.AllStreamsResponse
-import com.study.network.model.response.stream.StreamDto
-import com.study.network.model.response.stream.SubscribedStreamsResponse
-import com.study.network.model.response.stream.SubscriptionDto
+import com.study.network.impl.model.response.stream.AllStreamsResponse
+import com.study.network.impl.model.response.stream.StreamDto
+import com.study.network.impl.model.response.stream.SubscribedStreamsResponse
+import com.study.network.impl.model.response.stream.SubscriptionDto
 
 internal fun AllStreamsResponse.toChannelList(): List<Channel> =
     streams?.filterNotNull()?.map { it.toChannel() } ?: emptyList()

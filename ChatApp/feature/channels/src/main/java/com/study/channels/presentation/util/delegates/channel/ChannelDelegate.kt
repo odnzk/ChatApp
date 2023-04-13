@@ -1,15 +1,20 @@
 package com.study.channels.presentation.util.delegates.channel
 
+import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.DiffUtil.ItemCallback
-import com.study.channels.presentation.model.UiChannel
+import com.study.channels.presentation.util.model.UiChannel
 import com.study.components.recycler.delegates.Delegate
 import com.study.components.recycler.shimmer.ShimmerItem
 
 internal class ChannelDelegate(onChannelClick: ((channelId: Int) -> Unit)?) :
-    Delegate<ChannelViewHolder, ShimmerItem<UiChannel>>(isType = { it is ShimmerItem<*> },
+    Delegate<ChannelViewHolder, ShimmerItem<UiChannel>>(
+        isType = { it is ShimmerItem<*> },
         viewHolderCreator = { ChannelViewHolder.create(it, onChannelClick = onChannelClick) },
         viewBinder = { holder, channel ->
             holder.bind(channel)
+        },
+        viewBinderWithPayloads = { holder, channel, payloads ->
+            holder.bindWithPayloads(channel, payloads)
         },
         comparator = object : ItemCallback<ShimmerItem<UiChannel>>() {
             override fun areItemsTheSame(
@@ -32,5 +37,17 @@ internal class ChannelDelegate(onChannelClick: ((channelId: Int) -> Unit)?) :
                 if (oldContent == null || newContent == null) return true
                 return oldContent.title == newContent.title
                         && oldContent.isCollapsed == newContent.isCollapsed
+            }
+
+            override fun getChangePayload(
+                oldItem: ShimmerItem<UiChannel>,
+                newItem: ShimmerItem<UiChannel>
+            ): Any? {
+                val oldContent = oldItem.content()
+                val newContent = newItem.content()
+                if (oldContent == null || newContent == null) return null
+                return if (oldContent.isCollapsed != newContent.isCollapsed) {
+                    bundleOf(ChannelViewHolder.PAYLOAD_IS_COLLAPSED_CHANGED to true)
+                } else null
             }
         })

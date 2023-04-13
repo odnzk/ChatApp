@@ -22,7 +22,7 @@
         app:layout_constraintTop_toBottomOf="@id/fragment_search_search_view" />
 
     <com.study.components.view.ScreenStateView
-        android:id="@+id/fragment_search_screen_state_view"
+        android:id="@+id/screen_state_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"

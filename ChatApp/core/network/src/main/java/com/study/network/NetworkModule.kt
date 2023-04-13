@@ -1,7 +1,8 @@
 package com.study.network
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
-import com.study.network.util.EnumConverterFactory
+import com.study.network.impl.ZulipApi
+import com.study.network.impl.util.EnumConverterFactory
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import okhttp3.Credentials
@@ -14,8 +15,7 @@ import retrofit2.Retrofit
 import java.util.concurrent.TimeUnit
 
 object NetworkModule {
-    private const val ZULIP_BASE_URL =
-        "https://tinkoff-android-spring-2023.zulipchat.com/api/v1/"
+    private const val ZULIP_BASE_URL = "https://tinkoff-android-spring-2023.zulipchat.com/api/v1/"
     private const val USERNAME = BuildConfig.USERNAME
     private const val API_KEY = BuildConfig.PASSWORD
     private const val AUTH_HEADER = "Authorization"
@@ -23,10 +23,9 @@ object NetworkModule {
 
     @OptIn(ExperimentalSerializationApi::class)
     private fun providesRetrofit(okHttpClient: OkHttpClient = providesOkHttp()): Retrofit {
-        return Retrofit.Builder().baseUrl(ZULIP_BASE_URL).client(okHttpClient).addConverterFactory(
-            Json { ignoreUnknownKeys = true }
-                .asConverterFactory("application/json".toMediaType())
-        )
+        val json = Json { ignoreUnknownKeys = true }
+        return Retrofit.Builder().baseUrl(ZULIP_BASE_URL).client(okHttpClient)
+            .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
             .addConverterFactory(EnumConverterFactory())
             .build()
     }

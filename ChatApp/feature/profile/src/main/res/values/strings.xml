@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="error_user_not_authorized">Authorization error</string>
     <string name="error_user_not_found">User with this id does not exist</string>
+    <string name="error_description_user_not_found">Try to check validity of the user id you use</string>
 </resources>

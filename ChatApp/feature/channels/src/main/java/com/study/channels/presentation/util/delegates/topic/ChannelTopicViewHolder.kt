@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.study.channels.databinding.ItemChannelTopicBinding
-import com.study.channels.presentation.model.UiChannelTopic
+import com.study.channels.presentation.util.model.UiChannelTopic
 import com.study.ui.R
 
 internal class ChannelTopicViewHolder(

@@ -5,16 +5,18 @@
 
     <color name="navy_light">#2A9D8F</color>
     <color name="navy_dark">#03806D</color>
-    <color name="dark_theme_background_color">#121212</color>
-    <color name="bottom_nav_background_color">#1E1E1E</color>
-    <color name="item_background_color">#1C1C1C</color>
-    <color name="chip_message_date_background">#070707</color>
-    <color name="input_field_background_color">#282828</color>
-    <color name="dark_button_background_color">#1B1B1B</color>
-    <color name="grey_light">#919191</color>
-    <color name="grey_lightest">#999999</color>
-    <color name="grey">#464646</color>
-    <color name="green_light">#4AB54D</color>
-    <color name="_test_orange">#FF6736</color>
-    <color name="_test_red">#F44336</color>
+    <color name="gray7">#121212</color>
+    <color name="darkest_nero">#1E1E1E</color>
+    <color name="dark_nero">#1C1C1C</color>
+    <color name="black07">#070707</color>
+    <color name="nero">#282828</color>
+    <color name="eerie_black">#1B1B1B</color>
+    <color name="gray57">#919191</color>
+    <color name="gray80">#CCCCCC</color>
+    <color name="gray60">#999999</color>
+    <color name="davys_grey">#555555</color>
+    <color name="charcoal">#464646</color>
+    <color name="apple_green">#4AB54D</color>
+    <color name="romegranate">#FF6736</color>
+    <color name="dark_red">#F44336</color>
 </resources>
