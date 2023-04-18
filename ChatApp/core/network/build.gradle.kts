@@ -1,11 +1,7 @@
-import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
-
-val username: String = gradleLocalProperties(rootDir).getProperty("username")
-val password: String = gradleLocalProperties(rootDir).getProperty("password")
-
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    id("kotlin-kapt")
     id("kotlinx-serialization")
 }
 
@@ -15,22 +11,18 @@ android {
 
     defaultConfig {
         minSdk = 24
-        targetSdk = 33
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
 
+    @Suppress("UnstableApiUsage")
     buildTypes {
         release {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
             )
-        }
-        debug {
-            buildConfigField("String", "USERNAME", username)
-            buildConfigField("String", "PASSWORD", password)
         }
     }
     compileOptions {
@@ -51,4 +43,8 @@ dependencies {
     implementation(libs.coroutines.core)
     implementation(libs.retrofit.kotlinx.serialization)
     implementation(libs.kotlinx.serialization.gson)
+    implementation(libs.dagger2)
+    kapt(libs.dagger2.compiler)
+
+    implementation(project(":core:common"))
 }

@@ -2,8 +2,9 @@ package com.study.chat.data
 
 import com.study.chat.domain.model.Emoji
 import com.study.chat.domain.repository.EmojiRepository
+import javax.inject.Inject
 
-internal object LocalEmojiRepository : EmojiRepository {
+internal class LocalEmojiRepository @Inject constructor() : EmojiRepository {
     private val emojiList = listOf(
         Emoji("+1", "1f44d"),
         Emoji("tada", "1f389"),

@@ -1,28 +1,29 @@
 package com.study.profile.presentation
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.get
 import com.study.common.extensions.fastLazy
 import com.study.components.extensions.createStoreHolder
 import com.study.components.extensions.loadFromUrl
 import com.study.components.view.ScreenStateView.ViewState
-import com.study.network.NetworkModule
 import com.study.profile.databinding.FragmentProfileBinding
-import com.study.profile.domain.exceptions.toErrorMessage
-import com.study.profile.domain.repository.UserRepository
-import com.study.profile.domain.usecase.GetUserPresenceUseCase
-import com.study.profile.domain.usecase.GetUserUseCase
+import com.study.profile.di.ProfileComponentViewModel
 import com.study.profile.presentation.elm.ProfileEffect
 import com.study.profile.presentation.elm.ProfileEvent
 import com.study.profile.presentation.elm.ProfileState
-import com.study.profile.presentation.elm.ProfileStoreFactory
+import com.study.profile.presentation.util.toErrorMessage
 import com.study.ui.NavConstants
-import kotlinx.coroutines.Dispatchers
 import vivid.money.elmslie.android.base.ElmFragment
 import vivid.money.elmslie.android.storeholder.StoreHolder
+import vivid.money.elmslie.core.store.Store
+import javax.inject.Inject
+
 
 internal class ProfileFragment : ElmFragment<ProfileEvent, ProfileEffect, ProfileState>() {
     private var _binding: FragmentProfileBinding? = null
@@ -31,15 +32,19 @@ internal class ProfileFragment : ElmFragment<ProfileEvent, ProfileEffect, Profil
         arguments?.getInt(NavConstants.USER_ID_KEY) ?: NavConstants.CURRENT_USER_ID_KEY
     }
 
+    @Inject
+    lateinit var profileStore: Store<ProfileEvent, ProfileEffect, ProfileState>
+
+
     override val initEvent: ProfileEvent get() = ProfileEvent.Ui.Init(userId)
     override val storeHolder: StoreHolder<ProfileEvent, ProfileEffect, ProfileState> by fastLazy {
-        val repository = UserRepository(NetworkModule.providesApi())
-        createStoreHolder(
-            ProfileStoreFactory.create(
-                GetUserUseCase(repository, Dispatchers.Default),
-                GetUserPresenceUseCase(repository, Dispatchers.Default)
-            )
-        )
+        createStoreHolder(profileStore)
+    }
+
+    override fun onAttach(context: Context) {
+        ViewModelProvider(this).get<ProfileComponentViewModel>()
+            .profileComponent.inject(this)
+        super.onAttach(context)
     }
 
     override fun onCreateView(
@@ -63,6 +68,9 @@ internal class ProfileFragment : ElmFragment<ProfileEvent, ProfileEffect, Profil
 
     override fun render(state: ProfileState) {
         when {
+            state.error != null -> binding.fragmentProfileScreenStateView.setState(
+                ViewState.Error(state.error.toErrorMessage())
+            )
             state.isLoading -> binding.fragmentProfileScreenStateView.setState(ViewState.Loading)
             state.user != null -> {
                 with(binding) {
@@ -75,16 +83,6 @@ internal class ProfileFragment : ElmFragment<ProfileEvent, ProfileEffect, Profil
                     }
                     fragmentProfileTvUsername.text = user.username
                 }
-            }
-        }
-    }
-
-    override fun handleEffect(effect: ProfileEffect) {
-        when (effect) {
-            is ProfileEffect.ShowError -> {
-                binding.fragmentProfileScreenStateView.setState(
-                    ViewState.Error(effect.error.toErrorMessage())
-                )
             }
         }
     }

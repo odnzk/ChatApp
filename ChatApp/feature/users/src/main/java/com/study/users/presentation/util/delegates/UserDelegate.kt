@@ -3,7 +3,7 @@ package com.study.users.presentation.util.delegates
 import androidx.recyclerview.widget.DiffUtil.ItemCallback
 import com.study.components.recycler.delegates.Delegate
 import com.study.components.recycler.shimmer.ShimmerItem
-import com.study.users.presentation.util.model.UiUser
+import com.study.users.presentation.model.UiUser
 
 internal class UserDelegate(onUserClick: ((userId: Int) -> Unit)?) :
     Delegate<UserViewHolder, ShimmerItem<UiUser>>

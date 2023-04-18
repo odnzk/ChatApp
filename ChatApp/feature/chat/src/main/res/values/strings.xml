@@ -4,5 +4,5 @@
     <string name="error_cannot_synchronize">Synchronization error</string>
     <string name="error_content_has_not_loaded_yet">The content has not loaded yet</string>
     <string name="error_description_content_has_not_loaded_yet">Loading error, check your internet connection</string>
-    <string name="channel_topic_title">Topic: %1$s</string>
+    <string name="channel_topic_title">Topic: #%1$s</string>
 </resources>

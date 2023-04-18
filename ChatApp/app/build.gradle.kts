@@ -1,3 +1,8 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+
+val username: String = gradleLocalProperties(rootDir).getProperty("username")
+val password: String = gradleLocalProperties(rootDir).getProperty("password")
+
 plugins {
     id("com.android.application")
     id("kotlin-android")
@@ -20,12 +25,17 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    @Suppress("UnstableApiUsage")
     buildTypes {
         release {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
             )
+        }
+        debug {
+            buildConfigField("String", "USERNAME", username)
+            buildConfigField("String", "PASSWORD", password)
         }
     }
     compileOptions {
@@ -50,6 +60,9 @@ dependencies {
     implementation(libs.fragment.ktx)
     debugImplementation(libs.leak.canary)
     implementation(libs.timber)
+    implementation(libs.retrofit)
+    implementation(libs.dagger2)
+    kapt(libs.dagger2.compiler)
 
     implementation(libs.bundles.navigation)
     implementation(libs.bundles.elmslie)
@@ -57,9 +70,10 @@ dependencies {
     implementation(project(":core:ui"))
     implementation(project(":core:components"))
     implementation(project(":core:common"))
+    implementation(project(":core:network"))
     implementation(project(":feature:channels"))
     implementation(project(":feature:chat"))
-    implementation(project(":feature:search"))
     implementation(project(":feature:profile"))
+    implementation(project(":core:auth"))
     implementation(project(":feature:users"))
 }

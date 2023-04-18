@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import com.study.components.extensions.loadFromUrl
 import com.study.components.recycler.shimmer.ShimmerItemViewHolder
 import com.study.users.databinding.ItemUserBinding
-import com.study.users.presentation.util.model.UiUser
+import com.study.users.presentation.model.UiUser
 
 internal class UserViewHolder(
     private val binding: ItemUserBinding,

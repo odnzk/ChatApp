@@ -11,12 +11,12 @@ android {
 
     defaultConfig {
         minSdk = 24
-        targetSdk = 33
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
 
+    @Suppress("UnstableApiUsage")
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -48,6 +48,9 @@ dependencies {
     implementation(libs.shimmers)
     implementation(libs.timber)
 
+    implementation(libs.dagger2)
+    kapt(libs.dagger2.compiler)
+
     implementation(libs.bundles.elmslie)
     implementation(libs.bundles.navigation)
 
@@ -55,5 +58,4 @@ dependencies {
     implementation(project(":core:components"))
     implementation(project(":core:ui"))
     implementation(project(":core:network"))
-    implementation(project(":feature:search"))
 }

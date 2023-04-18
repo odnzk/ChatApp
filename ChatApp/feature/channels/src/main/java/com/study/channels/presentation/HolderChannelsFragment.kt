@@ -8,12 +8,15 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.tabs.TabLayoutMediator
 import com.study.channels.databinding.FragmentChannelsBinding
 import com.study.channels.presentation.util.pager.ChannelFragmentFactory
-import com.study.channels.presentation.util.pager.PagerAdapter
+import com.study.components.PagerAdapter
 import com.study.ui.R
 
 internal class HolderChannelsFragment : Fragment() {
     private var _binding: FragmentChannelsBinding? = null
     private val binding: FragmentChannelsBinding get() = _binding!!
+    private var pagerAdapter: PagerAdapter? = null
+    private var pagerMediator: TabLayoutMediator? = null
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -28,6 +31,8 @@ internal class HolderChannelsFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        pagerAdapter = null
+        pagerMediator?.detach()
         _binding = null
     }
 
@@ -36,14 +41,19 @@ internal class HolderChannelsFragment : Fragment() {
             getString(R.string.fragment_channels_tab_subscribed_channels),
             getString(R.string.fragment_channels_tab_all_channels)
         )
-        val pagerAdapter = PagerAdapter(childFragmentManager, lifecycle, ChannelFragmentFactory())
+        pagerAdapter = PagerAdapter(
+            childFragmentManager,
+            viewLifecycleOwner.lifecycle,
+            ChannelFragmentFactory()
+        )
         with(binding) {
             fragmentChannelsHolderViewPagerChannels.adapter = pagerAdapter
-            TabLayoutMediator(
+            pagerMediator = TabLayoutMediator(
                 fragmentChannelsHolderTabLayoutChannels, fragmentChannelsHolderViewPagerChannels
             ) { tab, position ->
                 tab.text = tabs[position]
-            }.attach()
+            }
+            pagerMediator?.attach()
         }
     }
 }

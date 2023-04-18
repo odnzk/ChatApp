@@ -1,27 +1,31 @@
 package com.study.components.extensions
 
-import androidx.lifecycle.Lifecycle
 import vivid.money.elmslie.android.base.ElmActivity
 import vivid.money.elmslie.android.base.ElmFragment
 import vivid.money.elmslie.android.storeholder.LifecycleAwareStoreHolder
+import vivid.money.elmslie.core.store.Store
+import vivid.money.elmslie.core.store.dsl_reducer.DslReducer
+import vivid.money.elmslie.coroutines.Actor
 import vivid.money.elmslie.coroutines.ElmStoreCompat
 
 fun <Event : Any, Effect : Any, State : Any, Command : Any> ElmFragment<Event, Effect, State>.createStoreHolder(
-    store: ElmStoreCompat<Event, State, Effect, Command>
+    state: State,
+    reducer: DslReducer<Event, State, Effect, Command>,
+    actor: Actor<Command, out Event>
+
+): LifecycleAwareStoreHolder<Event, Effect, State> {
+    return LifecycleAwareStoreHolder(lifecycle) { ElmStoreCompat(state, reducer, actor) }
+}
+
+fun <Event : Any, Effect : Any, State : Any> ElmFragment<Event, Effect, State>.createStoreHolder(
+    store: Store<Event, Effect, State>
 ): LifecycleAwareStoreHolder<Event, Effect, State> {
     return LifecycleAwareStoreHolder(lifecycle) { store }
 }
 
-fun <Event : Any, Effect : Any, State : Any, Command : Any> createStoreHolder(
-    lifecycle: Lifecycle,
-    store: ElmStoreCompat<Event, State, Effect, Command>
-): LifecycleAwareStoreHolder<Event, Effect, State> {
-    return LifecycleAwareStoreHolder(lifecycle) { store }
-}
 
-
-fun <Event : Any, Effect : Any, State : Any, Command : Any> ElmActivity<Event, Effect, State>.createStoreHolder(
-    store: ElmStoreCompat<Event, State, Effect, Command>
+fun <Event : Any, Effect : Any, State : Any> ElmActivity<Event, Effect, State>.createStoreHolder(
+    store: Store<Event, Effect, State>
 ): LifecycleAwareStoreHolder<Event, Effect, State> {
     return LifecycleAwareStoreHolder(lifecycle) { store }
 }

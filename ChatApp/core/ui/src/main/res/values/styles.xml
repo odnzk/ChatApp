@@ -22,4 +22,11 @@
         <item name="boxCornerRadiusTopStart">@dimen/text_input_layout_corner_radius</item>
     </style>
 
+    <style name="SearchToolbarTheme" parent="ThemeOverlay.AppCompat.Light">
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:textColorSecondary">@color/white</item>
+        <item name="android:background">?android:attr/colorPrimary</item>
+        <item name="minHeight">?android:attr/actionBarSize</item>
+    </style>
+
 </resources>

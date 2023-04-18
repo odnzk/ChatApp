@@ -8,46 +8,55 @@ import com.study.chat.data.pagination.MessagesPagingSource
 import com.study.chat.domain.model.IncomeMessage
 import com.study.chat.domain.model.OutcomeMessage
 import com.study.chat.domain.repository.MessageRepository
-import com.study.network.impl.ZulipApi
+import com.study.network.repository.MessageDataSource
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-internal class RemoteMessageRepository(private val api: ZulipApi) : MessageRepository {
+internal class RemoteMessageRepository @Inject constructor(
+    private val dataSource: MessageDataSource,
+    private val dispatcher: CoroutineDispatcher,
+    private val messagePaginSourceFactory: MessagesPagingSource.Factory
+) :
+    MessageRepository {
     override fun getMessages(
         channelTitle: String,
         topicName: String,
         searchQuery: String
-    ): Flow<PagingData<IncomeMessage>> {
-        return createLatestMessagesPager(channelTitle, topicName, searchQuery).flow
-    }
+    ): Flow<PagingData<IncomeMessage>> =
+        createLatestMessagesPager(channelTitle, topicName, searchQuery).flow.flowOn(dispatcher)
 
-    override suspend fun sendMessage(message: OutcomeMessage): Int {
-        val id = api.sendMessage(
+    override suspend fun sendMessage(message: OutcomeMessage): Int = withContext(dispatcher) {
+        val id = dataSource.sendMessage(
             type = message.type,
             to = message.channelTitle,
             content = message.content,
             topic = message.topicTitle
         ).id
-        return requireNotNull(id)
+        requireNotNull(id)
     }
 
-    override suspend fun addReaction(messageId: Int, emojiName: String) {
-        api.addReactionToMessage(messageId, emojiName)
+    override suspend fun addReaction(messageId: Int, emojiName: String) = withContext(dispatcher) {
+        dataSource.addReactionToMessage(messageId, emojiName)
     }
 
-    override suspend fun removeReaction(messageId: Int, emojiName: String) {
-        api.removeReactionFromMessage(messageId, emojiName)
-    }
+    override suspend fun removeReaction(messageId: Int, emojiName: String) =
+        withContext(dispatcher) {
+            dataSource.removeReactionFromMessage(messageId, emojiName)
+        }
 
-    override suspend fun fetchMessage(messageId: Int): IncomeMessage {
-        return requireNotNull(api.fetchSingleMessage(messageId).message).toIncomeMessage()
+    override suspend fun fetchMessage(messageId: Int): IncomeMessage = withContext(dispatcher) {
+        requireNotNull(dataSource.fetchSingleMessage(messageId).message).toIncomeMessage()
     }
 
     private fun createLatestMessagesPager(
         channelTitle: String,
         topicName: String,
         searchQuery: String
-    ): Pager<Int, IncomeMessage> {
-        return Pager(
+    ): Pager<Int, IncomeMessage> =
+        Pager(
             PagingConfig(
                 PAGE_SIZE,
                 enablePlaceholders = false,
@@ -55,8 +64,7 @@ internal class RemoteMessageRepository(private val api: ZulipApi) : MessageRepos
                 prefetchDistance = 2
             )
         )
-        { MessagesPagingSource(channelTitle, topicName, searchQuery) }
-    }
+        { messagePaginSourceFactory.create(channelTitle, topicName, searchQuery) }
 
     companion object {
         private const val PAGE_SIZE = 10

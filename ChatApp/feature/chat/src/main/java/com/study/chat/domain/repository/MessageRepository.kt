@@ -1,10 +1,8 @@
 package com.study.chat.domain.repository
 
 import androidx.paging.PagingData
-import com.study.chat.data.RemoteMessageRepository
 import com.study.chat.domain.model.IncomeMessage
 import com.study.chat.domain.model.OutcomeMessage
-import com.study.network.impl.ZulipApi
 import kotlinx.coroutines.flow.Flow
 
 interface MessageRepository {
@@ -19,7 +17,4 @@ interface MessageRepository {
     suspend fun removeReaction(messageId: Int, emojiName: String)
     suspend fun fetchMessage(messageId: Int): IncomeMessage
 
-    companion object {
-        operator fun invoke(api: ZulipApi): MessageRepository = RemoteMessageRepository(api)
-    }
 }

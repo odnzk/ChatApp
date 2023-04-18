@@ -16,9 +16,7 @@ internal class EmojiViewHolder(
     fun bind(emoji: Emoji) {
         emojiTextView.run {
             text = emoji.code.toEmojiString()
-            setOnClickListener {
-                onEmojiClickListener?.invoke(emoji)
-            }
+            setOnClickListener { onEmojiClickListener?.invoke(emoji) }
         }
     }
 

@@ -1,8 +1,9 @@
 package com.study.chat.presentation.emoji.elm
 
 import vivid.money.elmslie.core.store.dsl_reducer.DslReducer
+import javax.inject.Inject
 
-internal class EmojiListReducer :
+internal class EmojiListReducer @Inject constructor() :
     DslReducer<EmojiListEvent, EmojiListState, EmojiListEffect, EmojiListCommand>() {
 
     override fun Result.reduce(event: EmojiListEvent): Any = when (event) {

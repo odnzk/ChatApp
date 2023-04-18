@@ -5,9 +5,10 @@ import com.study.chat.domain.model.Emoji
 import com.study.chat.presentation.chat.util.model.UiMessage
 
 internal data class ChatState(
-    val channelTitle: String,
-    val channelTopicTitle: String,
+    val channelTitle: String = "",
+    val channelTopicTitle: String = "",
     val isLoading: Boolean = false,
+    val error: Throwable? = null,
     val searchQuery: String = "",
     val messages: PagingData<Any> = PagingData.empty(),
 )
@@ -40,12 +41,12 @@ internal sealed interface ChatCommand {
 }
 
 internal sealed interface ChatEffect {
-    class ShowError(val error: Throwable) : ChatEffect
+    class ShowWarning(val error: Throwable) : ChatEffect
 }
 
 internal sealed interface ChatEvent {
     sealed interface Ui : ChatEvent {
-        object Init : Ui
+        class Init(val channelTitle: String, val channelTopicTitle: String) : Ui
         object Reload : Ui
         class SendMessage(val messageContent: String, val messages: List<Any?>) : Ui
         class UpdateReaction(

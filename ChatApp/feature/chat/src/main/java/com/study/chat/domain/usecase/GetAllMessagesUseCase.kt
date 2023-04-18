@@ -6,8 +6,9 @@ import com.study.chat.domain.repository.MessageRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
+import javax.inject.Inject
 
-class GetAllMessagesUseCase(
+class GetAllMessagesUseCase @Inject constructor(
     private val repository: MessageRepository,
     private val dispatcher: CoroutineDispatcher
 ) {

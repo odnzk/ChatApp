@@ -4,10 +4,13 @@ import com.study.profile.domain.exceptions.UserNotFoundException
 import com.study.profile.domain.model.UserDetailed
 import com.study.profile.domain.repository.UserRepository
 import com.study.ui.NavConstants
+import dagger.Reusable
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-internal class GetUserUseCase(
+@Reusable
+internal class GetUserUseCase @Inject constructor(
     private val repository: UserRepository,
     private val dispatcher: CoroutineDispatcher
 ) {

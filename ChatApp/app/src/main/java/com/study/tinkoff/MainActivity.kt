@@ -11,28 +11,40 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.study.common.extensions.fastLazy
 import com.study.components.extensions.createStoreHolder
 import com.study.tinkoff.databinding.ActivityMainBinding
+import com.study.tinkoff.elm.MainActor
 import com.study.tinkoff.elm.MainEffect
 import com.study.tinkoff.elm.MainEvent
 import com.study.tinkoff.elm.MainState
-import com.study.tinkoff.elm.MainStoreFactory
 import com.study.ui.NavConstants
-import kotlinx.coroutines.Dispatchers
 import vivid.money.elmslie.android.base.ElmActivity
 import vivid.money.elmslie.android.storeholder.StoreHolder
+import vivid.money.elmslie.core.store.Store
+import javax.inject.Inject
 import com.study.channels.R as ChannelsR
 import com.study.profile.R as ProfileR
 import com.study.users.R as UsersR
 
 
-internal class MainActivity : ElmActivity<MainEvent, MainEffect, MainState>() {
+class MainActivity : ElmActivity<MainEvent, MainEffect, MainState>() {
     private lateinit var binding: ActivityMainBinding
+
+    @Inject
+    lateinit var mainStore: Store<MainEvent, MainEffect, MainState>
+
+    @Inject
+    lateinit var mainActor: MainActor
+
     override val initEvent: MainEvent = MainEvent.Ui.Init
-    override val storeHolder: StoreHolder<MainEvent, MainEffect, MainState>
-        get() = createStoreHolder(MainStoreFactory(Dispatchers.Default).create())
+    override val storeHolder: StoreHolder<MainEvent, MainEffect, MainState> by fastLazy {
+        createStoreHolder(mainStore)
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        (applicationContext as ChatApp).appComponent.inject(this)
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -60,6 +72,11 @@ internal class MainActivity : ElmActivity<MainEvent, MainEffect, MainState>() {
             }
         })
         return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        mainActor.clear()
     }
 
     private fun setupTopNavigation(navController: NavController) {
@@ -93,7 +110,5 @@ internal class MainActivity : ElmActivity<MainEvent, MainEffect, MainState>() {
     override fun onSupportNavigateUp() =
         findNavController(R.id.activity_main_fragment_container).navigateUp()
 
-    override fun render(state: MainState) {
-        // Todo multi-module search
-    }
+    override fun render(state: MainState) = Unit
 }

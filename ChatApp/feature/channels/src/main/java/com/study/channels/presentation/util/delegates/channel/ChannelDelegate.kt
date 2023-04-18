@@ -10,9 +10,7 @@ internal class ChannelDelegate(onChannelClick: ((channelId: Int) -> Unit)?) :
     Delegate<ChannelViewHolder, ShimmerItem<UiChannel>>(
         isType = { it is ShimmerItem<*> },
         viewHolderCreator = { ChannelViewHolder.create(it, onChannelClick = onChannelClick) },
-        viewBinder = { holder, channel ->
-            holder.bind(channel)
-        },
+        viewBinder = { holder, channel -> holder.bind(channel) },
         viewBinderWithPayloads = { holder, channel, payloads ->
             holder.bindWithPayloads(channel, payloads)
         },

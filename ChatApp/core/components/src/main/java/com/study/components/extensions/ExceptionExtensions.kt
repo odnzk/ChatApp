@@ -9,38 +9,46 @@ import com.study.components.R
 import java.net.UnknownHostException
 import com.study.ui.R as CoreR
 
-class UserFriendlyError(
+class UiError(
     val error: Throwable,
     @StringRes val messageRes: Int,
     @StringRes val descriptionRes: Int? = null,
     @DrawableRes val imageRes: Int? = null
 )
 
-fun Throwable.toBaseErrorMessage(): UserFriendlyError {
-    val (messageRes, descriptionRes, imageRes) = when (this) {
-        is UnknownHostException -> Triple(
-            CoreR.string.error_connection_lost,
-            CoreR.string.error_description_connection_lost,
-            R.drawable.ic_no_connection
-        )
-        is HttpException -> Triple(
-            CoreR.string.error_http,
-            CoreR.string.error_description_http,
-            R.drawable.ic_error
-        )
-        else -> Triple(
-            CoreR.string.error_unknown,
-            CoreR.string.error_description_unknown,
-            R.drawable.ic_error
-        )
-    }
-    return UserFriendlyError(this, messageRes, descriptionRes, imageRes)
+class NothingFoundForThisQueryException : RuntimeException()
+
+fun Throwable.toBaseErrorMessage(): UiError = when (this) {
+    is UnknownHostException -> UiError(
+        this,
+        CoreR.string.error_connection_lost,
+        CoreR.string.error_description_connection_lost,
+        R.drawable.ic_no_connection
+    )
+    is HttpException -> UiError(
+        this,
+        CoreR.string.error_http,
+        CoreR.string.error_description_http,
+        R.drawable.ic_error
+    )
+    is NothingFoundForThisQueryException -> UiError(
+        this,
+        CoreR.string.error_not_found,
+        CoreR.string.error_description_not_found,
+        R.drawable.ic_not_found
+    )
+    else -> UiError(
+        this,
+        CoreR.string.error_unknown,
+        CoreR.string.error_description_unknown,
+        R.drawable.ic_error
+    )
 }
 
 inline fun showErrorSnackbar(
     view: View,
     error: Throwable,
-    errorHandler: ((Throwable) -> UserFriendlyError) = Throwable::toBaseErrorMessage,
+    errorHandler: ((Throwable) -> UiError) = Throwable::toBaseErrorMessage,
     onReloadActionListener: View.OnClickListener? = null
 ) {
     val userMessage = view.context.getString(errorHandler(error).messageRes)
