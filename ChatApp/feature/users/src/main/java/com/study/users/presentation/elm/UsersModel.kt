@@ -1,10 +1,11 @@
 package com.study.users.presentation.elm
 
-import com.study.users.presentation.util.model.UiUser
+import com.study.users.presentation.model.UiUser
 
 internal data class UsersState(
     val isLoading: Boolean = false,
     val users: List<UiUser> = emptyList(),
+    val error: Throwable? = null,
     val searchQuery: String = ""
 )
 
@@ -13,9 +14,7 @@ internal sealed interface UsersCommand {
     class SearchUsers(val query: String) : UsersCommand
 }
 
-internal sealed interface UsersEffect {
-    class ShowError(val error: Throwable) : UsersEffect
-}
+internal sealed interface UsersEffect
 
 internal sealed interface UsersEvent {
     sealed interface Ui : UsersEvent {

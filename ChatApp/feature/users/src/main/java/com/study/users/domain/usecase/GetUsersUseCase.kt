@@ -4,8 +4,9 @@ import com.study.users.domain.model.User
 import com.study.users.domain.repository.UsersRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-internal class GetUsersUseCase(
+internal class GetUsersUseCase @Inject constructor(
     private val repository: UsersRepository,
     private val dispatcher: CoroutineDispatcher
 ) {

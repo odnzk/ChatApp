@@ -1,12 +1,13 @@
 package com.study.channels.presentation.elm
 
-import com.study.channels.domain.model.ChannelFilter
+import com.study.channels.presentation.util.model.ChannelFilter
 import com.study.channels.presentation.util.model.UiChannelModel
 
 
 internal data class ChannelsState(
     val isLoading: Boolean = false,
     val searchQuery: String = "",
+    val error: Throwable? = null,
     val channelFilter: ChannelFilter = ChannelFilter.SUBSCRIBED_ONLY,
     val channelsWithTopics: Map<Int, List<UiChannelModel>> = hashMapOf()
 )
@@ -22,13 +23,12 @@ internal sealed interface ChannelsCommand {
 }
 
 internal sealed interface ChannelsEffect {
-    class ShowError(val error: Throwable) : ChannelsEffect
     class ShowWarning(val error: Throwable) : ChannelsEffect
 }
 
 internal sealed interface ChannelsEvent {
     sealed interface Ui : ChannelsEvent {
-        object Init : Ui
+        class Init(val channelFilter: ChannelFilter) : Ui
         object Reload : Ui
         class Search(val query: String) : Ui
         class ManageChannelTopics(val channelId: Int) : Ui

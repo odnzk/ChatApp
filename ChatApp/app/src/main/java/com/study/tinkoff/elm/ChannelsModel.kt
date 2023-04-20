@@ -1,16 +1,14 @@
 package com.study.tinkoff.elm
 
-internal data class MainState(
-    val searchQuery: String = ""
-)
+class MainState
 
-internal sealed interface MainEffect
+sealed interface MainEffect
 
-internal sealed interface MainCommand {
+sealed interface MainCommand {
     class Search(val query: String) : MainCommand
 }
 
-internal sealed interface MainEvent {
+sealed interface MainEvent {
     sealed interface Ui : MainEvent {
         object Init : Ui
         class Search(val query: String) : Ui

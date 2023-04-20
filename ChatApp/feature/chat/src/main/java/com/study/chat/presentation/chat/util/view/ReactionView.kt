@@ -60,6 +60,7 @@ internal class ReactionView @JvmOverloads constructor(
 
     fun setEmoji(emojiUnicode: String, count: Int = DEFAULT_EMOJI_COUNT, isSelected: Boolean) {
         textToDraw = toEmoji(emojiUnicode.toEmojiString(), count)
+        this.isSelected = isSelected
         manageBackgroundColor(isSelected)
         invalidate()
     }

@@ -16,17 +16,9 @@ internal class ChannelViewHolder(
 
     override fun showContent(data: UiChannel) {
         with(binding) {
-            val icRes =
-                if (data.isCollapsed)
-                    CoreR.drawable.ic_baseline_hide_24
-                else CoreR.drawable.ic_baseline_more_24
-            itemChannelIvBtnShowTopics.setImageResource(icRes)
+            setCollapsedStatusIcon(data.isCollapsed)
             root.setOnClickListener {
                 onChannelClick?.invoke(data.id)
-                val icon = if (data.isCollapsed) {
-                    CoreR.drawable.ic_baseline_hide_24
-                } else CoreR.drawable.ic_baseline_more_24
-                itemChannelIvBtnShowTopics.setImageResource(icon)
             }
             itemChannelTvChannelName.text = data.title
         }
@@ -35,12 +27,18 @@ internal class ChannelViewHolder(
     fun bindWithPayloads(channel: ShimmerItem<UiChannel>, payloads: Any) {
         channel.content()?.let { channelContent ->
             if ((payloads as Bundle).getBoolean(PAYLOAD_IS_COLLAPSED_CHANGED)) {
-                val icon = if (channelContent.isCollapsed) {
-                    CoreR.drawable.ic_baseline_hide_24
-                } else CoreR.drawable.ic_baseline_more_24
-                binding.itemChannelIvBtnShowTopics.setImageResource(icon)
+                setCollapsedStatusIcon(channelContent.isCollapsed)
             }
         }
+    }
+
+    private fun setCollapsedStatusIcon(isCollapsed: Boolean) {
+        val icon = if (isCollapsed) {
+            CoreR.drawable.ic_baseline_hide_24
+        } else {
+            CoreR.drawable.ic_baseline_more_24
+        }
+        binding.itemChannelIvBtnShowTopics.setImageResource(icon)
     }
 
 

@@ -1,7 +1,7 @@
 package com.study.chat.presentation.chat.elm
 
 import androidx.paging.PagingData
-import com.study.auth.UserNotAuthorizedException
+import com.study.auth.api.UserNotAuthorizedException
 import com.study.chat.domain.exceptions.SynchronizationException
 import com.study.chat.domain.model.Emoji
 import com.study.chat.domain.usecase.GetAllMessagesUseCase
@@ -17,18 +17,22 @@ import com.study.common.extensions.findWithIndex
 import com.study.common.extensions.isSameDay
 import com.study.common.extensions.toFlow
 import com.study.common.extensions.update
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import vivid.money.elmslie.coroutines.Actor
+import javax.inject.Inject
 
-internal class ChatActor(
+internal class ChatActor @Inject constructor(
     private val getAllMessageUseCase: GetAllMessagesUseCase,
     private val sendMessageUseCase: SendMessageUseCase,
     private val updateReactionUseCase: UpdateReactionUseCase,
     private val searchMessagesUseCase: SearchMessagesUseCase,
-    private val getCurrentUserId: GetCurrentUserIdUseCase
+    private val getCurrentUserId: GetCurrentUserIdUseCase,
+    private val dispatcher: CoroutineDispatcher
 ) : Actor<ChatCommand, Internal> {
 
     override fun execute(command: ChatCommand): Flow<Internal> = when (command) {
@@ -55,7 +59,7 @@ internal class ChatActor(
                     command.channelTitle, command.messageContent, command.topicTitle
                 )
             }
-        }.mapEvents(::mapToLoadingSuccess, Internal::LoadingError)
+        }.flowOn(dispatcher).mapEvents(::mapToLoadingSuccess, Internal::LoadingError)
 
         is ChatCommand.UpdateReaction -> flow {
             if (command.message.id == UiMessage.NOT_YET_SYNCHRONIZED_ID) throw SynchronizationException()
@@ -64,7 +68,7 @@ internal class ChatActor(
             val emoji = command.emoji
 
             val (reaction, index) = message.reactions.findWithIndex { it.emoji.code == emoji.code }
-            val updatedMessage = updateUiMessageLocally(message, emoji, reaction, index)
+            val updatedMessage = updateReactionsLocally(message, emoji, reaction, index)
             emit(command.currMessages.toMutableList().update(messageIndex, updatedMessage))
 
             coroutineScope {
@@ -74,40 +78,42 @@ internal class ChatActor(
                 )
             }
         }.mapEvents(::mapToLoadingSuccess, Internal::LoadingError)
-
-        ChatCommand.GetCurrentUserId -> toFlow { getCurrentUserId() }.mapEvents(Internal::GetCurrentUserIdSuccess,
-            errorMapper = { Internal.LoadingError(UserNotAuthorizedException()) })
+        ChatCommand.GetCurrentUserId ->
+            toFlow(dispatcher) { getCurrentUserId() }
+                .mapEvents(Internal::GetCurrentUserIdSuccess,
+                    errorMapper = { Internal.LoadingError(UserNotAuthorizedException()) })
     }
 
     private fun addMessageLocally(message: UiMessage.MeMessage, list: List<Any>): List<Any> {
         val lastMessageDate = list.filterIsInstance<UiMessage>().last().calendar
-        return if (lastMessageDate.isSameDay(message.calendar)) {
-            list.toMutableList().apply { add(message) }
-        } else {
-            list.toMutableList().apply {
-                add(message.calendar)
-                add(message)
+        return list.toMutableList().apply {
+            if (lastMessageDate.isSameDay(message.calendar)) {
+                add(0, message)
+            } else {
+                add(0, message.calendar)
+                add(0, message)
             }
         }
     }
 
-    private fun updateUiMessageLocally(
+    private fun updateReactionsLocally(
         message: UiMessage, emoji: Emoji, reaction: UiReaction?, reactionIndex: Int?
     ): UiMessage {
-        val updatedList = if (reaction?.isSelected == true && reactionIndex != null) {
-            message.reactions.toMutableList().apply { updateOrRemove(reaction, reactionIndex) }
-        } else {
-            val (prevSelected, prevIndex) = message.reactions.findWithIndex { it.isSelected }
-            message.reactions.toMutableList().apply {
+        val updatedList = message.reactions.toMutableList().apply {
+            if (reaction?.isSelected == true && reactionIndex != null) {
+                updateOrRemove(reaction, reactionIndex)
+            } else {
+                val (prevSelected, prevIndex) = findWithIndex { it.isSelected }
+                if (prevSelected != null && prevIndex != null) {
+                    updateOrRemove(prevSelected, prevIndex)
+                }
                 if (reaction != null && reactionIndex != null) {
                     update(
-                        reactionIndex, reaction.copy(isSelected = true, count = reaction.count + 1)
+                        reactionIndex,
+                        reaction.copy(isSelected = true, count = reaction.count + 1)
                     )
                 } else {
                     add(UiReaction(message.id, emoji, 1, true))
-                }
-                if (prevSelected != null && prevIndex != null) {
-                    updateOrRemove(prevSelected, prevIndex)
                 }
             }
         }

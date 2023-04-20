@@ -4,28 +4,34 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.study.chat.data.mapper.toMessageList
 import com.study.chat.domain.model.IncomeMessage
-import com.study.network.NetworkModule
-import com.study.network.impl.model.request.message.MessageNarrow
-import com.study.network.impl.model.request.message.MessageNarrowList
-import com.study.network.impl.model.request.message.MessageNarrowOperator
-import com.study.network.impl.model.request.message.MessagesAnchor
+import com.study.network.model.request.message.MessageNarrow
+import com.study.network.model.request.message.MessageNarrowList
+import com.study.network.model.request.message.MessageNarrowOperator
+import com.study.network.model.request.message.MessagesAnchor
+import com.study.network.repository.MessageDataSource
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import retrofit2.HttpException
 
-internal class MessagesPagingSource(
-    channelTitle: String,
-    topicName: String,
-    searchQuery: String
-) :
-    PagingSource<Int, IncomeMessage>() {
-    private val api = NetworkModule.providesApi()
+internal class MessagesPagingSource @AssistedInject constructor(
+    private val dataSource: MessageDataSource,
+    @Assisted("channelTitle") channelTitle: String,
+    @Assisted("topicName") topicName: String,
+    @Assisted("searchQuery") searchQuery: String
+) : PagingSource<Int, IncomeMessage>() {
     private var anchorPosition = DEFAULT_LAST_MESSAGE_ID
-    private val topicNarrow = MessageNarrow(MessageNarrowOperator.TOPIC, topicName)
-    private val channelNarrow = MessageNarrow(MessageNarrowOperator.STREAM, channelTitle)
+    private val topicNarrow = MessageNarrow(
+        MessageNarrowOperator.TOPIC, topicName
+    )
+    private val channelNarrow = MessageNarrow(
+        MessageNarrowOperator.STREAM, channelTitle
+    )
     private val narrowList = if (searchQuery.isNotBlank()) {
         MessageNarrowList(
-            topicNarrow,
-            channelNarrow,
-            MessageNarrow(MessageNarrowOperator.SEARCH, searchQuery)
+            topicNarrow, channelNarrow, MessageNarrow(
+                MessageNarrowOperator.SEARCH, searchQuery
+            )
         )
     } else MessageNarrowList(topicNarrow, channelNarrow)
 
@@ -35,14 +41,14 @@ internal class MessagesPagingSource(
             val pageSize = params.loadSize
 
             val response = if (anchorPosition == DEFAULT_LAST_MESSAGE_ID) {
-                api.getMessages(
+                dataSource.getMessages(
                     anchor = MessagesAnchor.NEWEST,
                     numBefore = pageSize,
                     numAfter = 0,
                     narrow = narrowList
                 )
             } else {
-                api.getMessages(
+                dataSource.getMessages(
                     anchorMessageId = anchorPosition,
                     numBefore = pageSize,
                     numAfter = 0,
@@ -73,5 +79,14 @@ internal class MessagesPagingSource(
     companion object {
         private const val DEFAULT_LAST_MESSAGE_ID = -1
         const val INITIAL_PAGE_NUMBER = 1
+    }
+
+    @AssistedFactory
+    interface Factory {
+        fun create(
+            @Assisted("channelTitle") channelTitle: String,
+            @Assisted("topicName") topicName: String,
+            @Assisted("searchQuery") searchQuery: String
+        ): MessagesPagingSource
     }
 }

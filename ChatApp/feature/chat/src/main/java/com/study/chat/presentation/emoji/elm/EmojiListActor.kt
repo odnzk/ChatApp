@@ -4,10 +4,10 @@ import com.study.chat.domain.repository.EmojiRepository
 import com.study.common.extensions.toFlow
 import kotlinx.coroutines.flow.Flow
 import vivid.money.elmslie.coroutines.Actor
+import javax.inject.Inject
 
-internal class EmojiListActor(
-    private val repository: EmojiRepository
-) : Actor<EmojiListCommand, EmojiListEvent.Internal> {
+internal class EmojiListActor @Inject constructor(private val repository: EmojiRepository) :
+    Actor<EmojiListCommand, EmojiListEvent.Internal> {
 
     override fun execute(command: EmojiListCommand): Flow<EmojiListEvent.Internal> =
         when (command) {

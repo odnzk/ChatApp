@@ -4,8 +4,9 @@ import com.study.channels.domain.model.ChannelTopic
 import com.study.channels.domain.repository.ChannelRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class GetChannelTopicsUseCase(
+internal class GetChannelTopicsUseCase @Inject constructor(
     private val repository: ChannelRepository,
     private val dispatcher: CoroutineDispatcher
 ) {

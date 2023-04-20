@@ -2,6 +2,7 @@ plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
     id("androidx.navigation.safeargs.kotlin")
+    id("kotlin-kapt")
     id("kotlin-parcelize")
 }
 
@@ -11,12 +12,12 @@ android {
 
     defaultConfig {
         minSdk = 24
-        targetSdk = 33
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
 
+    @Suppress("UnstableApiUsage")
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -48,6 +49,9 @@ dependencies {
     implementation(libs.pagination)
     implementation(libs.timber)
 
+    implementation(libs.dagger2)
+    kapt(libs.dagger2.compiler)
+
     implementation(libs.bundles.elmslie)
     implementation(libs.bundles.navigation)
 
@@ -55,5 +59,5 @@ dependencies {
     implementation(project(":core:ui"))
     implementation(project(":core:components"))
     implementation(project(":core:network"))
-    implementation(project(":feature:auth"))
+    implementation(project(":core:auth"))
 }

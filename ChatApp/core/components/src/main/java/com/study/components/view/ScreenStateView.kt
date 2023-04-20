@@ -12,7 +12,7 @@ import androidx.core.view.children
 import androidx.core.view.isVisible
 import androidx.core.widget.ContentLoadingProgressBar
 import com.study.components.R
-import com.study.components.extensions.UserFriendlyError
+import com.study.components.extensions.UiError
 
 class ScreenStateView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0, defStyleRes: Int = 0
@@ -41,7 +41,7 @@ class ScreenStateView @JvmOverloads constructor(
 
     sealed interface ViewState {
         object Loading : ViewState
-        class Error(val error: UserFriendlyError) : ViewState
+        class Error(val error: UiError, val isBtnTryAgainVisible: Boolean = true) : ViewState
         object Success : ViewState
     }
 
@@ -57,6 +57,7 @@ class ScreenStateView @JvmOverloads constructor(
                 userError.imageRes?.let {
                     ivError.setImageResource(it)
                 } ?: run { ivError.isVisible = false }
+                btnTryAgain.isVisible = state.isBtnTryAgainVisible
                 pbLoading.isVisible = false
             }
             ViewState.Loading -> {

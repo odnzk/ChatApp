@@ -3,6 +3,8 @@ package com.study.chat.presentation.chat.util.delegates.message
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewGroup.LayoutParams.MATCH_PARENT
+import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import androidx.recyclerview.widget.RecyclerView
 import com.study.chat.domain.model.Emoji
 import com.study.chat.presentation.chat.util.model.UiMessage
@@ -43,9 +45,7 @@ internal class MessageViewHolder(
             onReactionClick: ((message: UiMessage, emoji: Emoji) -> Unit)? = null
         ): MessageViewHolder {
             val itemView = MessageView(parent.context).apply {
-                layoutParams = ViewGroup.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
-                )
+                layoutParams = ViewGroup.LayoutParams(MATCH_PARENT, WRAP_CONTENT)
                 maxWidthPercent = MAX_MESSAGE_WIDTH_PERCENT
             }
             return MessageViewHolder(

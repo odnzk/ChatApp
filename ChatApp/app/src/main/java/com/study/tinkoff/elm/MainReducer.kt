@@ -1,8 +1,9 @@
 package com.study.tinkoff.elm
 
 import vivid.money.elmslie.core.store.dsl_reducer.DslReducer
+import javax.inject.Inject
 
-internal class MainReducer :
+class MainReducer @Inject constructor() :
     DslReducer<MainEvent, MainState, MainEffect, MainCommand>() {
 
     override fun Result.reduce(event: MainEvent) = when (event) {
@@ -10,8 +11,6 @@ internal class MainReducer :
         is MainEvent.Ui.Search -> {
             commands { +MainCommand.Search(event.query) }
         }
-        is MainEvent.Internal.SearchSuccess -> {
-            state { copy(searchQuery = event.query) }
-        }
+        is MainEvent.Internal.SearchSuccess -> Unit
     }
 }

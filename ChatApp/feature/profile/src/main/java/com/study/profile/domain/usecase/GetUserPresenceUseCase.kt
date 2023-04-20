@@ -1,13 +1,16 @@
 package com.study.profile.domain.usecase
 
-import com.study.auth.UserNotAuthorizedException
+import com.study.auth.api.UserNotAuthorizedException
 import com.study.components.model.UserPresenceStatus
 import com.study.profile.domain.repository.UserRepository
 import com.study.ui.NavConstants
+import dagger.Reusable
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-internal class GetUserPresenceUseCase(
+@Reusable
+internal class GetUserPresenceUseCase @Inject constructor(
     private val repository: UserRepository,
     private val dispatcher: CoroutineDispatcher
 ) {

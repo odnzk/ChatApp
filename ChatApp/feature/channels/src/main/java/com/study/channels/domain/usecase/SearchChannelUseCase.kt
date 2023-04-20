@@ -1,23 +1,22 @@
 package com.study.channels.domain.usecase
 
 import com.study.channels.domain.model.Channel
-import com.study.channels.domain.model.ChannelFilter
 import com.study.channels.domain.repository.ChannelRepository
+import com.study.channels.presentation.util.model.ChannelFilter
+import com.study.components.search.searchNotEmptyQuery
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class SearchChannelUseCase(
-    private val repository: ChannelRepository,
-    private val dispatcher: CoroutineDispatcher
+internal class SearchChannelUseCase @Inject constructor(
+    private val repository: ChannelRepository, private val dispatcher: CoroutineDispatcher
 ) {
     suspend operator fun invoke(query: String, filter: ChannelFilter): List<Channel> =
         withContext(dispatcher) {
             when (filter) {
                 ChannelFilter.ALL -> repository.getAllChannels()
-                    .filter { it.title.startsWith(query) }
                 ChannelFilter.SUBSCRIBED_ONLY -> repository.getSubscribedChannels()
-                    .filter { it.title.startsWith(query) }
-            }
+            }.searchNotEmptyQuery(query) { it.title.contains(query, ignoreCase = true) }
         }
 }
 

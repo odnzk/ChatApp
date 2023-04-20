@@ -1,5 +1,7 @@
 package com.study.channels.presentation.elm
 
+import android.content.Context
+import com.google.android.material.color.MaterialColors
 import com.study.channels.domain.exceptions.ChannelDoesNotHaveTopicsException
 import com.study.channels.domain.exceptions.ChannelNotFoundException
 import com.study.channels.domain.usecase.GetChannelTopicsUseCase
@@ -11,38 +13,52 @@ import com.study.channels.presentation.util.model.UiChannel
 import com.study.channels.presentation.util.model.UiChannelModel
 import com.study.common.extensions.replaceFirst
 import com.study.common.extensions.toFlow
+import com.study.ui.R
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import vivid.money.elmslie.core.switcher.Switcher
 import vivid.money.elmslie.coroutines.Actor
 import vivid.money.elmslie.coroutines.switch
+import javax.inject.Inject
 
-internal class ChannelsActor(
+internal class ChannelsActor @Inject constructor(
     private val getChannelsUseCase: GetChannelsUseCase,
     private val getChannelTopicUseCase: GetChannelTopicsUseCase,
-    private val searchChannelUseCase: SearchChannelUseCase
+    private val searchChannelUseCase: SearchChannelUseCase,
+    private val dispatcher: CoroutineDispatcher,
+    context: Context
 ) : Actor<ChannelsCommand, ChannelsEvent.Internal> {
 
+    private val channelTopicMainColor = MaterialColors.getColor(
+        context,
+        androidx.appcompat.R.attr.colorPrimary,
+        context.getColor(R.color.navy_light)
+    )
     private val switcher = Switcher()
-
     override fun execute(command: ChannelsCommand): Flow<ChannelsEvent.Internal> = when (command) {
         is ChannelsCommand.LoadChannels -> switcher.switch {
-            toFlow { getChannelsUseCase(command.filter).toChannelsMap() }.mapEvents(
+            toFlow(dispatcher) {
+                getChannelsUseCase(command.filter).toChannelsMap()
+            }.mapEvents(
                 ChannelsEvent.Internal::LoadingChannelsWithTopicsSuccess,
                 ChannelsEvent.Internal::LoadingError
             )
         }
-        is ChannelsCommand.ManageChannelTopics -> toFlow {
+        is ChannelsCommand.ManageChannelTopics -> toFlow(dispatcher) {
             manageChannelTopics(command.currentChannelsMap, command.channelId)
         }.mapEvents(
             ChannelsEvent.Internal::LoadingChannelsWithTopicsSuccess,
             ChannelsEvent.Internal::LoadingError
         )
         is ChannelsCommand.SearchChannels ->
-            toFlow { searchChannelUseCase(command.query, command.filter).toChannelsMap() }
-                .mapEvents(
+            switcher.switch {
+                toFlow(dispatcher) {
+                    searchChannelUseCase(command.query, command.filter).toChannelsMap()
+                }.mapEvents(
                     ChannelsEvent.Internal::LoadingChannelsWithTopicsSuccess,
                     ChannelsEvent.Internal::LoadingError
                 )
+            }
     }
 
 
@@ -50,24 +66,27 @@ internal class ChannelsActor(
         channelsMap: Map<Int, List<UiChannelModel>>,
         channelId: Int
     ): Map<Int, List<UiChannelModel>> {
-        channelsMap[channelId]?.let { uiChannelModels ->
-            val channel = uiChannelModels.first { it is UiChannel } as UiChannel
-            val updatedChannel = channel.copy(isCollapsed = !channel.isCollapsed)
+        val selectedChannelWithTopics = channelsMap[channelId] ?: throw ChannelNotFoundException()
 
-            return channelsMap.toMutableMap().apply {
-                if (updatedChannel.isCollapsed && uiChannelModels.size == 1) {
-                    val topics: List<UiChannelModel> = getChannelTopicUseCase(channel.id)
-                        .toUiChannelTopics(channel.id, channel.title)
+        val channel = selectedChannelWithTopics.first { it is UiChannel } as UiChannel
+        val updatedChannel = channel.copy(isCollapsed = !channel.isCollapsed)
+
+        return channelsMap.toMutableMap().apply {
+            val updatedChannelWIthTopics =
+                if (updatedChannel.isCollapsed && selectedChannelWithTopics.size == 1) {
+                    val topics = getChannelTopicUseCase(channel.id).toUiChannelTopics(
+                        channel.id,
+                        channel.title,
+                        channelTopicMainColor
+                    )
                     if (topics.isEmpty()) throw ChannelDoesNotHaveTopicsException()
-
-                    set(channelId,
-                        mutableListOf<UiChannelModel>(updatedChannel).apply { addAll(topics) })
+                    mutableListOf<UiChannelModel>(updatedChannel).apply { addAll(topics) }
                 } else {
-                    set(channelId,
-                        uiChannelModels.toMutableList()
-                            .replaceFirst(updatedChannel) { it is UiChannel })
+                    selectedChannelWithTopics
+                        .toMutableList()
+                        .replaceFirst(updatedChannel) { it is UiChannel }
                 }
-            }
-        } ?: throw ChannelNotFoundException()
+            set(channelId, updatedChannelWIthTopics)
+        }
     }
 }

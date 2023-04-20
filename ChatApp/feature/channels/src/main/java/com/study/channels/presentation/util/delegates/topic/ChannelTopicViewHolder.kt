@@ -17,7 +17,9 @@ internal class ChannelTopicViewHolder(
             itemChannelTopicTvMessagesCount.text = root.context.getString(
                 R.string.item_channel_topic_messages_count, topic.messagesCount
             )
-            itemChannelTopicTvTopicName.text = topic.title
+            itemChannelTopicTvTopicName.text = root.context.getString(
+                R.string.item_channel_topic_name, topic.title
+            )
             root.setOnClickListener { onTopicClick?.invoke(topic.channelTitle, topic.title) }
             root.setBackgroundColor(topic.backgroundColor)
         }

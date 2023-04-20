@@ -7,16 +7,10 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.lifecycle.viewModelScope
 import coil.load
 import coil.request.CachePolicy
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -38,12 +32,6 @@ inline fun <T : Any> Fragment.collectFlowSafely(
         }
     }
 }
-
-inline fun ViewModel.safeLaunch(
-    dispatcher: CoroutineDispatcher = Dispatchers.Default,
-    exceptionHandler: CoroutineExceptionHandler,
-    crossinline action: suspend () -> Unit
-): Job = viewModelScope.launch(exceptionHandler + dispatcher) { action() }
 
 fun ImageView.loadFromUrl(url: String) {
     load(url) {

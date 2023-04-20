@@ -1,6 +1,7 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    id("kotlin-kapt")
 }
 
 android {
@@ -9,12 +10,12 @@ android {
 
     defaultConfig {
         minSdk = 24
-        targetSdk = 33
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
 
+    @Suppress("UnstableApiUsage")
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -42,7 +43,8 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
 
     implementation(libs.fragment.ktx)
-    implementation(libs.retrofit)
+    implementation(libs.dagger2)
+    kapt(libs.dagger2.compiler)
 
     implementation(libs.bundles.elmslie)
     implementation(libs.bundles.navigation)
@@ -51,5 +53,5 @@ dependencies {
     implementation(project(":core:common"))
     implementation(project(":core:ui"))
     implementation(project(":core:network"))
-    implementation(project(":feature:auth"))
+    implementation(project(":core:auth"))
 }
