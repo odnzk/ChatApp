@@ -10,7 +10,6 @@ import com.study.network.model.response.message.SingleMessageResponse
 import com.study.network.model.response.stream.AllStreamsResponse
 import com.study.network.model.response.stream.StreamDetailedDto
 import com.study.network.model.response.stream.StreamTopicsResponse
-import com.study.network.model.response.stream.SubscribedStreamsResponse
 import com.study.network.model.response.user.AllUserPresenceDto
 import com.study.network.model.response.user.AllUsersResponse
 import com.study.network.model.response.user.DetailedUserDto
@@ -24,7 +23,7 @@ import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
 
-internal interface ZulipApi {
+interface ZulipApi {
 
     @POST("messages")
     @FormUrlEncoded
@@ -74,14 +73,11 @@ internal interface ZulipApi {
 
 
     @GET("users/me/subscriptions")
-    suspend fun getSubscribedStreams(
-        @Query("include_subscribers") areSubscribedUsersIncluded: Boolean = true
-    ): SubscribedStreamsResponse
+    suspend fun getSubscribedStreams(): AllStreamsResponse
 
     @GET("streams")
     suspend fun getAllStreams(
-        @Query("include_public") arePublicIncluded: Boolean = true,
-        @Query("include_subscribed") areSubscribedIncluded: Boolean = true
+        @Query("include_subscribed") includeSubscribed: Boolean = false
     ): AllStreamsResponse
 
     @GET("streams/{stream_id}")

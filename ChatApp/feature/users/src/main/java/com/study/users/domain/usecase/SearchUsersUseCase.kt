@@ -1,6 +1,6 @@
 package com.study.users.domain.usecase
 
-import com.study.components.search.searchNotEmptyQuery
+import com.study.components.search.searchFlow
 import com.study.users.domain.model.User
 import com.study.users.domain.repository.UsersRepository
 import kotlinx.coroutines.CoroutineDispatcher
@@ -12,6 +12,6 @@ internal class SearchUsersUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(query: String): List<User> = withContext(dispatcher) {
         repository.getUsers()
-            .searchNotEmptyQuery(query) { it.name.contains(query, ignoreCase = true) }
+            .searchFlow(query) { it.name.contains(query, ignoreCase = true) }
     }
 }

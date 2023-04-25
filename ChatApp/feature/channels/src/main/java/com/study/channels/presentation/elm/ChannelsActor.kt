@@ -7,6 +7,8 @@ import com.study.channels.domain.exceptions.ChannelNotFoundException
 import com.study.channels.domain.usecase.GetChannelTopicsUseCase
 import com.study.channels.domain.usecase.GetChannelsUseCase
 import com.study.channels.domain.usecase.SearchChannelUseCase
+import com.study.channels.domain.usecase.UpdateChannelTopicsUseCase
+import com.study.channels.domain.usecase.UpdateChannelsUseCase
 import com.study.channels.presentation.util.mapper.toChannelsMap
 import com.study.channels.presentation.util.mapper.toUiChannelTopics
 import com.study.channels.presentation.util.model.UiChannel
@@ -16,6 +18,7 @@ import com.study.common.extensions.toFlow
 import com.study.ui.R
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import vivid.money.elmslie.core.switcher.Switcher
 import vivid.money.elmslie.coroutines.Actor
 import vivid.money.elmslie.coroutines.switch
@@ -25,6 +28,8 @@ internal class ChannelsActor @Inject constructor(
     private val getChannelsUseCase: GetChannelsUseCase,
     private val getChannelTopicUseCase: GetChannelTopicsUseCase,
     private val searchChannelUseCase: SearchChannelUseCase,
+    private val updateChannelsUseCase: UpdateChannelsUseCase,
+    private val updateChannelTopicsUseCase: UpdateChannelTopicsUseCase,
     private val dispatcher: CoroutineDispatcher,
     context: Context
 ) : Actor<ChannelsCommand, ChannelsEvent.Internal> {
@@ -37,9 +42,7 @@ internal class ChannelsActor @Inject constructor(
     private val switcher = Switcher()
     override fun execute(command: ChannelsCommand): Flow<ChannelsEvent.Internal> = when (command) {
         is ChannelsCommand.LoadChannels -> switcher.switch {
-            toFlow(dispatcher) {
-                getChannelsUseCase(command.filter).toChannelsMap()
-            }.mapEvents(
+            getChannelsUseCase(command.filter).map { it.toChannelsMap() }.mapEvents(
                 ChannelsEvent.Internal::LoadingChannelsWithTopicsSuccess,
                 ChannelsEvent.Internal::LoadingError
             )
@@ -52,13 +55,18 @@ internal class ChannelsActor @Inject constructor(
         )
         is ChannelsCommand.SearchChannels ->
             switcher.switch {
-                toFlow(dispatcher) {
-                    searchChannelUseCase(command.query, command.filter).toChannelsMap()
-                }.mapEvents(
-                    ChannelsEvent.Internal::LoadingChannelsWithTopicsSuccess,
-                    ChannelsEvent.Internal::LoadingError
-                )
+                searchChannelUseCase(command.query, command.filter).map { it.toChannelsMap() }
+                    .mapEvents(
+                        ChannelsEvent.Internal::LoadingChannelsWithTopicsSuccess,
+                        ChannelsEvent.Internal::LoadingError
+                    )
             }
+        is ChannelsCommand.UpdateChannels ->
+            toFlow { updateChannelsUseCase(command.filter) }
+                .mapEvents(errorMapper = ChannelsEvent.Internal::LoadingError)
+        is ChannelsCommand.UpdateChannelTopic ->
+            toFlow { updateChannelTopicsUseCase(command.channelId) }
+                .mapEvents(errorMapper = ChannelsEvent.Internal::LoadingError)
     }
 
 
@@ -67,10 +75,8 @@ internal class ChannelsActor @Inject constructor(
         channelId: Int
     ): Map<Int, List<UiChannelModel>> {
         val selectedChannelWithTopics = channelsMap[channelId] ?: throw ChannelNotFoundException()
-
         val channel = selectedChannelWithTopics.first { it is UiChannel } as UiChannel
         val updatedChannel = channel.copy(isCollapsed = !channel.isCollapsed)
-
         return channelsMap.toMutableMap().apply {
             val updatedChannelWIthTopics =
                 if (updatedChannel.isCollapsed && selectedChannelWithTopics.size == 1) {

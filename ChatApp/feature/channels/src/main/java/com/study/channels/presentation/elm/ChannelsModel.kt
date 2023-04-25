@@ -1,6 +1,6 @@
 package com.study.channels.presentation.elm
 
-import com.study.channels.presentation.util.model.ChannelFilter
+import com.study.channels.domain.model.ChannelFilter
 import com.study.channels.presentation.util.model.UiChannelModel
 
 
@@ -14,6 +14,8 @@ internal data class ChannelsState(
 
 internal sealed interface ChannelsCommand {
     class LoadChannels(val filter: ChannelFilter) : ChannelsCommand
+    class UpdateChannels(val filter: ChannelFilter) : ChannelsCommand
+    class UpdateChannelTopic(val channelId: Int) : ChannelsCommand
     class ManageChannelTopics(
         val channelId: Int,
         val currentChannelsMap: Map<Int, List<UiChannelModel>>

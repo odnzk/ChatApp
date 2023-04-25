@@ -23,7 +23,6 @@ private fun ChannelTopic.toUiChannelTopic(
         channelId = channelId,
         channelTitle = channelTitle,
         title = title,
-        lastMessageId = lastMessageId,
         messagesCount = 0, // todo
         backgroundColor = generateMatchingColor(color, ratio)
     )

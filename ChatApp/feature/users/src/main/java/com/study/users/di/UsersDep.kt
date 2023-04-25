@@ -1,6 +1,6 @@
 package com.study.users.di
 
-import com.study.network.repository.UserDataSource
+import com.study.network.dataSource.UserDataSource
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 

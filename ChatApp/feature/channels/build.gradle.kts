@@ -58,4 +58,5 @@ dependencies {
     implementation(project(":core:components"))
     implementation(project(":core:ui"))
     implementation(project(":core:network"))
+    implementation(project(":core:database"))
 }

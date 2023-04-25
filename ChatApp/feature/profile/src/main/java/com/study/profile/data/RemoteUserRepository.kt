@@ -1,7 +1,7 @@
 package com.study.profile.data
 
 import com.study.components.model.UserPresenceStatus
-import com.study.network.repository.UserDataSource
+import com.study.network.dataSource.UserDataSource
 import com.study.profile.data.mapper.toDetailedUser
 import com.study.profile.data.mapper.toUserPresenceStatus
 import com.study.profile.domain.model.UserDetailed

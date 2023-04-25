@@ -3,9 +3,9 @@ package com.study.components.extensions
 import android.view.View
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import coil.network.HttpException
 import com.google.android.material.snackbar.Snackbar
 import com.study.components.R
+import retrofit2.HttpException
 import java.net.UnknownHostException
 import com.study.ui.R as CoreR
 
@@ -19,17 +19,11 @@ class UiError(
 class NothingFoundForThisQueryException : RuntimeException()
 
 fun Throwable.toBaseErrorMessage(): UiError = when (this) {
-    is UnknownHostException -> UiError(
+    is UnknownHostException, is HttpException -> UiError(
         this,
         CoreR.string.error_connection_lost,
         CoreR.string.error_description_connection_lost,
         R.drawable.ic_no_connection
-    )
-    is HttpException -> UiError(
-        this,
-        CoreR.string.error_http,
-        CoreR.string.error_description_http,
-        R.drawable.ic_error
     )
     is NothingFoundForThisQueryException -> UiError(
         this,

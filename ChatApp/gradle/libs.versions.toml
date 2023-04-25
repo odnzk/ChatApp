@@ -34,6 +34,9 @@ dagger = "2.45"
 # MVI
 elmslie = "2.1.0"
 
+# Database
+room = "2.5.1"
+
 # Additional
 pagination = "3.1.1"
 leak_canary = "2.10"
@@ -84,6 +87,12 @@ coil = { module = "io.coil-kt:coil", version.ref = "coil" }
 elmslie_core = { module = "com.github.vivid-money.elmslie:elmslie-core", version.ref = "elmslie" }
 elmslie_android = { module = "com.github.vivid-money.elmslie:elmslie-android", version.ref = "elmslie" }
 elmslie_coroutines = { module = "com.github.vivid-money.elmslie:elmslie-coroutines", version.ref = "elmslie" }
+
+# Database
+room = { module = "androidx.room:room-runtime", version.ref = "room" }
+room_compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+room_ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
+room_pagination = { module = "androidx.room:room-paging", version.ref = "room" }
 
 # Additional
 leak_canary = { module = "com.squareup.leakcanary:leakcanary-android", version.ref = "leak_canary" }
