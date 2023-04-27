@@ -6,7 +6,7 @@ import java.util.Calendar
 data class IncomeMessage(
     val id: Int,
     val senderAvatarUrl: String?,
-    val senderName: String,
+    val senderName: String?,
     val senderId: Int,
     val content: String,
     val calendar: Calendar,

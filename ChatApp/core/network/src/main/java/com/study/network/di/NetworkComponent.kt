@@ -6,7 +6,7 @@ import javax.inject.Singleton
 
 @Component(
     dependencies = [NetworkDep::class],
-    modules = [NetworkModule::class, NetworkRepositoryModule::class]
+    modules = [NetworkModule::class]
 )
 @Singleton
 internal interface NetworkComponent {

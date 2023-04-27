@@ -1,7 +1,7 @@
 package com.study.auth.api.di
 
 import android.content.Context
-import com.study.network.repository.UserDataSource
+import com.study.network.dataSource.UserDataSource
 import kotlinx.coroutines.CoroutineDispatcher
 
 interface AuthDep {

@@ -1,5 +1,6 @@
-package com.study.tinkoff.di
+package com.study.tinkoff.di.module
 
+import com.study.tinkoff.di.MutableSearchFlow
 import dagger.Binds
 import dagger.Module
 import kotlinx.coroutines.flow.Flow

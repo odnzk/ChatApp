@@ -45,6 +45,7 @@ dependencies {
     implementation(libs.kotlinx.serialization.gson)
     implementation(libs.dagger2)
     kapt(libs.dagger2.compiler)
+    implementation(libs.timber)
 
     implementation(project(":core:common"))
 }

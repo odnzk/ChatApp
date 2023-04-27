@@ -1,0 +1,36 @@
+package com.study.tinkoff.di.module
+
+import android.content.Context
+import com.study.auth.api.UserAuthRepository
+import com.study.auth.api.di.AuthDep
+import com.study.auth.api.di.AuthImpl
+import com.study.auth.api.di.AuthImplFactory
+import com.study.network.dataSource.UserDataSource
+import dagger.Module
+import dagger.Provides
+import kotlinx.coroutines.CoroutineDispatcher
+import javax.inject.Singleton
+
+@Module
+class AppAuthModule {
+
+    @Provides
+    @Singleton
+    fun providesAuthDependencies(
+        dispatcher: CoroutineDispatcher,
+        userDataSource: UserDataSource,
+        context: Context
+    ): AuthDep = object : AuthDep {
+        override val dispatcher: CoroutineDispatcher = dispatcher
+        override val userDataSource: UserDataSource = userDataSource
+        override val context: Context = context
+    }
+
+    @Provides
+    @Singleton
+    fun providesAuthImpl(authDep: AuthDep): AuthImpl = AuthImplFactory.create(authDep)
+
+    @Provides
+    fun providesAuthRepository(impl: AuthImpl): UserAuthRepository = impl.userAuthRepository
+
+}

@@ -71,9 +71,10 @@ dependencies {
     implementation(project(":core:components"))
     implementation(project(":core:common"))
     implementation(project(":core:network"))
+    implementation(project(":core:auth"))
+    implementation(project(":core:database"))
     implementation(project(":feature:channels"))
     implementation(project(":feature:chat"))
     implementation(project(":feature:profile"))
-    implementation(project(":core:auth"))
     implementation(project(":feature:users"))
 }

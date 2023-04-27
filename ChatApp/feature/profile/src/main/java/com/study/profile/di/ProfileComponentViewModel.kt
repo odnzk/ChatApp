@@ -7,13 +7,13 @@ import kotlin.properties.Delegates.notNull
 internal interface ProfileDepsProvider {
 
     @get:RestrictTo(RestrictTo.Scope.LIBRARY)
-    val deps: ProfileDeps
+    val deps: ProfileDep
 
     companion object : ProfileDepsProvider by ProfileDepsStore
 }
 
 object ProfileDepsStore : ProfileDepsProvider {
-    override var deps: ProfileDeps by notNull()
+    override var deps: ProfileDep by notNull()
 }
 
 internal class ProfileComponentViewModel : ViewModel() {

@@ -1,11 +1,11 @@
 package com.study.network.di
 
-import com.study.network.repository.MessageDataSource
-import com.study.network.repository.StreamDataSource
-import com.study.network.repository.UserDataSource
+import com.study.network.dataSource.ChannelRemoteDataSource
+import com.study.network.dataSource.MessageRemoteDataSource
+import com.study.network.dataSource.UserDataSource
 
 interface NetworkImpl {
-    val messageDataSource: MessageDataSource
-    val streamDataSource: StreamDataSource
+    val messageDataSource: MessageRemoteDataSource
+    val streamDataSource: ChannelRemoteDataSource
     val userDataSource: UserDataSource
 }

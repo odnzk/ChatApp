@@ -1,6 +1,6 @@
 package com.study.users.data
 
-import com.study.network.repository.UserDataSource
+import com.study.network.dataSource.UserDataSource
 import com.study.users.data.mapper.toUserList
 import com.study.users.data.mapper.toUserPresenceList
 import com.study.users.domain.model.User

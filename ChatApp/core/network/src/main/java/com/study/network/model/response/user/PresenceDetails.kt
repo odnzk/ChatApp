@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class PresenceDetails(
     @SerialName("status")
-    val status: PresenceStatusDto?,
+    val status: PresenceStatusDto? = PresenceStatusDto.OFFLINE,
     @SerialName("timestamp")
     val timestamp: Int?
 )

@@ -12,13 +12,13 @@ import androidx.lifecycle.get
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.study.channels.di.ChannelsComponentViewModel
+import com.study.channels.domain.model.ChannelFilter
 import com.study.channels.presentation.elm.ChannelsEffect
 import com.study.channels.presentation.elm.ChannelsEvent
 import com.study.channels.presentation.elm.ChannelsState
 import com.study.channels.presentation.util.delegates.channel.ChannelDelegate
 import com.study.channels.presentation.util.delegates.topic.ChannelTopicDelegate
 import com.study.channels.presentation.util.mapper.toChannelsList
-import com.study.channels.presentation.util.model.ChannelFilter
 import com.study.channels.presentation.util.model.UiChannelShimmer
 import com.study.channels.presentation.util.navigation.navigateToChannelTopic
 import com.study.channels.presentation.util.toErrorMessage
@@ -85,12 +85,13 @@ internal class ChannelsFragment : ElmFragment<ChannelsEvent, ChannelsEffect, Cha
     override fun render(state: ChannelsState) {
         when {
             state.error != null -> {
-                val showBtnTryAgain = if (state.error is NothingFoundForThisQueryException) {
-                    channelsAdapter?.submitList(emptyList())
-                    false
-                } else true
+                val showBtnTryAgain = state.error !is NothingFoundForThisQueryException
+                channelsAdapter?.submitList(emptyList())
                 binding.screenStateView.setState(
-                    ViewState.Error(state.error.toErrorMessage(), showBtnTryAgain)
+                    ViewState.Error(
+                        state.error.toErrorMessage(),
+                        showBtnTryAgain
+                    )
                 )
             }
             state.isLoading && state.channelsWithTopics.isEmpty() -> {

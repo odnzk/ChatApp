@@ -7,11 +7,20 @@ import kotlinx.serialization.json.Json
 
 @Serializable
 class MessageNarrowList(
-    private vararg val narrows: MessageNarrow
+    private val narrows: MutableList<MessageNarrow> = mutableListOf()
 ) {
     override fun toString(): String {
-        return narrows.contentToString()
+        return narrows.joinToString(prefix = "[", postfix = "]")
     }
+
+    fun add(messageNarrow: MessageNarrow) {
+        narrows.add(messageNarrow)
+    }
+
+    fun removeByNarrowOperator(messageNarrowOperator: MessageNarrowOperator) {
+        narrows.removeIf { it.operator == messageNarrowOperator }
+    }
+
 }
 
 @Serializable

@@ -13,7 +13,7 @@ internal fun IncomeMessage.toChatMessage(currUserId: Int): UiMessage.ChatMessage
         content = content,
         calendar = calendar,
         reactions = mapUiReactions(currUserId),
-        senderName = senderName,
+        senderName = requireNotNull(senderName),
         senderAvatarUrl = senderAvatarUrl.orEmpty()
     )
 
