@@ -12,7 +12,7 @@ import com.google.android.material.color.MaterialColors
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.shape.ShapeAppearanceModel
 import com.study.components.R
-import com.study.components.extensions.dp
+import com.study.components.extension.dp
 import java.lang.Integer.max
 import com.study.ui.R as CoreResources
 

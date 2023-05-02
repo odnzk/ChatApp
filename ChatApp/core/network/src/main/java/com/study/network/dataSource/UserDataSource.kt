@@ -9,14 +9,14 @@ import com.study.network.model.response.user.UserResponse
 
 import javax.inject.Inject
 
-class UserDataSource @Inject constructor(private val api: ZulipApi) {
+class UserDataSource @Inject constructor(private val api: ZulipApi) : BaseNetworkDataSource() {
 
-    suspend fun getAllUsers(): AllUsersResponse = api.getAllUsers()
+    suspend fun getAllUsers(): AllUsersResponse = safeRequest { api.getAllUsers() }
 
-    suspend fun getCurrentUser(): DetailedUserDto = api.getCurrentUser()
+    suspend fun getCurrentUser(): DetailedUserDto = safeRequest { api.getCurrentUser() }
 
-    suspend fun getUserById(id: Int): UserResponse = api.getUserById(id)
-    suspend fun getAllUserPresence(): AllUserPresenceDto = api.getAllUserPresence()
+    suspend fun getUserById(id: Int): UserResponse = safeRequest { api.getUserById(id) }
+    suspend fun getAllUserPresence(): AllUserPresenceDto = safeRequest { api.getAllUserPresence() }
     suspend fun getUserPresence(userId: Int): UserPresenceResponse =
-        api.getUserPresence(userId)
+        safeRequest { api.getUserPresence(userId) }
 }

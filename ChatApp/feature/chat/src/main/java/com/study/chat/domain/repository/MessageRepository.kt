@@ -15,6 +15,5 @@ interface MessageRepository {
     suspend fun sendMessage(message: OutcomeMessage): Int
     suspend fun addReaction(messageId: Int, emojiName: String)
     suspend fun removeReaction(messageId: Int, emojiName: String)
-    suspend fun fetchMessage(messageId: Int): IncomeMessage
-
+    suspend fun removeIrrelevant(channelTitle: String, topicTitle: String)
 }

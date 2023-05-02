@@ -36,9 +36,11 @@ android {
 
 dependencies {
     implementation(libs.androidx.core)
-    implementation(libs.datastore)
+    // DI
     implementation(libs.dagger2)
     kapt(libs.dagger2.compiler)
+    // Storage
+    implementation(libs.datastore)
 
     implementation(project(":core:network"))
     implementation(project(":core:common"))

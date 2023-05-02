@@ -6,7 +6,6 @@ import com.study.network.model.request.message.MessageType
 import com.study.network.model.request.message.MessagesAnchor
 import com.study.network.model.response.message.AllMessagesResponse
 import com.study.network.model.response.message.SentMessageResponse
-import com.study.network.model.response.message.SingleMessageResponse
 import com.study.network.model.response.stream.AllStreamsResponse
 import com.study.network.model.response.stream.StreamDetailedDto
 import com.study.network.model.response.stream.StreamTopicsResponse
@@ -25,7 +24,7 @@ import retrofit2.http.Query
 
 interface ZulipApi {
 
-    @POST("messages")
+    @POST(MESSAGES_END_POINT)
     @FormUrlEncoded
     suspend fun sendMessage(
         @Field("type") type: MessageType,
@@ -34,43 +33,37 @@ interface ZulipApi {
         @Field("topic") topic: String?
     ): SentMessageResponse
 
-    @GET("messages")
+    @GET(MESSAGES_END_POINT)
     suspend fun getMessages(
         @Query("num_before") numBefore: Int,
         @Query("num_after") numAfter: Int,
         @Query("anchor") anchor: MessagesAnchor,
         @Query("narrow") narrow: MessageNarrowList = MessageNarrowList(),
-        @Query("apply_markdown") applyMarkdown: Boolean = false
+        @Query("apply_markdown") applyMarkdown: Boolean = false,
     ): AllMessagesResponse
 
-    @GET("messages")
+    @GET(MESSAGES_END_POINT)
     suspend fun getMessages(
         @Query("num_before") numBefore: Int,
         @Query("num_after") numAfter: Int,
         @Query("anchor") anchorMessageId: Int,
         @Query("narrow") narrow: MessageNarrowList = MessageNarrowList(),
-        @Query("apply_markdown") applyMarkdown: Boolean = false
+        @Query("apply_markdown") applyMarkdown: Boolean = false,
+        @Query("include_anchor") includeAnchor: Boolean = false
     ): AllMessagesResponse
 
-    @POST("messages/{message_id}/reactions")
+    @POST(UPDATE_REACTION_END_POINT)
     @FormUrlEncoded
     suspend fun addReactionToMessage(
         @Path("message_id") mesId: Int,
         @Field("emoji_name") emojiName: String
     )
 
-    @DELETE("messages/{message_id}/reactions")
+    @DELETE(UPDATE_REACTION_END_POINT)
     suspend fun removeReactionFromMessage(
         @Path("message_id") mesId: Int,
         @Query("emoji_name") emojiName: String
     )
-
-    @GET("messages/{message_id}")
-    suspend fun fetchSingleMessage(
-        @Path("message_id") messageId: Int,
-        @Query("apply_markdown") applyMarkdown: Boolean = false
-    ): SingleMessageResponse
-
 
     @GET("users/me/subscriptions")
     suspend fun getSubscribedStreams(): AllStreamsResponse
@@ -100,5 +93,10 @@ interface ZulipApi {
 
     @GET("users/{user_id}/presence")
     suspend fun getUserPresence(@Path("user_id") userId: Int): UserPresenceResponse
+
+    companion object {
+        const val MESSAGES_END_POINT = "messages"
+        const val UPDATE_REACTION_END_POINT = "messages/{message_id}/reactions"
+    }
 
 }

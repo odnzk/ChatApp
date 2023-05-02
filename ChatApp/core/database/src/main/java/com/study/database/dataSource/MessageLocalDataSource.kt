@@ -5,7 +5,7 @@ import com.study.database.dao.MessageDao
 import com.study.database.dao.ReactionDao
 import com.study.database.entity.MessageEntity
 import com.study.database.entity.ReactionEntity
-import com.study.database.tuple.MessageWithReactionsTuple
+import com.study.database.entity.tuple.MessageWithReactionsTuple
 import dagger.Reusable
 import javax.inject.Inject
 
@@ -14,19 +14,22 @@ class MessageLocalDataSource @Inject constructor(
     private val messageDao: MessageDao,
     private val reactionDao: ReactionDao
 ) {
-    suspend fun clearAndInsertMessages(messages: List<MessageEntity>) {
-        messageDao.clearAndInsert(messages)
+    suspend fun removeIrrelevantMessages(
+        channelTitle: String,
+        topicTitle: String
+    ) {
+        val diff =
+            messageDao.countMessagesByChannelAndTopic(channelTitle, topicTitle) - MAX_MESSAGES_COUNT
+        if (diff > 0) {
+            messageDao.deleteIrrelevant(channelTitle, topicTitle, diff)
+        }
     }
 
-    suspend fun clearAndInsertReactions(reactions: List<ReactionEntity>) {
-        reactionDao.clearAndInsert(reactions)
-    }
-
-    suspend fun upsertMessages(messages: List<MessageEntity>) {
+    suspend fun addMessagesWithReactions(
+        messages: List<MessageEntity>,
+        reactions: List<ReactionEntity>
+    ) {
         messageDao.upsert(messages)
-    }
-
-    suspend fun upsertReactions(reactions: List<ReactionEntity>) {
         reactionDao.upsert(reactions)
     }
 
@@ -34,8 +37,12 @@ class MessageLocalDataSource @Inject constructor(
         channelTitle: String,
         topicTitle: String,
         query: String
-    ): PagingSource<Int, MessageWithReactionsTuple> =
-        messageDao.getMessages(channelTitle, topicTitle, query)
+    ): PagingSource<Int, MessageWithReactionsTuple> {
+        return messageDao.getMessages(channelTitle, topicTitle, query)
+    }
 
+    companion object {
+        private const val MAX_MESSAGES_COUNT = 50
+    }
 
 }

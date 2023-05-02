@@ -5,13 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-    
+
     <TextView
         android:id="@+id/fragment_chat_tv_topic_title"
         style="@style/ChannelTopicTitleTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textAppearance="@style/TextAppearance.Messenger.Title.Small"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -27,7 +26,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/fragment_chat_tv_topic_title" />
 
-    <com.study.components.view.InputView
+    <com.study.chat.presentation.chat.util.view.InputView
         android:id="@+id/fragment_chat_view_input_message"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

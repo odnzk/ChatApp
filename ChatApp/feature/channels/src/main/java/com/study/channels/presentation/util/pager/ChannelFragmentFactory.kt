@@ -3,7 +3,7 @@ package com.study.channels.presentation.util.pager
 import androidx.fragment.app.Fragment
 import com.study.channels.domain.model.ChannelFilter
 import com.study.channels.presentation.ChannelsFragment
-import com.study.components.FragmentPagerFactory
+import com.study.components.util.FragmentPagerFactory
 
 internal class ChannelFragmentFactory : FragmentPagerFactory {
     override fun getFragmentCount(): Int = 2

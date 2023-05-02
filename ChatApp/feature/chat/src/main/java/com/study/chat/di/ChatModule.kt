@@ -10,9 +10,12 @@ import com.study.chat.presentation.emoji.elm.EmojiListEffect
 import com.study.chat.presentation.emoji.elm.EmojiListEvent
 import com.study.chat.presentation.emoji.elm.EmojiListReducer
 import com.study.chat.presentation.emoji.elm.EmojiListState
-import com.study.common.FeatureScope
+import com.study.common.di.FeatureScope
 import dagger.Module
 import dagger.Provides
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.SupervisorJob
 import vivid.money.elmslie.core.store.Store
 import vivid.money.elmslie.coroutines.ElmStoreCompat
 
@@ -36,4 +39,9 @@ internal class ChatModule {
     ): Store<EmojiListEvent, EmojiListEffect, EmojiListState> {
         return ElmStoreCompat(EmojiListState(), reducer, actor)
     }
+
+    @Provides
+    @FeatureScope
+    fun providesChatScope(dispatcher: CoroutineDispatcher) =
+        CoroutineScope(SupervisorJob() + dispatcher)
 }

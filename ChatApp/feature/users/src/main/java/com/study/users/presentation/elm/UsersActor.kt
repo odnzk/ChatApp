@@ -1,6 +1,6 @@
 package com.study.users.presentation.elm
 
-import com.study.common.extensions.toFlow
+import com.study.common.extension.toFlow
 import com.study.users.domain.usecase.GetUsersPresenceCase
 import com.study.users.domain.usecase.GetUsersUseCase
 import com.study.users.domain.usecase.SearchUsersUseCase
@@ -20,7 +20,6 @@ internal class UsersActor @Inject constructor(
 ) : Actor<UsersCommand, UsersEvent.Internal> {
 
     private val switcher = Switcher()
-
     override fun execute(command: UsersCommand): Flow<UsersEvent.Internal> =
         when (command) {
             is UsersCommand.LoadUsers -> switcher.switch {

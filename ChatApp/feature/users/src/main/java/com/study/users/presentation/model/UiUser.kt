@@ -7,7 +7,8 @@ internal data class UiUser(
     val id: Int,
     val name: String,
     val email: String,
-    val avatarUrl: String,
+    val avatarUrl: String?,
+    val isBot: Boolean,
     val presence: UserPresenceStatus
 ) : ShimmerItem<UiUser> {
     override fun content(): UiUser = this

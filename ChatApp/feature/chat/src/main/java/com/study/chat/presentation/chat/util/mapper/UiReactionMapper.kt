@@ -7,6 +7,7 @@ import com.study.chat.domain.model.IncomeMessage
 import com.study.chat.presentation.chat.util.model.UiMessage
 import com.study.chat.presentation.chat.util.model.UiReaction
 import com.study.chat.presentation.chat.util.view.ReactionView
+import com.study.chat.presentation.util.toEmojiString
 
 internal fun IncomeMessage.mapUiReactions(currentUserId: Int): List<UiReaction> =
     reactions.groupBy { it.emoji.code }.map { group ->
@@ -15,7 +16,8 @@ internal fun IncomeMessage.mapUiReactions(currentUserId: Int): List<UiReaction> 
             messageId = id,
             emoji = reactions.first().emoji,
             count = reactions.size,
-            isSelected = reactions.find { it.userId == currentUserId } != null
+            isSelected = reactions.find { it.userId == currentUserId } != null,
+            emojiUnicode = reactions.first().emoji.code.toEmojiString()
         )
     }
 
@@ -23,7 +25,7 @@ private fun UiReaction.toMessageEmojiView(
     context: Context,
     count: Int,
     isSelected: Boolean
-): ReactionView = ReactionView(context).apply { setEmoji(emoji.code, count, isSelected) }
+): ReactionView = ReactionView(context).apply { setEmoji(emojiUnicode, count, isSelected) }
 
 internal fun List<UiReaction>.toMessageEmojiViews(
     context: Context,

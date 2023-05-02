@@ -5,17 +5,39 @@ import androidx.core.view.children
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.facebook.shimmer.ShimmerFrameLayout
+import com.google.android.material.color.MaterialColors
 import com.study.ui.R
+import com.google.android.material.R as MaterialR
 
+/**
+ * An abstract class for [RecyclerView.ViewHolder] that can display shimmer layouts.
+ *
+ * @param [T] The type of data this [RecyclerView.ViewHolder] displays.
+ * @property [binding] The ViewBinding for this ViewHolder's layout.
+ * @property [shimmerBackgroundColor] The color of the background for shimmer frames.
+ * @property [transparentColor] The color for hiding shimmers background.
+ */
 abstract class ShimmerItemViewHolder<T : Any>(private val binding: ViewBinding) :
     RecyclerView.ViewHolder(binding.root) {
-    protected open val shimmerBackgroundColor: Int =
-        itemView.context.getColor(R.color.darkest_nero)
+    protected open val shimmerBackgroundColor: Int = itemView.context.let {
+        MaterialColors.getColor(it, MaterialR.attr.backgroundColor, it.getColor(R.color.dark_nero))
+    }
     protected open val transparentColor: Int =
         itemView.context.getColor((android.R.color.transparent))
 
+    /**
+     * Displays the content represented by the data object.
+     *
+     * @param data The data object to show in this ViewHolder.
+     */
     protected abstract fun showContent(data: T)
 
+    /**
+     * Binds a [ShimmerItem] to the [RecyclerView.ViewHolder].
+     *
+     * @param shimmerItem The [ShimmerItem] for binding to the [RecyclerView.ViewHolder] .
+     * @throws IllegalStateException if the binding root view is not a [ShimmerFrameLayout].
+     */
     fun bind(shimmerItem: ShimmerItem<*>) {
         val content = shimmerItem.content()
         if (content != null) {

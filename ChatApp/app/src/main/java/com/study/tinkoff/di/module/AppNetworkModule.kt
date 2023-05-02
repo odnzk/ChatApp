@@ -7,24 +7,35 @@ import com.study.network.dataSource.UserDataSource
 import com.study.network.di.NetworkDep
 import com.study.network.di.NetworkImpl
 import com.study.network.di.NetworkImplFactory
+import com.study.network.di.UserCredentials
 import com.study.tinkoff.BuildConfig
 import dagger.Module
 import dagger.Provides
-import okhttp3.Credentials
 import javax.inject.Singleton
 
 @Module
 class AppNetworkModule {
-    @Provides
-    fun providesNetworkCredentials(): String =
-        Credentials.basic(BuildConfig.USERNAME, BuildConfig.PASSWORD)
 
     @Provides
     @Singleton
-    fun providesNetworkDep(credentials: String, context: Context): NetworkDep =
+    fun providesCredentials(): UserCredentials =
+        UserCredentials(BuildConfig.USERNAME, BuildConfig.PASSWORD)
+
+    @Provides
+    @Singleton
+    fun providesBaseUrl(): String = ZULIP_BASE_URL
+
+    @Provides
+    @Singleton
+    fun providesNetworkDep(
+        context: Context,
+        credentials: UserCredentials,
+        baseUrl: String
+    ): NetworkDep =
         object : NetworkDep {
             override val context: Context = context
             override val credentials = credentials
+            override val baseUrl: String = baseUrl
         }
 
     @Provides
@@ -41,4 +52,9 @@ class AppNetworkModule {
 
     @Provides
     fun provideUserDataSource(impl: NetworkImpl): UserDataSource = impl.userDataSource
+
+    companion object {
+        private const val ZULIP_BASE_URL =
+            "https://tinkoff-android-spring-2023.zulipchat.com/api/v1/"
+    }
 }

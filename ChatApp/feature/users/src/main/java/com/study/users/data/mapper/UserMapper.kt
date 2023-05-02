@@ -14,7 +14,8 @@ private fun DetailedUserDto.toUser(): User = User(
     id = requireNotNull(userId),
     name = requireNotNull(fullName),
     email = requireNotNull(email),
-    avatarUrl = avatarUrl.orEmpty(),
+    avatarUrl = avatarUrl,
+    isBot = requireNotNull(isBot),
     isActive = requireNotNull(isActive)
 )
 

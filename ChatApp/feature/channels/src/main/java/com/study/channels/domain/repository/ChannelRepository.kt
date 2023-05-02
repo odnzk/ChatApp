@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface ChannelRepository {
     fun getChannels(channelFilter: ChannelFilter): Flow<List<Channel>>
-    suspend fun getChannelTopics(channelId: Int): List<ChannelTopic>
+    fun getChannelTopics(channelId: Int): Flow<List<ChannelTopic>>
     suspend fun loadChannels(channelFilter: ChannelFilter)
 
     suspend fun loadChannelTopics(channelId: Int)

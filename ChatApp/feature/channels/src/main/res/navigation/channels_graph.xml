@@ -16,3 +16,4 @@
         android:label="ChannelsFragment"
         tools:layout="@layout/fragment_recycler_view" />
 </navigation>
+

@@ -5,6 +5,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.study.components.databinding.ItemProgressBinding
 
+/**
+ * A [RecyclerView.ViewHolder] for the loading state when pagination is being performed.
+ *
+ * @property binding The [ItemProgressBinding] instance for this [RecyclerView.ViewHolder].
+ */
 class LoadingViewHolder(binding: ItemProgressBinding) : RecyclerView.ViewHolder(binding.root) {
 
     companion object {

@@ -12,7 +12,7 @@ import androidx.core.view.children
 import androidx.core.view.isVisible
 import androidx.core.widget.ContentLoadingProgressBar
 import com.study.components.R
-import com.study.components.extensions.UiError
+import com.study.components.model.UiError
 
 class ScreenStateView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0, defStyleRes: Int = 0

@@ -15,10 +15,15 @@ internal data class ChannelsState(
 internal sealed interface ChannelsCommand {
     class LoadChannels(val filter: ChannelFilter) : ChannelsCommand
     class UpdateChannels(val filter: ChannelFilter) : ChannelsCommand
-    class UpdateChannelTopic(val channelId: Int) : ChannelsCommand
-    class ManageChannelTopics(
+    class LoadChannelTopic(val channelId: Int) : ChannelsCommand
+    class ShowChannelTopics(
         val channelId: Int,
-        val currentChannelsMap: Map<Int, List<UiChannelModel>>
+        val channelsMap: Map<Int, List<UiChannelModel>>
+    ) : ChannelsCommand
+
+    class HideChannelTopics(
+        val channelId: Int,
+        val channelsMap: Map<Int, List<UiChannelModel>>
     ) : ChannelsCommand
 
     class SearchChannels(val query: String, val filter: ChannelFilter) : ChannelsCommand
@@ -33,7 +38,7 @@ internal sealed interface ChannelsEvent {
         class Init(val channelFilter: ChannelFilter) : Ui
         object Reload : Ui
         class Search(val query: String) : Ui
-        class ManageChannelTopics(val channelId: Int) : Ui
+        class ManageChannelTopics(val channelId: Int, val isCollapsed: Boolean) : Ui
     }
 
     sealed interface Internal : ChannelsEvent {

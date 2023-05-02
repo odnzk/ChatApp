@@ -8,21 +8,23 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
-import com.study.common.extensions.fastLazy
-import com.study.components.extensions.createStoreHolder
-import com.study.components.extensions.loadFromUrl
+import com.study.common.extension.fastLazy
+import com.study.components.extension.createStoreHolder
+import com.study.components.extension.loadFromUrl
 import com.study.components.view.ScreenStateView.ViewState
 import com.study.profile.databinding.FragmentProfileBinding
 import com.study.profile.di.ProfileComponentViewModel
 import com.study.profile.presentation.elm.ProfileEffect
 import com.study.profile.presentation.elm.ProfileEvent
 import com.study.profile.presentation.elm.ProfileState
+import com.study.profile.presentation.util.model.UiUser
 import com.study.profile.presentation.util.toErrorMessage
 import com.study.ui.NavConstants
 import vivid.money.elmslie.android.base.ElmFragment
 import vivid.money.elmslie.android.storeholder.StoreHolder
 import vivid.money.elmslie.core.store.Store
 import javax.inject.Inject
+import com.study.ui.R as CoreR
 
 
 internal class ProfileFragment : ElmFragment<ProfileEvent, ProfileEffect, ProfileState>() {
@@ -54,13 +56,6 @@ internal class ProfileFragment : ElmFragment<ProfileEvent, ProfileEffect, Profil
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        binding.fragmentProfileScreenStateView.onTryAgainClickListener = View.OnClickListener {
-            store.accept(ProfileEvent.Ui.Reload(userId))
-        }
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
@@ -68,22 +63,29 @@ internal class ProfileFragment : ElmFragment<ProfileEvent, ProfileEffect, Profil
 
     override fun render(state: ProfileState) {
         when {
-            state.error != null -> binding.fragmentProfileScreenStateView.setState(
+            state.error != null -> binding.screenStateView.setState(
                 ViewState.Error(state.error.toErrorMessage())
             )
-            state.isLoading -> binding.fragmentProfileScreenStateView.setState(ViewState.Loading)
-            state.user != null -> {
-                with(binding) {
-                    fragmentProfileScreenStateView.setState(ViewState.Success)
-                    val user = state.user
-                    fragmentProfileIvAvatar.loadFromUrl(user.avatarUrl)
-                    fragmentProfileTvIsOnline.run {
-                        text = getString(user.presence.titleResId).lowercase()
-                        setTextColor(ContextCompat.getColor(context, user.presence.colorResId))
-                    }
-                    fragmentProfileTvUsername.text = user.username
-                }
+            state.isLoading -> binding.screenStateView.setState(ViewState.Loading)
+            state.user != null -> with(binding) {
+                screenStateView.setState(ViewState.Success)
+                displayUser(state.user)
             }
+        }
+    }
+
+    private fun displayUser(user: UiUser) {
+        with(binding) {
+            fragmentProfileTvIsOnline.run {
+                text = getString(user.presence.titleResId).lowercase()
+                setTextColor(ContextCompat.getColor(context, user.presence.colorResId))
+            }
+            if (user.avatarUrl != null) {
+                fragmentProfileIvAvatar.loadFromUrl(user.avatarUrl)
+            } else if (user.isBot) {
+                fragmentProfileIvAvatar.setImageResource(CoreR.drawable.ic_bot)
+            }
+            fragmentProfileTvUsername.text = user.username
         }
     }
 }

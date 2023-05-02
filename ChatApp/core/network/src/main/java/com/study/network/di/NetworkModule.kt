@@ -18,6 +18,7 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import okhttp3.Cache
 import okhttp3.CacheControl
+import okhttp3.Credentials
 import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
@@ -32,10 +33,12 @@ internal class NetworkModule {
 
     @Provides
     @AuthInterceptor
-    fun providesAuthInterceptor(credentials: String): Interceptor = Interceptor { chain ->
-        val request = chain.request().newBuilder().addHeader(AUTH_HEADER, credentials).build()
-        chain.proceed(request)
-    }
+    fun providesAuthInterceptor(userCredentials: UserCredentials): Interceptor =
+        Interceptor { chain ->
+            val credentials = Credentials.basic(userCredentials.username, userCredentials.password)
+            val request = chain.request().newBuilder().addHeader(AUTH_HEADER, credentials).build()
+            chain.proceed(request)
+        }
 
     @Provides
     @DaggerHttpLoggingInterceptor
@@ -60,12 +63,15 @@ internal class NetworkModule {
     @Provides
     @Singleton
     @OptIn(ExperimentalSerializationApi::class)
-    fun providesRetrofit(okHttpClient: OkHttpClient): Retrofit {
+    fun providesRetrofit(
+        baseUrl: String,
+        okHttpClient: OkHttpClient
+    ): Retrofit {
         val json = Json {
             ignoreUnknownKeys = true
             coerceInputValues = true
         }
-        return Retrofit.Builder().baseUrl(ZULIP_BASE_URL).client(okHttpClient)
+        return Retrofit.Builder().baseUrl(baseUrl).client(okHttpClient)
             .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
             .addConverterFactory(EnumConverterFactory())
             .build()
@@ -109,8 +115,6 @@ internal class NetworkModule {
     }
 
     companion object {
-        private const val ZULIP_BASE_URL =
-            "https://tinkoff-android-spring-2023.zulipchat.com/api/v1/"
         private const val AUTH_HEADER = "Authorization"
         private const val CONNECTION_TIMEOUT_SEC = 10L
         private const val CACHE_SIZE = (10 * 1024 * 1024).toLong()

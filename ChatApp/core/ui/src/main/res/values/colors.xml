@@ -9,14 +9,14 @@
     <color name="darkest_nero">#1E1E1E</color>
     <color name="dark_nero">#1C1C1C</color>
     <color name="black07">#070707</color>
-    <color name="nero">#282828</color>
-    <color name="eerie_black">#1B1B1B</color>
     <color name="gray57">#919191</color>
     <color name="gray80">#CCCCCC</color>
+    <color name="gray_mercury">#E6E6E6</color>
     <color name="gray60">#999999</color>
     <color name="davys_grey">#555555</color>
     <color name="charcoal">#464646</color>
     <color name="apple_green">#4AB54D</color>
-    <color name="romegranate">#FF6736</color>
-    <color name="dark_red">#F44336</color>
+    <color name="romegranate">#FF774C</color>
+    <color name="nero">#282828</color>
+    <color name="dark_red">#FF1100</color>
 </resources>

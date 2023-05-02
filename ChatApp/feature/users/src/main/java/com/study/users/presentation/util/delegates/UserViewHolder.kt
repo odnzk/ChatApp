@@ -2,10 +2,11 @@ package com.study.users.presentation.util.delegates
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.study.components.extensions.loadFromUrl
+import com.study.components.extension.loadFromUrl
 import com.study.components.recycler.shimmer.ShimmerItemViewHolder
 import com.study.users.databinding.ItemUserBinding
 import com.study.users.presentation.model.UiUser
+import com.study.ui.R as CoreR
 
 internal class UserViewHolder(
     private val binding: ItemUserBinding,
@@ -14,7 +15,11 @@ internal class UserViewHolder(
 
     override fun showContent(data: UiUser) {
         with(binding) {
-            itemUserIvAvatar.loadFromUrl(data.avatarUrl)
+            if (data.isBot && data.avatarUrl == null) {
+                itemUserIvAvatar.setImageResource(CoreR.drawable.ic_bot)
+            } else if (data.avatarUrl != null) {
+                itemUserIvAvatar.loadFromUrl(data.avatarUrl)
+            }
             itemUserTvEmail.text = data.email
             itemUserTvUsername.text = data.name
             itemUserIvAvatar.status = data.presence

@@ -38,11 +38,15 @@ android {
 dependencies {
     implementation(libs.androidx.core)
     implementation(libs.coroutines.core)
+    // DI
+    implementation(libs.dagger2)
+    kapt(libs.dagger2.compiler)
+    // Storage
     implementation(libs.room)
     implementation(libs.room.pagination)
     implementation(libs.room.ktx)
     kapt(libs.room.compiler)
-    implementation(libs.dagger2)
-    kapt(libs.dagger2.compiler)
+    // Additional
     implementation(libs.pagination)
+    implementation(libs.timber)
 }

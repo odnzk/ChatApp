@@ -7,6 +7,8 @@ import android.graphics.Path
 import android.graphics.Region
 import android.os.Build
 import android.util.AttributeSet
+import com.google.android.material.R
+import com.google.android.material.color.MaterialColors
 import com.google.android.material.imageview.ShapeableImageView
 import com.study.components.model.UserPresenceStatus
 import java.lang.Integer.min
@@ -23,7 +25,11 @@ class AvatarImageView @JvmOverloads constructor(
     private val activeColor = getColor(UserPresenceStatus.ACTIVE)
     private val idleColor = getColor(UserPresenceStatus.IDLE)
     private val offlineColor = getColor(UserPresenceStatus.OFFLINE)
+    private val botColor = getColor(UserPresenceStatus.BOT)
     private var circlePaint: Paint = Paint()
+    private val initColor = MaterialColors.getColor(
+        context, R.attr.backgroundColor, context.getColor(com.study.ui.R.color.dark_nero)
+    )
     var status: UserPresenceStatus? = null
         set(value) {
             field = value
@@ -31,8 +37,9 @@ class AvatarImageView @JvmOverloads constructor(
                 UserPresenceStatus.ACTIVE -> activeColor
                 UserPresenceStatus.IDLE -> idleColor
                 UserPresenceStatus.OFFLINE -> offlineColor
-                else -> null
-            }?.let { circlePaint.color = it }
+                UserPresenceStatus.BOT -> botColor
+                else -> initColor
+            }.also { circlePaint.color = it }
             invalidate()
         }
 
