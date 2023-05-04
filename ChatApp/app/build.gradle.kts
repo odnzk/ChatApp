@@ -60,7 +60,6 @@ dependencies {
     implementation(libs.fragment.ktx)
     debugImplementation(libs.leak.canary)
     implementation(libs.timber)
-    implementation(libs.retrofit)
     implementation(libs.dagger2)
     kapt(libs.dagger2.compiler)
 

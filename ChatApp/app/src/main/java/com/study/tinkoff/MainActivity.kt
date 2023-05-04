@@ -11,8 +11,8 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.study.common.extensions.fastLazy
-import com.study.components.extensions.createStoreHolder
+import com.study.common.extension.fastLazy
+import com.study.components.extension.createStoreHolder
 import com.study.tinkoff.databinding.ActivityMainBinding
 import com.study.tinkoff.elm.MainActor
 import com.study.tinkoff.elm.MainEffect
@@ -24,9 +24,9 @@ import vivid.money.elmslie.android.storeholder.StoreHolder
 import vivid.money.elmslie.core.store.Store
 import javax.inject.Inject
 import com.study.channels.R as ChannelsR
+import com.study.chat.R as ChatR
 import com.study.profile.R as ProfileR
 import com.study.users.R as UsersR
-
 
 class MainActivity : ElmActivity<MainEvent, MainEffect, MainState>() {
     private lateinit var binding: ActivityMainBinding
@@ -41,7 +41,6 @@ class MainActivity : ElmActivity<MainEvent, MainEffect, MainState>() {
     override val storeHolder: StoreHolder<MainEvent, MainEffect, MainState> by fastLazy {
         createStoreHolder(mainStore)
     }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         (applicationContext as ChatApp).appComponent.inject(this)
@@ -84,9 +83,9 @@ class MainActivity : ElmActivity<MainEvent, MainEffect, MainState>() {
             topLevelDestinationIds = setOf(
                 ProfileR.id.profileFragment,
                 ChannelsR.id.holderChannelsFragment,
-                UsersR.id.usersFragment
-            ),
-            fallbackOnNavigateUpListener = ::onSupportNavigateUp
+                UsersR.id.usersFragment,
+                ChatR.id.chatFragment
+            ), fallbackOnNavigateUpListener = ::onSupportNavigateUp
         )
         setSupportActionBar(binding.activityMainToolbar)
         setupActionBarWithNavController(navController, appBarConfiguration)

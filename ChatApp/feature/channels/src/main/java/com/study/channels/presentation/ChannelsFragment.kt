@@ -22,14 +22,14 @@ import com.study.channels.presentation.util.mapper.toChannelsList
 import com.study.channels.presentation.util.model.UiChannelShimmer
 import com.study.channels.presentation.util.navigation.navigateToChannelTopic
 import com.study.channels.presentation.util.toErrorMessage
-import com.study.common.extensions.fastLazy
+import com.study.common.extension.fastLazy
+import com.study.common.search.NothingFoundForThisQueryException
 import com.study.components.databinding.FragmentRecyclerViewBinding
-import com.study.components.extensions.NothingFoundForThisQueryException
-import com.study.components.extensions.collectFlowSafely
-import com.study.components.extensions.createStoreHolder
-import com.study.components.extensions.delegatesToList
-import com.study.components.extensions.safeGetParcelable
-import com.study.components.extensions.showErrorSnackbar
+import com.study.components.extension.collectFlowSafely
+import com.study.components.extension.createStoreHolder
+import com.study.components.extension.delegatesToList
+import com.study.components.extension.safeGetParcelable
+import com.study.components.extension.showErrorSnackbar
 import com.study.components.recycler.delegates.GeneralAdapterDelegate
 import com.study.components.view.ScreenStateView.ViewState
 import kotlinx.coroutines.flow.Flow
@@ -117,13 +117,11 @@ internal class ChannelsFragment : ElmFragment<ChannelsEvent, ChannelsEffect, Cha
 
     private fun initUI() {
         channelsAdapter =
-            GeneralAdapterDelegate(delegatesToList(ChannelDelegate(onChannelClick = { channelId ->
-                store.accept(ChannelsEvent.Ui.ManageChannelTopics(channelId))
+            GeneralAdapterDelegate(delegatesToList(ChannelDelegate(onChannelClick = { channelId, isCollapsed ->
+                store.accept(ChannelsEvent.Ui.ManageChannelTopics(channelId, isCollapsed))
             }), ChannelTopicDelegate(onTopicClick = { channelTitle, topicTitle ->
                 navigateToChannelTopic(channelTitle = channelTitle, topicTitle = topicTitle)
-            })
-            )
-            )
+            })))
         with(binding) {
             screenStateView.setState(ViewState.Success)
             fragmentRvDataList.run {

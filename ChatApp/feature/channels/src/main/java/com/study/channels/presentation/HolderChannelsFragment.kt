@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.tabs.TabLayoutMediator
 import com.study.channels.databinding.FragmentChannelsBinding
 import com.study.channels.presentation.util.pager.ChannelFragmentFactory
-import com.study.components.PagerAdapter
+import com.study.components.util.PagerAdapter
 import com.study.ui.R
 
 internal class HolderChannelsFragment : Fragment() {
@@ -47,9 +47,9 @@ internal class HolderChannelsFragment : Fragment() {
             ChannelFragmentFactory()
         )
         with(binding) {
-            fragmentChannelsHolderViewPagerChannels.adapter = pagerAdapter
+            fragmentChannelsVp.adapter = pagerAdapter
             pagerMediator = TabLayoutMediator(
-                fragmentChannelsHolderTabLayoutChannels, fragmentChannelsHolderViewPagerChannels
+                fragmentChannelsTabLayout, fragmentChannelsVp
             ) { tab, position ->
                 tab.text = tabs[position]
             }

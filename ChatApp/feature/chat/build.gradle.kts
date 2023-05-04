@@ -7,16 +7,19 @@ plugins {
 }
 
 android {
-    namespace = "com.study.feature"
+    namespace = "com.study.chat"
     compileSdk = 33
 
     defaultConfig {
         minSdk = 24
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunnerArguments(mapOf("clearPackageData" to "true"))
         consumerProguardFiles("consumer-rules.pro")
     }
-
+    testOptions {
+        execution = "ANDROIDX_TEST_ORCHESTRATOR"
+    }
     @Suppress("UnstableApiUsage")
     buildTypes {
         release {
@@ -44,16 +47,32 @@ dependencies {
     implementation(libs.androidx.material)
     implementation(libs.androidx.constraintlayout)
 
-    implementation(libs.fragment.ktx)
-    implementation(libs.retrofit)
-    implementation(libs.pagination)
-    implementation(libs.timber)
-
+    // Architecture
+    implementation(libs.bundles.elmslie)
+    // DI
     implementation(libs.dagger2)
     kapt(libs.dagger2.compiler)
-
-    implementation(libs.bundles.elmslie)
+    // Additional
+    implementation(libs.fragment.ktx)
+    implementation(libs.pagination)
     implementation(libs.bundles.navigation)
+    implementation(libs.timber)
+    // Testing
+    testImplementation(libs.junit)
+    testImplementation(libs.test.core)
+    androidTestImplementation(libs.junit.android)
+    androidTestImplementation(libs.kaspresso)
+    debugImplementation(libs.test.fragments)
+    androidTestImplementation(libs.okhttp.mockserver)
+    androidTestImplementation(libs.test.coroutines)
+    androidTestImplementation(libs.test.runner)
+    androidTestUtil(libs.test.orhestrator)
+    androidTestImplementation(libs.room.ktx)
+    androidTestImplementation(libs.room)
+    androidTestImplementation(libs.room.pagination)
+    androidTestImplementation(libs.pagination)
+    kaptAndroidTest(libs.room.compiler)
+    debugImplementation(libs.test.monitor)
 
     implementation(project(":core:common"))
     implementation(project(":core:ui"))

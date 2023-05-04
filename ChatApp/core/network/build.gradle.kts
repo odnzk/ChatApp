@@ -37,14 +37,17 @@ android {
 dependencies {
     implementation(libs.androidx.core)
 
+    // DI
+    implementation(libs.dagger2)
+    kapt(libs.dagger2.compiler)
+    // Network
     implementation(libs.retrofit)
     implementation(libs.okHttp)
     implementation(libs.httpLoggigInterceptor)
-    implementation(libs.coroutines.core)
     implementation(libs.retrofit.kotlinx.serialization)
     implementation(libs.kotlinx.serialization.gson)
-    implementation(libs.dagger2)
-    kapt(libs.dagger2.compiler)
+    // Additional
+    implementation(libs.coroutines.core)
     implementation(libs.timber)
 
     implementation(project(":core:common"))

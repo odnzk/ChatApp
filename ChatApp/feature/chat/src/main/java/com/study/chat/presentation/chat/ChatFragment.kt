@@ -14,6 +14,8 @@ import androidx.lifecycle.get
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.study.chat.R
+import com.study.chat.databinding.FragmentChatBinding
 import com.study.chat.di.ChatComponentViewModel
 import com.study.chat.domain.model.Emoji
 import com.study.chat.presentation.chat.elm.ChatEffect
@@ -24,15 +26,16 @@ import com.study.chat.presentation.chat.util.delegates.message.MessageDelegate
 import com.study.chat.presentation.chat.util.model.UiMessage
 import com.study.chat.presentation.util.navigation.navigateToEmojiListFragment
 import com.study.chat.presentation.util.toErrorMessage
-import com.study.common.extensions.fastLazy
-import com.study.components.extensions.collectFlowSafely
-import com.study.components.extensions.createStoreHolder
-import com.study.components.extensions.delegatesToList
-import com.study.components.extensions.safeGetParcelable
+import com.study.common.extension.fastLazy
+import com.study.components.extension.collectFlowSafely
+import com.study.components.extension.createStoreHolder
+import com.study.components.extension.delegatesToList
+import com.study.components.extension.safeGetParcelable
+import com.study.components.extension.showErrorSnackbar
 import com.study.components.recycler.delegates.GeneralPaginationAdapterDelegate
 import com.study.components.view.ScreenStateView.ViewState
-import com.study.feature.R
-import com.study.feature.databinding.FragmentChatBinding
+import com.study.ui.NavConstants.CHANNEL_TITLE_KEY
+import com.study.ui.NavConstants.TOPIC_TITLE_KEY
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import vivid.money.elmslie.android.base.ElmFragment
@@ -45,14 +48,13 @@ internal class ChatFragment : ElmFragment<ChatEvent, ChatEffect, ChatState>() {
     private var _binding: FragmentChatBinding? = null
     private var adapter: GeneralPaginationAdapterDelegate? = null
 
-    private val selectedChannelTitle: String by fastLazy {
-        arguments?.getString("channelTitle") ?: error("Invalid channel title")
+    private val channelTitle: String by fastLazy {
+        arguments?.getString(CHANNEL_TITLE_KEY) ?: error("Invalid channel title")
     }
-    private val selectedTopicTitle: String by fastLazy {
-        arguments?.getString("topicTitle") ?: error("Invalid topic title")
+    private val topicTitle: String by fastLazy {
+        arguments?.getString(TOPIC_TITLE_KEY) ?: error("Invalid topic title")
     }
-    override val initEvent: ChatEvent
-        get() = ChatEvent.Ui.Init(selectedChannelTitle, selectedTopicTitle)
+    override val initEvent: ChatEvent get() = ChatEvent.Ui.Init(channelTitle, topicTitle)
 
     @Inject
     lateinit var chatStore: Store<ChatEvent, ChatEffect, ChatState>
@@ -65,8 +67,7 @@ internal class ChatFragment : ElmFragment<ChatEvent, ChatEffect, ChatState>() {
     }
 
     override fun onAttach(context: Context) {
-        ViewModelProvider(this).get<ChatComponentViewModel>()
-            .chatComponent.inject(this)
+        ViewModelProvider(this).get<ChatComponentViewModel>().chatComponent.inject(this)
         super.onAttach(context)
     }
 
@@ -84,6 +85,11 @@ internal class ChatFragment : ElmFragment<ChatEvent, ChatEffect, ChatState>() {
         observeSearchQuery()
     }
 
+    override fun onStop() {
+        super.onStop()
+        store.accept(ChatEvent.Ui.RemoveIrrelevantMessages(channelTitle, topicTitle))
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         clearFragmentResultListener(SELECTED_EMOJI_RESULT_KEY)
@@ -95,7 +101,10 @@ internal class ChatFragment : ElmFragment<ChatEvent, ChatEffect, ChatState>() {
         when {
             state.isLoading -> binding.screenStateView.setState(ViewState.Loading)
             else -> {
-                binding.screenStateView.setState(ViewState.Success)
+                with(binding) {
+                    screenStateView.setState(ViewState.Success)
+                    fragmentChatRvChat.isVisible = true
+                }
                 lifecycleScope.launch {
                     adapter?.submitData(state.messages)
                 }
@@ -106,11 +115,7 @@ internal class ChatFragment : ElmFragment<ChatEvent, ChatEffect, ChatState>() {
     override fun handleEffect(effect: ChatEffect) {
         when (effect) {
             is ChatEffect.ShowWarning -> {
-                with(binding) {
-                    screenStateView.setState(ViewState.Error(effect.error.toErrorMessage()))
-                    fragmentChatRvChat.isVisible = false
-                    fragmentChatViewInputMessage.isVisible = false
-                }
+                showErrorSnackbar(binding.root, effect.error, Throwable::toErrorMessage)
             }
         }
     }
@@ -125,12 +130,23 @@ internal class ChatFragment : ElmFragment<ChatEvent, ChatEffect, ChatState>() {
             }
         }
         adapter?.addLoadStateListener { combinedState ->
-            val screenState = when (val state = combinedState.refresh) {
-                LoadState.Loading -> ViewState.Loading
-                is LoadState.NotLoading -> ViewState.Success
-                is LoadState.Error -> ViewState.Error(state.error.toErrorMessage())
+            when (val state = combinedState.refresh) {
+                LoadState.Loading -> binding.screenStateView.setState(ViewState.Loading)
+                is LoadState.NotLoading -> with(binding) {
+                    screenStateView.setState(ViewState.Success)
+                    fragmentChatRvChat.isVisible = true
+                }
+                is LoadState.Error ->
+                    if (requireNotNull(adapter).itemCount > 0) {
+                        binding.screenStateView.setState(ViewState.Success)
+                        showErrorSnackbar(binding.root, state.error, Throwable::toErrorMessage)
+                    } else
+                        with(binding) {
+                            fragmentChatRvChat.isVisible = false
+                            screenStateView.setState(ViewState.Error(state.error.toErrorMessage()))
+                        }
+
             }
-            binding.screenStateView.setState(screenState)
         }
     }
 
@@ -152,8 +168,7 @@ internal class ChatFragment : ElmFragment<ChatEvent, ChatEffect, ChatState>() {
                 adapter = this@ChatFragment.adapter
                 layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true)
             }
-            fragmentChatTvTopicTitle.text =
-                getString(R.string.channel_topic_title, selectedTopicTitle)
+            fragmentChatTvTopicTitle.text = getString(R.string.channel_topic_title, topicTitle)
         }
     }
 

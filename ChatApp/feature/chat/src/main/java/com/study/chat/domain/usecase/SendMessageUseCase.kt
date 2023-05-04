@@ -2,6 +2,7 @@ package com.study.chat.domain.usecase
 
 import com.study.chat.domain.model.OutcomeMessage
 import com.study.chat.domain.repository.MessageRepository
+import com.study.network.model.request.message.MessageType
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -19,7 +20,7 @@ class SendMessageUseCase @Inject constructor(
             channelTitle = channelTitle,
             topicTitle = topicTitle,
             content = messageContent,
-            type = com.study.network.model.request.message.MessageType.STREAM
+            type = MessageType.STREAM
         )
         repository.sendMessage(message)
     }

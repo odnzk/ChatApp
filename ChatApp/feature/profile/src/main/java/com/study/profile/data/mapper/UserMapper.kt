@@ -10,7 +10,8 @@ internal fun DetailedUserDto.toDetailedUser(): UserDetailed = UserDetailed(
     id = requireNotNull(userId),
     name = requireNotNull(fullName),
     email = requireNotNull(email),
-    avatarUrl = requireNotNull(avatarUrl),
+    avatarUrl = avatarUrl,
+    isBot = requireNotNull(isBot),
     isActive = requireNotNull(isActive)
 )
 

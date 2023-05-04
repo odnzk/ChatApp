@@ -6,7 +6,7 @@ import com.study.channels.presentation.util.model.UiChannel
 import com.study.components.recycler.delegates.Delegate
 import com.study.components.recycler.shimmer.ShimmerItem
 
-internal class ChannelDelegate(onChannelClick: ((channelId: Int) -> Unit)?) :
+internal class ChannelDelegate(onChannelClick: ((channelId: Int, isCollapsed: Boolean) -> Unit)?) :
     Delegate<ChannelViewHolder, ShimmerItem<UiChannel>>(
         isType = { it is ShimmerItem<*> },
         viewHolderCreator = { ChannelViewHolder.create(it, onChannelClick = onChannelClick) },
@@ -33,8 +33,7 @@ internal class ChannelDelegate(onChannelClick: ((channelId: Int) -> Unit)?) :
                 val oldContent = oldItem.content()
                 val newContent = newItem.content()
                 if (oldContent == null || newContent == null) return true
-                return oldContent.title == newContent.title
-                        && oldContent.isCollapsed == newContent.isCollapsed
+                return oldContent == newContent
             }
 
             override fun getChangePayload(

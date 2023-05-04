@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="SearchToolbarTheme" parent="ThemeOverlay.AppCompat.Dark">
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:textColorSecondary">@color/white</item>
+        <item name="android:background">@color/darkest_nero</item>
+        <item name="minHeight">?android:attr/actionBarSize</item>
+    </style>
+
+    <style name="PrimaryBottomNavigationMenu">
+        <item name="android:background">@color/darkest_nero</item>
+        <item name="itemIconTint">@color/bnv_item_color_selector</item>
+        <item name="itemTextColor">@color/bnv_item_color_selector</item>
+    </style>
+
+    <style name="PrimaryTextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
+        <item name="boxCornerRadiusBottomEnd">@dimen/text_input_layout_corner_radius</item>
+        <item name="boxCornerRadiusBottomStart">@dimen/text_input_layout_corner_radius</item>
+        <item name="boxBackgroundColor">@color/nero</item>
+        <item name="boxCornerRadiusTopEnd">@dimen/text_input_layout_corner_radius</item>
+        <item name="boxCornerRadiusTopStart">@dimen/text_input_layout_corner_radius</item>
+    </style>
+</resources>

@@ -41,14 +41,16 @@ dependencies {
     implementation(libs.androidx.material)
     implementation(libs.androidx.constraintlayout)
 
+    // Network
     implementation(libs.coil)
-    implementation(libs.shimmers)
+    // Additional
     implementation(libs.fragment.ktx)
-    implementation(libs.timber)
     implementation(libs.pagination)
+    implementation(libs.shimmers)
     implementation(libs.bundles.elmslie)
-    implementation(libs.retrofit)
+    implementation(libs.timber)
 
     implementation(project(":core:ui"))
+    implementation(project(":core:network"))
     implementation(project(":core:common"))
 }

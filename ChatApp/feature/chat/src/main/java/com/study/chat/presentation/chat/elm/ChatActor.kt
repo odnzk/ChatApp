@@ -1,23 +1,29 @@
 package com.study.chat.presentation.chat.elm
 
 import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.study.auth.api.UserNotAuthorizedException
 import com.study.chat.domain.exceptions.SynchronizationException
 import com.study.chat.domain.model.Emoji
 import com.study.chat.domain.usecase.GetAllMessagesUseCase
 import com.study.chat.domain.usecase.GetCurrentUserIdUseCase
+import com.study.chat.domain.usecase.RemoveIrrelevantMessagesUseCase
 import com.study.chat.domain.usecase.SearchMessagesUseCase
 import com.study.chat.domain.usecase.SendMessageUseCase
 import com.study.chat.domain.usecase.UpdateReactionUseCase
 import com.study.chat.presentation.chat.elm.ChatEvent.Internal
-import com.study.chat.presentation.chat.util.mapper.toUiMessageWithDateGrouping
+import com.study.chat.presentation.chat.util.mapper.groupByDate
+import com.study.chat.presentation.chat.util.mapper.toUiMessages
 import com.study.chat.presentation.chat.util.model.UiMessage
 import com.study.chat.presentation.chat.util.model.UiReaction
-import com.study.common.extensions.findWithIndex
-import com.study.common.extensions.isSameDay
-import com.study.common.extensions.toFlow
-import com.study.common.extensions.update
+import com.study.chat.presentation.util.toEmojiString
+import com.study.common.extension.findWithIndex
+import com.study.common.extension.isSameDay
+import com.study.common.extension.toFlow
+import com.study.common.extension.update
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -32,6 +38,8 @@ internal class ChatActor @Inject constructor(
     private val updateReactionUseCase: UpdateReactionUseCase,
     private val searchMessagesUseCase: SearchMessagesUseCase,
     private val getCurrentUserId: GetCurrentUserIdUseCase,
+    private val removeIrrelevantMessages: RemoveIrrelevantMessagesUseCase,
+    private val chatScope: CoroutineScope,
     private val dispatcher: CoroutineDispatcher
 ) : Actor<ChatCommand, Internal> {
 
@@ -40,7 +48,8 @@ internal class ChatActor @Inject constructor(
             command.channelTitle,
             command.topicTitle
         )
-            .map { it.toUiMessageWithDateGrouping(command.userId) }
+            .cachedIn(chatScope)
+            .map { it.toUiMessages(command.userId).groupByDate() }
             .mapEvents(Internal::LoadingSuccess, Internal::LoadingError)
 
         is ChatCommand.SearchMessages -> searchMessagesUseCase(
@@ -48,7 +57,7 @@ internal class ChatActor @Inject constructor(
             channelTitle = command.channelTitle,
             query = command.query
         )
-            .map { it.toUiMessageWithDateGrouping(command.userId) }
+            .map { it.toUiMessages(command.userId).groupByDate() }
             .mapEvents(Internal::LoadingSuccess, Internal::LoadingError)
 
         is ChatCommand.SendMessage -> flow {
@@ -59,7 +68,9 @@ internal class ChatActor @Inject constructor(
                     command.channelTitle, command.messageContent, command.topicTitle
                 )
             }
-        }.flowOn(dispatcher).mapEvents(::mapToLoadingSuccess, Internal::LoadingError)
+        }
+            .flowOn(dispatcher)
+            .mapEvents(::mapToLoadingSuccess, Internal::LoadingError)
 
         is ChatCommand.UpdateReaction -> flow {
             if (command.message.id == UiMessage.NOT_YET_SYNCHRONIZED_ID) throw SynchronizationException()
@@ -78,10 +89,16 @@ internal class ChatActor @Inject constructor(
                 )
             }
         }.mapEvents(::mapToLoadingSuccess, Internal::LoadingError)
-        ChatCommand.GetCurrentUserId ->
-            toFlow(dispatcher) { getCurrentUserId() }
-                .mapEvents(Internal::GetCurrentUserIdSuccess,
+        ChatCommand.GetCurrentUserId -> {
+            toFlow { getCurrentUserId() }
+                .mapEvents(
+                    eventMapper = Internal::GetCurrentUserIdSuccess,
                     errorMapper = { Internal.LoadingError(UserNotAuthorizedException()) })
+        }
+        is ChatCommand.RemoveIrrelevantMessages ->
+            toFlow(dispatcher + Job()) {
+                removeIrrelevantMessages(command.channelTitle, command.topicTitle)
+            }.mapEvents(errorMapper = Internal::LoadingError)
     }
 
     private fun addMessageLocally(message: UiMessage.MeMessage, list: List<Any>): List<Any> {
@@ -113,7 +130,15 @@ internal class ChatActor @Inject constructor(
                         reaction.copy(isSelected = true, count = reaction.count + 1)
                     )
                 } else {
-                    add(UiReaction(message.id, emoji, 1, true))
+                    add(
+                        UiReaction(
+                            messageId = message.id,
+                            emojiUnicode = emoji.code.toEmojiString(),
+                            emoji = emoji,
+                            count = 1,
+                            isSelected = true
+                        )
+                    )
                 }
             }
         }

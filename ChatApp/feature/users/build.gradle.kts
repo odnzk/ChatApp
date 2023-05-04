@@ -42,14 +42,16 @@ dependencies {
     implementation(libs.androidx.material)
     implementation(libs.androidx.constraintlayout)
 
-    implementation(libs.fragment.ktx)
-    implementation(libs.shimmers)
-    implementation(libs.timber)
+    // Architecture
+    implementation(libs.bundles.elmslie)
+    // DI
     implementation(libs.dagger2)
     kapt(libs.dagger2.compiler)
-
-    implementation(libs.bundles.elmslie)
+    // Additional
+    implementation(libs.fragment.ktx)
+    implementation(libs.shimmers)
     implementation(libs.bundles.navigation)
+    implementation(libs.timber)
 
     implementation(project(":core:components"))
     implementation(project(":core:common"))

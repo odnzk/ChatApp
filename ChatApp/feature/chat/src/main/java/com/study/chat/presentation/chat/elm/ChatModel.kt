@@ -38,6 +38,8 @@ internal sealed interface ChatCommand {
     ) : ChatCommand
 
     object GetCurrentUserId : ChatCommand
+
+    class RemoveIrrelevantMessages(val channelTitle: String, val topicTitle: String) : ChatCommand
 }
 
 internal sealed interface ChatEffect {
@@ -56,6 +58,7 @@ internal sealed interface ChatEvent {
         ) : Ui
 
         class Search(val query: String) : Ui
+        class RemoveIrrelevantMessages(val channelTitle: String, val topicTitle: String) : Ui
     }
 
     sealed interface Internal : ChatEvent {

@@ -9,5 +9,7 @@ class GetCurrentUserIdUseCase @Inject constructor(
     private val repository: UserAuthRepository,
     private val dispatcher: CoroutineDispatcher
 ) {
-    suspend operator fun invoke(): Int = withContext(dispatcher) { repository.getCurrentUserId() }
+    suspend operator fun invoke(): Int = withContext(dispatcher) {
+        repository.getCurrentUserId()
+    }
 }

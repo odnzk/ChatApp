@@ -1,6 +1,6 @@
 package com.study.users.di
 
-import com.study.common.FeatureScope
+import com.study.common.di.FeatureScope
 import com.study.users.presentation.UsersFragment
 import dagger.Component
 

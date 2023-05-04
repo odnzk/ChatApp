@@ -3,8 +3,8 @@ package com.study.channels.presentation.util
 import com.study.channels.R
 import com.study.channels.domain.exceptions.ChannelDoesNotHaveTopicsException
 import com.study.channels.domain.exceptions.ChannelNotFoundException
-import com.study.components.extensions.UiError
-import com.study.components.extensions.toBaseErrorMessage
+import com.study.components.extension.toBaseErrorMessage
+import com.study.components.model.UiError
 
 internal fun Throwable.toErrorMessage(): UiError = when (this) {
     is ChannelNotFoundException -> UiError(

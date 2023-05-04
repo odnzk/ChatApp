@@ -18,15 +18,16 @@ import androidx.core.view.marginLeft
 import androidx.core.view.marginRight
 import androidx.core.view.marginTop
 import com.google.android.material.color.MaterialColors
+import com.study.chat.R
 import com.study.chat.domain.model.Emoji
 import com.study.chat.presentation.chat.util.mapper.toMessageEmojiViews
 import com.study.chat.presentation.chat.util.model.UiMessage
 import com.study.chat.presentation.chat.util.model.UiReaction
-import com.study.components.extensions.dp
-import com.study.components.extensions.loadFromUrl
+import com.study.components.extension.dp
+import com.study.components.extension.loadFromUrl
 import com.study.components.view.FlexBoxLayout
-import com.study.feature.R
 import java.lang.Integer.max
+import com.google.android.material.R as MaterialR
 import com.study.ui.R as CoreResources
 
 
@@ -43,7 +44,7 @@ internal class MessageView @JvmOverloads constructor(
     }
     private val colorDark = MaterialColors.getColor(
         context,
-        com.google.android.material.R.attr.backgroundColor,
+        MaterialR.attr.backgroundColor,
         context.getColor(CoreResources.color.dark_nero)
     )
     private val colorAccent = MaterialColors.getColor(

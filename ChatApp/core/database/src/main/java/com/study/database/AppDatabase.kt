@@ -3,7 +3,6 @@ package com.study.database
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.study.database.converter.CalendarConverter
 import com.study.database.dao.ChannelDao
 import com.study.database.dao.ChannelTopicDao
 import com.study.database.dao.MessageDao
@@ -12,6 +11,7 @@ import com.study.database.entity.ChannelEntity
 import com.study.database.entity.ChannelTopicEntity
 import com.study.database.entity.MessageEntity
 import com.study.database.entity.ReactionEntity
+import com.study.database.util.CalendarConverter
 
 @Database(
     entities = [
@@ -20,6 +20,7 @@ import com.study.database.entity.ReactionEntity
         MessageEntity::class,
         ReactionEntity::class
     ],
+    exportSchema = false,
     version = 1
 )
 @TypeConverters(CalendarConverter::class)

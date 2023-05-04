@@ -3,10 +3,10 @@ package com.study.chat.data.mapper
 import com.study.chat.domain.model.Emoji
 import com.study.chat.domain.model.IncomeMessage
 import com.study.chat.domain.model.Reaction
-import com.study.common.extensions.unixToCalendar
+import com.study.common.extension.unixToCalendar
 import com.study.database.entity.MessageEntity
 import com.study.database.entity.ReactionEntity
-import com.study.database.tuple.MessageWithReactionsTuple
+import com.study.database.entity.tuple.MessageWithReactionsTuple
 import com.study.network.model.response.message.AllMessagesResponse
 import com.study.network.model.response.message.MessageDto
 import com.study.network.model.response.message.ReactionDto
@@ -27,19 +27,6 @@ internal fun AllMessagesResponse.toMessageEntities(
     messages?.filterNotNull()?.map { it.toMessageEntity(channelTitle, topicTitle) }
         ?.sortedByDescending { it.calendar }
         ?: emptyList()
-
-internal fun MessageDto.toIncomeMessage(): IncomeMessage {
-    val id = requireNotNull(id)
-    return IncomeMessage(
-        id = id,
-        content = requireNotNull(content),
-        calendar = requireNotNull(timestamp).unixToCalendar(),
-        reactions = reactions.toReactionList(id),
-        senderName = senderFullName,
-        senderAvatarUrl = avatarUrl,
-        senderId = requireNotNull(senderId)
-    )
-}
 
 internal fun MessageDto.toMessageEntity(channelTitle: String, topicTitle: String): MessageEntity {
     val id = requireNotNull(id)

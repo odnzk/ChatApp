@@ -78,6 +78,9 @@ internal class ChatReducer @Inject constructor() :
                 )
             }
         }
+        is ChatEvent.Ui.RemoveIrrelevantMessages -> commands {
+            +ChatCommand.RemoveIrrelevantMessages(event.channelTitle, event.topicTitle)
+        }
     }
 
     private fun checkMessagesLoaded(currList: List<Any?>): List<Any> {

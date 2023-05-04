@@ -35,11 +35,11 @@ internal class MessageDelegate(
         override fun areContentsTheSame(oldItem: UiMessage, newItem: UiMessage): Boolean {
             return when (oldItem) {
                 is UiMessage.ChatMessage -> {
-                    (newItem as UiMessage.ChatMessage).let { newItem ->
-                        oldItem.content == newItem.content
-                                && oldItem.senderAvatarUrl == newItem.senderAvatarUrl
-                                && oldItem.senderName == newItem.senderName
-                                && oldItem.reactions == newItem.reactions
+                    (newItem as UiMessage.ChatMessage).let { new ->
+                        oldItem.content == new.content
+                                && oldItem.senderAvatarUrl == new.senderAvatarUrl
+                                && oldItem.senderName == new.senderName
+                                && oldItem.reactions == new.reactions
                     }
                 }
                 is UiMessage.MeMessage -> oldItem.content == newItem.content

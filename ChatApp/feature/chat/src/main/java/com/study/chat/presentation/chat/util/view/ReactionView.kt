@@ -12,10 +12,9 @@ import androidx.core.content.withStyledAttributes
 import androidx.core.graphics.ColorUtils
 import androidx.core.view.setPadding
 import com.google.android.material.color.MaterialColors
-import com.study.common.extensions.toEmojiString
-import com.study.components.extensions.dp
-import com.study.components.extensions.sp
-import com.study.feature.R
+import com.study.chat.R
+import com.study.components.extension.dp
+import com.study.components.extension.sp
 import com.google.android.material.R as MaterialR
 import com.study.ui.R as CoreR
 
@@ -59,7 +58,7 @@ internal class ReactionView @JvmOverloads constructor(
     }
 
     fun setEmoji(emojiUnicode: String, count: Int = DEFAULT_EMOJI_COUNT, isSelected: Boolean) {
-        textToDraw = toEmoji(emojiUnicode.toEmojiString(), count)
+        textToDraw = toEmoji(emojiUnicode, count)
         this.isSelected = isSelected
         manageBackgroundColor(isSelected)
         invalidate()

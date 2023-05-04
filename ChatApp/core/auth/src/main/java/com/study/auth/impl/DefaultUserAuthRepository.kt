@@ -32,9 +32,7 @@ internal class DefaultUserAuthRepository @Inject constructor(
     }
 
     private suspend fun getLocallySaved(): Int? =
-        context.dataStore.data.map { preferences ->
-            preferences[USER_ID]
-        }.first()
+        context.dataStore.data.map { preferences -> preferences[USER_ID] }.first()
 
 
     private suspend fun saveLocally(userId: Int) {

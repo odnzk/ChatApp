@@ -7,7 +7,7 @@ import androidx.paging.RemoteMediator
 import com.study.chat.data.mapper.getAllReactionEntities
 import com.study.chat.data.mapper.toMessageEntities
 import com.study.database.dataSource.MessageLocalDataSource
-import com.study.database.tuple.MessageWithReactionsTuple
+import com.study.database.entity.tuple.MessageWithReactionsTuple
 import com.study.network.dataSource.MessageRemoteDataSource
 import com.study.network.model.request.message.MessageNarrow
 import com.study.network.model.request.message.MessageNarrowList
@@ -16,8 +16,6 @@ import com.study.network.model.request.message.MessagesAnchor
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
-import retrofit2.HttpException
-import java.io.IOException
 
 @OptIn(ExperimentalPagingApi::class)
 class MessagesPagingMediator @AssistedInject constructor(
@@ -40,18 +38,18 @@ class MessagesPagingMediator @AssistedInject constructor(
     override suspend fun initialize(): InitializeAction = InitializeAction.LAUNCH_INITIAL_REFRESH
 
     override suspend fun load(
-        loadType: LoadType, state: PagingState<Int, MessageWithReactionsTuple>
+        loadType: LoadType,
+        state: PagingState<Int, MessageWithReactionsTuple>
     ): MediatorResult {
         val lastItemId: Int = when (loadType) {
             LoadType.REFRESH -> state.lastItemOrNull()?.message?.id ?: DEFAULT_LAST_MESSAGE_ID
-            LoadType.PREPEND -> state.lastItemOrNull()?.message?.id
+            LoadType.PREPEND -> return MediatorResult.Success(true)
+            LoadType.APPEND -> state.lastItemOrNull()?.message?.id
                 ?: return MediatorResult.Success(true)
-            LoadType.APPEND -> state.lastItemOrNull()?.message?.id ?: return MediatorResult.Success(
-                true
-            )
         }
         return try {
             val pageSize = state.config.pageSize
+
             val response = if (lastItemId == DEFAULT_LAST_MESSAGE_ID) {
                 remoteDS.getMessages(
                     anchor = MessagesAnchor.NEWEST,
@@ -68,20 +66,11 @@ class MessagesPagingMediator @AssistedInject constructor(
                 )
             }
             val messages = response.toMessageEntities(channelTitle, topicTitle)
-            val reactions = response.getAllReactionEntities()
-            if (loadType == LoadType.REFRESH) {
-                localDs.clearAndInsertMessages(messages)
-                localDs.clearAndInsertReactions(reactions)
-            } else {
-                localDs.upsertMessages(messages)
-                localDs.upsertReactions(reactions)
-            }
+            localDs.addMessagesWithReactions(messages, response.getAllReactionEntities())
 
-            MediatorResult.Success(messages.isEmpty())
-        } catch (e: IOException) {
-            MediatorResult.Error(e)
-        } catch (e: HttpException) {
-            MediatorResult.Error(e)
+            MediatorResult.Success(messages.size < pageSize)
+        } catch (ex: Exception) {
+            MediatorResult.Error(ex)
         }
     }
 

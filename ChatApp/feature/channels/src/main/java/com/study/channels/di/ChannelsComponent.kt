@@ -1,7 +1,7 @@
 package com.study.channels.di
 
 import com.study.channels.presentation.ChannelsFragment
-import com.study.common.FeatureScope
+import com.study.common.di.FeatureScope
 import dagger.Component
 
 @FeatureScope

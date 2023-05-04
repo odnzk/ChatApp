@@ -8,9 +8,9 @@ import java.util.Calendar
 
 @Entity(
     tableName = "messages",
-    indices = [Index(value = ["topic_title", "channel_title"], unique = true)]
+    indices = [Index(value = ["topic_title", "channel_title"])]
 )
-class MessageEntity(
+data class MessageEntity(
     @PrimaryKey
     @ColumnInfo("id")
     val id: Int,

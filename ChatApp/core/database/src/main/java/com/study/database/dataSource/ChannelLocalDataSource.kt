@@ -19,7 +19,7 @@ class ChannelLocalDataSource @Inject constructor(
     fun getChannels(isSubscribed: Boolean): Flow<List<ChannelEntity>> =
         channelDao.getChannels(isSubscribed)
 
-    suspend fun getChannelTopics(channelId: Int) = topicDao.getTopicsByChannelTitle(channelId)
+    fun getChannelTopics(channelId: Int) = topicDao.getTopicsByChannelTitle(channelId)
 
     suspend fun upsertTopics(topics: List<ChannelTopicEntity>) = topicDao.upsertTopics(topics)
 

@@ -26,10 +26,8 @@ internal class ChannelRepositoryImpl @Inject constructor(
             .map { it.toChannels() }
             .distinctUntilChanged()
 
-    override suspend fun getChannelTopics(channelId: Int): List<ChannelTopic> {
-        val topics = localDS.getChannelTopics(channelId).toChannelTopics()
-        return topics.ifEmpty { remoteDS.getChannelTopics(channelId).toChannelTopics() }
-    }
+    override fun getChannelTopics(channelId: Int): Flow<List<ChannelTopic>> =
+        localDS.getChannelTopics(channelId).map { it.toChannelTopics() }
 
     override suspend fun loadChannels(channelFilter: ChannelFilter) {
         val isSubscribed = channelFilter.isSubscribedOnly()

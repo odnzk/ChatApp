@@ -5,7 +5,7 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.study.chat.domain.model.Emoji
-import com.study.common.extensions.toEmojiString
+import com.study.chat.presentation.util.toEmojiString
 import com.study.ui.R
 
 internal class EmojiViewHolder(
