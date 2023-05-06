@@ -9,9 +9,7 @@ interface ChannelRepository {
     fun getChannels(channelFilter: ChannelFilter): Flow<List<Channel>>
     fun getChannelTopics(channelId: Int): Flow<List<ChannelTopic>>
     suspend fun loadChannels(channelFilter: ChannelFilter)
-
     suspend fun loadChannelTopics(channelId: Int)
-
-
+    suspend fun addChannel(title: String, isHistoryPublic: Boolean)
 }
 

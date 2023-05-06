@@ -1,20 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:theme="@style/Theme.Messenger">
 
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/fragment_channels_tab_layout"
-        style="@style/ChannelTabLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingHorizontal="8dp"
-        android:paddingBottom="24dp" />
-
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/fragment_channels_vp"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/fragment_rv_data_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-</LinearLayout>
+    <com.study.components.view.ScreenStateView
+        android:id="@+id/screen_state_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fragment_channels_btn_add_channel"
+        style="@style/ButtonAddChannel"
+        android:layout_width="@dimen/primary_round_button_size"
+        android:layout_height="@dimen/primary_round_button_size"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/margin_medium"
+        android:contentDescription="@string/content_description_btn_add_channel" />
+</FrameLayout>

@@ -1,4 +1,4 @@
-package com.study.channels.presentation.util.model
+package com.study.channels.presentation.channels.util.model
 
 import com.study.components.recycler.shimmer.ShimmerItem
 

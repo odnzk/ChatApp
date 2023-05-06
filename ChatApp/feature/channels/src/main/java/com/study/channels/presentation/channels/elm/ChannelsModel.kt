@@ -1,7 +1,7 @@
-package com.study.channels.presentation.elm
+package com.study.channels.presentation.channels.elm
 
 import com.study.channels.domain.model.ChannelFilter
-import com.study.channels.presentation.util.model.UiChannelModel
+import com.study.channels.presentation.channels.util.model.UiChannelModel
 
 
 internal data class ChannelsState(

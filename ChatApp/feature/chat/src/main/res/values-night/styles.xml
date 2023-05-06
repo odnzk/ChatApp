@@ -16,12 +16,4 @@
         <item name="chipBackgroundColor">@color/black07</item>
     </style>
 
-    <style name="ChatBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
-        <item name="bottomSheetStyle">@style/ChatBottomSheetStyle</item>
-    </style>
-
-    <style name="ChatBottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
-        <item name="android:background">@color/dark_nero</item>
-    </style>
-
 </resources>

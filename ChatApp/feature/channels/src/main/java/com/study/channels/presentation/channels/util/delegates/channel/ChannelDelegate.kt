@@ -1,8 +1,8 @@
-package com.study.channels.presentation.util.delegates.channel
+package com.study.channels.presentation.channels.util.delegates.channel
 
 import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.DiffUtil.ItemCallback
-import com.study.channels.presentation.util.model.UiChannel
+import com.study.channels.presentation.channels.util.model.UiChannel
 import com.study.components.recycler.delegates.Delegate
 import com.study.components.recycler.shimmer.ShimmerItem
 

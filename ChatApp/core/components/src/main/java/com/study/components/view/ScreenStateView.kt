@@ -47,25 +47,30 @@ class ScreenStateView @JvmOverloads constructor(
 
     fun setState(state: ViewState) {
         when (state) {
-            is ViewState.Error -> {
-                val userError = state.error
-                tvError.text = getString(userError.messageRes)
-                setChildrenVisibility(true)
-                userError.descriptionRes?.let {
-                    tvErrorDescription.text = getString(it)
-                } ?: run { tvErrorDescription.isVisible = false }
-                userError.imageRes?.let {
-                    ivError.setImageResource(it)
-                } ?: run { ivError.isVisible = false }
-                btnTryAgain.isVisible = state.isBtnTryAgainVisible
-                pbLoading.isVisible = false
-            }
+            is ViewState.Error -> setError(state.error, state.isBtnTryAgainVisible)
             ViewState.Loading -> {
                 setChildrenVisibility(false)
                 pbLoading.isVisible = true
             }
             ViewState.Success -> setChildrenVisibility(false)
         }
+    }
+
+    private fun setError(error: UiError, isBtnTryAgainVisible: Boolean = false) {
+        setChildrenVisibility(true)
+        tvError.text = getString(error.messageRes)
+        when {
+            error.descriptionRes != null && error.descriptionArgs != null -> {
+                tvErrorDescription.text =
+                    context.getString(error.descriptionRes, error.descriptionArgs)
+            }
+            error.descriptionRes != null -> tvErrorDescription.text =
+                getString(error.descriptionRes)
+            else -> tvErrorDescription.isVisible = false
+        }
+        error.imageRes?.let { ivError.setImageResource(it) } ?: run { ivError.isVisible = false }
+        btnTryAgain.isVisible = isBtnTryAgainVisible
+        pbLoading.isVisible = false
     }
 
     private fun setChildrenVisibility(isChildVisible: Boolean) {

@@ -1,4 +1,4 @@
-package com.study.channels.presentation.elm
+package com.study.channels.presentation.channels.elm
 
 import com.study.channels.domain.exceptions.ChannelDoesNotHaveTopicsException
 import com.study.channels.domain.exceptions.ChannelNotFoundException

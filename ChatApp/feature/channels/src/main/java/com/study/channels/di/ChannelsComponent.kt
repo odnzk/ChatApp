@@ -1,6 +1,7 @@
 package com.study.channels.di
 
-import com.study.channels.presentation.ChannelsFragment
+import com.study.channels.presentation.addChannel.AddChannelFragment
+import com.study.channels.presentation.channels.ChannelsFragment
 import com.study.common.di.FeatureScope
 import dagger.Component
 
@@ -11,6 +12,7 @@ import dagger.Component
 )
 internal interface ChannelsComponent {
     fun inject(fragment: ChannelsFragment)
+    fun inject(fragment: AddChannelFragment)
 
     @Component.Factory
     interface Factory {

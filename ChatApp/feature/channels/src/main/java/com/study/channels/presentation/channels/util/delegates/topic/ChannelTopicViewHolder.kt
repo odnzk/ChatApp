@@ -1,11 +1,11 @@
-package com.study.channels.presentation.util.delegates.topic
+package com.study.channels.presentation.channels.util.delegates.topic
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.study.channels.R
 import com.study.channels.databinding.ItemChannelTopicBinding
-import com.study.channels.presentation.util.model.UiChannelTopic
-import com.study.ui.R
+import com.study.channels.presentation.channels.util.model.UiChannelTopic
 
 internal class ChannelTopicViewHolder(
     private val binding: ItemChannelTopicBinding,

@@ -1,8 +1,8 @@
-package com.study.channels.presentation.util.pager
+package com.study.channels.presentation.channels.util.pager
 
 import androidx.fragment.app.Fragment
 import com.study.channels.domain.model.ChannelFilter
-import com.study.channels.presentation.ChannelsFragment
+import com.study.channels.presentation.channels.ChannelsFragment
 import com.study.components.util.FragmentPagerFactory
 
 internal class ChannelFragmentFactory : FragmentPagerFactory {

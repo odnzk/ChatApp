@@ -1,7 +1,7 @@
-package com.study.channels.presentation.util.delegates.topic
+package com.study.channels.presentation.channels.util.delegates.topic
 
 import androidx.recyclerview.widget.DiffUtil.ItemCallback
-import com.study.channels.presentation.util.model.UiChannelTopic
+import com.study.channels.presentation.channels.util.model.UiChannelTopic
 import com.study.components.recycler.delegates.Delegate
 
 internal class ChannelTopicDelegate(onTopicClick: ((channelTitle: String, topicTitle: String) -> Unit)?) :

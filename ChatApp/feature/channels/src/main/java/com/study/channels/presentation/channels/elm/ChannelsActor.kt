@@ -1,4 +1,4 @@
-package com.study.channels.presentation.elm
+package com.study.channels.presentation.channels.elm
 
 import android.content.Context
 import com.google.android.material.color.MaterialColors
@@ -8,11 +8,11 @@ import com.study.channels.domain.usecase.GetChannelsUseCase
 import com.study.channels.domain.usecase.LoadChannelTopicsUseCase
 import com.study.channels.domain.usecase.SearchChannelUseCase
 import com.study.channels.domain.usecase.UpdateChannelsUseCase
-import com.study.channels.presentation.util.mapper.toChannelsMap
-import com.study.channels.presentation.util.mapper.toUiChannelTopics
-import com.study.channels.presentation.util.model.UiChannel
-import com.study.channels.presentation.util.model.UiChannelModel
-import com.study.channels.presentation.util.model.UiChannelTopic
+import com.study.channels.presentation.channels.util.mapper.toChannelsMap
+import com.study.channels.presentation.channels.util.mapper.toUiChannelTopics
+import com.study.channels.presentation.channels.util.model.UiChannel
+import com.study.channels.presentation.channels.util.model.UiChannelModel
+import com.study.channels.presentation.channels.util.model.UiChannelTopic
 import com.study.common.extension.firstInstance
 import com.study.common.extension.toFlow
 import com.study.ui.R

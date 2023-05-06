@@ -8,4 +8,10 @@
         <item name="tabTextColor">@color/black</item>
         <item name="android:background">@color/white</item>
     </style>
+
+    <style name="ButtonAddChannel" parent="Widget.Design.FloatingActionButton">
+        <item name="android:backgroundTint">@color/navy_light</item>
+        <item name="android:src">@drawable/ic_baseline_add_24</item>
+        <item name="fabCustomSize">@dimen/primary_round_button_size</item>
+    </style>
 </resources>

@@ -1,13 +1,14 @@
 package com.study.network
 
 
+import com.study.network.model.request.message.ChannelRequestDto
 import com.study.network.model.request.message.MessageNarrowList
 import com.study.network.model.request.message.MessageType
 import com.study.network.model.request.message.MessagesAnchor
 import com.study.network.model.response.message.AllMessagesResponse
 import com.study.network.model.response.message.SentMessageResponse
+import com.study.network.model.response.stream.AddStreamResponse
 import com.study.network.model.response.stream.AllStreamsResponse
-import com.study.network.model.response.stream.StreamDetailedDto
 import com.study.network.model.response.stream.StreamTopicsResponse
 import com.study.network.model.response.user.AllUserPresenceDto
 import com.study.network.model.response.user.AllUsersResponse
@@ -68,13 +69,18 @@ interface ZulipApi {
     @GET("users/me/subscriptions")
     suspend fun getSubscribedStreams(): AllStreamsResponse
 
+    @POST("users/me/subscriptions")
+    @FormUrlEncoded
+    suspend fun addStream(
+        @Field("subscriptions")
+        channelRequestDto: ChannelRequestDto,
+        @Field("history_public_to_subscribers") isHistoryPublic: Boolean
+    ): AddStreamResponse
+
     @GET("streams")
     suspend fun getAllStreams(
         @Query("include_subscribed") includeSubscribed: Boolean = false
     ): AllStreamsResponse
-
-    @GET("streams/{stream_id}")
-    suspend fun getStreamById(@Path("stream_id") streamId: Int): StreamDetailedDto
 
     @GET("users/me/{stream_id}/topics")
     suspend fun getStreamTopics(@Path("stream_id") streamId: Int): StreamTopicsResponse

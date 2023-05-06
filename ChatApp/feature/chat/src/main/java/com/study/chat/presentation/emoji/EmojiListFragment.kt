@@ -11,7 +11,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.study.chat.R
 import com.study.chat.databinding.FragmentEmojiListBinding
 import com.study.chat.di.ChatComponentViewModel
 import com.study.chat.presentation.emoji.delegates.EmojiDelegate
@@ -31,6 +30,7 @@ import vivid.money.elmslie.android.storeholder.LifecycleAwareStoreHolder
 import vivid.money.elmslie.android.storeholder.StoreHolder
 import vivid.money.elmslie.core.store.Store
 import javax.inject.Inject
+import com.study.ui.R as CoreR
 
 internal class EmojiListFragment : BottomSheetDialogFragment(),
     ElmDelegate<EmojiListEvent, EmojiListEffect, EmojiListState> {
@@ -55,7 +55,7 @@ internal class EmojiListFragment : BottomSheetDialogFragment(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ElmScreen(this, lifecycle) { requireActivity() }
-        setStyle(STYLE_NORMAL, R.style.ChatBottomSheetDialogTheme)
+        setStyle(STYLE_NORMAL, CoreR.style.BaseBottomSheetDialogTheme)
     }
 
     override fun onCreateView(
