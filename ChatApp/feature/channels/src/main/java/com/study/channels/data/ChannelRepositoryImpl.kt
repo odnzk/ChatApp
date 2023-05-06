@@ -11,11 +11,13 @@ import com.study.channels.domain.model.ChannelFilter
 import com.study.channels.domain.model.ChannelTopic
 import com.study.channels.domain.repository.ChannelRepository
 import com.study.database.dataSource.ChannelLocalDataSource
+import com.study.database.entity.ChannelEntity
 import com.study.network.dataSource.ChannelRemoteDataSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
+import kotlin.random.Random
 
 internal class ChannelRepositoryImpl @Inject constructor(
     private val localDS: ChannelLocalDataSource,
@@ -33,18 +35,23 @@ internal class ChannelRepositoryImpl @Inject constructor(
 
     override suspend fun loadChannels(channelFilter: ChannelFilter) {
         val isSubscribed = channelFilter.isSubscribedOnly()
-        val channels = remoteDS.getChannels(isSubscribed).toChannelEntityList(isSubscribed)
-        localDS.upsertChannels(channels)
+        localDS.updateChannels(
+            remoteDS.getChannels(isSubscribed).toChannelEntityList(isSubscribed),
+            isSubscribed
+        )
     }
 
     override suspend fun loadChannelTopics(channelId: Int) {
         val topics = remoteDS.getChannelTopics(channelId).toChannelTopicEntities(channelId)
-        localDS.upsertTopics(topics)
+        localDS.updateTopics(topics, channelId)
     }
 
     override suspend fun addChannel(title: String, isHistoryPublic: Boolean) {
         if (remoteDS.addChannel(title, isHistoryPublic).mapToIsChannelAlreadyExistBoolean()) {
+            remoteDS.unsubscribeFromChannel(title)
             throw ChannelAlredyExistsException()
+        } else {
+            localDS.insertChannel(ChannelEntity(id = Random.nextInt(), title, true))
         }
     }
 

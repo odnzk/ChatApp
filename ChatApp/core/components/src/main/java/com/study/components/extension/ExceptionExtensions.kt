@@ -18,8 +18,8 @@ fun Throwable.toBaseErrorMessage(): UiError = when (this) {
     )
     is NetworkException -> UiError(
         this,
-        CoreR.string.error_connection_lost,
-        CoreR.string.error_description_connection_lost,
+        CoreR.string.error_network,
+        CoreR.string.error_description_network,
         message,
         R.drawable.ic_no_connection
     )

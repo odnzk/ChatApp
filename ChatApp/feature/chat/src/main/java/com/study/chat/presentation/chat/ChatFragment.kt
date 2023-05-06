@@ -24,7 +24,7 @@ import com.study.chat.presentation.chat.elm.ChatState
 import com.study.chat.presentation.chat.util.delegates.date.DateDelegate
 import com.study.chat.presentation.chat.util.delegates.message.MessageDelegate
 import com.study.chat.presentation.chat.util.model.UiMessage
-import com.study.chat.presentation.util.navigation.navigateToEmojiListFragment
+import com.study.chat.presentation.util.navigateToEmojiListFragment
 import com.study.chat.presentation.util.toErrorMessage
 import com.study.common.extension.fastLazy
 import com.study.components.extension.collectFlowSafely

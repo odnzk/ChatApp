@@ -16,8 +16,6 @@ import com.study.network.model.response.user.DetailedUserDto
 import com.study.network.model.response.user.UserPresenceResponse
 import com.study.network.model.response.user.UserResponse
 import retrofit2.http.DELETE
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
@@ -26,12 +24,11 @@ import retrofit2.http.Query
 interface ZulipApi {
 
     @POST(MESSAGES_END_POINT)
-    @FormUrlEncoded
     suspend fun sendMessage(
-        @Field("type") type: MessageType,
-        @Field("to") to: String,
-        @Field("content") content: String,
-        @Field("topic") topic: String?
+        @Query("type") type: MessageType,
+        @Query("to") to: String,
+        @Query("content") content: String,
+        @Query("topic") topic: String?
     ): SentMessageResponse
 
     @GET(MESSAGES_END_POINT)
@@ -54,10 +51,9 @@ interface ZulipApi {
     ): AllMessagesResponse
 
     @POST(UPDATE_REACTION_END_POINT)
-    @FormUrlEncoded
     suspend fun addReactionToMessage(
         @Path("message_id") mesId: Int,
-        @Field("emoji_name") emojiName: String
+        @Query("emoji_name") emojiName: String
     )
 
     @DELETE(UPDATE_REACTION_END_POINT)
@@ -70,12 +66,17 @@ interface ZulipApi {
     suspend fun getSubscribedStreams(): AllStreamsResponse
 
     @POST("users/me/subscriptions")
-    @FormUrlEncoded
-    suspend fun addStream(
-        @Field("subscriptions")
+    suspend fun createStream(
+        @Query("subscriptions")
         channelRequestDto: ChannelRequestDto,
-        @Field("history_public_to_subscribers") isHistoryPublic: Boolean
+        @Query("history_public_to_subscribers") isHistoryPublic: Boolean
     ): AddStreamResponse
+
+    @DELETE("users/me/subscriptions")
+    suspend fun unsubscribeFromStream(
+        @Query("subscriptions")
+        channelRequestDto: String
+    )
 
     @GET("streams")
     suspend fun getAllStreams(
