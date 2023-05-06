@@ -1,12 +1,7 @@
 <resources>
     <string name="app_name">Messenger</string>
 
-    <string name="date_delegate_item_title_format">%1$d %2$s</string>
     <string name="btn_try_again">Try again</string>
-
-    <string name="fragment_channels_tab_subscribed_channels">Subscribed</string>
-    <string name="fragment_channels_tab_all_channels">All streams</string>
-
     <string name="fragment_users_search_query">Users…</string>
     <string name="default_search_hint">Search…</string>
 
@@ -14,12 +9,10 @@
     <string name="activity_main_bottom_nav_item_people">People</string>
     <string name="activity_main_bottom_nav_item_profile">Profile</string>
 
-    <string name="item_channel_iv_show_topics_content_description">Show channel topics</string>
-    <string name="item_channel_topic_messages_count">%1$d mes</string>
-    <string name="item_channel_topic_name">#%1$s</string>
-
     <string name="error_connection_lost">Connection lost</string>
     <string name="error_description_connection_lost">You may have lost your connection, please check your internet connection</string>
+    <string name="error_network">Network error</string>
+    <string name="error_description_network">%1$s</string>
     <string name="error_unknown">Unknown error</string>
     <string name="error_description_unknown">An unknown error occurred, try to restart the app</string>
     <string name="error_not_found">Nothing was found</string>

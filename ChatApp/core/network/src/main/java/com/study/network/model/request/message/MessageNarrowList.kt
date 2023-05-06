@@ -17,10 +17,6 @@ class MessageNarrowList(
         narrows.add(messageNarrow)
     }
 
-    fun removeByNarrowOperator(messageNarrowOperator: MessageNarrowOperator) {
-        narrows.removeIf { it.operator == messageNarrowOperator }
-    }
-
 }
 
 @Serializable

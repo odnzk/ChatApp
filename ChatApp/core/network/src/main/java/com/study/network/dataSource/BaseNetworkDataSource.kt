@@ -31,7 +31,7 @@ open class BaseNetworkDataSource {
             } catch (ex: UnknownHostException) {
                 throw ConnectionLostException()
             } catch (ex: HttpException) {
-                throw NetworkException()
+                throw NetworkException(ex.message)
             } catch (ex: IOException) {
                 throw ConnectionLostException()
             }

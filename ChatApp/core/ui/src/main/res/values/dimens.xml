@@ -6,7 +6,7 @@
     <dimen name="avatar_size_large">185dp</dimen>
     <dimen name="avatar_size_small">36dp</dimen>
     <dimen name="avatar_size_medium">64dp</dimen>
-    <dimen name="primary_round_button_size">48dp</dimen>
+    <dimen name="primary_round_button_size">56dp</dimen>
     <dimen name="primary_button_corner_radius">30dp</dimen>
     <dimen name="text_input_layout_corner_radius">24dp</dimen>
 </resources>

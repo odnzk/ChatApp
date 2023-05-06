@@ -1,4 +1,4 @@
-package com.study.channels.presentation.util.mapper
+package com.study.channels.presentation.channels.util.mapper
 
 import android.graphics.Color
 import androidx.annotation.ColorInt
@@ -6,9 +6,9 @@ import androidx.annotation.FloatRange
 import androidx.core.graphics.ColorUtils
 import com.study.channels.domain.model.Channel
 import com.study.channels.domain.model.ChannelTopic
-import com.study.channels.presentation.util.model.UiChannel
-import com.study.channels.presentation.util.model.UiChannelModel
-import com.study.channels.presentation.util.model.UiChannelTopic
+import com.study.channels.presentation.channels.util.model.UiChannel
+import com.study.channels.presentation.channels.util.model.UiChannelModel
+import com.study.channels.presentation.channels.util.model.UiChannelTopic
 
 private fun Channel.toUiChannel(isCollapsed: Boolean = false): UiChannel =
     UiChannel(id, title, isCollapsed)

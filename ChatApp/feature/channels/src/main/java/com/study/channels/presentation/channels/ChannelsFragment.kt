@@ -1,4 +1,4 @@
-package com.study.channels.presentation
+package com.study.channels.presentation.channels
 
 import android.content.Context
 import android.os.Bundle
@@ -11,20 +11,21 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.study.channels.databinding.FragmentChannelsBinding
 import com.study.channels.di.ChannelsComponentViewModel
 import com.study.channels.domain.model.ChannelFilter
-import com.study.channels.presentation.elm.ChannelsEffect
-import com.study.channels.presentation.elm.ChannelsEvent
-import com.study.channels.presentation.elm.ChannelsState
-import com.study.channels.presentation.util.delegates.channel.ChannelDelegate
-import com.study.channels.presentation.util.delegates.topic.ChannelTopicDelegate
-import com.study.channels.presentation.util.mapper.toChannelsList
-import com.study.channels.presentation.util.model.UiChannelShimmer
-import com.study.channels.presentation.util.navigation.navigateToChannelTopic
-import com.study.channels.presentation.util.toErrorMessage
+import com.study.channels.presentation.channels.elm.ChannelsEffect
+import com.study.channels.presentation.channels.elm.ChannelsEvent
+import com.study.channels.presentation.channels.elm.ChannelsState
+import com.study.channels.presentation.channels.util.delegates.channel.ChannelDelegate
+import com.study.channels.presentation.channels.util.delegates.topic.ChannelTopicDelegate
+import com.study.channels.presentation.channels.util.mapper.toChannelsList
+import com.study.channels.presentation.channels.util.model.UiChannelShimmer
+import com.study.channels.presentation.channels.util.navigateToAddChannel
+import com.study.channels.presentation.channels.util.navigateToChannelTopic
+import com.study.channels.presentation.channels.util.toErrorMessage
 import com.study.common.extension.fastLazy
 import com.study.common.search.NothingFoundForThisQueryException
-import com.study.components.databinding.FragmentRecyclerViewBinding
 import com.study.components.extension.collectFlowSafely
 import com.study.components.extension.createStoreHolder
 import com.study.components.extension.delegatesToList
@@ -39,8 +40,8 @@ import vivid.money.elmslie.core.store.Store
 import javax.inject.Inject
 
 internal class ChannelsFragment : ElmFragment<ChannelsEvent, ChannelsEffect, ChannelsState>() {
-    private val binding: FragmentRecyclerViewBinding get() = _binding!!
-    private var _binding: FragmentRecyclerViewBinding? = null
+    private val binding: FragmentChannelsBinding get() = _binding!!
+    private var _binding: FragmentChannelsBinding? = null
     private var channelsAdapter: GeneralAdapterDelegate? = null
     private val channelFilter
         get() = arguments?.safeGetParcelable<ChannelFilter>(CHANNEL_SETTING_KEY)
@@ -65,7 +66,7 @@ internal class ChannelsFragment : ElmFragment<ChannelsEvent, ChannelsEffect, Cha
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentRecyclerViewBinding.inflate(inflater, container, false)
+        _binding = FragmentChannelsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -134,6 +135,9 @@ internal class ChannelsFragment : ElmFragment<ChannelsEvent, ChannelsEffect, Cha
 
     private fun setupListeners() {
         with(binding) {
+            fragmentChannelsBtnAddChannel.setOnClickListener {
+                navigateToAddChannel()
+            }
             screenStateView.onTryAgainClickListener = View.OnClickListener {
                 store.accept(ChannelsEvent.Ui.Reload)
             }

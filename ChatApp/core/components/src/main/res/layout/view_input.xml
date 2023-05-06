@@ -3,8 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:parentTag="com.study.chat.presentation.chat.util.view.InputView">
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:theme="@style/Theme.Messenger"
+    tools:backgroundTint="@color/black"
+    tools:parentTag="com.study.components.view.InputView">
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/view_input_til_message"
@@ -14,7 +18,7 @@
         android:layout_marginVertical="8dp"
         android:layout_marginStart="@dimen/paddings_medium"
         android:layout_marginEnd="12dp"
-        android:hint="@string/hint_send_message"
+        android:layout_weight="10"
         android:textColorHint="@color/white"
         app:boxStrokeWidth="0dp"
         app:boxStrokeWidthFocused="0dp">
@@ -31,7 +35,8 @@
         android:layout_height="@dimen/primary_round_button_size"
         android:layout_marginVertical="10dp"
         android:layout_marginEnd="@dimen/paddings_medium"
-        android:contentDescription="@string/send_message_content_description"
+        android:layout_weight="1"
+        android:contentDescription="@string/content_description_btn_send_message"
         android:scaleType="fitCenter"
         app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.ImageView.Circle" />
 </merge>

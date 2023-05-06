@@ -1,4 +1,4 @@
-package com.study.channels.presentation
+package com.study.channels.presentation.channels
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,21 +6,21 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.google.android.material.tabs.TabLayoutMediator
-import com.study.channels.databinding.FragmentChannelsBinding
-import com.study.channels.presentation.util.pager.ChannelFragmentFactory
+import com.study.channels.R
+import com.study.channels.databinding.FragmentChannelsHolderBinding
+import com.study.channels.presentation.channels.util.pager.ChannelFragmentFactory
 import com.study.components.util.PagerAdapter
-import com.study.ui.R
 
 internal class HolderChannelsFragment : Fragment() {
-    private var _binding: FragmentChannelsBinding? = null
-    private val binding: FragmentChannelsBinding get() = _binding!!
+    private var _binding: FragmentChannelsHolderBinding? = null
+    private val binding: FragmentChannelsHolderBinding get() = _binding!!
     private var pagerAdapter: PagerAdapter? = null
     private var pagerMediator: TabLayoutMediator? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentChannelsBinding.inflate(inflater, container, false)
+        _binding = FragmentChannelsHolderBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -47,9 +47,9 @@ internal class HolderChannelsFragment : Fragment() {
             ChannelFragmentFactory()
         )
         with(binding) {
-            fragmentChannelsVp.adapter = pagerAdapter
+            fragmentChannelsHolderVp.adapter = pagerAdapter
             pagerMediator = TabLayoutMediator(
-                fragmentChannelsTabLayout, fragmentChannelsVp
+                fragmentChannelsHolderTb, fragmentChannelsHolderVp
             ) { tab, position ->
                 tab.text = tabs[position]
             }

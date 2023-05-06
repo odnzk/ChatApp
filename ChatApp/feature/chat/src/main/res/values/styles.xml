@@ -9,20 +9,6 @@
         <item name="android:textAppearance">@style/TextAppearance.Messenger.Title.Small</item>
     </style>
 
-    <style name="ChatBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
-        <item name="bottomSheetStyle">@style/ChatBottomSheetStyle</item>
-    </style>
-
-    <style name="ChatBottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
-        <item name="android:background">@color/white</item>
-    </style>
-
-    <style name="BottomSheetHelperView" parent="">
-        <item name="android:layout_height">8dp</item>
-        <item name="android:layout_width">60dp</item>
-        <item name="android:background">@drawable/bottom_sheet_helper_view_bg</item>
-    </style>
-
     <style name="MessageDateChip" parent="ShapeAppearanceOverlay.Material3.Chip">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>

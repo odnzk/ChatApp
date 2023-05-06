@@ -1,10 +1,10 @@
-package com.study.channels.presentation.util.delegates.channel
+package com.study.channels.presentation.channels.util.delegates.channel
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.study.channels.databinding.ItemChannelBinding
-import com.study.channels.presentation.util.model.UiChannel
+import com.study.channels.presentation.channels.util.model.UiChannel
 import com.study.components.recycler.shimmer.ShimmerItem
 import com.study.components.recycler.shimmer.ShimmerItemViewHolder
 import com.study.ui.R as CoreR

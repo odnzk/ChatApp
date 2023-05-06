@@ -35,4 +35,18 @@
         <item name="itemTextColor">@color/bnv_item_color_selector</item>
     </style>
 
+    <style name="BaseBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/BaseBottomSheetStyle</item>
+    </style>
+
+    <style name="BaseBottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@color/white</item>
+    </style>
+
+    <style name="BottomSheetHelperView" parent="">
+        <item name="android:layout_height">8dp</item>
+        <item name="android:layout_width">60dp</item>
+        <item name="android:background">@drawable/bottom_sheet_helper_view_bg</item>
+    </style>
+
 </resources>

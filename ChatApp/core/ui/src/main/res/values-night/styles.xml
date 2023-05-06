@@ -21,4 +21,13 @@
         <item name="boxCornerRadiusTopEnd">@dimen/text_input_layout_corner_radius</item>
         <item name="boxCornerRadiusTopStart">@dimen/text_input_layout_corner_radius</item>
     </style>
+
+    <style name="BaseBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/BaseBottomSheetStyle</item>
+    </style>
+
+    <style name="BaseBottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@color/dark_nero</item>
+    </style>
+
 </resources>

@@ -1,9 +1,11 @@
 package com.study.channels.data
 
+import com.study.channels.data.mapper.mapToIsChannelAlreadyExistBoolean
 import com.study.channels.data.mapper.toChannelEntityList
 import com.study.channels.data.mapper.toChannelTopicEntities
 import com.study.channels.data.mapper.toChannelTopics
 import com.study.channels.data.mapper.toChannels
+import com.study.channels.domain.exceptions.ChannelAlredyExistsException
 import com.study.channels.domain.model.Channel
 import com.study.channels.domain.model.ChannelFilter
 import com.study.channels.domain.model.ChannelTopic
@@ -38,6 +40,12 @@ internal class ChannelRepositoryImpl @Inject constructor(
     override suspend fun loadChannelTopics(channelId: Int) {
         val topics = remoteDS.getChannelTopics(channelId).toChannelTopicEntities(channelId)
         localDS.upsertTopics(topics)
+    }
+
+    override suspend fun addChannel(title: String, isHistoryPublic: Boolean) {
+        if (remoteDS.addChannel(title, isHistoryPublic).mapToIsChannelAlreadyExistBoolean()) {
+            throw ChannelAlredyExistsException()
+        }
     }
 
     private fun ChannelFilter.isSubscribedOnly(): Boolean = when (this) {

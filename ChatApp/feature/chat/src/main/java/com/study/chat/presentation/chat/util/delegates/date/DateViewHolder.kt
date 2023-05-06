@@ -3,8 +3,8 @@ package com.study.chat.presentation.chat.util.delegates.date
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.study.chat.R
 import com.study.chat.databinding.ItemDateBinding
-import com.study.ui.R
 import java.util.Calendar
 import java.util.Locale
 
