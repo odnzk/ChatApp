@@ -23,6 +23,9 @@
         <action
             android:id="@+id/action_chatFragment_to_emojiListFragment"
             app:destination="@id/emojiListFragment" />
+        <action
+            android:id="@+id/action_chatFragment_self"
+            app:destination="@id/chatFragment" />
     </fragment>
     <dialog
         android:id="@+id/emojiListFragment"
