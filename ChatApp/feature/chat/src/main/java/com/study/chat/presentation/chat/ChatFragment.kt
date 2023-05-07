@@ -26,6 +26,7 @@ import com.study.chat.presentation.chat.util.delegates.date.DateSeparatorDelegat
 import com.study.chat.presentation.chat.util.delegates.message.MessageDelegate
 import com.study.chat.presentation.chat.util.delegates.topic.TopicSeparatorDelegate
 import com.study.chat.presentation.chat.util.model.UiMessage
+import com.study.chat.presentation.util.navigateToChannelTopic
 import com.study.chat.presentation.util.navigateToEmojiListFragment
 import com.study.chat.presentation.util.toErrorMessage
 import com.study.common.extension.fastLazy
@@ -34,6 +35,7 @@ import com.study.components.extension.createStoreHolder
 import com.study.components.extension.delegatesToList
 import com.study.components.extension.safeGetParcelable
 import com.study.components.extension.showErrorSnackbar
+import com.study.components.recycler.delegates.Delegate
 import com.study.components.recycler.delegates.GeneralPaginationAdapterDelegate
 import com.study.components.view.ScreenStateView.ViewState
 import com.study.ui.NavConstants.CHANNEL_TITLE_KEY
@@ -165,9 +167,8 @@ internal class ChatFragment : ElmFragment<ChatEvent, ChatEffect, ChatState>() {
                 )
             }
         )
-        adapter = GeneralPaginationAdapterDelegate(
-            delegatesToList(messageDelegate, DateSeparatorDelegate(), TopicSeparatorDelegate())
-        )
+        adapter =
+            GeneralPaginationAdapterDelegate(delegatesToList(messageDelegate, createSeparator()))
         with(binding) {
             fragmentChatRvChat.run {
                 isNestedScrollingEnabled = false
@@ -195,6 +196,16 @@ internal class ChatFragment : ElmFragment<ChatEvent, ChatEffect, ChatState>() {
             }
         }
         navigateToEmojiListFragment(SELECTED_EMOJI_RESULT_KEY)
+    }
+
+    private fun createSeparator(): Delegate<*, *> {
+        return if (topicTitle == null) {
+            TopicSeparatorDelegate(onTopicClick = { selectedTopicTitle ->
+                navigateToChannelTopic(channelTitle, selectedTopicTitle)
+            })
+        } else {
+            DateSeparatorDelegate()
+        }
     }
 
     companion object {

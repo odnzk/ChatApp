@@ -10,6 +10,7 @@ fun Calendar.toDateSeparatorString(context: Context) =
         R.string.date_delegate_item_title_format,
         get(Calendar.DAY_OF_MONTH),
         getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault())
-    ).take(DEFAULT_MONTH_NAME_LENGTH)
+            ?.take(DEFAULT_MONTH_NAME_LENGTH)
+    )
 
 private const val DEFAULT_MONTH_NAME_LENGTH = 3
