@@ -74,6 +74,7 @@ internal class MessageView @JvmOverloads constructor(
         flexboxEmoji = findViewById(R.id.view_message_fl_emoji)
     }
 
+
     fun setMessage(
         message: UiMessage,
         onReactionClick: ((message: UiMessage, emoji: Emoji) -> Unit)? = null
@@ -83,6 +84,7 @@ internal class MessageView @JvmOverloads constructor(
             is UiMessage.MeMessage -> setUserMessage(message, onReactionClick)
         }
     }
+
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         val allowedWidthMeasureSpec = MeasureSpec.makeMeasureSpec(

@@ -6,9 +6,8 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
 @Serializable
-class MessageNarrowList(
+class MessageNarrowList {
     private val narrows: MutableList<MessageNarrow> = mutableListOf()
-) {
     override fun toString(): String {
         return narrows.joinToString(prefix = "[", postfix = "]")
     }
@@ -16,7 +15,6 @@ class MessageNarrowList(
     fun add(messageNarrow: MessageNarrow) {
         narrows.add(messageNarrow)
     }
-
 }
 
 @Serializable

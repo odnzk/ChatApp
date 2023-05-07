@@ -21,14 +21,13 @@ internal fun AllMessagesResponse.getAllReactionEntities(): List<ReactionEntity> 
 }
 
 internal fun AllMessagesResponse.toMessageEntities(
-    channelTitle: String,
-    topicTitle: String
+    channelTitle: String
 ): List<MessageEntity> =
-    messages?.filterNotNull()?.map { it.toMessageEntity(channelTitle, topicTitle) }
+    messages?.filterNotNull()?.map { it.toMessageEntity(channelTitle) }
         ?.sortedByDescending { it.calendar }
         ?: emptyList()
 
-internal fun MessageDto.toMessageEntity(channelTitle: String, topicTitle: String): MessageEntity {
+internal fun MessageDto.toMessageEntity(channelTitle: String): MessageEntity {
     val id = requireNotNull(id)
     return MessageEntity(
         id = id,
@@ -38,21 +37,12 @@ internal fun MessageDto.toMessageEntity(channelTitle: String, topicTitle: String
         senderAvatarUrl = avatarUrl,
         senderId = requireNotNull(senderId),
         channelTitle = channelTitle,
-        topicTitle = topicTitle
+        topicTitle = requireNotNull(subject)
     )
 }
 
-private fun List<ReactionDto?>?.toReactionList(messageId: Int): List<Reaction> =
-    this?.filterNotNull()?.map { it.toReaction(messageId) } ?: emptyList()
-
 private fun List<ReactionDto?>?.toReactionEntities(messageId: Int): List<ReactionEntity> =
     this?.filterNotNull()?.map { it.toReactionEntity(messageId) } ?: emptyList()
-
-private fun ReactionDto.toReaction(messageId: Int): Reaction = Reaction(
-    messageId = messageId,
-    userId = requireNotNull(userId),
-    emoji = Emoji(name = requireNotNull(emojiName), code = requireNotNull(emojiCode))
-)
 
 private fun ReactionDto.toReactionEntity(messageId: Int): ReactionEntity = ReactionEntity(
     messageId = messageId,
@@ -73,5 +63,6 @@ internal fun MessageWithReactionsTuple.toIncomeMessage(): IncomeMessage = Income
     senderId = message.senderId,
     content = message.content,
     calendar = message.calendar,
-    reactions = reactions.toReactions()
+    reactions = reactions.toReactions(),
+    topic = message.topicTitle
 )

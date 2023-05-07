@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
+import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.study.chat.R
 import com.study.chat.databinding.FragmentChatBinding
@@ -21,10 +22,11 @@ import com.study.chat.domain.model.Emoji
 import com.study.chat.presentation.chat.elm.ChatEffect
 import com.study.chat.presentation.chat.elm.ChatEvent
 import com.study.chat.presentation.chat.elm.ChatState
-import com.study.chat.presentation.chat.util.delegates.date.DateDelegate
+import com.study.chat.presentation.chat.util.delegates.date.DateSeparatorDelegate
 import com.study.chat.presentation.chat.util.delegates.message.MessageDelegate
+import com.study.chat.presentation.chat.util.delegates.topic.TopicSeparatorDelegate
 import com.study.chat.presentation.chat.util.model.UiMessage
-import com.study.chat.presentation.util.navigation.navigateToEmojiListFragment
+import com.study.chat.presentation.util.navigateToEmojiListFragment
 import com.study.chat.presentation.util.toErrorMessage
 import com.study.common.extension.fastLazy
 import com.study.components.extension.collectFlowSafely
@@ -51,8 +53,9 @@ internal class ChatFragment : ElmFragment<ChatEvent, ChatEffect, ChatState>() {
     private val channelTitle: String by fastLazy {
         arguments?.getString(CHANNEL_TITLE_KEY) ?: error("Invalid channel title")
     }
-    private val topicTitle: String by fastLazy {
-        arguments?.getString(TOPIC_TITLE_KEY) ?: error("Invalid topic title")
+    private val topicTitle: String? by fastLazy {
+        val argsTitle = arguments?.getString(TOPIC_TITLE_KEY)
+        if (argsTitle != null && argsTitle != "{$TOPIC_TITLE_KEY}") argsTitle else null
     }
     override val initEvent: ChatEvent get() = ChatEvent.Ui.Init(channelTitle, topicTitle)
 
@@ -87,7 +90,7 @@ internal class ChatFragment : ElmFragment<ChatEvent, ChatEffect, ChatState>() {
 
     override fun onStop() {
         super.onStop()
-        store.accept(ChatEvent.Ui.RemoveIrrelevantMessages(channelTitle, topicTitle))
+        store.accept(ChatEvent.Ui.RemoveIrrelevantMessages)
     }
 
     override fun onDestroyView() {
@@ -106,7 +109,7 @@ internal class ChatFragment : ElmFragment<ChatEvent, ChatEffect, ChatState>() {
                     fragmentChatRvChat.isVisible = true
                 }
                 lifecycleScope.launch {
-                    adapter?.submitData(state.messages)
+                    adapter?.submitData(state.messages as PagingData<Any>)
                 }
             }
         }
@@ -123,7 +126,7 @@ internal class ChatFragment : ElmFragment<ChatEvent, ChatEffect, ChatState>() {
     private fun setupListeners() {
         with(binding) {
             fragmentChatViewInputMessage.btnSubmitClickListener = { input ->
-                store.accept(ChatEvent.Ui.SendMessage(input, requireNotNull(adapter).snapshot()))
+                store.accept(ChatEvent.Ui.SendMessage(input))
             }
             screenStateView.onTryAgainClickListener = View.OnClickListener {
                 store.accept(ChatEvent.Ui.Reload)
@@ -140,12 +143,10 @@ internal class ChatFragment : ElmFragment<ChatEvent, ChatEffect, ChatState>() {
                     if (requireNotNull(adapter).itemCount > 0) {
                         binding.screenStateView.setState(ViewState.Success)
                         showErrorSnackbar(binding.root, state.error, Throwable::toErrorMessage)
-                    } else
-                        with(binding) {
-                            fragmentChatRvChat.isVisible = false
-                            screenStateView.setState(ViewState.Error(state.error.toErrorMessage()))
-                        }
-
+                    } else with(binding) {
+                        fragmentChatRvChat.isVisible = false
+                        screenStateView.setState(ViewState.Error(state.error.toErrorMessage()))
+                    }
             }
         }
     }
@@ -155,20 +156,29 @@ internal class ChatFragment : ElmFragment<ChatEvent, ChatEffect, ChatState>() {
         val messageDelegate = MessageDelegate(
             onLongClickListener = { messageId -> selectEmoji(messageId) },
             onAddReactionClickListener = { messageId -> selectEmoji(messageId) },
-            onReactionClick = { message, emoji ->
+            onReactionClick = { mes, emoji ->
                 store.accept(
-                    ChatEvent.Ui.UpdateReaction(message, emoji, requireNotNull(adapter).snapshot())
+                    ChatEvent.Ui.UpdateReaction(
+                        emoji,
+                        mes
+                    )
                 )
             }
         )
-        adapter = GeneralPaginationAdapterDelegate(delegatesToList(messageDelegate, DateDelegate()))
+        adapter = GeneralPaginationAdapterDelegate(
+            delegatesToList(messageDelegate, DateSeparatorDelegate(), TopicSeparatorDelegate())
+        )
         with(binding) {
             fragmentChatRvChat.run {
                 isNestedScrollingEnabled = false
                 adapter = this@ChatFragment.adapter
                 layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true)
             }
-            fragmentChatTvTopicTitle.text = getString(R.string.channel_topic_title, topicTitle)
+            if (topicTitle != null) {
+                fragmentChatTvTopicTitle.text = getString(R.string.channel_topic_title, topicTitle)
+            } else {
+                fragmentChatTvTopicTitle.isVisible = false
+            }
         }
     }
 
@@ -181,13 +191,7 @@ internal class ChatFragment : ElmFragment<ChatEvent, ChatEffect, ChatState>() {
     private fun selectEmoji(message: UiMessage) {
         setFragmentResultListener(SELECTED_EMOJI_RESULT_KEY) { _, bundle ->
             bundle.safeGetParcelable<Emoji>(SELECTED_EMOJI_RESULT_KEY)?.let { selectedEmoji ->
-                store.accept(
-                    ChatEvent.Ui.UpdateReaction(
-                        message,
-                        selectedEmoji,
-                        requireNotNull(adapter).snapshot()
-                    )
-                )
+                store.accept(ChatEvent.Ui.UpdateReaction(selectedEmoji, message))
             }
         }
         navigateToEmojiListFragment(SELECTED_EMOJI_RESULT_KEY)

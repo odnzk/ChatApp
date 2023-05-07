@@ -8,15 +8,15 @@ import com.study.channels.R
 import com.study.ui.NavConstants
 import com.study.ui.R as CoreR
 
-internal fun Fragment.navigateToChannelTopic(channelTitle: String, topicTitle: String) {
-    val deeplink: NavDeepLinkRequest = NavDeepLinkRequest.Builder.fromUri(
-        Uri.parse(
-            requireContext().getString(CoreR.string.deeplink_chat)
-                .replace("{${NavConstants.CHANNEL_TITLE_KEY}}", channelTitle)
-                .replace("{${NavConstants.TOPIC_TITLE_KEY}}", topicTitle)
-        )
-    ).build()
-    findNavController().navigate(deeplink)
+internal fun Fragment.navigateToChatFragment(channelTitle: String, topicTitle: String? = null) {
+    val uri = requireContext().getString(CoreR.string.deeplink_chat)
+        .replace("{${NavConstants.CHANNEL_TITLE_KEY}}", channelTitle)
+        .run {
+            if (topicTitle != null) {
+                replace("{${NavConstants.TOPIC_TITLE_KEY}}", topicTitle)
+            } else this
+        }
+    findNavController().navigate(NavDeepLinkRequest.Builder.fromUri(Uri.parse(uri)).build())
 }
 
 internal fun Fragment.navigateToAddChannel() =

@@ -23,16 +23,20 @@ class MessagesPagingMediator @AssistedInject constructor(
     private val remoteDS: MessageRemoteDataSource,
     @Assisted("query") query: String,
     @Assisted("channelTitle") private val channelTitle: String,
-    @Assisted("topicName") private val topicTitle: String,
+    @Assisted("topicName") private val topicTitle: String?,
 ) : RemoteMediator<Int, MessageWithReactionsTuple>() {
-
-    private val topicNarrow = MessageNarrow(MessageNarrowOperator.TOPIC, topicTitle)
-    private val channelNarrow = MessageNarrow(MessageNarrowOperator.STREAM, channelTitle)
-    private val searchNarrow = MessageNarrow(MessageNarrowOperator.SEARCH, query)
-    private val narrowList = MessageNarrowList(mutableListOf(topicNarrow, channelNarrow))
+    private val narrows = MessageNarrowList()
 
     init {
-        if (query.isNotEmpty()) narrowList.add(searchNarrow)
+        narrows.run {
+            add(MessageNarrow(MessageNarrowOperator.STREAM, channelTitle))
+            if (topicTitle != null) {
+                add(MessageNarrow(MessageNarrowOperator.TOPIC, topicTitle))
+            }
+            if (query.isNotEmpty()) {
+                add(MessageNarrow(MessageNarrowOperator.SEARCH, query))
+            }
+        }
     }
 
     override suspend fun initialize(): InitializeAction = InitializeAction.LAUNCH_INITIAL_REFRESH
@@ -55,17 +59,17 @@ class MessagesPagingMediator @AssistedInject constructor(
                     anchor = MessagesAnchor.NEWEST,
                     numBefore = pageSize,
                     numAfter = 0,
-                    narrow = narrowList
+                    narrow = narrows
                 )
             } else {
                 remoteDS.getMessages(
                     anchorMessageId = lastItemId,
                     numBefore = pageSize,
                     numAfter = 0,
-                    narrow = narrowList
+                    narrow = narrows
                 )
             }
-            val messages = response.toMessageEntities(channelTitle, topicTitle)
+            val messages = response.toMessageEntities(channelTitle)
             localDs.addMessagesWithReactions(messages, response.getAllReactionEntities())
 
             MediatorResult.Success(messages.size < pageSize)
@@ -78,7 +82,7 @@ class MessagesPagingMediator @AssistedInject constructor(
     interface Factory {
         fun create(
             @Assisted("channelTitle") channelTitle: String,
-            @Assisted("topicName") topicName: String,
+            @Assisted("topicName") topicName: String?,
             @Assisted("query") query: String
         ): MessagesPagingMediator
     }

@@ -59,6 +59,7 @@ class MainActivity : ElmActivity<MainEvent, MainEffect, MainState>() {
         menuInflater.inflate(R.menu.activity_main_top_menu, menu)
         val searchItem = menu?.findItem(R.id.action_search)
         val searchView = searchItem?.actionView as? SearchView
+        searchView?.maxWidth = Int.MAX_VALUE
         searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 query?.let { store.accept(MainEvent.Ui.Search(query)) }

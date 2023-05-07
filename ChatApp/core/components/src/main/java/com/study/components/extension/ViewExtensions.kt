@@ -54,5 +54,5 @@ inline fun <reified T> Bundle.safeGetParcelable(key: String): T? {
 
 fun delegatesToList(vararg delegates: Delegate<*, *>): List<Delegate<RecyclerView.ViewHolder, Any>> {
     return delegates.toList() as? List<Delegate<RecyclerView.ViewHolder, Any>>
-        ?: error("Cannot create correct list from this delegates")
+        ?: error("Cannot create valid list from this delegates")
 }

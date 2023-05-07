@@ -14,7 +14,7 @@ class SearchMessagesUseCase @Inject constructor(
 ) {
     operator fun invoke(
         channelTitle: String,
-        channelTopicTitle: String,
+        channelTopicTitle: String?,
         query: String
     ): Flow<PagingData<IncomeMessage>> =
         repository.getMessages(channelTitle, channelTopicTitle, query).flowOn(dispatcher)
