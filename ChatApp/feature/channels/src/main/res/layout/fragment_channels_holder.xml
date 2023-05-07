@@ -8,9 +8,9 @@
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/fragment_channels_holder_tb"
+        style="@style/ChannelTabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/darkest_nero"
         android:paddingHorizontal="8dp"
         android:paddingBottom="24dp"
         app:tabTextAppearance="@style/TextAppearance.Messenger.Title" />

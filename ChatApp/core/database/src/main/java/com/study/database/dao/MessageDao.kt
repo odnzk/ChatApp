@@ -7,6 +7,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
+import androidx.room.Update
 import androidx.room.Upsert
 import com.study.database.entity.MessageEntity
 import com.study.database.entity.tuple.MessageWithReactionsTuple
@@ -27,6 +28,18 @@ interface MessageDao {
         query: String
     ): PagingSource<Int, MessageWithReactionsTuple>
 
+    @Transaction
+    @Query(
+        "SELECT * FROM messages" +
+                " WHERE channel_title LIKE :channelTitle" +
+                " AND LOWER(channel_title) LIKE '%' || LOWER(:query) || '%'" +
+                " ORDER BY calendar DESC"
+    )
+    fun getMessages(
+        channelTitle: String,
+        query: String
+    ): PagingSource<Int, MessageWithReactionsTuple>
+
     @Query(
         "SELECT COUNT(*) FROM messages" +
                 " WHERE channel_title LIKE :channelTitle" +
@@ -43,14 +56,17 @@ interface MessageDao {
     @Query("SELECT * FROM messages")
     suspend fun getAll(): List<MessageEntity>
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(messages: List<MessageEntity>)
 
     @Upsert
     suspend fun upsert(messages: List<MessageEntity>)
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(message: MessageEntity)
+
+    @Update
+    suspend fun update(message: MessageEntity)
 
     @Transaction
     @Delete
@@ -69,10 +85,7 @@ interface MessageDao {
     )
     suspend fun deleteIrrelevant(channelTitle: String, topicTitle: String, count: Int)
 
-    @Query(
-        "SELECT * FROM messages " +
-                "WHERE id = :id"
-    )
+    @Query("SELECT * FROM messages WHERE id = :id")
     suspend fun getMessageById(id: Int): MessageEntity?
 
 }

@@ -12,28 +12,28 @@ import com.study.ui.R as CoreR
 fun Throwable.toBaseErrorMessage(): UiError = when (this) {
     is ConnectionLostException -> UiError(
         this,
-        CoreR.string.error_connection_lost,
-        CoreR.string.error_description_connection_lost,
-        R.drawable.ic_no_connection
+        messageRes = CoreR.string.error_connection_lost,
+        descriptionRes = CoreR.string.error_description_connection_lost,
+        imageRes = R.drawable.ic_no_connection
     )
     is NetworkException -> UiError(
         this,
-        CoreR.string.error_network,
-        CoreR.string.error_description_network,
-        message,
-        R.drawable.ic_no_connection
+        messageRes = CoreR.string.error_network,
+        descriptionRes = CoreR.string.error_description_network,
+        descriptionArgs = message,
+        imageRes = R.drawable.ic_no_connection
     )
     is NothingFoundForThisQueryException -> UiError(
         this,
-        CoreR.string.error_not_found,
-        CoreR.string.error_description_not_found,
-        R.drawable.ic_not_found
+        messageRes = CoreR.string.error_not_found,
+        descriptionRes = CoreR.string.error_description_not_found,
+        imageRes = R.drawable.ic_not_found
     )
     else -> UiError(
         this,
-        CoreR.string.error_unknown,
-        CoreR.string.error_description_unknown,
-        R.drawable.ic_error
+        messageRes = CoreR.string.error_unknown,
+        descriptionRes = CoreR.string.error_description_unknown,
+        imageRes = R.drawable.ic_error
     )
 }
 

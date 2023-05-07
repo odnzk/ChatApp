@@ -1,4 +1,4 @@
-package com.study.chat.presentation.util.navigation
+package com.study.chat.presentation.util
 
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController

@@ -2,6 +2,7 @@ package com.study.components.view
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.View
 import android.view.View.OnClickListener
 import android.widget.Button
 import android.widget.ImageView
@@ -49,33 +50,35 @@ class ScreenStateView @JvmOverloads constructor(
         when (state) {
             is ViewState.Error -> setError(state.error, state.isBtnTryAgainVisible)
             ViewState.Loading -> {
-                setChildrenVisibility(false)
+                hideChildren()
                 pbLoading.isVisible = true
             }
-            ViewState.Success -> setChildrenVisibility(false)
+            ViewState.Success -> hideChildren()
         }
     }
 
     private fun setError(error: UiError, isBtnTryAgainVisible: Boolean = false) {
-        setChildrenVisibility(true)
-        tvError.text = getString(error.messageRes)
-        when {
-            error.descriptionRes != null && error.descriptionArgs != null -> {
-                tvErrorDescription.text =
-                    context.getString(error.descriptionRes, error.descriptionArgs)
-            }
-            error.descriptionRes != null -> tvErrorDescription.text =
-                getString(error.descriptionRes)
-            else -> tvErrorDescription.isVisible = false
-        }
-        error.imageRes?.let { ivError.setImageResource(it) } ?: run { ivError.isVisible = false }
-        btnTryAgain.isVisible = isBtnTryAgainVisible
         pbLoading.isVisible = false
+        tvError.isVisible = true
+        tvError.text = getString(error.messageRes)
+        tvErrorDescription.ifNotNullShow(error.descriptionRes != null) {
+            text = context.getString(requireNotNull(error.descriptionRes), error.descriptionArgs)
+        }
+        ivError.ifNotNullShow(error.imageRes != null) {
+            setImageResource(requireNotNull(error.imageRes))
+        }
+        btnTryAgain.isVisible = isBtnTryAgainVisible
     }
 
-    private fun setChildrenVisibility(isChildVisible: Boolean) {
-        children.forEach { child -> child.isVisible = isChildVisible }
-    }
-
+    private fun hideChildren() = children.forEach { child -> child.isVisible = false }
     private fun getString(@StringRes res: Int): String = context.getString(res)
+
+    private fun <T : View> T.ifNotNullShow(isNotNull: Boolean, ifNotNull: T.() -> Unit) {
+        if (isNotNull) {
+            isVisible = true
+            ifNotNull(this)
+        } else {
+            isVisible = false
+        }
+    }
 }

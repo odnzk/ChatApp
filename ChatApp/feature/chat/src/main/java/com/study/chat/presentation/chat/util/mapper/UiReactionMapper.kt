@@ -4,6 +4,7 @@ package com.study.chat.presentation.chat.util.mapper
 import android.content.Context
 import com.study.chat.domain.model.Emoji
 import com.study.chat.domain.model.IncomeMessage
+import com.study.chat.domain.model.Reaction
 import com.study.chat.presentation.chat.util.model.UiMessage
 import com.study.chat.presentation.chat.util.model.UiReaction
 import com.study.chat.presentation.chat.util.view.ReactionView
@@ -37,3 +38,6 @@ internal fun List<UiReaction>.toMessageEmojiViews(
             setOnClickListener { onReactionClick?.invoke(message, reaction.emoji) }
         }
     }
+
+internal fun Emoji.toReaction(messageId: Int, userId: Int): Reaction =
+    Reaction(messageId = messageId, userId = userId, emoji = this)

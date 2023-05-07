@@ -6,9 +6,12 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.map
 import com.study.chat.data.mapper.toIncomeMessage
+import com.study.chat.data.mapper.toMessageEntity
+import com.study.chat.data.mapper.toReactionEntity
 import com.study.chat.data.pagination.MessagesPagingMediator
 import com.study.chat.domain.model.IncomeMessage
 import com.study.chat.domain.model.OutcomeMessage
+import com.study.chat.domain.model.Reaction
 import com.study.chat.domain.repository.MessageRepository
 import com.study.database.dataSource.MessageLocalDataSource
 import com.study.database.entity.tuple.MessageWithReactionsTuple
@@ -28,31 +31,35 @@ internal class MessageRepositoryImpl @Inject constructor(
 ) : MessageRepository {
     override fun getMessages(
         channelTitle: String,
-        topicName: String,
+        topicName: String?,
         searchQuery: String
     ): Flow<PagingData<IncomeMessage>> = createMessagesPager(channelTitle, topicName, searchQuery)
         .flow
         .map { pagingData -> pagingData.map { it.toIncomeMessage() } }
         .flowOn(dispatcher)
 
-    override suspend fun sendMessage(message: OutcomeMessage): Int = withContext(dispatcher) {
+    override suspend fun sendMessage(message: OutcomeMessage) = withContext(dispatcher) {
+        val messageEntity = message.toMessageEntity()
+        localDS.addMessage(messageEntity)
         val id = remoteDS.sendMessage(
-            type = message.type,
-            to = message.channelTitle,
-            content = message.content,
-            topic = message.topicTitle
+            message.type,
+            message.channelTitle,
+            message.content,
+            message.topicTitle
         ).id
-        requireNotNull(id)
+        localDS.updateMessage(messageEntity.copy(id = requireNotNull(id)))
     }
 
-    override suspend fun addReaction(messageId: Int, emojiName: String) = withContext(dispatcher) {
-        remoteDS.addReactionToMessage(messageId, emojiName)
-    }
-
-    override suspend fun removeReaction(messageId: Int, emojiName: String) =
+    override suspend fun addReaction(reaction: Reaction) =
         withContext(dispatcher) {
-            remoteDS.removeReactionFromMessage(messageId, emojiName)
+            localDS.addReaction(reaction.toReactionEntity())
+            remoteDS.addReaction(reaction.messageId, reaction.emoji.name)
         }
+
+    override suspend fun removeReaction(reaction: Reaction) = withContext(dispatcher) {
+        localDS.removeReaction(reaction.toReactionEntity())
+        remoteDS.removeReaction(reaction.messageId, reaction.emoji.name)
+    }
 
     override suspend fun removeIrrelevant(channelTitle: String, topicTitle: String) =
         localDS.removeIrrelevantMessages(channelTitle, topicTitle)
@@ -60,7 +67,7 @@ internal class MessageRepositoryImpl @Inject constructor(
     @OptIn(ExperimentalPagingApi::class)
     private fun createMessagesPager(
         channelTitle: String,
-        topicName: String,
+        topicName: String?,
         searchQuery: String
     ): Pager<Int, MessageWithReactionsTuple> = Pager(
         config = PagingConfig(
@@ -83,4 +90,5 @@ internal class MessageRepositoryImpl @Inject constructor(
         private const val MAX_PAGER_SIZE = 50
         private const val PREFETCH_DISTANCE = 5
     }
+
 }

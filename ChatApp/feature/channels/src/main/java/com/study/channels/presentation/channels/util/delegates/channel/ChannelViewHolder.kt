@@ -11,7 +11,8 @@ import com.study.ui.R as CoreR
 
 internal class ChannelViewHolder(
     private val binding: ItemChannelBinding,
-    private val onChannelClick: ((channelId: Int, isCollapsed: Boolean) -> Unit)?
+    private val onChannelClick: ((channelId: Int, isCollapsed: Boolean) -> Unit)?,
+    private val onChannelLongClick: ((channelTitle: String) -> Unit)?
 ) : ShimmerItemViewHolder<UiChannel>(binding) {
 
     override fun showContent(data: UiChannel) {
@@ -19,6 +20,10 @@ internal class ChannelViewHolder(
             setCollapsedStatusIcon(data.isCollapsed)
             itemChannelTvChannelName.text = data.title
             root.setOnClickListener { onChannelClick?.invoke(data.id, data.isCollapsed) }
+            root.setOnLongClickListener {
+                onChannelLongClick?.invoke(data.title)
+                true
+            }
         }
     }
 
@@ -46,10 +51,13 @@ internal class ChannelViewHolder(
     companion object {
         internal const val PAYLOAD_IS_COLLAPSED_CHANGED = "isCollapsed"
         fun create(
-            parent: ViewGroup, onChannelClick: ((channelId: Int, isCollapsed: Boolean) -> Unit)?
+            parent: ViewGroup,
+            onChannelClick: ((channelId: Int, isCollapsed: Boolean) -> Unit)?,
+            onChannelLongClick: ((channelTitle: String) -> Unit)?
         ): ChannelViewHolder = ChannelViewHolder(
             ItemChannelBinding.inflate(LayoutInflater.from(parent.context), parent, false),
-            onChannelClick = onChannelClick
+            onChannelClick = onChannelClick,
+            onChannelLongClick = onChannelLongClick
         )
     }
 }

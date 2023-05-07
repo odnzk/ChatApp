@@ -35,10 +35,29 @@ class MessageLocalDataSource @Inject constructor(
 
     fun getMessages(
         channelTitle: String,
-        topicTitle: String,
+        topicTitle: String?,
         query: String
-    ): PagingSource<Int, MessageWithReactionsTuple> {
-        return messageDao.getMessages(channelTitle, topicTitle, query)
+    ): PagingSource<Int, MessageWithReactionsTuple> =
+        if (topicTitle != null) {
+            messageDao.getMessages(channelTitle, topicTitle, query)
+        } else {
+            messageDao.getMessages(channelTitle, query)
+        }
+
+    suspend fun addMessage(messageEntity: MessageEntity) {
+        messageDao.insert(messageEntity)
+    }
+
+    suspend fun updateMessage(messageEntity: MessageEntity) {
+        messageDao.update(messageEntity)
+    }
+
+    suspend fun addReaction(reactionEntity: ReactionEntity) {
+        reactionDao.insert(reactionEntity)
+    }
+
+    suspend fun removeReaction(reactionEntity: ReactionEntity) {
+        reactionDao.delete(reactionEntity)
     }
 
     companion object {

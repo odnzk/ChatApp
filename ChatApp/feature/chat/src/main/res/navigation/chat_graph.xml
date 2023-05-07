@@ -8,15 +8,18 @@
     <fragment
         android:id="@+id/chatFragment"
         android:name="com.study.chat.presentation.chat.ChatFragment"
-        android:label="ChatFragment"
+        android:label="@string/default_search_hint"
         tools:layout="@layout/fragment_chat">
         <deepLink app:uri="@string/deeplink_chat" />
         <argument
             android:name="channelTitle"
-            app:argType="string" />
+            app:argType="string"
+            app:nullable="false" />
         <argument
             android:name="topicTitle"
-            app:argType="string" />
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
         <action
             android:id="@+id/action_chatFragment_to_emojiListFragment"
             app:destination="@id/emojiListFragment" />

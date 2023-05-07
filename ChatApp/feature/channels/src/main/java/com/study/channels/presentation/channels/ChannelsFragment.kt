@@ -22,7 +22,7 @@ import com.study.channels.presentation.channels.util.delegates.topic.ChannelTopi
 import com.study.channels.presentation.channels.util.mapper.toChannelsList
 import com.study.channels.presentation.channels.util.model.UiChannelShimmer
 import com.study.channels.presentation.channels.util.navigateToAddChannel
-import com.study.channels.presentation.channels.util.navigateToChannelTopic
+import com.study.channels.presentation.channels.util.navigateToChatFragment
 import com.study.channels.presentation.channels.util.toErrorMessage
 import com.study.common.extension.fastLazy
 import com.study.common.search.NothingFoundForThisQueryException
@@ -117,12 +117,15 @@ internal class ChannelsFragment : ElmFragment<ChannelsEvent, ChannelsEffect, Cha
     }
 
     private fun initUI() {
-        channelsAdapter =
-            GeneralAdapterDelegate(delegatesToList(ChannelDelegate(onChannelClick = { channelId, isCollapsed ->
-                store.accept(ChannelsEvent.Ui.ManageChannelTopics(channelId, isCollapsed))
-            }), ChannelTopicDelegate(onTopicClick = { channelTitle, topicTitle ->
-                navigateToChannelTopic(channelTitle = channelTitle, topicTitle = topicTitle)
-            })))
+        channelsAdapter = GeneralAdapterDelegate(
+            delegatesToList(
+                ChannelDelegate(
+                    onChannelClick = ::onChannelClick,
+                    onChannelLongClick = ::navigateToChatFragment
+                ),
+                ChannelTopicDelegate(onTopicClick = ::navigateToChatFragment)
+            )
+        )
         with(binding) {
             screenStateView.setState(ViewState.Success)
             fragmentRvDataList.run {
@@ -131,6 +134,12 @@ internal class ChannelsFragment : ElmFragment<ChannelsEvent, ChannelsEffect, Cha
                 adapter = channelsAdapter
             }
         }
+    }
+
+    private fun onChannelClick(channelId: Int, isCollapsed: Boolean) {
+        store.accept(
+            ChannelsEvent.Ui.ManageChannelTopics(channelId, isCollapsed)
+        )
     }
 
     private fun setupListeners() {

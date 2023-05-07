@@ -74,8 +74,10 @@ internal class UsersFragment : ElmFragment<UsersEvent, UsersEffect, UsersState>(
 
     override fun render(state: UsersState) {
         when {
-            state.error != null ->
+            state.error != null -> {
+                adapter?.submitList(emptyList())
                 binding.screenStateView.setState(ViewState.Error(state.error.toBaseErrorMessage()))
+            }
             state.isLoading && state.users.isEmpty() -> {
                 binding.screenStateView.setState(ViewState.Success)
                 adapter?.submitList(List(UserShimmer.DEFAULT_SHIMMER_COUNT) { UserShimmer })

@@ -17,5 +17,16 @@
         <item name="chipBackgroundColor">@color/navy_light</item>
     </style>
 
+    <style name="ChannelTopicTextView" parent="Widget.AppCompat.TextView">
+        <item name="android:ellipsize">end</item>
+        <item name="maxLines">1</item>
+        <item name="android:textColor">@color/darkest_nero</item>
+        <item name="android:textAppearance">@style/TextAppearance.Messenger.Body.Small</item>
+    </style>
+
+    <style name="ChannelTopicItem">
+        <item name="android:padding">4dp</item>
+        <item name="android:background">@color/navy_light</item>
+    </style>
 
 </resources>
