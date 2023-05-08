@@ -26,7 +26,7 @@ interface ZulipApi {
     @POST(MESSAGES_END_POINT)
     suspend fun sendMessage(
         @Query("type") type: MessageType,
-        @Query("to") to: String,
+        @Query("to") to: Int,
         @Query("content") content: String,
         @Query("topic") topic: String?
     ): SentMessageResponse

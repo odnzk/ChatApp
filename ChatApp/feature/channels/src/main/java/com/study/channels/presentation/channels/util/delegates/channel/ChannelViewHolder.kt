@@ -12,7 +12,7 @@ import com.study.ui.R as CoreR
 internal class ChannelViewHolder(
     private val binding: ItemChannelBinding,
     private val onChannelClick: ((channelId: Int, isCollapsed: Boolean) -> Unit)?,
-    private val onChannelLongClick: ((channelTitle: String) -> Unit)?
+    private val onChannelLongClick: ((channelId: Int) -> Unit)?
 ) : ShimmerItemViewHolder<UiChannel>(binding) {
 
     override fun showContent(data: UiChannel) {
@@ -21,7 +21,7 @@ internal class ChannelViewHolder(
             itemChannelTvChannelName.text = data.title
             root.setOnClickListener { onChannelClick?.invoke(data.id, data.isCollapsed) }
             root.setOnLongClickListener {
-                onChannelLongClick?.invoke(data.title)
+                onChannelLongClick?.invoke(data.id)
                 true
             }
         }
@@ -53,7 +53,7 @@ internal class ChannelViewHolder(
         fun create(
             parent: ViewGroup,
             onChannelClick: ((channelId: Int, isCollapsed: Boolean) -> Unit)?,
-            onChannelLongClick: ((channelTitle: String) -> Unit)?
+            onChannelLongClick: ((channelId: Int) -> Unit)?
         ): ChannelViewHolder = ChannelViewHolder(
             ItemChannelBinding.inflate(LayoutInflater.from(parent.context), parent, false),
             onChannelClick = onChannelClick,

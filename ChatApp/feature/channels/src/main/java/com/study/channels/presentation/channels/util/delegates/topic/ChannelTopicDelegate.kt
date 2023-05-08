@@ -4,7 +4,7 @@ import androidx.recyclerview.widget.DiffUtil.ItemCallback
 import com.study.channels.presentation.channels.util.model.UiChannelTopic
 import com.study.components.recycler.delegates.Delegate
 
-internal class ChannelTopicDelegate(onTopicClick: ((channelTitle: String, topicTitle: String) -> Unit)?) :
+internal class ChannelTopicDelegate(onTopicClick: ((channelId: Int, topicTitle: String) -> Unit)?) :
     Delegate<ChannelTopicViewHolder, UiChannelTopic>(
         isType = { it is UiChannelTopic },
         viewHolderCreator = { ChannelTopicViewHolder.create(it, onTopicClick = onTopicClick) },

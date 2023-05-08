@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface MessageRepository {
     fun getMessages(
-        channelTitle: String,
+        channelId: Int,
         topicName: String?,
         searchQuery: String
     ): Flow<PagingData<IncomeMessage>>
@@ -16,5 +16,5 @@ interface MessageRepository {
     suspend fun sendMessage(message: OutcomeMessage)
     suspend fun addReaction(reaction: Reaction)
     suspend fun removeReaction(reaction: Reaction)
-    suspend fun removeIrrelevant(channelTitle: String, topicTitle: String)
+    suspend fun removeIrrelevant(channelId: Int, topicTitle: String)
 }

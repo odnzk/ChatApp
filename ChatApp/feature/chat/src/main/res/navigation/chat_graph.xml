@@ -12,8 +12,8 @@
         tools:layout="@layout/fragment_chat">
         <deepLink app:uri="@string/deeplink_chat" />
         <argument
-            android:name="channelTitle"
-            app:argType="string"
+            android:name="channelId"
+            app:argType="integer"
             app:nullable="false" />
         <argument
             android:name="topicTitle"

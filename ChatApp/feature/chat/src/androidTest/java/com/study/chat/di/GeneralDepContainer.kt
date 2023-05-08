@@ -22,7 +22,7 @@ internal object GeneralDepContainer {
         remote: MessageRemoteDataSource
     ) = object : MessagesPagingMediator.Factory {
         override fun create(
-            channelTitle: String,
+            channelId: String,
             topicName: String,
             query: String
         ): MessagesPagingMediator {
@@ -30,7 +30,7 @@ internal object GeneralDepContainer {
                 localDs = local,
                 remoteDS = remote,
                 query = query,
-                channelTitle = channelTitle,
+                channelId = channelId,
                 topicTitle = topicName
             )
         }

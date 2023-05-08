@@ -13,9 +13,9 @@ class GetAllMessagesUseCase @Inject constructor(
     private val dispatcher: CoroutineDispatcher
 ) {
     operator fun invoke(
-        channelTitle: String,
+        channelId: Int,
         topicTitle: String?
     ): Flow<PagingData<IncomeMessage>> = repository
-        .getMessages(channelTitle = channelTitle, topicName = topicTitle, searchQuery = "")
+        .getMessages(channelId, topicName = topicTitle, searchQuery = "")
         .flowOn(dispatcher)
 }

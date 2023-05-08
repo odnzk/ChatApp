@@ -13,7 +13,7 @@ class MessageRemoteDataSource @Inject constructor(private val api: ZulipApi) :
 
     suspend fun sendMessage(
         type: MessageType,
-        to: String,
+        to: Int,
         content: String,
         topic: String?
     ): SentMessageResponse = safeRequest { api.sendMessage(type, to, content, topic) }

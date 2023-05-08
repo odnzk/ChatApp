@@ -11,8 +11,6 @@ class ChannelRequestDto(
     @SerialName("name")
     val title: String
 ) {
-    override fun toString(): String {
-        return Json.encodeToString(this).toJsonArrayString()
-    }
+    override fun toString(): String = Json.encodeToString(this).toJsonArrayString()
 }
 

@@ -67,7 +67,6 @@ internal class ChannelsActor @Inject constructor(
             toFlow {
                 val channel = command.channelsMap[command.channelId]?.firstInstance<UiChannel>()
                     ?: throw ChannelNotFoundException()
-
                 command.channelsMap.toMutableMap().apply {
                     replace(command.channelId, listOf(channel.copy(isCollapsed = false)))
                 }

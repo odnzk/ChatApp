@@ -1,7 +1,7 @@
 package com.study.channels.presentation.channels.util
 
 import com.study.channels.R
-import com.study.channels.domain.exceptions.ChannelAlredyExistsException
+import com.study.channels.domain.exceptions.ChannelAlreadyExistsException
 import com.study.channels.domain.exceptions.ChannelDoesNotHaveTopicsException
 import com.study.channels.domain.exceptions.ChannelNotFoundException
 import com.study.components.extension.toBaseErrorMessage
@@ -20,7 +20,7 @@ internal fun Throwable.toErrorMessage(): UiError = when (this) {
         null,
         null
     )
-    is ChannelAlredyExistsException -> UiError(
+    is ChannelAlreadyExistsException -> UiError(
         this,
         R.string.error_channel_already_exists,
         null,

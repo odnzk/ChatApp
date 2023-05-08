@@ -61,20 +61,6 @@ internal class AddChannelFragment : BottomSheetDialogFragment(),
         initUI()
     }
 
-    private fun initUI() {
-        with(binding) {
-            fragmentAddChannelTvError.isVisible = false
-            fragmentAddChannelInputView.btnSubmitClickListener = { channelTitle ->
-                store.accept(
-                    AddChannelEvent.Ui.AddChannel(
-                        channelTitle,
-                        fragmentAddChannelCbHistory.isChecked
-                    )
-                )
-            }
-        }
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
@@ -91,10 +77,20 @@ internal class AddChannelFragment : BottomSheetDialogFragment(),
     private fun showError(error: UiError) {
         binding.fragmentAddChannelTvError.run {
             isVisible = true
-            text = if (error.descriptionRes != null && error.descriptionArgs != null) {
-                getString(error.descriptionRes!!, error.descriptionArgs)
-            } else {
-                getString(error.messageRes)
+            text = error.getDescription(context) ?: error.getMessage(context)
+        }
+    }
+
+    private fun initUI() {
+        with(binding) {
+            fragmentAddChannelTvError.isVisible = false
+            fragmentAddChannelInputView.btnSubmitClickListener = { channelTitle ->
+                store.accept(
+                    AddChannelEvent.Ui.AddChannel(
+                        channelTitle,
+                        fragmentAddChannelCbHistory.isChecked
+                    )
+                )
             }
         }
     }

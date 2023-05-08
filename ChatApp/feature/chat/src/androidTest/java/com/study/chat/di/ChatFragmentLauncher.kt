@@ -26,7 +26,7 @@ internal fun launchChatFragment(
 ): FragmentScenario<ChatFragment> {
     ChatDepStore.dep = chatFragmentDep(remoteDS, localDS, dispatcher)
     val args = bundleOf(
-        NavConstants.CHANNEL_TITLE_KEY to TEST_CHANNEL, NavConstants.TOPIC_TITLE_KEY to TEST_TOPIC
+        NavConstants.CHANNEL_ID_KEY to TEST_CHANNEL, NavConstants.TOPIC_TITLE_KEY to TEST_TOPIC
     )
     val fragmentThemeResId = R.style.Theme_Messenger
     return if (isUiNeeded) {

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import androidx.core.view.isVisible
 import androidx.fragment.app.clearFragmentResultListener
 import androidx.fragment.app.setFragmentResultListener
@@ -18,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.study.chat.R
 import com.study.chat.databinding.FragmentChatBinding
 import com.study.chat.di.ChatComponentViewModel
+import com.study.chat.domain.exceptions.InvalidTopicTitleException
 import com.study.chat.domain.model.Emoji
 import com.study.chat.presentation.chat.elm.ChatEffect
 import com.study.chat.presentation.chat.elm.ChatEvent
@@ -35,10 +37,9 @@ import com.study.components.extension.createStoreHolder
 import com.study.components.extension.delegatesToList
 import com.study.components.extension.safeGetParcelable
 import com.study.components.extension.showErrorSnackbar
-import com.study.components.recycler.delegates.Delegate
 import com.study.components.recycler.delegates.GeneralPaginationAdapterDelegate
 import com.study.components.view.ScreenStateView.ViewState
-import com.study.ui.NavConstants.CHANNEL_TITLE_KEY
+import com.study.ui.NavConstants.CHANNEL_ID_KEY
 import com.study.ui.NavConstants.TOPIC_TITLE_KEY
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
@@ -52,14 +53,14 @@ internal class ChatFragment : ElmFragment<ChatEvent, ChatEffect, ChatState>() {
     private var _binding: FragmentChatBinding? = null
     private var adapter: GeneralPaginationAdapterDelegate? = null
 
-    private val channelTitle: String by fastLazy {
-        arguments?.getString(CHANNEL_TITLE_KEY) ?: error("Invalid channel title")
+    private val channelId: Int by fastLazy {
+        arguments?.getInt(CHANNEL_ID_KEY) ?: error("Invalid channel")
     }
     private val topicTitle: String? by fastLazy {
         val argsTitle = arguments?.getString(TOPIC_TITLE_KEY)
         if (argsTitle != null && argsTitle != "{$TOPIC_TITLE_KEY}") argsTitle else null
     }
-    override val initEvent: ChatEvent get() = ChatEvent.Ui.Init(channelTitle, topicTitle)
+    override val initEvent: ChatEvent get() = ChatEvent.Ui.Init(channelId, topicTitle)
 
     @Inject
     lateinit var chatStore: Store<ChatEvent, ChatEffect, ChatState>
@@ -105,13 +106,24 @@ internal class ChatFragment : ElmFragment<ChatEvent, ChatEffect, ChatState>() {
     override fun render(state: ChatState) {
         when {
             state.isLoading -> binding.screenStateView.setState(ViewState.Loading)
+            state.error != null -> {
+                val customMessage = if (state.error is InvalidTopicTitleException) {
+                    state.error.toErrorMessage().getDescription(requireContext())
+                } else null
+                showErrorSnackbar(
+                    binding.root,
+                    state.error,
+                    Throwable::toErrorMessage,
+                    customMessage = customMessage,
+                )
+            }
             else -> {
-                with(binding) {
-                    screenStateView.setState(ViewState.Success)
-                    fragmentChatRvChat.isVisible = true
-                }
-                lifecycleScope.launch {
-                    adapter?.submitData(state.messages as PagingData<Any>)
+                lifecycleScope.launch { adapter?.submitData(state.messages as PagingData<Any>) }
+                if (state.topics.isNotEmpty()) {
+                    val autoCompleteAdapter = ArrayAdapter(
+                        requireContext(), android.R.layout.simple_dropdown_item_1line, state.topics
+                    )
+                    binding.fragmentChatEtTopicTitle.setAdapter(autoCompleteAdapter)
                 }
             }
         }
@@ -128,7 +140,8 @@ internal class ChatFragment : ElmFragment<ChatEvent, ChatEffect, ChatState>() {
     private fun setupListeners() {
         with(binding) {
             fragmentChatViewInputMessage.btnSubmitClickListener = { input ->
-                store.accept(ChatEvent.Ui.SendMessage(input))
+                val topic = topicTitle ?: fragmentChatEtTopicTitle.text.toString()
+                store.accept(ChatEvent.Ui.SendMessage(input, topic))
             }
             screenStateView.onTryAgainClickListener = View.OnClickListener {
                 store.accept(ChatEvent.Ui.Reload)
@@ -155,20 +168,7 @@ internal class ChatFragment : ElmFragment<ChatEvent, ChatEffect, ChatState>() {
 
 
     private fun initUI() {
-        val messageDelegate = MessageDelegate(
-            onLongClickListener = { messageId -> selectEmoji(messageId) },
-            onAddReactionClickListener = { messageId -> selectEmoji(messageId) },
-            onReactionClick = { mes, emoji ->
-                store.accept(
-                    ChatEvent.Ui.UpdateReaction(
-                        emoji,
-                        mes
-                    )
-                )
-            }
-        )
-        adapter =
-            GeneralPaginationAdapterDelegate(delegatesToList(messageDelegate, createSeparator()))
+        initChatAdapter()
         with(binding) {
             fragmentChatRvChat.run {
                 isNestedScrollingEnabled = false
@@ -177,6 +177,7 @@ internal class ChatFragment : ElmFragment<ChatEvent, ChatEffect, ChatState>() {
             }
             if (topicTitle != null) {
                 fragmentChatTvTopicTitle.text = getString(R.string.channel_topic_title, topicTitle)
+                fragmentChatEtTopicTitle.isVisible = false
             } else {
                 fragmentChatTvTopicTitle.isVisible = false
             }
@@ -198,13 +199,32 @@ internal class ChatFragment : ElmFragment<ChatEvent, ChatEffect, ChatState>() {
         navigateToEmojiListFragment(SELECTED_EMOJI_RESULT_KEY)
     }
 
-    private fun createSeparator(): Delegate<*, *> {
-        return if (topicTitle == null) {
-            TopicSeparatorDelegate(onTopicClick = { selectedTopicTitle ->
-                navigateToChannelTopic(channelTitle, selectedTopicTitle)
-            })
+    private fun initChatAdapter() {
+        val messageDelegate = MessageDelegate(
+            onLongClickListener = { messageId -> selectEmoji(messageId) },
+            onAddReactionClickListener = { messageId -> selectEmoji(messageId) },
+            onReactionClick = { mes, emoji ->
+                store.accept(
+                    ChatEvent.Ui.UpdateReaction(
+                        emoji,
+                        mes
+                    )
+                )
+            }
+        )
+        adapter = if (topicTitle == null) {
+            GeneralPaginationAdapterDelegate(
+                delegatesToList(
+                    messageDelegate,
+                    TopicSeparatorDelegate(onTopicClick = { selectedTopicTitle ->
+                        navigateToChannelTopic(channelId, selectedTopicTitle)
+                    })
+                )
+            )
         } else {
-            DateSeparatorDelegate()
+            GeneralPaginationAdapterDelegate(
+                delegatesToList(messageDelegate, DateSeparatorDelegate())
+            )
         }
     }
 

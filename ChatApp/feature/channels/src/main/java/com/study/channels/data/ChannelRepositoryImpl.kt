@@ -5,7 +5,7 @@ import com.study.channels.data.mapper.toChannelEntityList
 import com.study.channels.data.mapper.toChannelTopicEntities
 import com.study.channels.data.mapper.toChannelTopics
 import com.study.channels.data.mapper.toChannels
-import com.study.channels.domain.exceptions.ChannelAlredyExistsException
+import com.study.channels.domain.exceptions.ChannelAlreadyExistsException
 import com.study.channels.domain.model.Channel
 import com.study.channels.domain.model.ChannelFilter
 import com.study.channels.domain.model.ChannelTopic
@@ -49,7 +49,7 @@ internal class ChannelRepositoryImpl @Inject constructor(
     override suspend fun addChannel(title: String, isHistoryPublic: Boolean) {
         if (remoteDS.addChannel(title, isHistoryPublic).mapToIsChannelAlreadyExistBoolean()) {
             remoteDS.unsubscribeFromChannel(title)
-            throw ChannelAlredyExistsException()
+            throw ChannelAlreadyExistsException()
         } else {
             localDS.insertChannel(ChannelEntity(id = Random.nextInt(), title, true))
         }
