@@ -23,7 +23,7 @@ class AppNetworkModule {
 
     @Provides
     @Singleton
-    fun providesBaseUrl(): String = ZULIP_BASE_URL
+    fun providesBaseUrl(): String = "https://tinkoff-android-spring-2023.zulipchat.com/api/v1/"
 
     @Provides
     @Singleton
@@ -52,9 +52,4 @@ class AppNetworkModule {
 
     @Provides
     fun provideUserDataSource(impl: NetworkImpl): UserDataSource = impl.userDataSource
-
-    companion object {
-        private const val ZULIP_BASE_URL =
-            "https://tinkoff-android-spring-2023.zulipchat.com/api/v1/"
-    }
 }

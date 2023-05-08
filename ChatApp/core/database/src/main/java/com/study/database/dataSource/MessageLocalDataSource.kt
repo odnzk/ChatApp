@@ -15,15 +15,11 @@ class MessageLocalDataSource @Inject constructor(
     private val reactionDao: ReactionDao
 ) {
     suspend fun removeIrrelevantMessages(
-        channelTitle: String,
+        channelId: Int,
         topicTitle: String
-    ) {
-        val diff =
-            messageDao.countMessagesByChannelAndTopic(channelTitle, topicTitle) - MAX_MESSAGES_COUNT
-        if (diff > 0) {
-            messageDao.deleteIrrelevant(channelTitle, topicTitle, diff)
-        }
-    }
+    ) = (messageDao.countMessagesByChannelAndTopic(channelId, topicTitle) - MAX_MESSAGES_COUNT)
+        .takeIf { it > 0 }?.let { diff -> messageDao.deleteIrrelevant(channelId, topicTitle, diff) }
+
 
     suspend fun addMessagesWithReactions(
         messages: List<MessageEntity>,
@@ -34,15 +30,12 @@ class MessageLocalDataSource @Inject constructor(
     }
 
     fun getMessages(
-        channelTitle: String,
+        channelId: Int,
         topicTitle: String?,
         query: String
     ): PagingSource<Int, MessageWithReactionsTuple> =
-        if (topicTitle != null) {
-            messageDao.getMessages(channelTitle, topicTitle, query)
-        } else {
-            messageDao.getMessages(channelTitle, query)
-        }
+        topicTitle?.let { messageDao.getMessages(channelId, topicTitle, query) }
+            ?: messageDao.getMessages(channelId, query)
 
     suspend fun addMessage(messageEntity: MessageEntity) {
         messageDao.insert(messageEntity)

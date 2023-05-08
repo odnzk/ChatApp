@@ -9,6 +9,6 @@ class RemoveIrrelevantMessagesUseCase @Inject constructor(
     private val repository: MessageRepository,
     private val dispatcher: CoroutineDispatcher
 ) {
-    suspend operator fun invoke(channelTitle: String, topicTitle: String) =
-        withContext(dispatcher) { repository.removeIrrelevant(channelTitle, topicTitle) }
+    suspend operator fun invoke(channelId: Int, topicTitle: String) =
+        withContext(dispatcher) { repository.removeIrrelevant(channelId, topicTitle) }
 }

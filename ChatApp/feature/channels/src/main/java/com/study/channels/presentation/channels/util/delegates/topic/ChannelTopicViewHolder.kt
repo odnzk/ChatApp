@@ -9,7 +9,7 @@ import com.study.channels.presentation.channels.util.model.UiChannelTopic
 
 internal class ChannelTopicViewHolder(
     private val binding: ItemChannelTopicBinding,
-    private val onTopicClick: ((channelTitle: String, topicTitle: String) -> Unit)?
+    private val onTopicClick: ((channelId: Int, topicTitle: String) -> Unit)?
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(topic: UiChannelTopic) {
@@ -20,7 +20,7 @@ internal class ChannelTopicViewHolder(
             itemChannelTopicTvName.text = root.context.getString(
                 R.string.item_channel_topic_name, topic.title
             )
-            root.setOnClickListener { onTopicClick?.invoke(topic.channelTitle, topic.title) }
+            root.setOnClickListener { onTopicClick?.invoke(topic.channelId, topic.title) }
             root.setBackgroundColor(topic.backgroundColor)
         }
     }
@@ -28,7 +28,7 @@ internal class ChannelTopicViewHolder(
     companion object {
         fun create(
             parent: ViewGroup,
-            onTopicClick: ((channelTitle: String, topicTitle: String) -> Unit)?
+            onTopicClick: ((channelId: Int, topicTitle: String) -> Unit)?
         ): ChannelTopicViewHolder = ChannelTopicViewHolder(
             ItemChannelTopicBinding.inflate(LayoutInflater.from(parent.context), parent, false),
             onTopicClick = onTopicClick

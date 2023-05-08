@@ -7,6 +7,8 @@ import com.study.chat.domain.model.NOT_YET_SYNCHRONIZED_ID
 import com.study.chat.domain.usecase.AddReactionUseCase
 import com.study.chat.domain.usecase.GetAllMessagesUseCase
 import com.study.chat.domain.usecase.GetCurrentUserIdUseCase
+import com.study.chat.domain.usecase.GetTopicsUseCase
+import com.study.chat.domain.usecase.LoadTopicsUseCase
 import com.study.chat.domain.usecase.RemoveIrrelevantMessagesUseCase
 import com.study.chat.domain.usecase.RemoveReactionUseCase
 import com.study.chat.domain.usecase.SearchMessagesUseCase
@@ -22,7 +24,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
+import vivid.money.elmslie.core.switcher.Switcher
 import vivid.money.elmslie.coroutines.Actor
+import vivid.money.elmslie.coroutines.switch
 import javax.inject.Inject
 
 internal class ChatActor @Inject constructor(
@@ -33,22 +37,27 @@ internal class ChatActor @Inject constructor(
     private val searchMessagesUseCase: SearchMessagesUseCase,
     private val getCurrentUserId: GetCurrentUserIdUseCase,
     private val removeIrrelevantMessages: RemoveIrrelevantMessagesUseCase,
+    private val loadTopicsUseCase: LoadTopicsUseCase,
+    private val getTopicsUseCase: GetTopicsUseCase,
     private val chatScope: CoroutineScope,
     private val dispatcher: CoroutineDispatcher
 ) : Actor<ChatCommand, Internal> {
 
+    private val topicsSwitcher = Switcher()
+    private val messagesSwitcher = Switcher()
     override fun execute(command: ChatCommand): Flow<Internal> = when (command) {
-        is ChatCommand.GetAllMessages -> getAllMessageUseCase(
-            command.channelTitle,
-            command.topicTitle
-        )
-            .cachedIn(chatScope)
-            .map { it.toUiMessagesWithSeparators(command.userId, command.topicTitle == null) }
-            .mapEvents(Internal::LoadingSuccess, Internal::LoadingError)
-
+        is ChatCommand.GetAllMessages -> messagesSwitcher.switch {
+            getAllMessageUseCase(
+                command.channelId,
+                command.topicTitle
+            )
+                .cachedIn(chatScope)
+                .map { it.toUiMessagesWithSeparators(command.userId, command.topicTitle == null) }
+                .mapEvents(Internal::LoadingSuccess, Internal::LoadingError)
+        }
         is ChatCommand.SearchMessages -> searchMessagesUseCase(
             channelTopicTitle = command.topicTitle,
-            channelTitle = command.channelTitle,
+            channelId = command.channelId,
             query = command.query
         )
             .map { it.toUiMessagesWithSeparators(command.userId, command.topicTitle == null) }
@@ -56,7 +65,7 @@ internal class ChatActor @Inject constructor(
 
         is ChatCommand.SendMessage -> toFlow {
             sendMessageUseCase(
-                command.channelTitle,
+                command.channelId,
                 command.messageContent,
                 command.topicTitle,
                 command.senderId
@@ -83,7 +92,16 @@ internal class ChatActor @Inject constructor(
         }
         is ChatCommand.RemoveIrrelevantMessages ->
             toFlow(dispatcher + Job()) {
-                removeIrrelevantMessages(command.channelTitle, command.topicTitle)
+                removeIrrelevantMessages(command.channelId, command.topicTitle)
             }.mapEvents(errorMapper = Internal::LoadingError)
+        is ChatCommand.LoadTopics -> toFlow { loadTopicsUseCase(command.channelId) }
+            .mapEvents(errorMapper = Internal::LoadingError)
+        is ChatCommand.GetTopics -> topicsSwitcher.switch {
+            getTopicsUseCase(command.channelId)
+                .mapEvents(
+                    eventMapper = Internal::GettingTopicsSuccess,
+                    errorMapper = Internal::LoadingError
+                )
+        }
     }
 }

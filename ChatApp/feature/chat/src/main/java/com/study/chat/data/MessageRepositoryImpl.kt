@@ -30,10 +30,10 @@ internal class MessageRepositoryImpl @Inject constructor(
     private val messagePagingMediatorFactory: MessagesPagingMediator.Factory
 ) : MessageRepository {
     override fun getMessages(
-        channelTitle: String,
+        channelId: Int,
         topicName: String?,
         searchQuery: String
-    ): Flow<PagingData<IncomeMessage>> = createMessagesPager(channelTitle, topicName, searchQuery)
+    ): Flow<PagingData<IncomeMessage>> = createMessagesPager(channelId, topicName, searchQuery)
         .flow
         .map { pagingData -> pagingData.map { it.toIncomeMessage() } }
         .flowOn(dispatcher)
@@ -43,7 +43,7 @@ internal class MessageRepositoryImpl @Inject constructor(
         localDS.addMessage(messageEntity)
         val id = remoteDS.sendMessage(
             message.type,
-            message.channelTitle,
+            message.channelId,
             message.content,
             message.topicTitle
         ).id
@@ -61,12 +61,13 @@ internal class MessageRepositoryImpl @Inject constructor(
         remoteDS.removeReaction(reaction.messageId, reaction.emoji.name)
     }
 
-    override suspend fun removeIrrelevant(channelTitle: String, topicTitle: String) =
-        localDS.removeIrrelevantMessages(channelTitle, topicTitle)
+    override suspend fun removeIrrelevant(channelId: Int, topicTitle: String) {
+        localDS.removeIrrelevantMessages(channelId, topicTitle)
+    }
 
     @OptIn(ExperimentalPagingApi::class)
     private fun createMessagesPager(
-        channelTitle: String,
+        channelId: Int,
         topicName: String?,
         searchQuery: String
     ): Pager<Int, MessageWithReactionsTuple> = Pager(
@@ -77,13 +78,9 @@ internal class MessageRepositoryImpl @Inject constructor(
             prefetchDistance = PREFETCH_DISTANCE,
             initialLoadSize = PAGE_SIZE * 2
         ),
-        remoteMediator = messagePagingMediatorFactory.create(
-            channelTitle,
-            topicName,
-            searchQuery
-        )
+        remoteMediator = messagePagingMediatorFactory.create(channelId, topicName, searchQuery)
     )
-    { localDS.getMessages(channelTitle, topicName, searchQuery) }
+    { localDS.getMessages(channelId, topicName, searchQuery) }
 
     companion object {
         private const val PAGE_SIZE = 20

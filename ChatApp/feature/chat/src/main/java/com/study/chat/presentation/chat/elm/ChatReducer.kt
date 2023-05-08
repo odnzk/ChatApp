@@ -10,17 +10,12 @@ internal class ChatReducer @Inject constructor() :
 
     private var _currUserId: Int? = null
     private val currUserId get() = checkNotNull(_currUserId) { "Current user id cannot be null" }
-    private var _channelTitle: String? = null
-    private val channelTitle get() = checkNotNull(_channelTitle) { "Channel title cannot be null" }
+    private val channelId get() = checkNotNull(_channelId) { "Channel id cannot be null" }
+    private var _channelId: Int? = null
     private var channelTopic: String? = null
 
     override fun Result.reduce(event: ChatEvent) = when (event) {
-        is ChatEvent.Ui.Init -> if (_currUserId == null) {
-            channelTopic = event.topicTitle
-            _channelTitle = event.channelTitle
-            state { copy(isLoading = true) }
-            commands { +ChatCommand.GetCurrentUserId }
-        } else Unit
+        is ChatEvent.Ui.Init -> init(event)
         is ChatEvent.Internal.LoadingError ->
             when (val error = event.error) {
                 is SynchronizationException, is UserNotAuthorizedException -> {
@@ -30,25 +25,16 @@ internal class ChatReducer @Inject constructor() :
             }
         is ChatEvent.Internal.LoadingSuccess ->
             state { copy(isLoading = false, messages = event.messages, error = null) }
-        is ChatEvent.Internal.GetCurrentUserIdSuccess -> {
-            _currUserId = event.userId
-            commands {
-                +ChatCommand.GetAllMessages(
-                    channelTitle,
-                    channelTopic,
-                    currUserId
-                )
-            }
-        }
+        is ChatEvent.Internal.GetCurrentUserIdSuccess -> onSuccessUserIdReceiving(event)
         is ChatEvent.Ui.Reload -> {
             state { copy(isLoading = true, error = null) }
-            commands { +ChatCommand.GetAllMessages(channelTitle, channelTopic, currUserId) }
+            commands { +ChatCommand.GetAllMessages(channelId, channelTopic, currUserId) }
         }
         is ChatEvent.Ui.Search -> {
             state { copy(isLoading = true, error = null) }
             commands {
                 +ChatCommand.SearchMessages(
-                    channelTitle = channelTitle,
+                    channelId = channelId,
                     topicTitle = channelTopic,
                     userId = currUserId,
                     query = event.query
@@ -58,9 +44,8 @@ internal class ChatReducer @Inject constructor() :
         is ChatEvent.Ui.SendMessage -> {
             commands {
                 +ChatCommand.SendMessage(
-                    channelTitle = channelTitle,
-                    // todo provide topic if we are in channel
-                    topicTitle = channelTopic.orEmpty(),
+                    channelId = channelId,
+                    topicTitle = event.topic,
                     messageContent = event.messageContent,
                     senderId = currUserId
                 )
@@ -71,8 +56,35 @@ internal class ChatReducer @Inject constructor() :
             commands { +ChatCommand.UpdateReaction(event.message, event.emoji, currUserId) }
         }
         is ChatEvent.Ui.RemoveIrrelevantMessages -> channelTopic?.let {
-            commands { +ChatCommand.RemoveIrrelevantMessages(channelTitle, it) }
+            commands { +ChatCommand.RemoveIrrelevantMessages(channelId, it) }
         }
         ChatEvent.Internal.UpdateReactionSuccess -> state { copy(isLoading = false) }
+        is ChatEvent.Internal.GettingTopicsSuccess -> state { copy(topics = event.topics) }
     }
+
+    private fun Result.init(event: ChatEvent.Ui.Init) =
+        if (_currUserId == null) {
+            _channelId = event.channelId
+            channelTopic = event.topicTitle
+            state { copy(isLoading = true) }
+            commands { +ChatCommand.GetCurrentUserId }
+        } else Unit
+
+    private fun Result.onSuccessUserIdReceiving(event: ChatEvent.Internal.GetCurrentUserIdSuccess) {
+        _currUserId = event.userId
+        if (channelTopic == null) {
+            commands {
+                +ChatCommand.LoadTopics(channelId)
+                +ChatCommand.GetTopics(channelId)
+            }
+        }
+        commands {
+            +ChatCommand.GetAllMessages(
+                channelId,
+                channelTopic,
+                currUserId
+            )
+        }
+    }
+
 }

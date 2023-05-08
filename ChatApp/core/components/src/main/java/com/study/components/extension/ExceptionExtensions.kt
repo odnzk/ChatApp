@@ -41,9 +41,10 @@ inline fun showErrorSnackbar(
     view: View,
     error: Throwable,
     errorHandler: ((Throwable) -> UiError) = Throwable::toBaseErrorMessage,
+    customMessage: String? = null,
     onReloadActionListener: View.OnClickListener? = null
 ) {
-    val displayedMessage = view.context.getString(errorHandler(error).messageRes)
+    val displayedMessage = customMessage ?: errorHandler(error).getMessage(view.context)
     Snackbar.make(view, displayedMessage, Snackbar.LENGTH_SHORT).apply {
         setTextColor(view.context.getColor(CoreR.color.white))
         onReloadActionListener?.let { setAction(R.string.error_snackbar_action, it) }

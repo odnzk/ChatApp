@@ -47,8 +47,8 @@ internal fun PagingData<IncomeMessage>.toUiMessagesWithSeparators(
 internal fun PagingData<UiMessage>.insertDateSeparators(): PagingData<ChatListItem> =
     insertSeparators { before, after ->
         if (before == null || after == null) return@insertSeparators null
-        val afterDate = after.calendar
-        if (!before.calendar.isSameDay(afterDate)) DateSeparator(afterDate) else null
+        val beforeDate = before.calendar
+        if (!after.calendar.isSameDay(beforeDate)) DateSeparator(beforeDate) else null
     }
 
 internal fun PagingData<UiMessage>.insertChatListSeparators(isChannelChat: Boolean): PagingData<ChatListItem> =
@@ -57,6 +57,6 @@ internal fun PagingData<UiMessage>.insertChatListSeparators(isChannelChat: Boole
 private fun PagingData<UiMessage>.insertTopicSeparators(): PagingData<ChatListItem> =
     insertSeparators { before, after ->
         if (before == null || after == null) return@insertSeparators null
-        val afterTopic = after.topic
-        if (before.topic != after.topic) TopicSeparator(afterTopic, after.calendar) else null
+        val beforeTopic = before.topic
+        if (beforeTopic != after.topic) TopicSeparator(beforeTopic, after.calendar) else null
     }

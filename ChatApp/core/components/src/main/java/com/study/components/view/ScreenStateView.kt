@@ -62,7 +62,7 @@ class ScreenStateView @JvmOverloads constructor(
         tvError.isVisible = true
         tvError.text = getString(error.messageRes)
         tvErrorDescription.ifNotNullShow(error.descriptionRes != null) {
-            text = context.getString(requireNotNull(error.descriptionRes), error.descriptionArgs)
+            text = error.getDescription(context)
         }
         ivError.ifNotNullShow(error.imageRes != null) {
             setImageResource(requireNotNull(error.imageRes))

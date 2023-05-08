@@ -7,7 +7,7 @@ import com.study.database.entity.MessageEntity
 internal fun OutcomeMessage.toMessageEntity() =
     MessageEntity(
         id = NOT_YET_SYNCHRONIZED_ID,
-        channelTitle = channelTitle,
+        channelId = channelId,
         topicTitle = topicTitle,
         senderId = senderId,
         senderAvatarUrl = null,

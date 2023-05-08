@@ -20,14 +20,12 @@ internal fun AllMessagesResponse.getAllReactionEntities(): List<ReactionEntity> 
     return resultList
 }
 
-internal fun AllMessagesResponse.toMessageEntities(
-    channelTitle: String
-): List<MessageEntity> =
-    messages?.filterNotNull()?.map { it.toMessageEntity(channelTitle) }
+internal fun AllMessagesResponse.toMessageEntities(channelId: Int): List<MessageEntity> =
+    messages?.filterNotNull()?.map { it.toMessageEntity(channelId) }
         ?.sortedByDescending { it.calendar }
         ?: emptyList()
 
-internal fun MessageDto.toMessageEntity(channelTitle: String): MessageEntity {
+internal fun MessageDto.toMessageEntity(channelId: Int): MessageEntity {
     val id = requireNotNull(id)
     return MessageEntity(
         id = id,
@@ -36,7 +34,7 @@ internal fun MessageDto.toMessageEntity(channelTitle: String): MessageEntity {
         senderName = senderFullName,
         senderAvatarUrl = avatarUrl,
         senderId = requireNotNull(senderId),
-        channelTitle = channelTitle,
+        channelId = channelId,
         topicTitle = requireNotNull(subject)
     )
 }

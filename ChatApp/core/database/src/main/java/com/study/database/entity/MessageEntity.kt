@@ -8,14 +8,14 @@ import java.util.Calendar
 
 @Entity(
     tableName = "messages",
-    indices = [Index(value = ["topic_title", "channel_title"])]
+    indices = [Index(value = ["topic_title", "channel_id"])]
 )
 data class MessageEntity(
     @PrimaryKey
     @ColumnInfo("id")
     val id: Int,
-    @ColumnInfo("channel_title")
-    val channelTitle: String,
+    @ColumnInfo("channel_id")
+    val channelId: Int,
     @ColumnInfo("topic_title")
     val topicTitle: String,
     @ColumnInfo(name = "sender_id")

@@ -11,14 +11,18 @@ internal data class ChatState(
     val error: Throwable? = null,
     val searchQuery: String = "",
     val messages: PagingData<ChatListItem> = PagingData.empty(),
+    val topics: List<String> = emptyList()
 )
 
 internal sealed interface ChatCommand {
-    class GetAllMessages(val channelTitle: String, val topicTitle: String?, val userId: Int) :
-        ChatCommand
+    class GetAllMessages(
+        val channelId: Int,
+        val topicTitle: String?,
+        val userId: Int
+    ) : ChatCommand
 
     class SendMessage(
-        val channelTitle: String,
+        val channelId: Int,
         val topicTitle: String,
         val messageContent: String,
         val senderId: Int
@@ -31,7 +35,7 @@ internal sealed interface ChatCommand {
     ) : ChatCommand
 
     class SearchMessages(
-        val channelTitle: String,
+        val channelId: Int,
         val topicTitle: String?,
         val userId: Int,
         val query: String
@@ -39,7 +43,9 @@ internal sealed interface ChatCommand {
 
     object GetCurrentUserId : ChatCommand
 
-    class RemoveIrrelevantMessages(val channelTitle: String, val topicTitle: String) : ChatCommand
+    class RemoveIrrelevantMessages(val channelId: Int, val topicTitle: String) : ChatCommand
+    class LoadTopics(val channelId: Int) : ChatCommand
+    class GetTopics(val channelId: Int) : ChatCommand
 }
 
 internal sealed interface ChatEffect {
@@ -48,9 +54,9 @@ internal sealed interface ChatEffect {
 
 internal sealed interface ChatEvent {
     sealed interface Ui : ChatEvent {
-        class Init(val channelTitle: String, val topicTitle: String?) : Ui
+        class Init(val channelId: Int, val topicTitle: String?) : Ui
         object Reload : Ui
-        class SendMessage(val messageContent: String) : Ui
+        class SendMessage(val messageContent: String, val topic: String) : Ui
         class UpdateReaction(val emoji: Emoji, val message: UiMessage) : Ui
         class Search(val query: String) : Ui
         object RemoveIrrelevantMessages : Ui
@@ -61,5 +67,6 @@ internal sealed interface ChatEvent {
         object UpdateReactionSuccess : Internal
         class LoadingError(val error: Throwable) : Internal
         class GetCurrentUserIdSuccess(val userId: Int) : Internal
+        class GettingTopicsSuccess(val topics: List<String>) : Internal
     }
 }

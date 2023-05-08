@@ -11,10 +11,10 @@ internal fun Fragment.navigateToEmojiListFragment(resultKey: String) {
     )
 }
 
-internal fun ChatFragment.navigateToChannelTopic(channelTitle: String, topicTitle: String) {
+internal fun ChatFragment.navigateToChannelTopic(channelId: Int, topicTitle: String) {
     findNavController().navigate(
         ChatFragmentDirections.actionChatFragmentSelf(
-            channelTitle,
+            channelId,
             topicTitle
         )
     )

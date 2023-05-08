@@ -13,6 +13,7 @@ import com.study.network.model.request.message.MessageNarrow
 import com.study.network.model.request.message.MessageNarrowList
 import com.study.network.model.request.message.MessageNarrowOperator
 import com.study.network.model.request.message.MessagesAnchor
+import com.study.network.model.request.message.OperandType
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -22,19 +23,19 @@ class MessagesPagingMediator @AssistedInject constructor(
     private val localDs: MessageLocalDataSource,
     private val remoteDS: MessageRemoteDataSource,
     @Assisted("query") query: String,
-    @Assisted("channelTitle") private val channelTitle: String,
+    @Assisted("channelId") private val channelId: Int,
     @Assisted("topicName") private val topicTitle: String?,
 ) : RemoteMediator<Int, MessageWithReactionsTuple>() {
     private val narrows = MessageNarrowList()
 
     init {
         narrows.run {
-            add(MessageNarrow(MessageNarrowOperator.STREAM, channelTitle))
+            add(MessageNarrow(MessageNarrowOperator.STREAM, channelId, OperandType.INT))
             if (topicTitle != null) {
-                add(MessageNarrow(MessageNarrowOperator.TOPIC, topicTitle))
+                add(MessageNarrow(MessageNarrowOperator.TOPIC, topicTitle, OperandType.STRING))
             }
             if (query.isNotEmpty()) {
-                add(MessageNarrow(MessageNarrowOperator.SEARCH, query))
+                add(MessageNarrow(MessageNarrowOperator.SEARCH, query, OperandType.STRING))
             }
         }
     }
@@ -69,7 +70,7 @@ class MessagesPagingMediator @AssistedInject constructor(
                     narrow = narrows
                 )
             }
-            val messages = response.toMessageEntities(channelTitle)
+            val messages = response.toMessageEntities(channelId)
             localDs.addMessagesWithReactions(messages, response.getAllReactionEntities())
 
             MediatorResult.Success(messages.size < pageSize)
@@ -81,7 +82,7 @@ class MessagesPagingMediator @AssistedInject constructor(
     @AssistedFactory
     interface Factory {
         fun create(
-            @Assisted("channelTitle") channelTitle: String,
+            @Assisted("channelId") channelId: Int,
             @Assisted("topicName") topicName: String?,
             @Assisted("query") query: String
         ): MessagesPagingMediator

@@ -22,10 +22,20 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@id/fragment_chat_view_input_message"
+        app:layout_constraintBottom_toTopOf="@id/fragment_chat_et_topic_title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/fragment_chat_tv_topic_title" />
+
+    <AutoCompleteTextView
+        android:id="@+id/fragment_chat_et_topic_title"
+        style="@style/ChannelTopicAutoCompleteTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/fragment_chat_view_input_message"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="LabelFor" />
 
     <com.study.components.view.InputView
         android:id="@+id/fragment_chat_view_input_message"

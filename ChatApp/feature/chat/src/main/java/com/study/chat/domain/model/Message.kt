@@ -4,6 +4,7 @@ import com.study.network.model.request.message.MessageType
 import java.util.Calendar
 
 const val NOT_YET_SYNCHRONIZED_ID = -99
+const val MAX_TOPIC_LENGTH = 50
 
 data class IncomeMessage(
     val id: Int,
@@ -19,7 +20,7 @@ data class IncomeMessage(
 
 data class OutcomeMessage(
     val senderId: Int,
-    val channelTitle: String,
+    val channelId: Int,
     val content: String,
     val topicTitle: String,
     val calendar: Calendar,
