@@ -3,6 +3,7 @@ package com.study.auth.impl
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
@@ -23,21 +24,29 @@ internal class DefaultUserAuthRepository @Inject constructor(
 ) :
     UserAuthRepository {
 
-    override suspend fun getCurrentUserId(): Int = withContext(dispatcher) {
-        getLocallySaved() ?: run {
-            val userId = requireNotNull(userDataSource.getCurrentUser().userId)
-            saveLocally(userId)
-            userId
-        }
+    override suspend fun getUserId(): Int = withContext(dispatcher) {
+        getCurrentValue(USER_ID) { requireNotNull(userDataSource.getCurrentUser().userId) }
     }
 
-    private suspend fun getLocallySaved(): Int? =
-        context.dataStore.data.map { preferences -> preferences[USER_ID] }.first()
+    private suspend fun <T> getCurrentValue(
+        key: Preferences.Key<T>,
+        itemProducer: suspend () -> T
+    ): T = getLocallySaved(key) ?: run {
+        val item = itemProducer()
+        saveLocally(key, item)
+        item
+    }
 
+    override suspend fun isAdmin(): Boolean = withContext(dispatcher) {
+        getCurrentValue(IS_ADMIN) { requireNotNull(userDataSource.getCurrentUser().isAdmin) }
+    }
 
-    private suspend fun saveLocally(userId: Int) {
+    private suspend fun <T> getLocallySaved(key: Preferences.Key<T>): T? =
+        context.dataStore.data.map { preferences -> preferences[key] }.first()
+
+    private suspend fun <T> saveLocally(key: Preferences.Key<T>, newValue: T) {
         context.dataStore.edit { preferences ->
-            preferences[USER_ID] = userId
+            preferences[key] = newValue
         }
     }
 
@@ -47,5 +56,6 @@ internal class DefaultUserAuthRepository @Inject constructor(
             DATA_STORE_NAME
         )
         private val USER_ID = intPreferencesKey("userId")
+        private val IS_ADMIN = booleanPreferencesKey("isAdmin")
     }
 }

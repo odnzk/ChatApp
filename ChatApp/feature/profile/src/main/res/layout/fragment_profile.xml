@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:theme="@style/Theme.Messenger">
+    android:theme="@style/Theme.ChatApp">
 
 
     <com.google.android.material.imageview.ShapeableImageView
@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.Messenger.Title.Large"
+        android:textAppearance="@style/TextAppearance.ChatApp.Title.Large"
         app:layout_constraintBottom_toTopOf="@id/fragment_profile_tv_is_online"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -36,7 +36,7 @@
         android:id="@+id/fragment_profile_tv_is_online"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="@style/TextAppearance.Messenger.Body"
+        android:textAppearance="@style/TextAppearance.ChatApp.Body"
         android:textColor="@color/apple_green"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

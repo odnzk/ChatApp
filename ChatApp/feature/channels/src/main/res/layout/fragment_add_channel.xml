@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="@dimen/margin_medium"
-    android:theme="@style/Theme.Messenger">
+    android:theme="@style/Theme.ChatApp">
 
     <View
         style="@style/BottomSheetHelperView"
@@ -16,7 +17,9 @@
         android:id="@+id/fragment_add_channel_tv_error"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="@dimen/margin_small" />
+        android:layout_marginVertical="@dimen/margin_small"
+        tools:text="@string/error_channel_already_exists"
+        tools:textColor="@color/white" />
 
     <com.study.components.view.InputView
         android:id="@+id/fragment_add_channel_input_view"
@@ -27,13 +30,5 @@
         app:maxLength="50"
         app:singleLine="true"
         app:viewBackgroundColor="@android:color/transparent" />
-
-    <CheckBox
-        android:id="@+id/fragment_add_channel_cb_history"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_small"
-        android:buttonTint="@color/navy_light"
-        android:text="@string/fragment_add_channel_cb_show_history_new_members" />
 
 </LinearLayout>

@@ -40,6 +40,9 @@ interface MessageDao {
         query: String
     ): PagingSource<Int, MessageWithReactionsTuple>
 
+    @Query("SELECT * FROM messages WHERE id = :id")
+    suspend fun getMessageById(id: Int): MessageEntity?
+
     @Query(
         "SELECT COUNT(*) FROM messages" +
                 " WHERE channel_id = :channelId" +
@@ -53,8 +56,6 @@ interface MessageDao {
     @Query("SELECT COUNT(*) FROM messages")
     suspend fun countAllMessages(): Int
 
-    @Query("SELECT * FROM messages")
-    suspend fun getAll(): List<MessageEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(messages: List<MessageEntity>)
@@ -62,11 +63,11 @@ interface MessageDao {
     @Upsert
     suspend fun upsert(messages: List<MessageEntity>)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(message: MessageEntity)
-
     @Update
     suspend fun update(message: MessageEntity)
+
+    @Query("UPDATE messages SET id = :newId WHERE id = :prevId")
+    suspend fun updateMessageId(prevId: Int, newId: Int)
 
     @Transaction
     @Delete
@@ -85,7 +86,5 @@ interface MessageDao {
     )
     suspend fun deleteIrrelevant(channelId: Int, topicTitle: String, count: Int)
 
-    @Query("SELECT * FROM messages WHERE id = :id")
-    suspend fun getMessageById(id: Int): MessageEntity?
 
 }

@@ -5,11 +5,11 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class GetCurrentUserIdUseCase @Inject constructor(
+internal class GetCurrentUserIdUseCase @Inject constructor(
     private val repository: UserAuthRepository,
     private val dispatcher: CoroutineDispatcher
 ) {
     suspend operator fun invoke(): Int = withContext(dispatcher) {
-        repository.getCurrentUserId()
+        repository.getUserId()
     }
 }

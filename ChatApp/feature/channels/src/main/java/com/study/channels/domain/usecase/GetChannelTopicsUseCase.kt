@@ -11,7 +11,6 @@ internal class GetChannelTopicsUseCase @Inject constructor(
     private val repository: ChannelRepository,
     private val dispatcher: CoroutineDispatcher
 ) {
-    operator fun invoke(
-        channelId: Int
-    ): Flow<List<ChannelTopic>> = repository.getChannelTopics(channelId).flowOn(dispatcher)
+    operator fun invoke(channelId: Int): Flow<List<ChannelTopic>> =
+        repository.getChannelTopics(channelId).flowOn(dispatcher)
 }

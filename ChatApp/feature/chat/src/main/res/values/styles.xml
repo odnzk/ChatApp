@@ -6,7 +6,7 @@
         <item name="android:padding">@dimen/paddings_medium</item>
         <item name="android:textAlignment">center</item>
         <item name="android:textColor">@color/black</item>
-        <item name="android:textAppearance">@style/TextAppearance.Messenger.Title.Small</item>
+        <item name="android:textAppearance">@style/TextAppearance.ChatApp.Title.Small</item>
     </style>
 
     <style name="MessageDateChip" parent="ShapeAppearanceOverlay.Material3.Chip">
@@ -25,17 +25,25 @@
     </style>
 
     <style name="ChannelTopicAutoCompleteTextView" parent="ThemeOverlay.Material3.AutoCompleteTextView">
-        <item name="android:background">@color/gray80</item>
+        <item name="android:backgroundTint">@color/gray80</item>
         <item name="android:hint">@string/hint_channel_topic</item>
         <item name="maxLines">1</item>
         <item name="android:padding">@dimen/margin_medium</item>
         <item name="android:textAppearance">@style/TextAppearance.Messenger.Body.Small</item>
+        <item name="android:background">@drawable/shape_rect_with_radius_40</item>
     </style>
 
     <style name="ChannelTopicItem">
         <item name="android:padding">4dp</item>
         <item name="android:paddingBottom">8dp</item>
         <item name="android:background">@color/navy_light</item>
+    </style>
+
+    <style name="ItemOptionTextView">
+        <item name="android:drawablePadding">6dp</item>
+        <item name="android:padding">@dimen/margin_small</item>
+        <item name="android:drawableTint">@color/black07</item>
+        <item name="android:textAppearance">@style/TextAppearance.ChatApp.Body</item>
     </style>
 
 </resources>

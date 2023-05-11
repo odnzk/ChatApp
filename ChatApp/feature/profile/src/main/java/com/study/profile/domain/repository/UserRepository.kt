@@ -3,7 +3,7 @@ package com.study.profile.domain.repository
 import com.study.components.model.UserPresenceStatus
 import com.study.profile.domain.model.UserDetailed
 
-interface UserRepository {
+internal interface UserRepository {
     suspend fun getUserById(id: Int): UserDetailed?
 
     suspend fun getCurrentUser(): UserDetailed

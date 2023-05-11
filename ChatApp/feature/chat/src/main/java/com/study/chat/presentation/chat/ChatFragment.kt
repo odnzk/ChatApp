@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import androidx.core.view.isVisible
 import androidx.fragment.app.clearFragmentResultListener
 import androidx.fragment.app.setFragmentResultListener
@@ -20,16 +19,17 @@ import com.study.chat.R
 import com.study.chat.databinding.FragmentChatBinding
 import com.study.chat.di.ChatComponentViewModel
 import com.study.chat.domain.exceptions.InvalidTopicTitleException
-import com.study.chat.domain.model.Emoji
+import com.study.chat.presentation.util.model.UiEmoji
 import com.study.chat.presentation.chat.elm.ChatEffect
 import com.study.chat.presentation.chat.elm.ChatEvent
 import com.study.chat.presentation.chat.elm.ChatState
-import com.study.chat.presentation.chat.util.delegates.date.DateSeparatorDelegate
-import com.study.chat.presentation.chat.util.delegates.message.MessageDelegate
-import com.study.chat.presentation.chat.util.delegates.topic.TopicSeparatorDelegate
+import com.study.chat.presentation.chat.util.delegate.date.DateSeparatorDelegate
+import com.study.chat.presentation.chat.util.delegate.message.MessageDelegate
+import com.study.chat.presentation.chat.util.delegate.topic.TopicSeparatorDelegate
 import com.study.chat.presentation.chat.util.model.UiMessage
+import com.study.chat.presentation.util.navigateToActionsFragment
 import com.study.chat.presentation.util.navigateToChannelTopic
-import com.study.chat.presentation.util.navigateToEmojiListFragment
+import com.study.chat.presentation.util.setupSuggestionsAdapter
 import com.study.chat.presentation.util.toErrorMessage
 import com.study.common.extension.fastLazy
 import com.study.components.extension.collectFlowSafely
@@ -120,10 +120,7 @@ internal class ChatFragment : ElmFragment<ChatEvent, ChatEffect, ChatState>() {
             else -> {
                 lifecycleScope.launch { adapter?.submitData(state.messages as PagingData<Any>) }
                 if (state.topics.isNotEmpty()) {
-                    val autoCompleteAdapter = ArrayAdapter(
-                        requireContext(), android.R.layout.simple_dropdown_item_1line, state.topics
-                    )
-                    binding.fragmentChatEtTopicTitle.setAdapter(autoCompleteAdapter)
+                    binding.fragmentChatEtTopicTitle.setupSuggestionsAdapter(state.topics)
                 }
             }
         }
@@ -192,11 +189,11 @@ internal class ChatFragment : ElmFragment<ChatEvent, ChatEffect, ChatState>() {
 
     private fun selectEmoji(message: UiMessage) {
         setFragmentResultListener(SELECTED_EMOJI_RESULT_KEY) { _, bundle ->
-            bundle.safeGetParcelable<Emoji>(SELECTED_EMOJI_RESULT_KEY)?.let { selectedEmoji ->
+            bundle.safeGetParcelable<UiEmoji>(SELECTED_EMOJI_RESULT_KEY)?.let { selectedEmoji ->
                 store.accept(ChatEvent.Ui.UpdateReaction(selectedEmoji, message))
             }
         }
-        navigateToEmojiListFragment(SELECTED_EMOJI_RESULT_KEY)
+        navigateToActionsFragment(message.id, SELECTED_EMOJI_RESULT_KEY)
     }
 
     private fun initChatAdapter() {

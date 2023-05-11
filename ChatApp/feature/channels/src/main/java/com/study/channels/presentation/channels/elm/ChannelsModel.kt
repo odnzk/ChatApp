@@ -1,6 +1,6 @@
 package com.study.channels.presentation.channels.elm
 
-import com.study.channels.domain.model.ChannelFilter
+import com.study.channels.presentation.channels.util.model.UiChannelFilter
 import com.study.channels.presentation.channels.util.model.UiChannelModel
 
 
@@ -8,13 +8,13 @@ internal data class ChannelsState(
     val isLoading: Boolean = false,
     val searchQuery: String = "",
     val error: Throwable? = null,
-    val channelFilter: ChannelFilter = ChannelFilter.SUBSCRIBED_ONLY,
+    val channelFilter: UiChannelFilter = UiChannelFilter.SUBSCRIBED_ONLY,
     val channelsWithTopics: Map<Int, List<UiChannelModel>> = hashMapOf()
 )
 
 internal sealed interface ChannelsCommand {
-    class LoadChannels(val filter: ChannelFilter) : ChannelsCommand
-    class UpdateChannels(val filter: ChannelFilter) : ChannelsCommand
+    class LoadChannels(val filter: UiChannelFilter) : ChannelsCommand
+    class UpdateChannels(val filter: UiChannelFilter) : ChannelsCommand
     class LoadChannelTopic(val channelId: Int) : ChannelsCommand
     class ShowChannelTopics(
         val channelId: Int,
@@ -26,7 +26,7 @@ internal sealed interface ChannelsCommand {
         val channelsMap: Map<Int, List<UiChannelModel>>
     ) : ChannelsCommand
 
-    class SearchChannels(val query: String, val filter: ChannelFilter) : ChannelsCommand
+    class SearchChannels(val query: String, val filter: UiChannelFilter) : ChannelsCommand
 }
 
 internal sealed interface ChannelsEffect {
@@ -35,7 +35,7 @@ internal sealed interface ChannelsEffect {
 
 internal sealed interface ChannelsEvent {
     sealed interface Ui : ChannelsEvent {
-        class Init(val channelFilter: ChannelFilter) : Ui
+        class Init(val channelFilter: UiChannelFilter) : Ui
         object Reload : Ui
         class Search(val query: String) : Ui
         class ManageChannelTopics(val channelId: Int, val isCollapsed: Boolean) : Ui

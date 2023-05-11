@@ -1,8 +1,15 @@
 package com.study.channels.presentation.channels.util.model
 
+import android.os.Parcelable
 import com.study.components.recycler.shimmer.ShimmerItem
+import kotlinx.parcelize.Parcelize
 
 internal sealed interface UiChannelModel
+
+@Parcelize
+internal enum class UiChannelFilter : Parcelable {
+    ALL, SUBSCRIBED_ONLY
+}
 
 internal data class UiChannel(
     val id: Int,

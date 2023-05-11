@@ -2,7 +2,7 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:theme="@style/Theme.Messenger"
+    android:theme="@style/Theme.ChatApp"
     tools:background="@color/gray7"
     tools:parentTag="com.study.components.view.ScreenStateView">
 
@@ -30,7 +30,7 @@
         android:layout_gravity="center"
         android:layout_marginTop="@dimen/margin_medium"
         android:maxLines="1"
-        android:textAppearance="@style/TextAppearance.Messenger.Body.Large"
+        android:textAppearance="@style/TextAppearance.ChatApp.Body.Large"
         tools:text="@string/error_connection_lost" />
 
     <TextView

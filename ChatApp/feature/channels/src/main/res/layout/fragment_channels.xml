@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:theme="@style/Theme.Messenger">
+    android:theme="@style/Theme.ChatApp">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/fragment_rv_data_list"
@@ -15,12 +16,11 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/fragment_channels_btn_add_channel"
-        style="@style/ButtonAddChannel"
-        android:layout_width="@dimen/primary_round_button_size"
-        android:layout_height="@dimen/primary_round_button_size"
+        style="@style/PrimaryCircleButton"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/margin_medium"
-        android:contentDescription="@string/content_description_btn_add_channel" />
+        android:contentDescription="@string/content_description_btn_add_channel"
+        app:icon="@drawable/ic_baseline_add_24" />
 </FrameLayout>

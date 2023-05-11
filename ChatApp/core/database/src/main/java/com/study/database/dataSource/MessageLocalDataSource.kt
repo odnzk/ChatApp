@@ -38,7 +38,11 @@ class MessageLocalDataSource @Inject constructor(
             ?: messageDao.getMessages(channelId, query)
 
     suspend fun addMessage(messageEntity: MessageEntity) {
-        messageDao.insert(messageEntity)
+        messageDao.insert(listOf(messageEntity))
+    }
+
+    suspend fun updateMessageId(prevId: Int, newId: Int) {
+        messageDao.updateMessageId(prevId, newId)
     }
 
     suspend fun updateMessage(messageEntity: MessageEntity) {
@@ -51,6 +55,20 @@ class MessageLocalDataSource @Inject constructor(
 
     suspend fun removeReaction(reactionEntity: ReactionEntity) {
         reactionDao.delete(reactionEntity)
+    }
+
+    suspend fun deleteMessage(messageId: Int): MessageEntity? =
+        getMessageById(messageId)?.also { deletedMessage ->
+            messageDao.delete(listOf(deletedMessage))
+        }
+
+    suspend fun getMessageById(messageId: Int): MessageEntity? =
+        messageDao.getMessageById(messageId)
+
+    suspend fun updateMessage(messageId: Int, content: String, topic: String): MessageEntity? {
+        return messageDao.getMessageById(messageId)?.also { entity ->
+            messageDao.update(entity.copy(content = content, topicTitle = topic))
+        }
     }
 
     companion object {

@@ -5,7 +5,7 @@ import com.study.chat.domain.repository.EmojiRepository
 import javax.inject.Inject
 
 internal class LocalEmojiRepository @Inject constructor() : EmojiRepository {
-    private val emojiList = listOf(
+    private val emojiList: List<Emoji> = listOf(
         Emoji("+1", "1f44d"),
         Emoji("tada", "1f389"),
         Emoji("smile", "1f642"),
@@ -119,5 +119,5 @@ internal class LocalEmojiRepository @Inject constructor() : EmojiRepository {
         Emoji("zzz", "1f4a4")
     )
 
-    override suspend fun getEmoji() = emojiList
+    override suspend fun getEmoji(): List<Emoji> = emojiList
 }

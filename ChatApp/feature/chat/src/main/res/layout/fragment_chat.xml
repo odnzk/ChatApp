@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:theme="@style/Theme.Messenger">
+    android:theme="@style/Theme.ChatApp">
 
     <TextView
         android:id="@+id/fragment_chat_tv_topic_title"

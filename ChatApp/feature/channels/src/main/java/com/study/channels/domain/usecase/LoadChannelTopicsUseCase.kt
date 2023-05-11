@@ -9,8 +9,8 @@ internal class LoadChannelTopicsUseCase @Inject constructor(
     private val repository: ChannelRepository,
     private val dispatcher: CoroutineDispatcher
 ) {
-    suspend operator fun invoke(
-        channelId: Int
-    ): Unit = withContext(dispatcher) { repository.loadChannelTopics(channelId) }
+    suspend operator fun invoke(channelId: Int) = withContext(dispatcher) {
+        repository.loadChannelTopics(channelId)
+    }
 
 }

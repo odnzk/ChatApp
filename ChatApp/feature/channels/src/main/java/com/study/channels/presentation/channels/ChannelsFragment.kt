@@ -13,17 +13,17 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.study.channels.databinding.FragmentChannelsBinding
 import com.study.channels.di.ChannelsComponentViewModel
-import com.study.channels.domain.model.ChannelFilter
 import com.study.channels.presentation.channels.elm.ChannelsEffect
 import com.study.channels.presentation.channels.elm.ChannelsEvent
 import com.study.channels.presentation.channels.elm.ChannelsState
-import com.study.channels.presentation.channels.util.delegates.channel.ChannelDelegate
-import com.study.channels.presentation.channels.util.delegates.topic.ChannelTopicDelegate
+import com.study.channels.presentation.channels.util.delegate.channel.ChannelDelegate
+import com.study.channels.presentation.channels.util.delegate.topic.ChannelTopicDelegate
 import com.study.channels.presentation.channels.util.mapper.toChannelsList
+import com.study.channels.presentation.channels.util.model.UiChannelFilter
 import com.study.channels.presentation.channels.util.model.UiChannelShimmer
 import com.study.channels.presentation.channels.util.navigateToAddChannel
 import com.study.channels.presentation.channels.util.navigateToChatFragment
-import com.study.channels.presentation.channels.util.toErrorMessage
+import com.study.channels.presentation.util.toErrorMessage
 import com.study.common.extension.fastLazy
 import com.study.common.search.NothingFoundForThisQueryException
 import com.study.components.extension.collectFlowSafely
@@ -44,7 +44,7 @@ internal class ChannelsFragment : ElmFragment<ChannelsEvent, ChannelsEffect, Cha
     private var _binding: FragmentChannelsBinding? = null
     private var channelsAdapter: GeneralAdapterDelegate? = null
     private val channelFilter
-        get() = arguments?.safeGetParcelable<ChannelFilter>(CHANNEL_SETTING_KEY)
+        get() = arguments?.safeGetParcelable<UiChannelFilter>(CHANNEL_SETTING_KEY)
             ?: error("Invalid channel filter ")
 
     @Inject
@@ -162,7 +162,7 @@ internal class ChannelsFragment : ElmFragment<ChannelsEvent, ChannelsEffect, Cha
 
     companion object {
         private const val CHANNEL_SETTING_KEY = "channel settings"
-        fun newInstance(settings: ChannelFilter): ChannelsFragment {
+        fun newInstance(settings: UiChannelFilter): ChannelsFragment {
             return ChannelsFragment().apply {
                 arguments = bundleOf(CHANNEL_SETTING_KEY to settings)
             }

@@ -1,5 +1,5 @@
 package com.study.channels.domain.model
 
-data class ChannelTopic(
+internal data class ChannelTopic(
     val title: String
 )

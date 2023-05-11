@@ -8,7 +8,7 @@ import dagger.Component
 @FeatureScope
 @Component(
     dependencies = [ChannelsDep::class],
-    modules = [ChannelsRepositoryModule::class, ChannelsModule::class]
+    modules = [ChannelsBindsModule::class, ChannelsModule::class]
 )
 internal interface ChannelsComponent {
     fun inject(fragment: ChannelsFragment)

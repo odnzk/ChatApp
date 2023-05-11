@@ -5,7 +5,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class LoadTopicsUseCase @Inject constructor(
+internal class LoadTopicsUseCase @Inject constructor(
     private val repository: ChannelRepository,
     private val dispatcher: CoroutineDispatcher
 ) {

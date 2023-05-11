@@ -19,5 +19,6 @@ data class MessageDto(
     @SerialName("sender_id") val senderId: Int?,
     @SerialName("subject") val subject: String?,
     @SerialName("timestamp") val timestamp: Int?,
-    @SerialName("type") val type: MessageType?
+    @SerialName("type") val type: MessageType?,
+    @SerialName("stream_id") val channelId: Int?
 )

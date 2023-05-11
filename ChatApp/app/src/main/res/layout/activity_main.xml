@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:theme="@style/Theme.Messenger"
+    android:theme="@style/Theme.ChatApp"
     tools:context=".MainActivity">
 
     <androidx.appcompat.widget.Toolbar

@@ -11,5 +11,6 @@ data class DetailedUserDto(
     @SerialName("full_name") val fullName: String?,
     @SerialName("is_active") val isActive: Boolean?,
     @SerialName("is_bot") val isBot: Boolean?,
-    @SerialName("user_id") val userId: Int?
+    @SerialName("user_id") val userId: Int?,
+    @SerialName("is_admin") val isAdmin: Boolean?
 )
