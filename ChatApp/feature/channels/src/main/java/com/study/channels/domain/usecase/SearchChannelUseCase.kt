@@ -1,7 +1,6 @@
 package com.study.channels.domain.usecase
 
 import com.study.channels.domain.model.Channel
-import com.study.channels.domain.model.ChannelFilter
 import com.study.channels.domain.repository.ChannelRepository
 import com.study.common.search.Searcher
 import kotlinx.coroutines.CoroutineDispatcher
@@ -14,7 +13,7 @@ internal class SearchChannelUseCase @Inject constructor(
     private val repository: ChannelRepository,
     private val dispatcher: CoroutineDispatcher
 ) {
-    operator fun invoke(query: String, filter: ChannelFilter): Flow<List<Channel>> =
-        channelSearcher.toSearchFlow(query, repository.getChannels(filter)).flowOn(dispatcher)
+    operator fun invoke(query: String, isSubscribed: Boolean): Flow<List<Channel>> =
+        channelSearcher.toSearchFlow(query, repository.getChannels(isSubscribed)).flowOn(dispatcher)
 }
 

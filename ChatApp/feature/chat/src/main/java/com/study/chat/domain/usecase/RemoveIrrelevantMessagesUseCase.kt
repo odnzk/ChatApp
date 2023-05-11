@@ -5,10 +5,10 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class RemoveIrrelevantMessagesUseCase @Inject constructor(
+internal class RemoveIrrelevantMessagesUseCase @Inject constructor(
     private val repository: MessageRepository,
     private val dispatcher: CoroutineDispatcher
 ) {
     suspend operator fun invoke(channelId: Int, topicTitle: String) =
-        withContext(dispatcher) { repository.removeIrrelevant(channelId, topicTitle) }
+        withContext(dispatcher) { repository.deleteIrrelevantMessages(channelId, topicTitle) }
 }

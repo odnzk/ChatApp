@@ -1,5 +1,6 @@
 package com.study.chat.di
 
+import android.content.Context
 import com.study.auth.api.UserAuthRepository
 import com.study.database.dataSource.ChannelLocalDataSource
 import com.study.database.dataSource.MessageLocalDataSource
@@ -16,4 +17,5 @@ interface ChatDep {
     val channelRemoteDataSource: ChannelRemoteDataSource
     val channelLocalDataSource: ChannelLocalDataSource
     val userAuthRepository: UserAuthRepository
+    val applicationContext: Context
 }

@@ -2,7 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:theme="@style/Theme.Messenger">
+    android:theme="@style/Theme.ChatApp">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/fragment_rv_data_list"

@@ -1,14 +1,8 @@
 package com.study.channels.domain.model
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
+internal const val NOT_YET_SYNCHRONIZED_ID = -1
 
-data class Channel(
+internal data class Channel(
     val id: Int,
     val title: String
 )
-
-@Parcelize
-enum class ChannelFilter : Parcelable {
-    ALL, SUBSCRIBED_ONLY
-}

@@ -14,7 +14,7 @@ internal class AddChannelReducer @Inject constructor() :
         }
         is AddChannelEvent.Ui.AddChannel -> {
             state { copy(isLoading = true) }
-            commands { +AddChannelCommand.AddChannel(event.title, event.showHistoryToNewMembers) }
+            commands { +AddChannelCommand.AddChannel(event.title) }
         }
     }
 }

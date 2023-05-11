@@ -6,7 +6,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class RemoveReactionUseCase @Inject constructor(
+internal class RemoveReactionUseCase @Inject constructor(
     private val repository: MessageRepository,
     private val dispatcher: CoroutineDispatcher
 ) {

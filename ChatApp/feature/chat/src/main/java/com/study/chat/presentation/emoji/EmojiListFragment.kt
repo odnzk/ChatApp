@@ -10,41 +10,38 @@ import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
 import androidx.navigation.fragment.navArgs
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.study.chat.databinding.FragmentEmojiListBinding
+import com.study.chat.databinding.FragmentBottomSheetListBinding
 import com.study.chat.di.ChatComponentViewModel
-import com.study.chat.presentation.emoji.delegates.EmojiDelegate
+import com.study.chat.presentation.emoji.delegate.EmojiDelegate
 import com.study.chat.presentation.emoji.elm.EmojiListEffect
 import com.study.chat.presentation.emoji.elm.EmojiListEvent
 import com.study.chat.presentation.emoji.elm.EmojiListState
 import com.study.chat.presentation.util.toErrorMessage
 import com.study.common.extension.fastLazy
+import com.study.components.BaseBottomSheetFragment
 import com.study.components.extension.delegatesToList
 import com.study.components.extension.dp
 import com.study.components.extension.showErrorSnackbar
 import com.study.components.recycler.delegates.GeneralAdapterDelegate
 import com.study.components.recycler.manager.VarSpanGridLayoutManager
-import vivid.money.elmslie.android.screen.ElmDelegate
-import vivid.money.elmslie.android.screen.ElmScreen
 import vivid.money.elmslie.android.storeholder.LifecycleAwareStoreHolder
 import vivid.money.elmslie.android.storeholder.StoreHolder
 import vivid.money.elmslie.core.store.Store
 import javax.inject.Inject
-import com.study.ui.R as CoreR
 
-internal class EmojiListFragment : BottomSheetDialogFragment(),
-    ElmDelegate<EmojiListEvent, EmojiListEffect, EmojiListState> {
-    private var _binding: FragmentEmojiListBinding? = null
+internal class EmojiListFragment :
+    BaseBottomSheetFragment<EmojiListEvent, EmojiListEffect, EmojiListState>() {
+    private var _binding: FragmentBottomSheetListBinding? = null
     private val binding get() = _binding!!
-    private var mainEmojiAdapter: GeneralAdapterDelegate? = null
     private val args by navArgs<EmojiListFragmentArgs>()
+    private var mainEmojiAdapter: GeneralAdapterDelegate? = null
 
     @Inject
-    lateinit var emojiStore: Store<EmojiListEvent, EmojiListEffect, EmojiListState>
+    lateinit var store: Store<EmojiListEvent, EmojiListEffect, EmojiListState>
 
     override val initEvent: EmojiListEvent = EmojiListEvent.Ui.Init
     override val storeHolder: StoreHolder<EmojiListEvent, EmojiListEffect, EmojiListState> by fastLazy {
-        LifecycleAwareStoreHolder(lifecycle) { emojiStore }
+        LifecycleAwareStoreHolder(lifecycle) { store }
     }
 
     override fun onAttach(context: Context) {
@@ -52,16 +49,10 @@ internal class EmojiListFragment : BottomSheetDialogFragment(),
         super.onAttach(context)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        ElmScreen(this, lifecycle) { requireActivity() }
-        setStyle(STYLE_NORMAL, CoreR.style.BaseBottomSheetDialogTheme)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentEmojiListBinding.inflate(inflater, container, false)
+        _binding = FragmentBottomSheetListBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -79,12 +70,9 @@ internal class EmojiListFragment : BottomSheetDialogFragment(),
 
     override fun render(state: EmojiListState) {
         when {
-            state.error != null -> {
+            state.error != null ->
                 showErrorSnackbar(binding.root, state.error, Throwable::toErrorMessage)
-            }
-            state.emojis.isNotEmpty() -> {
-                mainEmojiAdapter?.submitList(state.emojis)
-            }
+            state.emojis.isNotEmpty() -> mainEmojiAdapter?.submitList(state.emojis)
         }
     }
 

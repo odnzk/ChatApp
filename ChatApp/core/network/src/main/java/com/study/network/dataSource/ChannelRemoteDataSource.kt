@@ -15,8 +15,8 @@ class ChannelRemoteDataSource @Inject constructor(private val api: ZulipApi) :
     suspend fun getChannelTopics(streamId: Int): StreamTopicsResponse =
         safeRequest { api.getStreamTopics(streamId) }
 
-    suspend fun addChannel(title: String, isHistoryPublic: Boolean): AddStreamResponse =
-        safeRequest { api.createStream(ChannelRequestDto(title), isHistoryPublic) }
+    suspend fun addChannel(title: String): AddStreamResponse =
+        safeRequest { api.createStream(ChannelRequestDto(title)) }
 
     suspend fun unsubscribeFromChannel(title: String) =
         safeRequest { api.unsubscribeFromStream("[\"$title]\"") }

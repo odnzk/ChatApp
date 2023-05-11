@@ -17,6 +17,7 @@ import com.study.network.model.response.user.UserPresenceResponse
 import com.study.network.model.response.user.UserResponse
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -62,14 +63,23 @@ interface ZulipApi {
         @Query("emoji_name") emojiName: String
     )
 
+    @DELETE("messages/{message_id}")
+    suspend fun deleteMessage(@Path("message_id") messageId: Int)
+
+    @PATCH("messages/{message_id}")
+    suspend fun updateMessage(
+        @Path("message_id") messageId: Int,
+        @Query("topic") topic: String,
+        @Query("content") content: String
+    )
+
     @GET("users/me/subscriptions")
     suspend fun getSubscribedStreams(): AllStreamsResponse
 
     @POST("users/me/subscriptions")
     suspend fun createStream(
         @Query("subscriptions")
-        channelRequestDto: ChannelRequestDto,
-        @Query("history_public_to_subscribers") isHistoryPublic: Boolean
+        channelRequestDto: ChannelRequestDto
     ): AddStreamResponse
 
     @DELETE("users/me/subscriptions")

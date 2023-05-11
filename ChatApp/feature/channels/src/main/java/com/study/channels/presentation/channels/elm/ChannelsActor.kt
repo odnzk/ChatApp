@@ -11,6 +11,7 @@ import com.study.channels.domain.usecase.UpdateChannelsUseCase
 import com.study.channels.presentation.channels.util.mapper.toChannelsMap
 import com.study.channels.presentation.channels.util.mapper.toUiChannelTopics
 import com.study.channels.presentation.channels.util.model.UiChannel
+import com.study.channels.presentation.channels.util.model.UiChannelFilter
 import com.study.channels.presentation.channels.util.model.UiChannelModel
 import com.study.channels.presentation.channels.util.model.UiChannelTopic
 import com.study.common.extension.firstInstance
@@ -40,7 +41,7 @@ internal class ChannelsActor @Inject constructor(
 
     override fun execute(command: ChannelsCommand): Flow<ChannelsEvent.Internal> = when (command) {
         is ChannelsCommand.LoadChannels -> channelSwitcher.switch {
-            getChannelsUseCase(command.filter).map { it.toChannelsMap() }.mapEvents(
+            getChannelsUseCase(command.filter.isSubscribed()).map { it.toChannelsMap() }.mapEvents(
                 ChannelsEvent.Internal::LoadingChannelsWithTopicsSuccess,
                 ChannelsEvent.Internal::LoadingError
             )
@@ -76,13 +77,14 @@ internal class ChannelsActor @Inject constructor(
             )
         }
         is ChannelsCommand.SearchChannels -> channelSwitcher.switch {
-            searchChannelUseCase(command.query, command.filter).map { it.toChannelsMap() }
-                .mapEvents(
-                    ChannelsEvent.Internal::LoadingChannelsWithTopicsSuccess,
-                    ChannelsEvent.Internal::LoadingError
-                )
+            searchChannelUseCase(
+                command.query, command.filter.isSubscribed()
+            ).map { it.toChannelsMap() }.mapEvents(
+                ChannelsEvent.Internal::LoadingChannelsWithTopicsSuccess,
+                ChannelsEvent.Internal::LoadingError
+            )
         }
-        is ChannelsCommand.UpdateChannels -> toFlow { updateChannelsUseCase(command.filter) }.mapEvents(
+        is ChannelsCommand.UpdateChannels -> toFlow { updateChannelsUseCase(command.filter.isSubscribed()) }.mapEvents(
             errorMapper = ChannelsEvent.Internal::LoadingError
         )
         is ChannelsCommand.LoadChannelTopic -> toFlow { loadChannelTopicsUseCase(command.channelId) }.mapEvents(
@@ -100,6 +102,11 @@ internal class ChannelsActor @Inject constructor(
                 mutableListOf<UiChannelModel>(updatedChannel).apply { addAll(topics) })
         }
         return ChannelsEvent.Internal.LoadingChannelsWithTopicsSuccess(updatedMap)
+    }
+
+    private fun UiChannelFilter.isSubscribed(): Boolean = when (this) {
+        UiChannelFilter.ALL -> false
+        UiChannelFilter.SUBSCRIBED_ONLY -> true
     }
 
 }

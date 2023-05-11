@@ -6,7 +6,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class AddReactionUseCase @Inject constructor(
+internal class AddReactionUseCase @Inject constructor(
     private val repository: MessageRepository,
     private val dispatcher: CoroutineDispatcher
 ) {

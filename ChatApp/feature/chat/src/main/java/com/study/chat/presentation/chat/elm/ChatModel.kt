@@ -1,7 +1,7 @@
 package com.study.chat.presentation.chat.elm
 
 import androidx.paging.PagingData
-import com.study.chat.domain.model.Emoji
+import com.study.chat.presentation.util.model.UiEmoji
 import com.study.chat.presentation.chat.util.model.ChatListItem
 import com.study.chat.presentation.chat.util.model.UiMessage
 
@@ -30,7 +30,7 @@ internal sealed interface ChatCommand {
 
     class UpdateReaction(
         val message: UiMessage,
-        val emoji: Emoji,
+        val emoji: UiEmoji,
         val userId: Int
     ) : ChatCommand
 
@@ -57,7 +57,7 @@ internal sealed interface ChatEvent {
         class Init(val channelId: Int, val topicTitle: String?) : Ui
         object Reload : Ui
         class SendMessage(val messageContent: String, val topic: String) : Ui
-        class UpdateReaction(val emoji: Emoji, val message: UiMessage) : Ui
+        class UpdateReaction(val emoji: UiEmoji, val message: UiMessage) : Ui
         class Search(val query: String) : Ui
         object RemoveIrrelevantMessages : Ui
     }

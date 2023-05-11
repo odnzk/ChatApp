@@ -19,7 +19,7 @@ import androidx.core.view.marginRight
 import androidx.core.view.marginTop
 import com.google.android.material.color.MaterialColors
 import com.study.chat.R
-import com.study.chat.domain.model.Emoji
+import com.study.chat.presentation.util.model.UiEmoji
 import com.study.chat.presentation.chat.util.mapper.toMessageEmojiViews
 import com.study.chat.presentation.chat.util.model.UiMessage
 import com.study.chat.presentation.chat.util.model.UiReaction
@@ -77,7 +77,7 @@ internal class MessageView @JvmOverloads constructor(
 
     fun setMessage(
         message: UiMessage,
-        onReactionClick: ((message: UiMessage, emoji: Emoji) -> Unit)? = null
+        onReactionClick: ((message: UiMessage, emoji: UiEmoji) -> Unit)? = null
     ) {
         when (message) {
             is UiMessage.ChatMessage -> setChatMessage(message, onReactionClick)
@@ -300,7 +300,7 @@ internal class MessageView @JvmOverloads constructor(
 
     private fun setChatMessage(
         message: UiMessage.ChatMessage,
-        onReactionClick: ((message: UiMessage, emoji: Emoji) -> Unit)? = null
+        onReactionClick: ((message: UiMessage, emoji: UiEmoji) -> Unit)? = null
     ) {
         ivAvatar.loadFromUrl(message.senderAvatarUrl)
         tvSender.text = message.senderName
@@ -313,7 +313,7 @@ internal class MessageView @JvmOverloads constructor(
 
     private fun setUserMessage(
         message: UiMessage.MeMessage,
-        onReactionClick: ((message: UiMessage, emoji: Emoji) -> Unit)? = null
+        onReactionClick: ((message: UiMessage, emoji: UiEmoji) -> Unit)? = null
     ) {
         ivAvatar.isVisible = false
         tvSender.isVisible = false
@@ -325,7 +325,7 @@ internal class MessageView @JvmOverloads constructor(
     fun addReactions(
         reactions: List<UiReaction>,
         message: UiMessage,
-        onReactionClick: ((message: UiMessage, emoji: Emoji) -> Unit)? = null
+        onReactionClick: ((message: UiMessage, emoji: UiEmoji) -> Unit)? = null
     ) {
         flexboxEmoji.removeAllViews()
         reactions.toMessageEmojiViews(context, message, onReactionClick).forEach {

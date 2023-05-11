@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:ellipsize="end"
         android:maxLines="1"
-        android:textAppearance="@style/TextAppearance.Messenger.Title.Small"
+        android:textAppearance="@style/TextAppearance.ChatApp.Title.Small"
         tools:text="Testing" />
 
     <TextView

@@ -15,7 +15,7 @@ internal class AddChannelActor @Inject constructor(private val addChannel: AddCh
     override fun execute(command: AddChannelCommand): Flow<AddChannelEvent> =
         when (command) {
             is AddChannelCommand.AddChannel -> switcher.switch {
-                toFlow { addChannel(command.title, command.showHistoryToNewMembers) }
+                toFlow { addChannel(command.title) }
             }.mapEvents(
                 eventMapper = { AddChannelEvent.Internal.ChannelSuccessfullyAdded },
                 errorMapper = AddChannelEvent.Internal::ChannelNotAdded

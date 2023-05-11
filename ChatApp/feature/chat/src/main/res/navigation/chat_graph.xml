@@ -21,20 +21,47 @@
             app:argType="string"
             app:nullable="true" />
         <action
-            android:id="@+id/action_chatFragment_to_emojiListFragment"
-            app:destination="@id/emojiListFragment" />
-        <action
             android:id="@+id/action_chatFragment_self"
             app:destination="@id/chatFragment" />
+        <action
+            android:id="@+id/action_chatFragment_to_actionsFragment"
+            app:destination="@id/actionsFragment" />
     </fragment>
     <dialog
         android:id="@+id/emojiListFragment"
         android:name="com.study.chat.presentation.emoji.EmojiListFragment"
         android:label="EmojiListFragment"
-        tools:layout="@layout/fragment_recycler_view">
+        tools:layout="@layout/fragment_bottom_sheet_list">
         <argument
             android:name="resultKey"
             app:argType="string" />
+    </dialog>
+    <dialog
+        android:id="@+id/actionsFragment"
+        android:name="com.study.chat.presentation.actions.ActionsFragment"
+        android:label="ActionsFragment"
+        tools:layout="@layout/fragment_bottom_sheet_list">
+        <argument
+            android:name="messageId"
+            app:argType="integer" />
+        <argument
+            android:name="resultKey"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_actionsFragment_to_emojiListFragment"
+            app:destination="@id/emojiListFragment" />
+        <action
+            android:id="@+id/action_actionsFragment_to_editMessageFragment"
+            app:destination="@id/editMessageFragment" />
+    </dialog>
+    <dialog
+        android:id="@+id/editMessageFragment"
+        android:name="com.study.chat.presentation.edit.EditMessageFragment"
+        android:label="EditMessageFragment"
+        tools:layout="@layout/fragment_edit_message">
+        <argument
+            android:name="messageId"
+            app:argType="integer" />
     </dialog>
 
 </navigation>

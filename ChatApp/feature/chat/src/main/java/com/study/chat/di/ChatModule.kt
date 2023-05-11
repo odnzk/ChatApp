@@ -1,10 +1,20 @@
 package com.study.chat.di
 
+import com.study.chat.presentation.actions.elm.ActionsActor
+import com.study.chat.presentation.actions.elm.ActionsEffect
+import com.study.chat.presentation.actions.elm.ActionsEvent
+import com.study.chat.presentation.actions.elm.ActionsReducer
+import com.study.chat.presentation.actions.elm.ActionsState
 import com.study.chat.presentation.chat.elm.ChatActor
 import com.study.chat.presentation.chat.elm.ChatEffect
 import com.study.chat.presentation.chat.elm.ChatEvent
 import com.study.chat.presentation.chat.elm.ChatReducer
 import com.study.chat.presentation.chat.elm.ChatState
+import com.study.chat.presentation.edit.elm.EditMessageActor
+import com.study.chat.presentation.edit.elm.EditMessageEffect
+import com.study.chat.presentation.edit.elm.EditMessageEvent
+import com.study.chat.presentation.edit.elm.EditMessageReducer
+import com.study.chat.presentation.edit.elm.EditMessageState
 import com.study.chat.presentation.emoji.elm.EmojiListActor
 import com.study.chat.presentation.emoji.elm.EmojiListEffect
 import com.study.chat.presentation.emoji.elm.EmojiListEvent
@@ -27,17 +37,28 @@ internal class ChatModule {
     fun providesStore(
         reducer: ChatReducer,
         actor: ChatActor
-    ): Store<ChatEvent, ChatEffect, ChatState> {
-        return ElmStoreCompat(ChatState(), reducer, actor)
-    }
+    ): Store<ChatEvent, ChatEffect, ChatState> = ElmStoreCompat(ChatState(), reducer, actor)
 
     @Provides
     @FeatureScope
     fun providesEmojiStore(
-        reducer: EmojiListReducer,
-        actor: EmojiListActor
-    ): Store<EmojiListEvent, EmojiListEffect, EmojiListState> {
-        return ElmStoreCompat(EmojiListState(), reducer, actor)
+        reducer: EmojiListReducer, actor: EmojiListActor
+    ): Store<EmojiListEvent, EmojiListEffect, EmojiListState> =
+        ElmStoreCompat(EmojiListState(), reducer, actor)
+
+    @Provides
+    @FeatureScope
+    fun providesActionsStore(
+        reducer: ActionsReducer, actor: ActionsActor
+    ): Store<ActionsEvent, ActionsEffect, ActionsState> =
+        ElmStoreCompat(ActionsState(), reducer, actor)
+
+    @Provides
+    @FeatureScope
+    fun providesEditMessageStore(
+        reducer: EditMessageReducer, actor: EditMessageActor
+    ): Store<EditMessageEvent, EditMessageEffect, EditMessageState> {
+        return ElmStoreCompat(EditMessageState(), reducer, actor)
     }
 
     @Provides

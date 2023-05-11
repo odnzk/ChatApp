@@ -8,25 +8,22 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.study.channels.databinding.FragmentAddChannelBinding
 import com.study.channels.di.ChannelsComponentViewModel
 import com.study.channels.presentation.addChannel.elm.AddChannelEffect
 import com.study.channels.presentation.addChannel.elm.AddChannelEvent
 import com.study.channels.presentation.addChannel.elm.AddChannelState
-import com.study.channels.presentation.channels.util.toErrorMessage
+import com.study.channels.presentation.util.toErrorMessage
 import com.study.common.extension.fastLazy
+import com.study.components.BaseBottomSheetFragment
 import com.study.components.model.UiError
-import vivid.money.elmslie.android.screen.ElmDelegate
-import vivid.money.elmslie.android.screen.ElmScreen
 import vivid.money.elmslie.android.storeholder.LifecycleAwareStoreHolder
 import vivid.money.elmslie.android.storeholder.StoreHolder
 import vivid.money.elmslie.core.store.Store
 import javax.inject.Inject
-import com.study.ui.R as CoreR
 
-internal class AddChannelFragment : BottomSheetDialogFragment(),
-    ElmDelegate<AddChannelEvent, AddChannelEffect, AddChannelState> {
+internal class AddChannelFragment :
+    BaseBottomSheetFragment<AddChannelEvent, AddChannelEffect, AddChannelState>() {
     private var _binding: FragmentAddChannelBinding? = null
     private val binding get() = _binding!!
     override val initEvent: AddChannelEvent = AddChannelEvent.Ui.Init
@@ -41,12 +38,6 @@ internal class AddChannelFragment : BottomSheetDialogFragment(),
     override fun onAttach(context: Context) {
         ViewModelProvider(this).get<ChannelsComponentViewModel>().channelsComponent.inject(this)
         super.onAttach(context)
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        ElmScreen(this, lifecycle) { requireActivity() }
-        setStyle(STYLE_NORMAL, CoreR.style.BaseBottomSheetDialogTheme)
     }
 
     override fun onCreateView(
@@ -85,12 +76,7 @@ internal class AddChannelFragment : BottomSheetDialogFragment(),
         with(binding) {
             fragmentAddChannelTvError.isVisible = false
             fragmentAddChannelInputView.btnSubmitClickListener = { channelTitle ->
-                store.accept(
-                    AddChannelEvent.Ui.AddChannel(
-                        channelTitle,
-                        fragmentAddChannelCbHistory.isChecked
-                    )
-                )
+                store.accept(AddChannelEvent.Ui.AddChannel(channelTitle))
             }
         }
     }

@@ -9,7 +9,7 @@ internal data class AddChannelState(
 internal sealed interface AddChannelEvent {
     sealed interface Ui : AddChannelEvent {
         object Init : Ui
-        class AddChannel(val title: String, val showHistoryToNewMembers: Boolean) : Ui
+        class AddChannel(val title: String) : Ui
     }
 
     sealed interface Internal : AddChannelEvent {
@@ -20,5 +20,5 @@ internal sealed interface AddChannelEvent {
 
 internal sealed interface AddChannelEffect
 internal sealed interface AddChannelCommand {
-    class AddChannel(val title: String, val showHistoryToNewMembers: Boolean) : AddChannelCommand
+    class AddChannel(val title: String) : AddChannelCommand
 }

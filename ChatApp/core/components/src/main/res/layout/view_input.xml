@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
     android:orientation="horizontal"
-    android:theme="@style/Theme.Messenger"
+    android:theme="@style/Theme.ChatApp"
     tools:backgroundTint="@color/black"
     tools:parentTag="com.study.components.view.InputView">
 

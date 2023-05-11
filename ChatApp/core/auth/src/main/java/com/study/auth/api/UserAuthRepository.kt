@@ -1,5 +1,6 @@
 package com.study.auth.api
 
 interface UserAuthRepository {
-    suspend fun getCurrentUserId(): Int
+    suspend fun getUserId(): Int
+    suspend fun isAdmin(): Boolean
 }

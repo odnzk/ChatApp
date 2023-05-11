@@ -22,7 +22,7 @@ import com.study.users.presentation.elm.UsersEffect
 import com.study.users.presentation.elm.UsersEvent
 import com.study.users.presentation.elm.UsersState
 import com.study.users.presentation.model.UserShimmer
-import com.study.users.presentation.util.delegates.UserDelegate
+import com.study.users.presentation.util.delegate.UserDelegate
 import com.study.users.presentation.util.navigation.navigateToProfileFragment
 import kotlinx.coroutines.flow.Flow
 import vivid.money.elmslie.android.base.ElmFragment

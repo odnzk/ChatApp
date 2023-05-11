@@ -36,10 +36,15 @@ class MessageRemoteDataSource @Inject constructor(private val api: ZulipApi) :
     ): AllMessagesResponse =
         safeRequest { api.getMessages(numBefore, numAfter, anchorMessageId, narrow, applyMarkdown) }
 
-    suspend fun addReaction(mesId: Int, emojiName: String) =
-        safeRequest { api.addReactionToMessage(mesId, emojiName) }
+    suspend fun addReaction(messageId: Int, emojiName: String) =
+        safeRequest { api.addReactionToMessage(messageId, emojiName) }
 
-    suspend fun removeReaction(mesId: Int, emojiName: String) =
-        safeRequest { api.removeReactionFromMessage(mesId, emojiName) }
+    suspend fun removeReaction(messageId: Int, emojiName: String) =
+        safeRequest { api.removeReactionFromMessage(messageId, emojiName) }
+
+    suspend fun deleteMessage(messageId: Int) = safeRequest { api.deleteMessage(messageId) }
+
+    suspend fun updateMessage(messageId: Int, content: String, topic: String) =
+        safeRequest { api.updateMessage(messageId, topic, content) }
 
 }

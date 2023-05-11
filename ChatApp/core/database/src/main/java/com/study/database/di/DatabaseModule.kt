@@ -11,14 +11,13 @@ import com.study.database.dataSource.ChannelLocalDataSource
 import com.study.database.dataSource.MessageLocalDataSource
 import dagger.Module
 import dagger.Provides
-import dagger.Reusable
 import javax.inject.Singleton
 
 @Module
 internal class DatabaseModule {
 
     @Provides
-    @Reusable
+    @Singleton
     fun providesDatabaseImpl(
         messageLocalDataSource: MessageLocalDataSource,
         channelLocalDataSource: ChannelLocalDataSource

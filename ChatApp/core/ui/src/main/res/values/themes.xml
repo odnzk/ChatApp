@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Base.V25.Theme.Messenger" parent="Theme.MaterialComponents.DayNight.NoActionBar.Bridge">
+    <style name="Base.V25.Theme.ChatApp" parent="Theme.MaterialComponents.DayNight.NoActionBar.Bridge">
         <item name="colorPrimary">@color/navy_light</item>
         <item name="colorPrimaryVariant">@color/white</item>
         <item name="colorOnPrimary">@color/white</item>
@@ -17,8 +17,8 @@
         <item name="android:windowBackground">@color/gray_mercury</item>
     </style>
 
-    <style name="Theme.Messenger" parent="Base.Theme.Messenger" />
+    <style name="Theme.ChatApp" parent="Base.Theme.ChatApp" />
 
-    <style name="Base.Theme.Messenger" parent="Base.V25.Theme.Messenger" />
+    <style name="Base.Theme.ChatApp" parent="Base.V25.Theme.ChatApp" />
 
 </resources>

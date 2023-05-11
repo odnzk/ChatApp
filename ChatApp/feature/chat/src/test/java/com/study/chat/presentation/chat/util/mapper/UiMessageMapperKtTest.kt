@@ -1,6 +1,6 @@
 package com.study.chat.presentation.chat.util.mapper
 
-import com.study.chat.domain.model.Emoji
+import com.study.chat.presentation.util.model.UiEmoji
 import com.study.chat.domain.model.IncomeMessage
 import com.study.chat.domain.model.Reaction
 import junit.framework.TestCase.assertEquals
@@ -23,7 +23,7 @@ class UiMessageMapperKtTest {
         reactions = listOf(reaction)
     )
 
-    private fun createReaction() = Reaction(messageId = 0, userId = 0, emoji = Emoji("", ""))
+    private fun createReaction() = Reaction(messageId = 0, userId = 0, emoji = UiEmoji("", ""))
 
     @Test
     fun `mapping IncomeMessage to ChatMessage`() {

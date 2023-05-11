@@ -1,15 +1,12 @@
 package com.study.chat.data.mapper
 
-import com.study.chat.domain.model.Emoji
 import com.study.chat.domain.model.IncomeMessage
-import com.study.chat.domain.model.Reaction
 import com.study.common.extension.unixToCalendar
 import com.study.database.entity.MessageEntity
 import com.study.database.entity.ReactionEntity
 import com.study.database.entity.tuple.MessageWithReactionsTuple
 import com.study.network.model.response.message.AllMessagesResponse
 import com.study.network.model.response.message.MessageDto
-import com.study.network.model.response.message.ReactionDto
 
 internal fun AllMessagesResponse.getAllReactionEntities(): List<ReactionEntity> {
     val resultList = mutableListOf<ReactionEntity>()
@@ -39,21 +36,7 @@ internal fun MessageDto.toMessageEntity(channelId: Int): MessageEntity {
     )
 }
 
-private fun List<ReactionDto?>?.toReactionEntities(messageId: Int): List<ReactionEntity> =
-    this?.filterNotNull()?.map { it.toReactionEntity(messageId) } ?: emptyList()
 
-private fun ReactionDto.toReactionEntity(messageId: Int): ReactionEntity = ReactionEntity(
-    messageId = messageId,
-    userId = requireNotNull(userId),
-    emojiName = requireNotNull(emojiName),
-    emojiCode = requireNotNull(emojiCode)
-)
-
-private fun ReactionEntity.toReaction(): Reaction =
-    Reaction(messageId = messageId, userId = userId, emoji = Emoji(emojiName, emojiCode))
-
-
-internal fun List<ReactionEntity>.toReactions() = map { it.toReaction() }
 internal fun MessageWithReactionsTuple.toIncomeMessage(): IncomeMessage = IncomeMessage(
     id = message.id,
     senderAvatarUrl = message.senderAvatarUrl,
@@ -62,5 +45,36 @@ internal fun MessageWithReactionsTuple.toIncomeMessage(): IncomeMessage = Income
     content = message.content,
     calendar = message.calendar,
     reactions = reactions.toReactions(),
-    topic = message.topicTitle
+    topic = message.topicTitle,
+    channelId = message.channelId
+)
+
+internal fun AllMessagesResponse.toFirstMessageSenderId(messageId: Int): IncomeMessage? =
+    messages?.filterNotNull()?.find { it.id == messageId }?.toIncomeMessage()
+
+internal fun MessageDto.toIncomeMessage(): IncomeMessage {
+    val id = requireNotNull(id)
+    return IncomeMessage(
+        id = id,
+        senderAvatarUrl = avatarUrl,
+        senderName = senderFullName,
+        senderId = requireNotNull(senderId),
+        content = requireNotNull(content),
+        calendar = requireNotNull(timestamp).unixToCalendar(),
+        topic = requireNotNull(subject),
+        reactions = reactions?.filterNotNull()?.map { it.toReaction(id) } ?: emptyList(),
+        channelId = requireNotNull(channelId)
+    )
+}
+
+internal fun MessageEntity.toIncomeMessage(): IncomeMessage = IncomeMessage(
+    id = id,
+    senderAvatarUrl = senderAvatarUrl,
+    senderName = senderName,
+    senderId = senderId,
+    content = content,
+    calendar = calendar,
+    topic = topicTitle,
+    reactions = emptyList(),
+    channelId = channelId
 )

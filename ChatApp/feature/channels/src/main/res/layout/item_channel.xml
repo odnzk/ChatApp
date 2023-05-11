@@ -17,7 +17,7 @@
             android:layout_marginVertical="12dp"
             android:ellipsize="end"
             android:maxLines="1"
-            android:textAppearance="@style/TextAppearance.Messenger.Title.Small"
+            android:textAppearance="@style/TextAppearance.ChatApp.Title.Small"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/item_channel_iv_btn_show_topics"
             app:layout_constraintStart_toStartOf="parent"
