@@ -16,6 +16,10 @@
             app:argType="integer"
             app:nullable="false" />
         <argument
+            android:name="channelTitle"
+            app:argType="string"
+            app:nullable="false" />
+        <argument
             android:name="topicTitle"
             android:defaultValue="@null"
             app:argType="string"

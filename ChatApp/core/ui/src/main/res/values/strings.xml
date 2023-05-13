@@ -22,6 +22,6 @@
     <string name="_test_message_sender">Darrell Steward</string>
     <string name="_test_message_content">Привет! lorem ipsum test message dalshe zabil</string>
 
-    <string name="deeplink_chat" translatable="false">chatapp://com.study.chatapp/chatFragment/{channelId}&amp;{topicTitle}</string>
+    <string name="deeplink_chat" translatable="false">chatapp://com.study.chatapp/chatFragment/{channelId}&amp;{channelTitle}&amp;{topicTitle}</string>
     <string name="deeplink_user_profile" translatable="false">chatapp://com.study.chatapp/profileFragment/{userId}</string>
 </resources>

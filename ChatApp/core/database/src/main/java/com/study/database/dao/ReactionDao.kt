@@ -8,6 +8,7 @@ import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Upsert
 import com.study.database.entity.ReactionEntity
+import com.study.database.entity.ReactionEntity.Companion.REACTIONS_TABLE
 
 @Dao
 interface ReactionDao {
@@ -27,7 +28,7 @@ interface ReactionDao {
     @Upsert
     suspend fun upsert(reactions: List<ReactionEntity>)
 
-    @Query("DELETE FROM reactions")
+    @Query("DELETE FROM $REACTIONS_TABLE")
     suspend fun deleteAll()
 
     @Delete

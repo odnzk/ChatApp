@@ -4,6 +4,7 @@ import com.study.database.dao.ChannelDao
 import com.study.database.dao.ChannelTopicDao
 import com.study.database.entity.ChannelEntity
 import com.study.database.entity.ChannelTopicEntity
+import com.study.database.entity.tuple.TopicWithMessagesTuple
 import dagger.Reusable
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -19,6 +20,9 @@ class ChannelLocalDataSource @Inject constructor(
 
     fun getChannelTopics(channelId: Int): Flow<List<ChannelTopicEntity>> =
         topicDao.getTopicsByChannelTitle(channelId)
+
+    fun getChannelTopicsWithMessages(channelId: Int): Flow<List<TopicWithMessagesTuple>> =
+        topicDao.getTopicsWithMessagesCount(channelId)
 
     suspend fun getChannelByTitle(title: String): ChannelEntity? =
         channelDao.getChannelByTitle(title)

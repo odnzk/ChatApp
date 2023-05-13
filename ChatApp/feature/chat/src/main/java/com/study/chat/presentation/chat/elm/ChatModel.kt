@@ -1,12 +1,11 @@
 package com.study.chat.presentation.chat.elm
 
 import androidx.paging.PagingData
-import com.study.chat.presentation.util.model.UiEmoji
 import com.study.chat.presentation.chat.util.model.ChatListItem
 import com.study.chat.presentation.chat.util.model.UiMessage
+import com.study.chat.presentation.util.model.UiEmoji
 
 internal data class ChatState(
-    val channelTitle: String? = null,
     val isLoading: Boolean = false,
     val error: Throwable? = null,
     val searchQuery: String = "",

@@ -15,7 +15,7 @@ internal class AddChannelUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(title: String) =
         withContext(dispatcher) {
-            val channel = Channel(NOT_YET_SYNCHRONIZED_ID, title)
+            val channel = Channel(NOT_YET_SYNCHRONIZED_ID, title, null)
             validator.validate(channel)
             repository.addChannel(channel)
         }

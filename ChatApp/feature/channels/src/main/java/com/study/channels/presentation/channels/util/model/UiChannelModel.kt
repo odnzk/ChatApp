@@ -1,6 +1,7 @@
 package com.study.channels.presentation.channels.util.model
 
 import android.os.Parcelable
+import androidx.annotation.ColorInt
 import com.study.components.recycler.shimmer.ShimmerItem
 import kotlinx.parcelize.Parcelize
 
@@ -14,7 +15,9 @@ internal enum class UiChannelFilter : Parcelable {
 internal data class UiChannel(
     val id: Int,
     val title: String,
-    val isCollapsed: Boolean
+    val isCollapsed: Boolean,
+    @ColorInt
+    val color: Int?
 ) : UiChannelModel, ShimmerItem<UiChannel> {
     override fun content(): UiChannel = this
 }
@@ -29,5 +32,6 @@ internal data class UiChannelTopic(
     val channelTitle: String,
     val title: String,
     val messagesCount: Int,
-    val backgroundColor: Int
+    @ColorInt
+    val backgroundColor: Int?
 ) : UiChannelModel

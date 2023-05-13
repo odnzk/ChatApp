@@ -8,7 +8,7 @@ import com.study.components.recycler.shimmer.ShimmerItem
 
 internal class ChannelDelegate(
     onChannelClick: ((channelId: Int, isCollapsed: Boolean) -> Unit)?,
-    onChannelLongClick: ((channelId: Int) -> Unit)?
+    onChannelLongClick: ((channelId: Int, channelTitle: String) -> Unit)?
 ) :
     Delegate<ChannelViewHolder, ShimmerItem<UiChannel>>(
         isType = { it is ShimmerItem<*> },

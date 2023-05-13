@@ -3,9 +3,10 @@ package com.study.database.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import com.study.database.entity.ReactionEntity.Companion.REACTIONS_TABLE
 
 @Entity(
-    tableName = "reactions",
+    tableName = REACTIONS_TABLE,
     primaryKeys = ["message_id", "emoji_code", "user_id"],
     foreignKeys = [ForeignKey(
         entity = MessageEntity::class,
@@ -24,4 +25,8 @@ data class ReactionEntity(
     val userId: Int,
     @ColumnInfo(name = "message_id")
     val messageId: Int
-)
+) {
+    companion object {
+        const val REACTIONS_TABLE = "reactions"
+    }
+}

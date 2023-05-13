@@ -4,9 +4,10 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import com.study.database.entity.ChannelEntity.Companion.CHANNELS_TABLE
 
 @Entity(
-    tableName = "channels",
+    tableName = CHANNELS_TABLE,
     indices = [Index(value = ["title"])],
 )
 class ChannelEntity(
@@ -16,5 +17,11 @@ class ChannelEntity(
     @ColumnInfo(name = "title")
     val title: String,
     @ColumnInfo(name = "is_subscribed")
-    val isSubscribed: Boolean
-)
+    val isSubscribed: Boolean,
+    @ColumnInfo(name = "color")
+    val color: String?
+) {
+    companion object {
+        const val CHANNELS_TABLE = "channels"
+    }
+}

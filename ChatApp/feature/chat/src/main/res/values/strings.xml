@@ -15,6 +15,7 @@
     <string name="date_delegate_item_title_format">%1$d %2$s</string>
     <string name="content_description">Option image</string>
     <string name="hint_message_content">Content</string>
+    <string name="channel_title">#%1$s</string>
 
     <string name="item_action_add_reaction">Add reaction</string>
     <string name="item_action_copy">Copy to clipboard</string>

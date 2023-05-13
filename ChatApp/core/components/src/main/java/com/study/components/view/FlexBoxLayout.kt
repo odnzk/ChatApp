@@ -14,22 +14,29 @@ import com.google.android.material.shape.ShapeAppearanceModel
 import com.study.components.R
 import com.study.components.extension.dp
 import java.lang.Integer.max
-import com.study.ui.R as CoreResources
+import com.google.android.material.R as MaterialR
+import com.study.ui.R as CoreR
 
 class FlexBoxLayout @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : ViewGroup(context, attrs, defStyleAttr) {
 
     private val ivPlus = ShapeableImageView(context).apply {
-        imageTintList = ColorStateList.valueOf(context.getColor(CoreResources.color.white))
+        imageTintList = ColorStateList.valueOf(
+            MaterialColors.getColor(
+                context,
+                MaterialR.attr.colorOnBackground,
+                context.getColor(CoreR.color.white)
+            )
+        )
         setBackgroundColor(
             MaterialColors.getColor(
                 context,
-                com.google.android.material.R.attr.backgroundColor,
-                context.getColor(CoreResources.color.dark_nero)
+                MaterialR.attr.backgroundColor,
+                context.getColor(CoreR.color.dark_nero)
             )
         )
-        setImageResource(CoreResources.drawable.ic_baseline_add_24)
+        setImageResource(CoreR.drawable.ic_baseline_add_24)
         shapeAppearanceModel = ShapeAppearanceModel().withCornerSize(ICON_PLUS_CORNERS)
         post {
             setContentPadding(

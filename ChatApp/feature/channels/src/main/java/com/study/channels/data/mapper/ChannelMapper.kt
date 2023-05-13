@@ -7,7 +7,8 @@ import com.study.network.model.response.stream.AddStreamResponse
 import com.study.network.model.response.stream.AllStreamsResponse
 import com.study.network.model.response.stream.StreamDto
 
-internal fun List<ChannelEntity>.toChannels(): List<Channel> = map { Channel(it.id, it.title) }
+internal fun List<ChannelEntity>.toChannels(): List<Channel> =
+    map { Channel(it.id, it.title, it.color) }
 
 internal fun AllStreamsResponse.toChannelEntityList(isSubscribed: Boolean): List<ChannelEntity> =
     streams?.filterNotNull()?.map { it.toChannelEntity(isSubscribed) } ?: emptyList()
@@ -15,11 +16,12 @@ internal fun AllStreamsResponse.toChannelEntityList(isSubscribed: Boolean): List
 private fun StreamDto.toChannelEntity(isSubscribed: Boolean) = ChannelEntity(
     id = requireNotNull(streamId),
     title = requireNotNull(name),
-    isSubscribed = isSubscribed
+    isSubscribed = isSubscribed,
+    color = color
 )
 
 internal fun AddStreamResponse.mapToIsChannelAlreadyExistBoolean() =
     alreadySubscribed?.isNotEmpty() ?: false
 
 internal fun Channel.toChannelEntity(): ChannelEntity =
-    ChannelEntity(id = NOT_YET_SYNCHRONIZED_ID, title = title, isSubscribed = true)
+    ChannelEntity(id = NOT_YET_SYNCHRONIZED_ID, title = title, isSubscribed = true, color = color)

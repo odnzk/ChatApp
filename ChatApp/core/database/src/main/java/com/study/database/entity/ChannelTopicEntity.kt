@@ -5,9 +5,10 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import com.study.database.entity.ChannelTopicEntity.Companion.TOPICS_TABLE
 
 @Entity(
-    tableName = "topics",
+    tableName = TOPICS_TABLE,
     indices = [Index(value = ["channel_id"])],
     foreignKeys = [ForeignKey(
         entity = ChannelEntity::class,
@@ -25,5 +26,9 @@ class ChannelTopicEntity(
     val channelId: Int,
     @ColumnInfo(name = "title")
     val title: String
-)
+) {
+    companion object {
+        const val TOPICS_TABLE = "topics"
+    }
+}
 

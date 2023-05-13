@@ -1,6 +1,7 @@
 package com.study.tinkoff
 
 
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.Menu
 import androidx.appcompat.widget.SearchView
@@ -11,6 +12,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.color.MaterialColors
 import com.study.common.extension.fastLazy
 import com.study.components.extension.createStoreHolder
 import com.study.tinkoff.databinding.ActivityMainBinding
@@ -23,9 +25,11 @@ import vivid.money.elmslie.android.base.ElmActivity
 import vivid.money.elmslie.android.storeholder.StoreHolder
 import vivid.money.elmslie.core.store.Store
 import javax.inject.Inject
+import com.google.android.material.R as MaterialR
 import com.study.channels.R as ChannelsR
 import com.study.chat.R as ChatR
 import com.study.profile.R as ProfileR
+import com.study.ui.R as CoreR
 import com.study.users.R as UsersR
 
 class MainActivity : ElmActivity<MainEvent, MainEffect, MainState>() {
@@ -51,8 +55,8 @@ class MainActivity : ElmActivity<MainEvent, MainEffect, MainState>() {
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.activity_main_fragment_container) as NavHostFragment
         val navController = navHostFragment.navController
-        setupBottomNavigation(navController)
-        setupTopNavigation(navController)
+        setupNavController(navController)
+        setupNavigation(navController)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -79,32 +83,50 @@ class MainActivity : ElmActivity<MainEvent, MainEffect, MainState>() {
         mainActor.clear()
     }
 
-    private fun setupTopNavigation(navController: NavController) {
-        val appBarConfiguration = AppBarConfiguration(
-            topLevelDestinationIds = setOf(
-                ProfileR.id.profileFragment,
-                ChannelsR.id.holderChannelsFragment,
-                UsersR.id.usersFragment,
-                ChatR.id.chatFragment
-            ), fallbackOnNavigateUpListener = ::onSupportNavigateUp
+    private fun setupNavController(navController: NavController) {
+        val chatToolbarBackground = ColorDrawable(getColor(CoreR.color.navy_light))
+        val defaultToolbarBackground = ColorDrawable(
+            MaterialColors.getColor(
+                this,
+                MaterialR.attr.backgroundColor,
+                getColor(CoreR.color.dark_nero)
+            )
         )
-        setSupportActionBar(binding.activityMainToolbar)
-        setupActionBarWithNavController(navController, appBarConfiguration)
-    }
-
-    private fun setupBottomNavigation(navController: NavController) {
-        binding.activityMainBottomNavigation.setupWithNavController(navController)
         navController.addOnDestinationChangedListener { _, destination, arguments ->
+            setToolbarColor(defaultToolbarBackground)
+            supportActionBar?.show()
             val isBottomNavVisible = when (destination.id) {
-                ProfileR.id.profileFragment ->
+                ProfileR.id.profileFragment -> {
+                    supportActionBar?.hide()
                     arguments?.getInt(NavConstants.USER_ID_KEY) == NavConstants.CURRENT_USER_ID_KEY
-                ChannelsR.id.holderChannelsFragment -> true
-                UsersR.id.usersFragment -> true
+                }
+                ChannelsR.id.holderChannelsFragment, UsersR.id.usersFragment -> true
+                ChatR.id.chatFragment -> {
+                    setToolbarColor(chatToolbarBackground)
+                    false
+                }
                 else -> false
             }
             binding.activityMainBottomNavigation.isVisible = isBottomNavVisible
         }
-        setupTopNavigation(navController)
+    }
+
+    private fun setToolbarColor(colorDrawable: ColorDrawable) {
+        supportActionBar?.setBackgroundDrawable(colorDrawable)
+        binding.activityMainToolbar.background = colorDrawable
+    }
+
+    private fun setupNavigation(navController: NavController) {
+        val appBarConfiguration = AppBarConfiguration(
+            topLevelDestinationIds = setOf(
+                ChannelsR.id.holderChannelsFragment,
+                UsersR.id.usersFragment
+            ),
+            fallbackOnNavigateUpListener = ::onSupportNavigateUp
+        )
+        setSupportActionBar(binding.activityMainToolbar)
+        binding.activityMainBottomNavigation.setupWithNavController(navController)
+        setupActionBarWithNavController(navController, appBarConfiguration)
     }
 
     override fun onSupportNavigateUp() =

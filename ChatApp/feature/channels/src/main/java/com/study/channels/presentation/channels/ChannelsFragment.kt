@@ -21,8 +21,8 @@ import com.study.channels.presentation.channels.util.delegate.topic.ChannelTopic
 import com.study.channels.presentation.channels.util.mapper.toChannelsList
 import com.study.channels.presentation.channels.util.model.UiChannelFilter
 import com.study.channels.presentation.channels.util.model.UiChannelShimmer
-import com.study.channels.presentation.channels.util.navigateToAddChannel
-import com.study.channels.presentation.channels.util.navigateToChatFragment
+import com.study.channels.presentation.util.navigateToAddChannel
+import com.study.channels.presentation.util.navigateToChatFragment
 import com.study.channels.presentation.util.toErrorMessage
 import com.study.common.extension.fastLazy
 import com.study.common.search.NothingFoundForThisQueryException

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.clearFragmentResultListener
 import androidx.fragment.app.setFragmentResultListener
@@ -19,7 +20,6 @@ import com.study.chat.R
 import com.study.chat.databinding.FragmentChatBinding
 import com.study.chat.di.ChatComponentViewModel
 import com.study.chat.domain.exceptions.InvalidTopicTitleException
-import com.study.chat.presentation.util.model.UiEmoji
 import com.study.chat.presentation.chat.elm.ChatEffect
 import com.study.chat.presentation.chat.elm.ChatEvent
 import com.study.chat.presentation.chat.elm.ChatState
@@ -27,6 +27,7 @@ import com.study.chat.presentation.chat.util.delegate.date.DateSeparatorDelegate
 import com.study.chat.presentation.chat.util.delegate.message.MessageDelegate
 import com.study.chat.presentation.chat.util.delegate.topic.TopicSeparatorDelegate
 import com.study.chat.presentation.chat.util.model.UiMessage
+import com.study.chat.presentation.util.model.UiEmoji
 import com.study.chat.presentation.util.navigateToActionsFragment
 import com.study.chat.presentation.util.navigateToChannelTopic
 import com.study.chat.presentation.util.setupSuggestionsAdapter
@@ -40,6 +41,7 @@ import com.study.components.extension.showErrorSnackbar
 import com.study.components.recycler.delegates.GeneralPaginationAdapterDelegate
 import com.study.components.view.ScreenStateView.ViewState
 import com.study.ui.NavConstants.CHANNEL_ID_KEY
+import com.study.ui.NavConstants.CHANNEL_TITLE_KEY
 import com.study.ui.NavConstants.TOPIC_TITLE_KEY
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
@@ -52,9 +54,11 @@ internal class ChatFragment : ElmFragment<ChatEvent, ChatEffect, ChatState>() {
     private val binding: FragmentChatBinding get() = _binding!!
     private var _binding: FragmentChatBinding? = null
     private var adapter: GeneralPaginationAdapterDelegate? = null
-
     private val channelId: Int by fastLazy {
-        arguments?.getInt(CHANNEL_ID_KEY) ?: error("Invalid channel")
+        arguments?.getInt(CHANNEL_ID_KEY) ?: error("Invalid channel id")
+    }
+    private val channelTitle: String by fastLazy {
+        arguments?.getString(CHANNEL_TITLE_KEY) ?: error("Invalid channel title")
     }
     private val topicTitle: String? by fastLazy {
         val argsTitle = arguments?.getString(TOPIC_TITLE_KEY)
@@ -165,7 +169,7 @@ internal class ChatFragment : ElmFragment<ChatEvent, ChatEffect, ChatState>() {
 
 
     private fun initUI() {
-        initChatAdapter()
+        initDelegates()
         with(binding) {
             fragmentChatRvChat.run {
                 isNestedScrollingEnabled = false
@@ -178,6 +182,9 @@ internal class ChatFragment : ElmFragment<ChatEvent, ChatEffect, ChatState>() {
             } else {
                 fragmentChatTvTopicTitle.isVisible = false
             }
+        }
+        (activity as? AppCompatActivity)?.supportActionBar?.let {
+            it.title = getString(R.string.channel_title, channelTitle)
         }
     }
 
@@ -196,7 +203,7 @@ internal class ChatFragment : ElmFragment<ChatEvent, ChatEffect, ChatState>() {
         navigateToActionsFragment(message.id, SELECTED_EMOJI_RESULT_KEY)
     }
 
-    private fun initChatAdapter() {
+    private fun initDelegates() {
         val messageDelegate = MessageDelegate(
             onLongClickListener = { messageId -> selectEmoji(messageId) },
             onAddReactionClickListener = { messageId -> selectEmoji(messageId) },
@@ -214,7 +221,7 @@ internal class ChatFragment : ElmFragment<ChatEvent, ChatEffect, ChatState>() {
                 delegatesToList(
                     messageDelegate,
                     TopicSeparatorDelegate(onTopicClick = { selectedTopicTitle ->
-                        navigateToChannelTopic(channelId, selectedTopicTitle)
+                        navigateToChannelTopic(channelId, channelTitle, selectedTopicTitle)
                     })
                 )
             )

@@ -21,7 +21,7 @@ internal class ChannelTopicViewHolder(
                 R.string.item_channel_topic_name, topic.title
             )
             root.setOnClickListener { onTopicClick?.invoke(topic.channelId, topic.title) }
-            root.setBackgroundColor(topic.backgroundColor)
+            topic.backgroundColor?.let { root.setBackgroundColor(it) }
         }
     }
 

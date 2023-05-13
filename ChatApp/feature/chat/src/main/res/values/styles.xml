@@ -25,12 +25,12 @@
     </style>
 
     <style name="ChannelTopicAutoCompleteTextView" parent="ThemeOverlay.Material3.AutoCompleteTextView">
-        <item name="android:backgroundTint">@color/gray80</item>
+        <item name="android:background">@color/gray_mercury_darker</item>
         <item name="android:hint">@string/hint_channel_topic</item>
         <item name="maxLines">1</item>
+        <item name="android:completionThreshold">1</item>
         <item name="android:padding">@dimen/margin_medium</item>
         <item name="android:textAppearance">@style/TextAppearance.Messenger.Body.Small</item>
-        <item name="android:background">@drawable/shape_rect_with_radius_40</item>
     </style>
 
     <style name="ChannelTopicItem">

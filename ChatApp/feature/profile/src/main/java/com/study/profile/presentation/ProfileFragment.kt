@@ -56,6 +56,11 @@ internal class ProfileFragment : ElmFragment<ProfileEvent, ProfileEffect, Profil
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initUI()
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
@@ -87,5 +92,10 @@ internal class ProfileFragment : ElmFragment<ProfileEvent, ProfileEffect, Profil
             }
             fragmentProfileTvUsername.text = user.username
         }
+    }
+
+    private fun initUI() {
+        binding.screenStateView.onTryAgainClickListener =
+            View.OnClickListener { store.accept(ProfileEvent.Ui.Reload(userId)) }
     }
 }

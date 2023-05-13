@@ -17,7 +17,6 @@ import dagger.Reusable
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import okhttp3.Cache
-import okhttp3.CacheControl
 import okhttp3.Credentials
 import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType
@@ -54,9 +53,7 @@ internal class NetworkModule {
             request = if (connectionManager.isConnected()) {
                 request.newBuilder().header("Cache-Control", "public, max-age=$CACHE_MAX_AGE")
                     .build()
-            } else {
-                request.newBuilder().cacheControl(CacheControl.FORCE_CACHE).build()
-            }
+            } else request
             chain.proceed(request)
         }
 
@@ -116,7 +113,7 @@ internal class NetworkModule {
 
     companion object {
         private const val AUTH_HEADER = "Authorization"
-        private const val CONNECTION_TIMEOUT_SEC = 10L
+        private const val CONNECTION_TIMEOUT_SEC = 5L
         private const val CACHE_SIZE = (10 * 1024 * 1024).toLong()
         private const val CACHE_MAX_AGE = 10
     }

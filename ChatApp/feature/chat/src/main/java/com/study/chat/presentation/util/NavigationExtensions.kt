@@ -13,9 +13,13 @@ internal fun ChatFragment.navigateToActionsFragment(
     ChatFragmentDirections.actionChatFragmentToActionsFragment(messageId, resultKey)
 )
 
-internal fun ChatFragment.navigateToChannelTopic(channelId: Int, topicTitle: String) =
+internal fun ChatFragment.navigateToChannelTopic(
+    channelId: Int,
+    channelTitle: String,
+    topicTitle: String
+) =
     findNavController().navigate(
-        ChatFragmentDirections.actionChatFragmentSelf(channelId, topicTitle)
+        ChatFragmentDirections.actionChatFragmentSelf(channelId, channelTitle, topicTitle)
     )
 
 

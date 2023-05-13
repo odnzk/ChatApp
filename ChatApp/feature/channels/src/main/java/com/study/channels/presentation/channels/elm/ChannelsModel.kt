@@ -13,8 +13,8 @@ internal data class ChannelsState(
 )
 
 internal sealed interface ChannelsCommand {
+    class GetChannels(val filter: UiChannelFilter) : ChannelsCommand
     class LoadChannels(val filter: UiChannelFilter) : ChannelsCommand
-    class UpdateChannels(val filter: UiChannelFilter) : ChannelsCommand
     class LoadChannelTopic(val channelId: Int) : ChannelsCommand
     class ShowChannelTopics(
         val channelId: Int,

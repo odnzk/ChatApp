@@ -7,6 +7,7 @@ import com.study.channels.data.mapper.toChannelTopicEntities
 import com.study.channels.data.mapper.toChannelTopics
 import com.study.channels.data.mapper.toChannels
 import com.study.channels.domain.exceptions.ChannelAlreadyExistsException
+import com.study.channels.domain.exceptions.ChannelDoesNotHaveTopicsException
 import com.study.channels.domain.model.Channel
 import com.study.channels.domain.model.ChannelTopic
 import com.study.channels.domain.repository.ChannelRepository
@@ -30,7 +31,7 @@ internal class ChannelRepositoryImpl @Inject constructor(
             .distinctUntilChanged()
 
     override fun getChannelTopics(channelId: Int): Flow<List<ChannelTopic>> =
-        localDS.getChannelTopics(channelId).map { it.toChannelTopics() }
+        localDS.getChannelTopicsWithMessages(channelId).map { it.toChannelTopics() }
 
     override suspend fun loadChannels(isSubscribed: Boolean) {
         localDS.updateChannels(
@@ -40,7 +41,8 @@ internal class ChannelRepositoryImpl @Inject constructor(
     }
 
     override suspend fun loadChannelTopics(channelId: Int) {
-        val topics = remoteDS.getChannelTopics(channelId).toChannelTopicEntities(channelId)
+        val topics = remoteDS.getChannelTopics(channelId).takeIf { it.topics?.isNotEmpty() == true }
+            ?.toChannelTopicEntities(channelId) ?: throw ChannelDoesNotHaveTopicsException()
         localDS.updateTopics(topics, channelId)
     }
 

@@ -7,16 +7,17 @@ import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Upsert
 import com.study.database.entity.ChannelEntity
+import com.study.database.entity.ChannelEntity.Companion.CHANNELS_TABLE
 import kotlinx.coroutines.flow.Flow
 
 
 @Dao
 interface ChannelDao {
 
-    @Query("SELECT * FROM channels WHERE is_subscribed IS :isSubscribed")
+    @Query("SELECT * FROM $CHANNELS_TABLE WHERE is_subscribed IS :isSubscribed")
     fun getChannels(isSubscribed: Boolean): Flow<List<ChannelEntity>>
 
-    @Query("SELECT * FROM channels WHERE title LIKE :title")
+    @Query("SELECT * FROM $CHANNELS_TABLE WHERE title LIKE :title")
     suspend fun getChannelByTitle(title: String): ChannelEntity?
 
     @Upsert
@@ -31,7 +32,7 @@ interface ChannelDao {
     @Insert
     suspend fun insertChannel(channelEntity: ChannelEntity)
 
-    @Query("DELETE FROM channels WHERE is_subscribed IS :isSubscribed")
+    @Query("DELETE FROM $CHANNELS_TABLE WHERE is_subscribed IS :isSubscribed")
     suspend fun deleteChannels(isSubscribed: Boolean)
 
     @Delete

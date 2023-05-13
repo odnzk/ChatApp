@@ -17,7 +17,7 @@
     <style name="PrimaryTextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
         <item name="boxCornerRadiusBottomEnd">@dimen/text_input_layout_corner_radius</item>
         <item name="boxCornerRadiusBottomStart">@dimen/text_input_layout_corner_radius</item>
-        <item name="boxBackgroundColor">@color/gray60</item>
+        <item name="boxBackgroundColor">@color/gray_mercury_darker</item>
         <item name="boxCornerRadiusTopEnd">@dimen/text_input_layout_corner_radius</item>
         <item name="boxCornerRadiusTopStart">@dimen/text_input_layout_corner_radius</item>
     </style>
@@ -25,12 +25,11 @@
     <style name="SearchToolbarTheme" parent="ThemeOverlay.AppCompat.Light">
         <item name="android:textColorPrimary">@color/black</item>
         <item name="android:textColorSecondary">@color/black</item>
-        <item name="android:background">@color/gray80</item>
         <item name="minHeight">?android:attr/actionBarSize</item>
     </style>
 
     <style name="PrimaryBottomNavigationMenu">
-        <item name="android:background">@color/gray80</item>
+        <item name="android:background">@color/gray_mercury_darker</item>
         <item name="itemIconTint">@color/bnv_item_color_selector</item>
         <item name="itemTextColor">@color/bnv_item_color_selector</item>
     </style>

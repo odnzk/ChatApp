@@ -4,10 +4,11 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import com.study.database.entity.MessageEntity.Companion.MESSAGES_TABLE
 import java.util.Calendar
 
 @Entity(
-    tableName = "messages",
+    tableName = MESSAGES_TABLE,
     indices = [Index(value = ["topic_title", "channel_id"])]
 )
 data class MessageEntity(
@@ -28,4 +29,8 @@ data class MessageEntity(
     val content: String,
     @ColumnInfo(name = "calendar")
     val calendar: Calendar
-)
+) {
+    companion object {
+        const val MESSAGES_TABLE = "messages"
+    }
+}

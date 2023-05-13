@@ -13,15 +13,15 @@ internal class ChannelsReducer @Inject constructor() :
         is ChannelsEvent.Ui.Init -> if (state.channelsWithTopics.isEmpty()) {
             state { copy(isLoading = true, channelFilter = event.channelFilter) }
             commands {
+                +ChannelsCommand.GetChannels(state.channelFilter)
                 +ChannelsCommand.LoadChannels(state.channelFilter)
-                +ChannelsCommand.UpdateChannels(state.channelFilter)
             }
         } else Unit
         ChannelsEvent.Ui.Reload -> {
             state { copy(isLoading = true, error = null) }
             commands {
+                +ChannelsCommand.GetChannels(state.channelFilter)
                 +ChannelsCommand.LoadChannels(state.channelFilter)
-                +ChannelsCommand.UpdateChannels(state.channelFilter)
             }
         }
         is ChannelsEvent.Ui.ManageChannelTopics -> {
