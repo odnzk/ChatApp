@@ -7,15 +7,20 @@ import kotlin.properties.Delegates.notNull
 internal interface ProfileDepsProvider {
 
     @get:RestrictTo(RestrictTo.Scope.LIBRARY)
-    val deps: ProfileDep
+    val dep: ProfileDep
 
-    companion object : ProfileDepsProvider by ProfileDepsStore
+    companion object : ProfileDepsProvider by ProfileDepStore
 }
 
-object ProfileDepsStore : ProfileDepsProvider {
-    override var deps: ProfileDep by notNull()
+object ProfileDepStore : ProfileDepsProvider {
+    override var dep: ProfileDep by notNull()
 }
 
 internal class ProfileComponentViewModel : ViewModel() {
-    val profileComponent = DaggerProfileComponent.factory().create(ProfileDepsProvider.deps)
+    val profileComponent = DaggerProfileComponent.factory().create(ProfileDepsProvider.dep)
+
+    override fun onCleared() {
+        super.onCleared()
+        profileComponent.profileStoreHolder.store.stop()
+    }
 }

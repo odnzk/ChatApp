@@ -7,7 +7,6 @@
     android:gravity="center_vertical"
     android:orientation="horizontal"
     android:theme="@style/Theme.ChatApp"
-    tools:backgroundTint="@color/black"
     tools:parentTag="com.study.components.view.InputView">
 
     <com.google.android.material.textfield.TextInputLayout

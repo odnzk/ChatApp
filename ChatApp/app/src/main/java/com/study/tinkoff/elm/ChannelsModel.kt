@@ -13,8 +13,4 @@ sealed interface MainEvent {
         object Init : Ui
         class Search(val query: String) : Ui
     }
-
-    sealed interface Internal : MainEvent {
-        class SearchSuccess(val query: String) : Internal
-    }
 }

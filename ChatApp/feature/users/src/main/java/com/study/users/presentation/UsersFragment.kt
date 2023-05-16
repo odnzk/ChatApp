@@ -9,10 +9,9 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.study.common.extension.fastLazy
+import com.study.common.search.NothingFoundForThisQueryException
 import com.study.components.databinding.FragmentRecyclerViewBinding
 import com.study.components.extension.collectFlowSafely
-import com.study.components.extension.createStoreHolder
 import com.study.components.extension.delegatesToList
 import com.study.components.extension.toBaseErrorMessage
 import com.study.components.recycler.delegates.GeneralAdapterDelegate
@@ -27,24 +26,21 @@ import com.study.users.presentation.util.navigation.navigateToProfileFragment
 import kotlinx.coroutines.flow.Flow
 import vivid.money.elmslie.android.base.ElmFragment
 import vivid.money.elmslie.android.storeholder.StoreHolder
-import vivid.money.elmslie.core.store.Store
 import javax.inject.Inject
 
 internal class UsersFragment : ElmFragment<UsersEvent, UsersEffect, UsersState>() {
     private val binding: FragmentRecyclerViewBinding get() = _binding!!
     private var _binding: FragmentRecyclerViewBinding? = null
     private var adapter: GeneralAdapterDelegate? = null
+    override val initEvent: UsersEvent = UsersEvent.Ui.Init
+    override val storeHolder: StoreHolder<UsersEvent, UsersEffect, UsersState> get() = userStore
 
     @Inject
-    lateinit var userStore: Store<UsersEvent, UsersEffect, UsersState>
+    lateinit var userStore: StoreHolder<UsersEvent, UsersEffect, UsersState>
 
     @Inject
     lateinit var searchFlow: Flow<String>
 
-    override val initEvent: UsersEvent = UsersEvent.Ui.Init
-    override val storeHolder: StoreHolder<UsersEvent, UsersEffect, UsersState> by fastLazy {
-        createStoreHolder(userStore)
-    }
 
     override fun onAttach(context: Context) {
         ViewModelProvider(this).get<UsersComponentViewModel>()
@@ -76,7 +72,12 @@ internal class UsersFragment : ElmFragment<UsersEvent, UsersEffect, UsersState>(
         when {
             state.error != null -> {
                 adapter?.submitList(emptyList())
-                binding.screenStateView.setState(ViewState.Error(state.error.toBaseErrorMessage()))
+                binding.screenStateView.setState(
+                    ViewState.Error(
+                        state.error.toBaseErrorMessage(),
+                        state.error !is NothingFoundForThisQueryException
+                    )
+                )
             }
             state.isLoading && state.users.isEmpty() -> {
                 binding.screenStateView.setState(ViewState.Success)

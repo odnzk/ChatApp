@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:padding="2dp"
-    tools:parentTag="com.study.chat.presentation.chat.util.view.MessageView">
+    tools:parentTag="com.study.chat.chat.presentation.util.view.MessageView">
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/view_message_iv_avatar"
@@ -23,25 +23,35 @@
         android:maxLines="1"
         android:textAppearance="@style/TextAppearance.Messenger.Body.Small"
         android:textColor="@color/navy_light"
-        tools:text="@string/_test_message_sender" />
+        tools:text="Darrel Steward" />
+
 
     <TextView
         android:id="@+id/view_message_tv_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/message_view_margin_horizontal"
+        android:layout_marginVertical="4dp"
+        android:textAppearance="@style/TextAppearance.ChatApp.Body"
+        tools:text="Hello" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/view_message_iv_content"
+        android:layout_width="@dimen/avatar_size_large"
+        android:layout_height="@dimen/avatar_size_large"
+        android:layout_marginHorizontal="@dimen/message_view_margin_horizontal"
         android:layout_marginTop="4dp"
         android:layout_marginBottom="8dp"
-        android:textAppearance="@style/TextAppearance.ChatApp.Body"
-        tools:text="@string/_test_message_content" />
-
+        android:contentDescription="@string/content_description_message_content"
+        android:scaleType="centerCrop"
+        android:visibility="gone"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.ImageView.RoundCorners.Small" />
 
     <com.study.components.view.FlexBoxLayout
         android:id="@+id/view_message_fl_emoji"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:layout_marginBottom="5dp"
         app:item_spacing="2"
         app:line_spacing="4" />
 </merge>

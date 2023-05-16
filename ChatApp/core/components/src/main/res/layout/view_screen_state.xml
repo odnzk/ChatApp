@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:theme="@style/Theme.ChatApp"
-    tools:background="@color/gray7"
     tools:parentTag="com.study.components.view.ScreenStateView">
 
     <androidx.core.widget.ContentLoadingProgressBar
@@ -21,7 +20,9 @@
         android:layout_gravity="center_horizontal"
         android:contentDescription="@string/error_unknown"
         android:scaleType="fitCenter"
-        app:tint="@color/gray57" />
+        app:tint="@color/gray57"
+        tools:src="@drawable/ic_no_connection"
+        tools:tint="@color/gray80" />
 
     <TextView
         android:id="@+id/view_screen_state_tv_error"
@@ -31,7 +32,8 @@
         android:layout_marginTop="@dimen/margin_medium"
         android:maxLines="1"
         android:textAppearance="@style/TextAppearance.ChatApp.Body.Large"
-        tools:text="@string/error_connection_lost" />
+        tools:text="@string/error_connection_lost"
+        tools:textColor="@color/gray80" />
 
     <TextView
         android:id="@+id/view_screen_state_tv_error_description"
@@ -39,10 +41,11 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="@dimen/margin_small"
+        android:gravity="center"
         android:maxWidth="@dimen/screen_state_view_max_width"
-        android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.Messenger.Body.Small"
-        tools:text="@string/error_connection_lost" />
+        tools:text="@string/error_description_connection_lost"
+        tools:textColor="@color/gray80" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/view_screen_state_btn_try_again"

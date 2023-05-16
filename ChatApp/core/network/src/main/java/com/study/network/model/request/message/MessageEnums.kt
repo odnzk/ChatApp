@@ -5,22 +5,25 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 enum class MessageType {
-    @SerialName("private")
-    PRIVATE,
-
     @SerialName("stream")
     STREAM
 }
 
 @Serializable
-enum class MessagesAnchor(val key: String) {
+enum class MessagesAnchor {
     @SerialName("newest")
-    NEWEST("newest"),
-
-    @SerialName("oldest")
-    OLDEST("oldest"),
-
-    @SerialName("first_unread")
-    FIRST_UNREAD("first_unread")
+    NEWEST
 }
 
+@Serializable
+enum class MessageNarrowOperator {
+    @SerialName("stream")
+    STREAM,
+
+    @SerialName("topic")
+    TOPIC,
+
+    @SerialName("search")
+    SEARCH
+
+}

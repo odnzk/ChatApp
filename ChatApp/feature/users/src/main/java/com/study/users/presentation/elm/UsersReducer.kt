@@ -14,7 +14,7 @@ internal class UsersReducer @Inject constructor() :
             state { copy(isLoading = false, error = event.error) }
         }
         is UsersEvent.Internal.LoadingUsersSuccess -> {
-            state { copy(isLoading = false, users = event.users) }
+            state { copy(isLoading = false, users = event.users, error = null) }
         }
         UsersEvent.Ui.Reload -> {
             state { copy(isLoading = true, error = null) }
@@ -28,7 +28,7 @@ internal class UsersReducer @Inject constructor() :
             state { copy(isLoading = false, error = event.error) }
         }
         is UsersEvent.Internal.SearchSuccess -> {
-            state { copy(isLoading = false, users = event.users) }
+            state { copy(isLoading = false, users = event.users, error = null) }
         }
     }
 }

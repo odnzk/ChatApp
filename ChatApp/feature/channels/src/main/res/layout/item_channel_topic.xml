@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -10,20 +10,10 @@
 
     <TextView
         android:id="@+id/item_channel_topic_tv_name"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ellipsize="end"
         android:maxLines="1"
         android:textAppearance="@style/TextAppearance.ChatApp.Title.Small"
         tools:text="Testing" />
-
-    <TextView
-        android:id="@+id/item_channel_topic_tv_messages_count"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:ellipsize="end"
-        android:maxLines="1"
-        tools:text="1240 mes" />
-
-</LinearLayout>
+</FrameLayout>

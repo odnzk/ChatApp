@@ -8,7 +8,6 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.study.auth.api.UserAuthRepository
-import com.study.network.dataSource.UserDataSource
 import dagger.Reusable
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.first
@@ -18,11 +17,10 @@ import javax.inject.Inject
 
 @Reusable
 internal class DefaultUserAuthRepository @Inject constructor(
-    private val userDataSource: UserDataSource,
+    private val userDataSource: RemoteUserDataSource,
     private val context: Context,
     private val dispatcher: CoroutineDispatcher
-) :
-    UserAuthRepository {
+) : UserAuthRepository {
 
     override suspend fun getUserId(): Int = withContext(dispatcher) {
         getCurrentValue(USER_ID) { requireNotNull(userDataSource.getCurrentUser().userId) }
@@ -44,11 +42,10 @@ internal class DefaultUserAuthRepository @Inject constructor(
     private suspend fun <T> getLocallySaved(key: Preferences.Key<T>): T? =
         context.dataStore.data.map { preferences -> preferences[key] }.first()
 
-    private suspend fun <T> saveLocally(key: Preferences.Key<T>, newValue: T) {
+    private suspend fun <T> saveLocally(key: Preferences.Key<T>, newValue: T) =
         context.dataStore.edit { preferences ->
             preferences[key] = newValue
         }
-    }
 
     companion object {
         private const val DATA_STORE_NAME = "user info"

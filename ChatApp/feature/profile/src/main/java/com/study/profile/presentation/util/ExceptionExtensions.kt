@@ -3,7 +3,7 @@ package com.study.profile.presentation.util
 import com.study.components.extension.toBaseErrorMessage
 import com.study.components.model.UiError
 import com.study.profile.R
-import com.study.profile.domain.exceptions.UserNotFoundException
+import com.study.profile.domain.model.UserNotFoundException
 import com.study.components.R as ComponentsR
 
 internal fun Throwable.toErrorMessage(): UiError = when (this) {

@@ -3,4 +3,5 @@
     <string name="error_user_not_found">User with this id does not exist</string>
     <string name="error_description_user_not_found">Try to check validity of the user id you use</string>
     <string name="fragment_profile">Profile</string>
+    <string name="content_description_btn_back">Navigate back</string>
 </resources>

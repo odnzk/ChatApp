@@ -7,8 +7,6 @@ import com.study.database.dao.ChannelDao
 import com.study.database.dao.ChannelTopicDao
 import com.study.database.dao.MessageDao
 import com.study.database.dao.ReactionDao
-import com.study.database.dataSource.ChannelLocalDataSource
-import com.study.database.dataSource.MessageLocalDataSource
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -19,11 +17,15 @@ internal class DatabaseModule {
     @Provides
     @Singleton
     fun providesDatabaseImpl(
-        messageLocalDataSource: MessageLocalDataSource,
-        channelLocalDataSource: ChannelLocalDataSource
+        messageDao: MessageDao,
+        reactionDao: ReactionDao,
+        channelDao: ChannelDao,
+        topicDao: ChannelTopicDao
     ): DatabaseImpl = object : DatabaseImpl {
-        override val messageDataSource: MessageLocalDataSource = messageLocalDataSource
-        override val channelDataSource: ChannelLocalDataSource = channelLocalDataSource
+        override val messageDao: MessageDao = messageDao
+        override val reactionDao: ReactionDao = reactionDao
+        override val channelDao: ChannelDao = channelDao
+        override val topicDao: ChannelTopicDao = topicDao
     }
 
     @Provides

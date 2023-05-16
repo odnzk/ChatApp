@@ -1,7 +1,5 @@
 package com.study.components.extension
 
-import android.view.View
-import com.google.android.material.snackbar.Snackbar
 import com.study.common.search.NothingFoundForThisQueryException
 import com.study.components.R
 import com.study.components.model.UiError
@@ -35,18 +33,4 @@ fun Throwable.toBaseErrorMessage(): UiError = when (this) {
         descriptionRes = CoreR.string.error_description_unknown,
         imageRes = R.drawable.ic_error
     )
-}
-
-inline fun showErrorSnackbar(
-    view: View,
-    error: Throwable,
-    errorHandler: ((Throwable) -> UiError) = Throwable::toBaseErrorMessage,
-    customMessage: String? = null,
-    onReloadActionListener: View.OnClickListener? = null
-) {
-    val displayedMessage = customMessage ?: errorHandler(error).getMessage(view.context)
-    Snackbar.make(view, displayedMessage, Snackbar.LENGTH_SHORT).apply {
-        setTextColor(view.context.getColor(CoreR.color.white))
-        onReloadActionListener?.let { setAction(R.string.error_snackbar_action, it) }
-    }.show()
 }

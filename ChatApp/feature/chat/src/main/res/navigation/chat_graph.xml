@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/chatFragment"
-        android:name="com.study.chat.presentation.chat.ChatFragment"
+        android:name="com.study.chat.chat.presentation.ChatFragment"
         android:label="@string/default_search_hint"
         tools:layout="@layout/fragment_chat">
         <deepLink app:uri="@string/deeplink_chat" />
@@ -33,7 +33,7 @@
     </fragment>
     <dialog
         android:id="@+id/emojiListFragment"
-        android:name="com.study.chat.presentation.emoji.EmojiListFragment"
+        android:name="com.study.chat.emoji.presentation.EmojiListFragment"
         android:label="EmojiListFragment"
         tools:layout="@layout/fragment_bottom_sheet_list">
         <argument
@@ -42,7 +42,7 @@
     </dialog>
     <dialog
         android:id="@+id/actionsFragment"
-        android:name="com.study.chat.presentation.actions.ActionsFragment"
+        android:name="com.study.chat.actions.presentation.ActionsFragment"
         android:label="ActionsFragment"
         tools:layout="@layout/fragment_bottom_sheet_list">
         <argument
@@ -53,14 +53,15 @@
             app:argType="string" />
         <action
             android:id="@+id/action_actionsFragment_to_emojiListFragment"
-            app:destination="@id/emojiListFragment" />
+            app:destination="@id/emojiListFragment"
+            app:popUpTo="@id/chatFragment" />
         <action
             android:id="@+id/action_actionsFragment_to_editMessageFragment"
             app:destination="@id/editMessageFragment" />
     </dialog>
     <dialog
         android:id="@+id/editMessageFragment"
-        android:name="com.study.chat.presentation.edit.EditMessageFragment"
+        android:name="com.study.chat.edit.presentation.EditMessageFragment"
         android:label="EditMessageFragment"
         tools:layout="@layout/fragment_edit_message">
         <argument

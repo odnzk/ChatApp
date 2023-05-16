@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="@dimen/margin_medium"
+    android:layout_marginHorizontal="@dimen/margin_large"
     android:orientation="vertical"
     android:theme="@style/Theme.ChatApp">
 
@@ -10,10 +11,21 @@
         style="@style/BottomSheetHelperView"
         android:layout_gravity="center" />
 
+    <androidx.core.widget.ContentLoadingProgressBar
+        android:id="@+id/bottom_sheet_pb_loading"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginVertical="@dimen/margin_medium"
+        android:indeterminate="true" />
+
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/fragment_emoji_list_rv_emoji"
+        android:id="@+id/bottom_sheet_rv_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/bottom_sheet_margin_top" />
+        android:layout_marginTop="@dimen/bottom_sheet_margin_top"
+        tools:itemCount="4"
+        tools:listitem="@layout/item_action" />
 </LinearLayout>

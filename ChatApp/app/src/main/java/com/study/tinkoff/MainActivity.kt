@@ -7,6 +7,7 @@ import android.view.Menu
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.navigation.NavController
+import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -14,7 +15,6 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.color.MaterialColors
 import com.study.common.extension.fastLazy
-import com.study.components.extension.createStoreHolder
 import com.study.tinkoff.databinding.ActivityMainBinding
 import com.study.tinkoff.elm.MainActor
 import com.study.tinkoff.elm.MainEffect
@@ -22,6 +22,7 @@ import com.study.tinkoff.elm.MainEvent
 import com.study.tinkoff.elm.MainState
 import com.study.ui.NavConstants
 import vivid.money.elmslie.android.base.ElmActivity
+import vivid.money.elmslie.android.storeholder.LifecycleAwareStoreHolder
 import vivid.money.elmslie.android.storeholder.StoreHolder
 import vivid.money.elmslie.core.store.Store
 import javax.inject.Inject
@@ -34,17 +35,16 @@ import com.study.users.R as UsersR
 
 class MainActivity : ElmActivity<MainEvent, MainEffect, MainState>() {
     private lateinit var binding: ActivityMainBinding
+    override val initEvent: MainEvent = MainEvent.Ui.Init
+    override val storeHolder: StoreHolder<MainEvent, MainEffect, MainState> by fastLazy {
+        LifecycleAwareStoreHolder(lifecycle) { mainStore }
+    }
 
     @Inject
     lateinit var mainStore: Store<MainEvent, MainEffect, MainState>
 
     @Inject
     lateinit var mainActor: MainActor
-
-    override val initEvent: MainEvent = MainEvent.Ui.Init
-    override val storeHolder: StoreHolder<MainEvent, MainEffect, MainState> by fastLazy {
-        createStoreHolder(mainStore)
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         (applicationContext as ChatApp).appComponent.inject(this)
@@ -57,6 +57,11 @@ class MainActivity : ElmActivity<MainEvent, MainEffect, MainState>() {
         val navController = navHostFragment.navController
         setupNavController(navController)
         setupNavigation(navController)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        mainActor.clear()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -78,36 +83,38 @@ class MainActivity : ElmActivity<MainEvent, MainEffect, MainState>() {
         return super.onCreateOptionsMenu(menu)
     }
 
-    override fun onStop() {
-        super.onStop()
-        mainActor.clear()
-    }
+    override fun onSupportNavigateUp() =
+        findNavController(R.id.activity_main_fragment_container).navigateUp()
+
+    override fun render(state: MainState) = Unit
 
     private fun setupNavController(navController: NavController) {
-        val chatToolbarBackground = ColorDrawable(getColor(CoreR.color.navy_light))
-        val defaultToolbarBackground = ColorDrawable(
+        val accentToolbarColor = ColorDrawable(getColor(CoreR.color.navy_light))
+        val defaultToolbarColor = ColorDrawable(
             MaterialColors.getColor(
-                this,
-                MaterialR.attr.backgroundColor,
-                getColor(CoreR.color.dark_nero)
+                this, MaterialR.attr.backgroundColor, getColor(CoreR.color.dark_nero)
             )
         )
         navController.addOnDestinationChangedListener { _, destination, arguments ->
-            setToolbarColor(defaultToolbarBackground)
-            supportActionBar?.show()
+            setupToolbar(destination, defaultToolbarColor, accentToolbarColor)
             val isBottomNavVisible = when (destination.id) {
-                ProfileR.id.profileFragment -> {
-                    supportActionBar?.hide()
-                    arguments?.getInt(NavConstants.USER_ID_KEY) == NavConstants.CURRENT_USER_ID_KEY
-                }
+                ProfileR.id.profileFragment -> arguments?.getInt(NavConstants.USER_ID_KEY) == NavConstants.CURRENT_USER_ID_KEY
                 ChannelsR.id.holderChannelsFragment, UsersR.id.usersFragment -> true
-                ChatR.id.chatFragment -> {
-                    setToolbarColor(chatToolbarBackground)
-                    false
-                }
                 else -> false
             }
             binding.activityMainBottomNavigation.isVisible = isBottomNavVisible
+        }
+    }
+
+    private fun setupToolbar(
+        destination: NavDestination, defaultColor: ColorDrawable, accentColor: ColorDrawable
+    ) {
+        setToolbarColor(defaultColor)
+        supportActionBar?.show()
+        when {
+            destination.id == ProfileR.id.profileFragment -> supportActionBar?.hide()
+            destination.parent?.id == ChatR.id.chat_graph -> setToolbarColor(accentColor)
+            else -> Unit
         }
     }
 
@@ -129,8 +136,4 @@ class MainActivity : ElmActivity<MainEvent, MainEffect, MainState>() {
         setupActionBarWithNavController(navController, appBarConfiguration)
     }
 
-    override fun onSupportNavigateUp() =
-        findNavController(R.id.activity_main_fragment_container).navigateUp()
-
-    override fun render(state: MainState) = Unit
 }

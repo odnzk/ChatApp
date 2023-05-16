@@ -18,8 +18,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginVertical="@dimen/margin_small"
+        android:gravity="center"
         tools:text="@string/error_channel_already_exists"
-        tools:textColor="@color/white" />
+        tools:textColor="@color/romegranate" />
 
     <com.study.components.view.InputView
         android:id="@+id/fragment_add_channel_input_view"

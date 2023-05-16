@@ -5,7 +5,7 @@ import com.study.auth.api.UserAuthRepository
 import com.study.auth.api.di.AuthDep
 import com.study.auth.api.di.AuthImpl
 import com.study.auth.api.di.AuthImplFactory
-import com.study.network.dataSource.UserDataSource
+import com.study.network.ZulipApi
 import dagger.Module
 import dagger.Provides
 import kotlinx.coroutines.CoroutineDispatcher
@@ -18,11 +18,11 @@ class AppAuthModule {
     @Singleton
     fun providesAuthDependencies(
         dispatcher: CoroutineDispatcher,
-        userDataSource: UserDataSource,
+        api: ZulipApi,
         context: Context
     ): AuthDep = object : AuthDep {
         override val dispatcher: CoroutineDispatcher = dispatcher
-        override val userDataSource: UserDataSource = userDataSource
+        override val api: ZulipApi = api
         override val context: Context = context
     }
 

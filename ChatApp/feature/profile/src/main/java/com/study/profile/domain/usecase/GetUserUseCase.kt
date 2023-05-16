@@ -1,6 +1,6 @@
 package com.study.profile.domain.usecase
 
-import com.study.profile.domain.exceptions.UserNotFoundException
+import com.study.profile.domain.model.UserNotFoundException
 import com.study.profile.domain.model.UserDetailed
 import com.study.profile.domain.repository.UserRepository
 import com.study.ui.NavConstants

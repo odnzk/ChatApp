@@ -8,4 +8,5 @@
         <item name="tabTextColor">@color/white</item>
         <item name="android:background">@color/darkest_nero</item>
     </style>
+
 </resources>

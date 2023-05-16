@@ -7,18 +7,11 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Upsert
-import com.study.database.entity.ReactionEntity
-import com.study.database.entity.ReactionEntity.Companion.REACTIONS_TABLE
+import com.study.database.model.ReactionEntity
+import com.study.database.model.ReactionEntity.Companion.REACTIONS_TABLE
 
 @Dao
 interface ReactionDao {
-
-    @Transaction
-    suspend fun clearAndInsert(reactions: List<ReactionEntity>) {
-        deleteAll()
-        insert(reactions)
-    }
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(reactions: List<ReactionEntity>)
 
@@ -28,10 +21,17 @@ interface ReactionDao {
     @Upsert
     suspend fun upsert(reactions: List<ReactionEntity>)
 
+    @Delete
+    suspend fun delete(reaction: ReactionEntity)
+
     @Query("DELETE FROM $REACTIONS_TABLE")
     suspend fun deleteAll()
 
-    @Delete
-    suspend fun delete(reaction: ReactionEntity)
+    @Transaction
+    suspend fun clearAndInsert(reactions: List<ReactionEntity>) {
+        deleteAll()
+        insert(reactions)
+    }
+
 }
 

@@ -1,9 +1,10 @@
 package com.study.tinkoff.di
 
 import android.content.Context
+import coil.ImageLoader
 import com.study.auth.api.di.AuthDep
-import com.study.channels.di.ChannelsDep
-import com.study.chat.di.ChatDep
+import com.study.channels.shared.di.ChannelsDep
+import com.study.chat.shared.di.ChatDep
 import com.study.database.di.DatabaseDep
 import com.study.network.di.NetworkDep
 import com.study.profile.di.ProfileDep
@@ -30,8 +31,9 @@ import javax.inject.Singleton
 )
 interface AppComponent : ProfileDep, UsersDep, ChatDep, AuthDep, ChannelsDep, NetworkDep,
     DatabaseDep {
-
     fun inject(activity: MainActivity)
+
+    val imageLoader: ImageLoader
 
     @Component.Factory
     interface Factory {

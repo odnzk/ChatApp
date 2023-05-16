@@ -6,23 +6,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
+import androidx.navigation.fragment.findNavController
+import coil.load
 import com.study.common.extension.fastLazy
-import com.study.components.extension.createStoreHolder
-import com.study.components.extension.loadFromUrl
 import com.study.components.view.ScreenStateView.ViewState
 import com.study.profile.databinding.FragmentProfileBinding
 import com.study.profile.di.ProfileComponentViewModel
 import com.study.profile.presentation.elm.ProfileEffect
 import com.study.profile.presentation.elm.ProfileEvent
 import com.study.profile.presentation.elm.ProfileState
-import com.study.profile.presentation.util.model.UiUser
+import com.study.profile.presentation.model.UiUser
 import com.study.profile.presentation.util.toErrorMessage
 import com.study.ui.NavConstants
 import vivid.money.elmslie.android.base.ElmFragment
 import vivid.money.elmslie.android.storeholder.StoreHolder
-import vivid.money.elmslie.core.store.Store
 import javax.inject.Inject
 import com.study.ui.R as CoreR
 
@@ -33,19 +33,14 @@ internal class ProfileFragment : ElmFragment<ProfileEvent, ProfileEffect, Profil
     private val userId by fastLazy {
         arguments?.getInt(NavConstants.USER_ID_KEY) ?: NavConstants.CURRENT_USER_ID_KEY
     }
+    override val initEvent: ProfileEvent get() = ProfileEvent.Ui.Init(userId)
+    override val storeHolder: StoreHolder<ProfileEvent, ProfileEffect, ProfileState> get() = profileStore
 
     @Inject
-    lateinit var profileStore: Store<ProfileEvent, ProfileEffect, ProfileState>
-
-
-    override val initEvent: ProfileEvent get() = ProfileEvent.Ui.Init(userId)
-    override val storeHolder: StoreHolder<ProfileEvent, ProfileEffect, ProfileState> by fastLazy {
-        createStoreHolder(profileStore)
-    }
+    lateinit var profileStore: StoreHolder<ProfileEvent, ProfileEffect, ProfileState>
 
     override fun onAttach(context: Context) {
-        ViewModelProvider(this).get<ProfileComponentViewModel>()
-            .profileComponent.inject(this)
+        ViewModelProvider(this).get<ProfileComponentViewModel>().profileComponent.inject(this)
         super.onAttach(context)
     }
 
@@ -86,16 +81,20 @@ internal class ProfileFragment : ElmFragment<ProfileEvent, ProfileEffect, Profil
                 setTextColor(ContextCompat.getColor(context, user.presence.colorResId))
             }
             if (user.avatarUrl != null) {
-                fragmentProfileIvAvatar.loadFromUrl(user.avatarUrl)
+                fragmentProfileIvAvatar.load(user.avatarUrl)
             } else if (user.isBot) {
-                fragmentProfileIvAvatar.setImageResource(CoreR.drawable.ic_bot)
+                fragmentProfileIvAvatar.setImageResource(CoreR.drawable.ic_baseline_bot_24)
             }
             fragmentProfileTvUsername.text = user.username
         }
     }
 
-    private fun initUI() {
-        binding.screenStateView.onTryAgainClickListener =
+    private fun initUI() = with(binding) {
+        screenStateView.onTryAgainClickListener =
             View.OnClickListener { store.accept(ProfileEvent.Ui.Reload(userId)) }
+        fragmentProfileGroupToolbar.isVisible = if (userId != NavConstants.CURRENT_USER_ID_KEY) {
+            fragmentProfileBtnBack.setOnClickListener { findNavController().popBackStack() }
+            true
+        } else false
     }
 }

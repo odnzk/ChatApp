@@ -5,7 +5,7 @@
     <string name="user_status_offline">Offline</string>
     <string name="user_status_bot">Bot</string>
 
-    <string name="error_snackbar_action">Reload</string>
+    <string name="error_snackbar_action">Try again</string>
     <string name="hint_send_message">Write…</string>
     <string name="content_description_btn_send_message">Send message</string>
 </resources>

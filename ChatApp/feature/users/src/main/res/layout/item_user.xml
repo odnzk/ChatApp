@@ -19,7 +19,6 @@
             app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.ImageView.Circle"
             tools:src="@tools:sample/avatars" />
 
-
         <TextView
             android:id="@+id/item_user_tv_username"
             android:layout_width="0dp"
@@ -32,7 +31,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/item_user_iv_avatar"
             app:layout_constraintTop_toTopOf="@id/item_user_iv_avatar"
-            tools:text="@string/_test_message_sender" />
+            tools:text="Darrel Steward" />
 
         <TextView
             android:id="@+id/item_user_tv_email"

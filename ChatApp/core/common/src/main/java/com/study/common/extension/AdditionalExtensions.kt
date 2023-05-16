@@ -25,7 +25,7 @@ inline fun <R> runCatchingNonCancellation(block: () -> R): Result<R> {
     }
 }
 
-inline fun restorePreviousStateAndThrowError(
+inline fun onFailureRestorePrevStateAndThrowError(
     action: () -> Unit,
     restorePreviousState: () -> Unit
 ) = runCatchingNonCancellation { action() }.onFailure { error ->
@@ -33,3 +33,10 @@ inline fun restorePreviousStateAndThrowError(
     throw error
 }
 
+fun maxOfThee(a: Int, b: Int, c: Int) = when {
+    a >= b && a >= c -> a
+    b >= c -> b
+    else -> c
+}
+
+inline fun <reified T> List<*>.firstInstance(): T = first { it is T } as T

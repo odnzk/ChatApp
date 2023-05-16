@@ -6,6 +6,29 @@
     android:layout_height="match_parent"
     android:theme="@style/Theme.ChatApp">
 
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/fragment_profile_group_toolbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="fragment_profile_tv_toolbar, fragment_profile_btn_back" />
+
+    <TextView
+        android:id="@+id/fragment_profile_tv_toolbar"
+        style="@style/ProfileToolbar"
+        android:layout_width="0dp"
+        android:text="@string/fragment_profile"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/fragment_profile_btn_back"
+        style="@style/NavigateBackToolbarButton"
+        android:layout_width="wrap_content"
+        android:layout_marginStart="16dp"
+        android:contentDescription="@string/content_description_btn_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/fragment_profile_iv_avatar"
@@ -14,7 +37,7 @@
         app:layout_constraintBottom_toTopOf="@id/fragment_profile_tv_username"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/fragment_profile_tv_toolbar"
         app:layout_constraintVertical_bias=".4"
         app:layout_constraintVertical_chainStyle="packed"
         app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.ImageView.RoundCorners" />
@@ -23,6 +46,7 @@
         android:id="@+id/fragment_profile_tv_username"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_medium"
         android:layout_marginTop="16dp"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.ChatApp.Title.Large"
@@ -30,7 +54,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/fragment_profile_iv_avatar"
-        tools:text="@string/_test_message_sender" />
+        tools:text="Darrel Steward" />
 
     <TextView
         android:id="@+id/fragment_profile_tv_is_online"
@@ -51,6 +75,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/fragment_profile_tv_toolbar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

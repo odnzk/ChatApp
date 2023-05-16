@@ -14,6 +14,7 @@
     <string name="hint_channel_topic">Topic</string>
     <string name="date_delegate_item_title_format">%1$d %2$s</string>
     <string name="content_description">Option image</string>
+    <string name="content_description_message_content">Message content</string>
     <string name="hint_message_content">Content</string>
     <string name="channel_title">#%1$s</string>
 
@@ -21,11 +22,13 @@
     <string name="item_action_copy">Copy to clipboard</string>
     <string name="item_action_edit">Edit</string>
     <string name="item_action_delete">Delete</string>
+
     <string name="success_action_add_reaction">Added</string>
     <string name="success_action_edit">Saved</string>
     <string name="success_action_deleted">Deleted</string>
     <string name="success_action_copied">Copied to clipboard</string>
     <string name="success_update_message">Successfully updated</string>
+    <string name="success_uploading_file">Successfully uploaded</string>
 
 
 </resources>

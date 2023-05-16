@@ -72,12 +72,12 @@ class AvatarImageView @JvmOverloads constructor(
         canvas?.drawCircle(circleStart, circleTop, circleRadius, circlePaint)
     }
 
+    private fun getColor(status: UserPresenceStatus): Int {
+        return context.getColor(status.colorResId)
+    }
+
     companion object {
         private const val CIRCLE_SIZE_DIVIDER = 7
         private const val SUBTRACTION_CIRCLE_SIZE_COEFF = 1.4f
-    }
-
-    private fun getColor(status: UserPresenceStatus): Int {
-        return context.getColor(status.colorResId)
     }
 }

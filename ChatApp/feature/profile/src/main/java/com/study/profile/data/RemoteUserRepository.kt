@@ -1,9 +1,9 @@
 package com.study.profile.data
 
 import com.study.components.model.UserPresenceStatus
-import com.study.network.dataSource.UserDataSource
 import com.study.profile.data.mapper.toDetailedUser
 import com.study.profile.data.mapper.toUserPresenceStatus
+import com.study.profile.data.source.RemoteUserDataSource
 import com.study.profile.domain.model.UserDetailed
 import com.study.profile.domain.repository.UserRepository
 import dagger.Reusable
@@ -13,10 +13,9 @@ import javax.inject.Inject
 
 @Reusable
 internal class RemoteUserRepository @Inject constructor(
-    private val dataSource: UserDataSource,
+    private val dataSource: RemoteUserDataSource,
     private val dispatcher: CoroutineDispatcher
-) :
-    UserRepository {
+) : UserRepository {
     override suspend fun getUserById(id: Int): UserDetailed? = withContext(dispatcher) {
         dataSource.getUserById(id).user?.toDetailedUser()
     }
@@ -26,6 +25,8 @@ internal class RemoteUserRepository @Inject constructor(
     }
 
     override suspend fun getUserPresence(userId: Int): UserPresenceStatus =
-        withContext(dispatcher) { dataSource.getUserPresence(userId).toUserPresenceStatus() }
+        withContext(dispatcher) {
+            dataSource.getUserPresence(userId).toUserPresenceStatus()
+        }
 
 }

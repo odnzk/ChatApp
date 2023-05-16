@@ -1,6 +1,7 @@
 package com.study.profile.di
 
 import com.study.common.di.FeatureScope
+import com.study.components.util.DaggerStoreHolder
 import com.study.profile.presentation.elm.ProfileActor
 import com.study.profile.presentation.elm.ProfileEffect
 import com.study.profile.presentation.elm.ProfileEvent
@@ -8,7 +9,7 @@ import com.study.profile.presentation.elm.ProfileReducer
 import com.study.profile.presentation.elm.ProfileState
 import dagger.Module
 import dagger.Provides
-import vivid.money.elmslie.core.store.Store
+import vivid.money.elmslie.android.storeholder.StoreHolder
 import vivid.money.elmslie.coroutines.ElmStoreCompat
 
 @Module
@@ -19,7 +20,6 @@ internal class ProfileModule {
     fun providesStore(
         reducer: ProfileReducer,
         actor: ProfileActor
-    ): Store<ProfileEvent, ProfileEffect, ProfileState> {
-        return ElmStoreCompat(ProfileState(), reducer, actor)
-    }
+    ): StoreHolder<ProfileEvent, ProfileEffect, ProfileState> =
+        DaggerStoreHolder { ElmStoreCompat(ProfileState(), reducer, actor) }
 }

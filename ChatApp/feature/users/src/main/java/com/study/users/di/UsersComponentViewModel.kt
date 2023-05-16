@@ -7,15 +7,20 @@ import kotlin.properties.Delegates.notNull
 internal interface UsersDepsProvider {
 
     @get:RestrictTo(RestrictTo.Scope.LIBRARY)
-    val deps: UsersDep
+    val dep: UsersDep
 
-    companion object : UsersDepsProvider by UsersDepsStore
+    companion object : UsersDepsProvider by UsersDepStore
 }
 
-object UsersDepsStore : UsersDepsProvider {
-    override var deps: UsersDep by notNull()
+object UsersDepStore : UsersDepsProvider {
+    override var dep: UsersDep by notNull()
 }
 
 internal class UsersComponentViewModel : ViewModel() {
-    val usersComponent = DaggerUsersComponent.factory().create(UsersDepsProvider.deps)
+    val usersComponent = DaggerUsersComponent.factory().create(UsersDepsProvider.dep)
+
+    override fun onCleared() {
+        super.onCleared()
+        usersComponent.userStoreHolder.store.stop()
+    }
 }

@@ -4,19 +4,26 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.ImageView
+import android.widget.Toast
+import androidx.annotation.StringRes
+import androidx.core.view.isVisible
+import androidx.core.view.marginBottom
+import androidx.core.view.marginLeft
+import androidx.core.view.marginRight
+import androidx.core.view.marginTop
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.RecyclerView
-import coil.load
-import coil.request.CachePolicy
+import androidx.viewbinding.ViewBinding
+import com.google.android.material.snackbar.Snackbar
+import com.study.components.model.UiError
 import com.study.components.recycler.delegates.Delegate
+import com.study.ui.R
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import com.study.ui.R as CoreR
 
 fun View.hideKeyboard() {
     context?.getSystemService(InputMethodManager::class.java)
@@ -35,15 +42,6 @@ inline fun <T : Any> Fragment.collectFlowSafely(
     }
 }
 
-fun ImageView.loadFromUrl(url: String) {
-    load(url) {
-        memoryCachePolicy(CachePolicy.ENABLED)
-        crossfade(true)
-        error(CoreR.color.darkest_nero)
-        placeholder(CoreR.color.darkest_nero)
-    }
-}
-
 inline fun <reified T> Bundle.safeGetParcelable(key: String): T? {
     return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
         getParcelable(key, T::class.java)
@@ -56,3 +54,32 @@ fun delegatesToList(vararg delegates: Delegate<*, *>): List<Delegate<RecyclerVie
     return delegates.toList() as? List<Delegate<RecyclerView.ViewHolder, Any>>
         ?: error("Cannot create valid list from this delegates")
 }
+
+fun ViewBinding.showSnackbar(@StringRes messageRes: Int) =
+    Snackbar.make(root, messageRes, Snackbar.LENGTH_SHORT).show()
+
+inline fun ViewBinding.showErrorSnackbar(
+    error: Throwable,
+    errorHandler: ((Throwable) -> UiError) = Throwable::toBaseErrorMessage,
+    customMessage: String? = null,
+    onReloadActionListener: View.OnClickListener? = null
+) {
+    val displayedMessage = customMessage ?: errorHandler(error).getMessage(root.context)
+    Snackbar.make(root, displayedMessage, Snackbar.LENGTH_SHORT).apply {
+        setTextColor(view.context.getColor(R.color.white))
+        onReloadActionListener?.let {
+            setAction(
+                com.study.components.R.string.error_snackbar_action,
+                it
+            )
+        }
+    }.show()
+}
+
+fun Fragment.showToast(@StringRes messageRes: Int) =
+    Toast.makeText(requireContext(), messageRes, Toast.LENGTH_SHORT).show()
+
+fun measureFullHeight(view: View): Int = view.measuredHeight + view.marginTop + view.marginBottom
+fun measureFullWidth(view: View): Int = view.measuredWidth + view.marginRight + view.marginLeft
+fun measureHeightIfVisible(view: View) = if (view.isVisible) measureFullHeight(view) else 0
+fun measureWidthIfVisible(view: View) = if (view.isVisible) measureFullWidth(view) else 0

@@ -1,12 +1,13 @@
 package com.study.network
 
 
-import com.study.network.model.request.message.ChannelRequestDto
+import com.study.network.model.request.ChannelRequestDto
 import com.study.network.model.request.message.MessageNarrowList
 import com.study.network.model.request.message.MessageType
 import com.study.network.model.request.message.MessagesAnchor
 import com.study.network.model.response.message.AllMessagesResponse
 import com.study.network.model.response.message.SentMessageResponse
+import com.study.network.model.response.message.UploadedFileResponse
 import com.study.network.model.response.stream.AddStreamResponse
 import com.study.network.model.response.stream.AllStreamsResponse
 import com.study.network.model.response.stream.StreamTopicsResponse
@@ -15,10 +16,13 @@ import com.study.network.model.response.user.AllUsersResponse
 import com.study.network.model.response.user.DetailedUserDto
 import com.study.network.model.response.user.UserPresenceResponse
 import com.study.network.model.response.user.UserResponse
+import okhttp3.MultipartBody
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.Multipart
 import retrofit2.http.PATCH
 import retrofit2.http.POST
+import retrofit2.http.Part
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -51,6 +55,21 @@ interface ZulipApi {
         @Query("include_anchor") includeAnchor: Boolean = false
     ): AllMessagesResponse
 
+
+    @DELETE("messages/{message_id}")
+    suspend fun deleteMessage(@Path("message_id") messageId: Int)
+
+    @PATCH("messages/{message_id}")
+    suspend fun updateMessage(
+        @Path("message_id") messageId: Int,
+        @Query("topic") topic: String,
+        @Query("content") content: String
+    )
+
+    @POST("user_uploads")
+    @Multipart
+    suspend fun upload(@Part body: MultipartBody.Part): UploadedFileResponse
+
     @POST(UPDATE_REACTION_END_POINT)
     suspend fun addReactionToMessage(
         @Path("message_id") mesId: Int,
@@ -61,16 +80,6 @@ interface ZulipApi {
     suspend fun removeReactionFromMessage(
         @Path("message_id") mesId: Int,
         @Query("emoji_name") emojiName: String
-    )
-
-    @DELETE("messages/{message_id}")
-    suspend fun deleteMessage(@Path("message_id") messageId: Int)
-
-    @PATCH("messages/{message_id}")
-    suspend fun updateMessage(
-        @Path("message_id") messageId: Int,
-        @Query("topic") topic: String,
-        @Query("content") content: String
     )
 
     @GET("users/me/subscriptions")

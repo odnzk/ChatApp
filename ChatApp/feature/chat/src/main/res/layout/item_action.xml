@@ -2,8 +2,9 @@
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/item_action_tv_action"
-    style="@style/ItemOptionTextView"
+    style="@style/ActionTextView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:drawableLeft="@drawable/ic_add_reaction"
+    tools:drawableLeft="@drawable/ic_baseline_add_reaction_24"
+    tools:drawableTint="@color/gray80"
     tools:text="Add reaction" />

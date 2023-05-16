@@ -2,6 +2,7 @@ package com.study.users.di
 
 import com.study.common.di.FeatureScope
 import com.study.common.search.Searcher
+import com.study.components.util.DaggerStoreHolder
 import com.study.users.domain.model.User
 import com.study.users.presentation.elm.UsersActor
 import com.study.users.presentation.elm.UsersEffect
@@ -11,19 +12,19 @@ import com.study.users.presentation.elm.UsersState
 import dagger.Module
 import dagger.Provides
 import dagger.Reusable
-import vivid.money.elmslie.core.store.Store
+import vivid.money.elmslie.android.storeholder.StoreHolder
 import vivid.money.elmslie.coroutines.ElmStoreCompat
 
 @Module
 internal class UsersModule {
+
     @Provides
     @FeatureScope
-    fun providesStore(
+    fun providesStoreHolder(
         reducer: UsersReducer,
         actor: UsersActor
-    ): Store<UsersEvent, UsersEffect, UsersState> {
-        return ElmStoreCompat(UsersState(), reducer, actor)
-    }
+    ): StoreHolder<UsersEvent, UsersEffect, UsersState> =
+        DaggerStoreHolder { ElmStoreCompat(UsersState(), reducer, actor) }
 
     @Provides
     @Reusable

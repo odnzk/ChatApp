@@ -11,6 +11,5 @@ class MainReducer @Inject constructor() :
         is MainEvent.Ui.Search -> {
             commands { +MainCommand.Search(event.query) }
         }
-        is MainEvent.Internal.SearchSuccess -> Unit
     }
 }

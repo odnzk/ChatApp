@@ -2,9 +2,9 @@ package com.study.chat.di
 
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
-import com.study.chat.data.MessageRepositoryImpl
-import com.study.chat.data.pagination.MessagesPagingMediator
-import com.study.chat.domain.repository.MessageRepository
+import com.study.chat.chat.data.ChatRepositoryImpl
+import com.study.chat.chat.data.MessagesPagingMediator
+import com.study.chat.chat.domain.repository.ChatRepository
 import com.study.chat.util.TEST_CHANNEL
 import com.study.chat.util.TEST_TOPIC
 import com.study.database.dataSource.MessageLocalDataSource
@@ -49,8 +49,8 @@ internal object GeneralDepContainer {
         local: MessageLocalDataSource,
         remote: MessageRemoteDataSource,
         dispatcher: TestDispatcher
-    ): MessageRepository {
-        return MessageRepositoryImpl(
+    ): ChatRepository {
+        return ChatRepositoryImpl(
             remoteDS = remote,
             localDS = local,
             dispatcher,

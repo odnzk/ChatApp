@@ -6,8 +6,7 @@ import com.study.components.recycler.shimmer.ShimmerItem
 import com.study.users.presentation.model.UiUser
 
 internal class UserDelegate(onUserClick: ((userId: Int) -> Unit)?) :
-    Delegate<UserViewHolder, ShimmerItem<UiUser>>
-        (
+    Delegate<UserViewHolder, ShimmerItem<UiUser>>(
         isType = { it is ShimmerItem<*> },
         viewHolderCreator = { UserViewHolder.create(it, onUserClick = onUserClick) },
         viewBinder = { holder, channel -> holder.bind(channel) },
@@ -29,5 +28,6 @@ internal class UserDelegate(onUserClick: ((userId: Int) -> Unit)?) :
                 if (oldContent == null || newContent == null) return true
                 return oldContent == newContent
             }
-        })
+        }
+    )
 

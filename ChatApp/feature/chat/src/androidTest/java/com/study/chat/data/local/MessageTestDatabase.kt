@@ -5,8 +5,8 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.study.database.dao.MessageDao
 import com.study.database.dao.ReactionDao
-import com.study.database.entity.MessageEntity
-import com.study.database.entity.ReactionEntity
+import com.study.database.model.MessageEntity
+import com.study.database.model.ReactionEntity
 import com.study.database.util.CalendarConverter
 
 

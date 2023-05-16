@@ -7,7 +7,7 @@ import com.study.chat.R
 import com.study.chat.data.local.MessageTestDatabase
 import com.study.chat.data.remote.RemoteDataSourceProvider
 import com.study.chat.di.launchChatFragment
-import com.study.chat.presentation.util.toEmojiString
+import com.study.chat.shared.presentation.util.toEmojiString
 import com.study.chat.util.TEST_TOPIC
 import com.study.chat.util.screen.ChatScreen
 import com.study.chat.util.screen.TestState

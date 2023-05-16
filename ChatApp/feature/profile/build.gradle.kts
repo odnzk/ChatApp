@@ -48,6 +48,7 @@ dependencies {
     implementation(libs.dagger2)
     kapt(libs.dagger2.compiler)
     // Additional
+    implementation(libs.coil)
     implementation(libs.fragment.ktx)
     implementation(libs.bundles.navigation)
 

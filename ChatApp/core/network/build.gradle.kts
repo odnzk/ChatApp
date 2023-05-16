@@ -1,3 +1,9 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+
+val username: String = gradleLocalProperties(rootDir).getProperty("username")
+val password: String = gradleLocalProperties(rootDir).getProperty("password")
+val baseUrl: String = gradleLocalProperties(rootDir).getProperty("base_url")
+
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
@@ -24,6 +30,11 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
             )
         }
+        debug {
+            buildConfigField("String", "USERNAME", username)
+            buildConfigField("String", "PASSWORD", password)
+            buildConfigField("String", "BASE_URL", baseUrl)
+        }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -46,6 +57,7 @@ dependencies {
     implementation(libs.httpLoggigInterceptor)
     implementation(libs.retrofit.kotlinx.serialization)
     implementation(libs.kotlinx.serialization.gson)
+    implementation(libs.coil)
     // Additional
     implementation(libs.coroutines.core)
     implementation(libs.timber)

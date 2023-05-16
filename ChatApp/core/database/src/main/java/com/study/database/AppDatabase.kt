@@ -7,10 +7,10 @@ import com.study.database.dao.ChannelDao
 import com.study.database.dao.ChannelTopicDao
 import com.study.database.dao.MessageDao
 import com.study.database.dao.ReactionDao
-import com.study.database.entity.ChannelEntity
-import com.study.database.entity.ChannelTopicEntity
-import com.study.database.entity.MessageEntity
-import com.study.database.entity.ReactionEntity
+import com.study.database.model.ChannelEntity
+import com.study.database.model.ChannelTopicEntity
+import com.study.database.model.MessageEntity
+import com.study.database.model.ReactionEntity
 import com.study.database.util.CalendarConverter
 
 @Database(

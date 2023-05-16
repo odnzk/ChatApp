@@ -13,7 +13,6 @@ import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -21,7 +20,6 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import vivid.money.elmslie.coroutines.Actor
 import javax.inject.Inject
@@ -32,11 +30,8 @@ class MainActor @Inject constructor(
     @MutableSearchFlow
     private val searchFlow: MutableSharedFlow<String>
 ) :
-    Actor<MainCommand, MainEvent.Internal> {
+    Actor<MainCommand, MainEvent> {
     private val actorScope = CoroutineScope(dispatcher + SupervisorJob())
-
-    private val searchEvent: MutableStateFlow<MainEvent.Internal> =
-        MutableStateFlow(MainEvent.Internal.SearchSuccess(""))
     private val searchQueries: MutableSharedFlow<String> =
         MutableSharedFlow(
             replay = 1,
@@ -51,13 +46,9 @@ class MainActor @Inject constructor(
                 .distinctUntilChanged()
                 .debounce(SEARCH_DEBOUNCE)
                 .flatMapLatest { query ->
-                    flow {
+                    flow<Unit> {
                         searchFlow.emit(query)
-                        emit(MainEvent.Internal.SearchSuccess(query))
                     }
-                }
-                .onEach { successEvent ->
-                    searchEvent.emit(successEvent)
                 }
                 .flowOn(dispatcher)
                 .collect()
@@ -68,11 +59,8 @@ class MainActor @Inject constructor(
         actorScope.coroutineContext.cancelChildren()
     }
 
-    override fun execute(command: MainCommand): Flow<MainEvent.Internal> = when (command) {
-        is MainCommand.Search -> {
-            searchQueries.tryEmit(command.query)
-            searchEvent
-        }
+    override fun execute(command: MainCommand): Flow<MainEvent> = when (command) {
+        is MainCommand.Search -> flow { searchQueries.tryEmit(command.query) }
     }
 
     companion object {

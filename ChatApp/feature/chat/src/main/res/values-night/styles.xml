@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-
     <style name="ChannelTopicTitleTextView" parent="Widget.MaterialComponents.TextView">
         <item name="android:background">@color/dark_nero</item>
         <item name="android:padding">@dimen/paddings_medium</item>
@@ -38,10 +37,11 @@
         <item name="android:textAppearance">@style/TextAppearance.Messenger.Body.Small</item>
     </style>
 
-    <style name="ItemOptionTextView">
+    <style name="ActionTextView">
         <item name="android:drawablePadding">6dp</item>
         <item name="android:padding">@dimen/margin_small</item>
-        <item name="android:drawableTint">@color/white</item>
+        <item name="android:drawableTint">@color/gray80</item>
+        <item name="android:textColor">@color/gray80</item>
         <item name="android:textAppearance">@style/TextAppearance.ChatApp.Body</item>
     </style>
 

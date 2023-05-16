@@ -4,8 +4,10 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.testing.FragmentScenario
 import androidx.fragment.app.testing.launchFragment
 import androidx.fragment.app.testing.launchFragmentInContainer
+import com.study.chat.chat.presentation.ChatFragment
 import com.study.chat.data.StubUserAuthRepository
-import com.study.chat.presentation.chat.ChatFragment
+import com.study.chat.shared.di.ChatDep
+import com.study.chat.shared.di.ChatDepStore
 import com.study.chat.util.TEST_CHANNEL
 import com.study.chat.util.TEST_TOPIC
 import com.study.database.dataSource.MessageLocalDataSource

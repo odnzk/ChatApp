@@ -3,7 +3,7 @@ package com.study.chat.util.screen
 import android.view.View
 import com.kaspersky.kaspresso.screens.KScreen
 import com.study.chat.R
-import com.study.chat.presentation.chat.ChatFragment
+import com.study.chat.chat.presentation.ChatFragment
 import io.github.kakaocup.kakao.common.views.KView
 import io.github.kakaocup.kakao.edit.KTextInputLayout
 import io.github.kakaocup.kakao.image.KImageView

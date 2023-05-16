@@ -47,7 +47,7 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/fragment_edit_btn_done"
         style="@style/PrimaryCircleButton"
-        app:icon="@drawable/ic_done"
+        app:icon="@drawable/ic_baseline_done_24"
         app:layout_constraintBottom_toBottomOf="@id/fragment_edit_til_content"
         app:layout_constraintEnd_toEndOf="parent" />
 

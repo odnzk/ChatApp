@@ -15,7 +15,7 @@ import com.study.chat.di.GeneralDepContainer
 import com.study.database.dao.MessageDao
 import com.study.database.dao.ReactionDao
 import com.study.database.dataSource.MessageLocalDataSource
-import com.study.database.entity.tuple.MessageWithReactionsTuple
+import com.study.database.model.tuple.MessageWithReactionsTuple
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.After

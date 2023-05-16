@@ -9,8 +9,8 @@
 
     <style name="PrimaryBottomNavigationMenu">
         <item name="android:background">@color/darkest_nero</item>
-        <item name="itemIconTint">@color/bnv_item_color_selector</item>
-        <item name="itemTextColor">@color/bnv_item_color_selector</item>
+        <item name="itemIconTint">@color/light_bnv_item_color_selector</item>
+        <item name="itemTextColor">@color/light_bnv_item_color_selector</item>
     </style>
 
     <style name="PrimaryTextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">

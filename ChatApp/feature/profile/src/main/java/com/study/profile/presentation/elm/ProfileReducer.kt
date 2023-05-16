@@ -16,11 +16,11 @@ internal class ProfileReducer @Inject constructor() :
             state { copy(isLoading = true, error = null) }
             commands { +ProfileCommand.LoadUser(event.userId) }
         }
-        is ProfileEvent.Internal.LoadingUserError -> {
+        is ProfileEvent.Internal.ErrorLoadingUser -> {
             state { copy(isLoading = false, error = event.error) }
         }
         is ProfileEvent.Internal.LoadingUserSuccess -> {
-            state { copy(isLoading = false, user = event.user) }
+            state { copy(isLoading = false, error = null, user = event.user) }
         }
     }
 }

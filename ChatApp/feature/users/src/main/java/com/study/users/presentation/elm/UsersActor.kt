@@ -5,7 +5,6 @@ import com.study.users.domain.usecase.GetUsersPresenceCase
 import com.study.users.domain.usecase.GetUsersUseCase
 import com.study.users.domain.usecase.SearchUsersUseCase
 import com.study.users.presentation.util.mapper.toUiUsers
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import vivid.money.elmslie.core.switcher.Switcher
 import vivid.money.elmslie.coroutines.Actor
@@ -15,15 +14,14 @@ import javax.inject.Inject
 internal class UsersActor @Inject constructor(
     private val getUsersUseCase: GetUsersUseCase,
     private val getUsersPresenceUseCase: GetUsersPresenceCase,
-    private val searchUsersUseCase: SearchUsersUseCase,
-    private val dispatcher: CoroutineDispatcher
+    private val searchUsersUseCase: SearchUsersUseCase
 ) : Actor<UsersCommand, UsersEvent.Internal> {
 
     private val switcher = Switcher()
     override fun execute(command: UsersCommand): Flow<UsersEvent.Internal> =
         when (command) {
             is UsersCommand.LoadUsers -> switcher.switch {
-                toFlow(dispatcher) {
+                toFlow {
                     getUsersUseCase().toUiUsers(getUsersPresenceUseCase())
                 }.mapEvents(
                     UsersEvent.Internal::LoadingUsersSuccess,
@@ -31,7 +29,7 @@ internal class UsersActor @Inject constructor(
                 )
             }
             is UsersCommand.SearchUsers -> switcher.switch {
-                toFlow(dispatcher) {
+                toFlow {
                     searchUsersUseCase(command.query).toUiUsers(getUsersPresenceUseCase())
                 }.mapEvents(
                     UsersEvent.Internal::LoadingUsersSuccess,

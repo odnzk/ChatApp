@@ -27,7 +27,6 @@ class InputView @JvmOverloads constructor(
     private val tilInputBox: TextInputLayout
     private val etInputField: TextInputEditText
     private val btnSubmitData: ShapeableImageView
-
     private val colorBtnSubmitActive = MaterialColors.getColor(
         context,
         androidx.appcompat.R.attr.colorPrimary,
@@ -42,12 +41,10 @@ class InputView @JvmOverloads constructor(
     private val tintIconSendMessage = Color.BLACK
     private val textColor = context.getColor(CoreR.color.white)
     private val iconSendMessagePadding = 8.dp(context)
-
     private var editTextHint = context.getString(R.string.hint_send_message)
     private var isInputSingleLine = false
     private var addContentStateEnabled = false
     private var inputMaxLength = DEFAULT_INPUT_LENGTH
-
     var btnSubmitClickListener: (inputText: String) -> Unit = {}
         set(value) {
             field = value
@@ -68,13 +65,16 @@ class InputView @JvmOverloads constructor(
             editTextHint = getString(R.styleable.InputView_hint)
                 ?: context.getString(R.string.hint_send_message)
             isInputSingleLine = getBoolean(R.styleable.InputView_singleLine, isInputSingleLine)
-            addContentStateEnabled =
-                getBoolean(R.styleable.InputView_enableAddContentState, addContentStateEnabled)
+            addContentStateEnabled = getBoolean(
+                R.styleable.InputView_enableAddContentState,
+                addContentStateEnabled
+            )
             inputMaxLength = getInteger(R.styleable.InputView_maxLength, inputMaxLength)
-            colorViewBackground =
-                getColor(R.styleable.InputView_viewBackgroundColor, colorViewBackground)
+            colorViewBackground = getColor(
+                R.styleable.InputView_viewBackgroundColor,
+                colorViewBackground
+            )
         }
-
         initInitialState()
     }
 
@@ -82,33 +82,31 @@ class InputView @JvmOverloads constructor(
         SEND_MESSAGE, ADD_CONTENT
     }
 
-    private fun setState(state: State) {
-        when (state) {
-            State.ADD_CONTENT ->
-                btnSubmitData.run {
+    private fun setState(state: State) = when (state) {
+        State.ADD_CONTENT ->
+            with(btnSubmitData) {
+                setPadding(0)
+                setBackgroundColor(colorViewBackground)
+                imageTintList = ColorStateList.valueOf(tintIconAddContent)
+                setImageResource(CoreR.drawable.ic_baseline_add_content_24)
+            }
+        State.SEND_MESSAGE ->
+            with(btnSubmitData) {
+                if (addContentStateEnabled) {
+                    setPadding(iconSendMessagePadding)
+                } else {
                     setPadding(0)
-                    setBackgroundColor(colorViewBackground)
-                    imageTintList = ColorStateList.valueOf(tintIconAddContent)
-                    setImageResource(CoreR.drawable.ic_add_content)
+                    setContentPadding(
+                        SEND_STATE_PADDING,
+                        SEND_STATE_PADDING,
+                        SEND_STATE_PADDING,
+                        SEND_STATE_PADDING
+                    )
                 }
-            else ->
-                btnSubmitData.run {
-                    if (addContentStateEnabled) {
-                        setPadding(iconSendMessagePadding)
-                    } else {
-                        setPadding(0)
-                        setContentPadding(
-                            SEND_STATE_PADDING,
-                            SEND_STATE_PADDING,
-                            SEND_STATE_PADDING,
-                            SEND_STATE_PADDING
-                        )
-                    }
-                    setBackgroundColor(colorBtnSubmitActive)
-                    imageTintList = ColorStateList.valueOf(tintIconSendMessage)
-                    setImageResource(CoreR.drawable.ic_baseline_send_24)
-                }
-        }
+                setBackgroundColor(colorBtnSubmitActive)
+                imageTintList = ColorStateList.valueOf(tintIconSendMessage)
+                setImageResource(CoreR.drawable.ic_baseline_send_24)
+            }
     }
 
     private fun initInitialState() {

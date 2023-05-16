@@ -9,12 +9,30 @@ import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
 import androidx.room.Upsert
-import com.study.database.entity.MessageEntity
-import com.study.database.entity.MessageEntity.Companion.MESSAGES_TABLE
-import com.study.database.entity.tuple.MessageWithReactionsTuple
+import com.study.database.model.MessageEntity
+import com.study.database.model.MessageEntity.Companion.MESSAGES_TABLE
+import com.study.database.model.tuple.MessageWithReactionsTuple
 
 @Dao
 interface MessageDao {
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(messages: List<MessageEntity>)
+
+    @Upsert
+    suspend fun upsert(messages: List<MessageEntity>)
+
+    @Update
+    suspend fun update(message: MessageEntity)
+
+    @Transaction
+    @Delete
+    suspend fun delete(messages: List<MessageEntity>)
+
+    @Transaction
+    @Query("DELETE FROM $MESSAGES_TABLE")
+    suspend fun deleteAll()
+
     @Transaction
     @Query(
         "SELECT * FROM $MESSAGES_TABLE" +
@@ -57,26 +75,8 @@ interface MessageDao {
     @Query("SELECT COUNT(*) FROM $MESSAGES_TABLE")
     suspend fun countAllMessages(): Int
 
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(messages: List<MessageEntity>)
-
-    @Upsert
-    suspend fun upsert(messages: List<MessageEntity>)
-
-    @Update
-    suspend fun update(message: MessageEntity)
-
     @Query("UPDATE $MESSAGES_TABLE SET id = :newId WHERE id = :prevId")
     suspend fun updateMessageId(prevId: Int, newId: Int)
-
-    @Transaction
-    @Delete
-    suspend fun delete(messages: List<MessageEntity>)
-
-    @Transaction
-    @Query("DELETE FROM $MESSAGES_TABLE")
-    suspend fun deleteAll()
 
     @Transaction
     @Query(
@@ -86,6 +86,5 @@ interface MessageDao {
                 " AND id IN (SELECT id FROM $MESSAGES_TABLE ORDER BY calendar LIMIT :count)"
     )
     suspend fun deleteIrrelevant(channelId: Int, topicTitle: String, count: Int)
-
 
 }
