@@ -3,7 +3,7 @@ package com.study.database.util
 import androidx.room.TypeConverter
 import java.util.Calendar
 
-internal class CalendarConverter {
+class CalendarConverter {
 
     @TypeConverter
     fun toMillis(calendar: Calendar): Long = calendar.timeInMillis

@@ -20,6 +20,9 @@ interface ChannelTopicDao {
     @Query("DELETE FROM $TOPICS_TABLE WHERE channel_id = :channelId")
     suspend fun deleteTopics(channelId: Int)
 
+    @Query("DELETE FROM $TOPICS_TABLE")
+    suspend fun deleteAll()
+
     @Transaction
     suspend fun updateTopics(topics: List<ChannelTopicEntity>, channelId: Int) {
         deleteTopics(channelId)

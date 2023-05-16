@@ -7,13 +7,13 @@ import com.study.chat.data.local.LocalDataSourceProvider
 import com.study.chat.data.local.MessageTestDatabase
 import com.study.chat.data.remote.RemoteDataSourceProvider
 import com.study.chat.di.GeneralDepContainer
+import com.study.chat.shared.data.source.remote.RemoteMessageDataSource
 import com.study.chat.util.TEST_CHANNEL
 import com.study.chat.util.TEST_TOPIC
 import com.study.database.dao.MessageDao
 import com.study.database.dao.ReactionDao
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
@@ -26,10 +26,8 @@ class RepositoryTest {
     private lateinit var db: MessageTestDatabase
     private lateinit var messageDao: MessageDao
     private lateinit var reactionDao: ReactionDao
-    private val server = RemoteDataSourceProvider().createServer()
     private val remoteProvider = RemoteDataSourceProvider()
-    private val networkDep = remoteProvider.createNetworkDep(server)
-    private val dispatcher = UnconfinedTestDispatcher()
+    private val networkDep = remoteProvider.createNetworkDep()
 
     @After
     fun clear() {
@@ -54,9 +52,9 @@ class RepositoryTest {
     @Test
     fun getMessages_DbNotEmpty() = runTest {
         val localDS = LocalDataSourceProvider().provide(messageDao, reactionDao)
-        val remoteDS = RemoteDataSourceProvider().provide(networkDep)
+        val api = RemoteDataSourceProvider().provide(networkDep).zulipApi
         val repository =
-            GeneralDepContainer.createMessageRepositoryImpl(localDS, remoteDS, dispatcher)
+            GeneralDepContainer.createMessageRepositoryImpl(localDS, RemoteMessageDataSource(api))
 
         // Test verification goes simply by getting a list of PagingData,
         // if the repository did not get anything, the test would not pass due to a time limit

@@ -1,9 +1,10 @@
 package com.study.chat.test
 
+import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import com.kaspersky.kaspresso.testcases.api.testcase.TestCase
-import com.study.chat.R
+import com.study.chat.data.StubUserAuthRepository
 import com.study.chat.data.local.MessageTestDatabase
 import com.study.chat.data.remote.RemoteDataSourceProvider
 import com.study.chat.di.launchChatFragment
@@ -11,9 +12,9 @@ import com.study.chat.shared.presentation.util.toEmojiString
 import com.study.chat.util.TEST_TOPIC
 import com.study.chat.util.screen.ChatScreen
 import com.study.chat.util.screen.TestState
+import com.study.database.dao.ChannelTopicDao
 import com.study.database.dao.MessageDao
 import com.study.database.dao.ReactionDao
-import com.study.database.dataSource.MessageLocalDataSource
 import io.github.kakaocup.kakao.common.views.KView
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -21,23 +22,29 @@ import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
+import com.study.components.R as CoreR
 
 @OptIn(ExperimentalCoroutinesApi::class)
 internal class ChatFragmentTest : TestCase() {
     private lateinit var db: MessageTestDatabase
     private lateinit var messageDao: MessageDao
     private lateinit var reactionDao: ReactionDao
+    private lateinit var topicDao: ChannelTopicDao
 
-    private val chatTestDispatcher = UnconfinedTestDispatcher()
+    private val authRepository = StubUserAuthRepository()
+    private val dispatcher = UnconfinedTestDispatcher()
     private val server = RemoteDataSourceProvider().createServer()
     private val remoteProvider = RemoteDataSourceProvider()
-    private val networkDep = remoteProvider.createNetworkDep(server)
+    private val networkDep = remoteProvider.createNetworkDep()
+    private val context: Context = ApplicationProvider.getApplicationContext()
+    private val zulipApi = remoteProvider.provide(networkDep).zulipApi
 
     @After
     fun clear() {
         runTest {
             messageDao.deleteAll()
             reactionDao.deleteAll()
+            topicDao.deleteAll()
         }
         db.close()
     }
@@ -50,14 +57,15 @@ internal class ChatFragmentTest : TestCase() {
         ).build()
         messageDao = db.messageDao()
         reactionDao = db.reactionDao()
+        topicDao = db.topicDao()
     }
 
 
     @Test
     fun messagesAreDisplayed_ByDefault() = run {
-        val localDS = MessageLocalDataSource(messageDao, reactionDao)
-        val remoteDS = remoteProvider.provide(networkDep)
-        launchChatFragment(localDS = localDS, remoteDS = remoteDS, dispatcher = chatTestDispatcher)
+        launchChatFragment(
+            zulipApi, reactionDao, messageDao, topicDao, authRepository, context, dispatcher
+        )
         val chatScreen = ChatScreen()
 
         step("Отображение списка сообщений") {
@@ -78,9 +86,9 @@ internal class ChatFragmentTest : TestCase() {
 
     @Test
     fun messageWithoutReaction_ByDefault() = run {
-        val localDS = MessageLocalDataSource(messageDao, reactionDao)
-        val remoteDS = remoteProvider.provide(networkDep)
-        launchChatFragment(localDS = localDS, remoteDS = remoteDS, dispatcher = chatTestDispatcher)
+        launchChatFragment(
+            zulipApi, reactionDao, messageDao, topicDao, authRepository, context, dispatcher
+        )
         val chatScreen = ChatScreen()
 
         chatScreen.messageList.lastChild<ChatScreen.MessageItem> {
@@ -96,9 +104,9 @@ internal class ChatFragmentTest : TestCase() {
 
     @Test
     fun messageWithMyReaction_ByDefault() = run {
-        val localDS = MessageLocalDataSource(messageDao, reactionDao)
-        val remoteDS = remoteProvider.provide(networkDep)
-        launchChatFragment(localDS = localDS, remoteDS = remoteDS, dispatcher = chatTestDispatcher)
+        launchChatFragment(
+            zulipApi, reactionDao, messageDao, topicDao, authRepository, context, dispatcher
+        )
         val chatScreen = ChatScreen()
 
         chatScreen.messageList.firstChild<ChatScreen.MessageItem> {
@@ -118,9 +126,9 @@ internal class ChatFragmentTest : TestCase() {
 
     @Test
     fun initStateIsDisplayed_ByDefault() = run {
-        val localDS = MessageLocalDataSource(messageDao, reactionDao)
-        val remoteDS = remoteProvider.provide(networkDep)
-        launchChatFragment(localDS = localDS, remoteDS = remoteDS, dispatcher = chatTestDispatcher)
+        launchChatFragment(
+            zulipApi, reactionDao, messageDao, topicDao, authRepository, context, dispatcher
+        )
         val chatScreen = ChatScreen()
 
         step("Текущий топик отображается") {
@@ -130,7 +138,7 @@ internal class ChatFragmentTest : TestCase() {
             }
         }
         step("Подсказка для поля ввода сообщения отображается") {
-            chatScreen.inputViewTextInputLayout.hasHint(R.string.hint_send_message)
+            chatScreen.inputViewTextInputLayout.hasHint(CoreR.string.hint_send_message)
         }
         step("Список сообщений виден") {
             chatScreen.messageList {
@@ -145,10 +153,10 @@ internal class ChatFragmentTest : TestCase() {
 
     @Test
     fun getMessages_NetworkError() = run {
-        val localDS = MessageLocalDataSource(messageDao, reactionDao)
-        val remoteDS = remoteProvider.provide(networkDep)
         server.shutdown()
-        launchChatFragment(localDS = localDS, remoteDS = remoteDS, dispatcher = chatTestDispatcher)
+        launchChatFragment(
+            zulipApi, reactionDao, messageDao, topicDao, authRepository, context, dispatcher
+        )
         val chatScreen = ChatScreen()
 
         step("Лист сообщений не виден") {

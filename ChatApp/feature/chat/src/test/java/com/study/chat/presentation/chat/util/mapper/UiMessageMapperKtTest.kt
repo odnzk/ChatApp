@@ -1,8 +1,8 @@
 package com.study.chat.presentation.chat.util.mapper
 
-import com.study.chat.chat.presentation.model.UiEmoji
 import com.study.chat.chat.presentation.util.mapper.toChatMessage
 import com.study.chat.chat.presentation.util.mapper.toMeMessage
+import com.study.chat.shared.domain.model.Emoji
 import com.study.chat.shared.domain.model.IncomeMessage
 import com.study.chat.shared.domain.model.Reaction
 import junit.framework.TestCase.assertEquals
@@ -22,10 +22,12 @@ class UiMessageMapperKtTest {
         senderId = USER_ID - 1,
         content = "content",
         calendar = calendar,
-        reactions = listOf(reaction)
+        reactions = listOf(reaction),
+        channelId = 0,
+        topic = "topic"
     )
 
-    private fun createReaction() = Reaction(messageId = 0, userId = 0, emoji = UiEmoji("", ""))
+    private fun createReaction() = Reaction(messageId = 0, userId = 0, emoji = Emoji("", ""))
 
     @Test
     fun `mapping IncomeMessage to ChatMessage`() {
@@ -36,6 +38,7 @@ class UiMessageMapperKtTest {
         assertEquals("url", chatMes.senderAvatarUrl)
         assertEquals("sender", chatMes.senderName)
         assertEquals("content", chatMes.content)
+        assertEquals("topic", chatMes.topic)
         assertEquals(income.calendar, chatMes.calendar)
     }
 

@@ -42,7 +42,7 @@ class DatabaseTest {
     fun messageInsertion_ByDefault() = runTest {
         val initialCount = messageDao.countMessagesByChannelAndTopic(TEST_CHANNEL, TEST_TOPIC)
         val message = createMessageEntity(TEST_CHANNEL, TEST_TOPIC)
-        messageDao.insert(message)
+        messageDao.insert(listOf(message))
 
         assert(
             messageDao.countMessagesByChannelAndTopic(
@@ -103,7 +103,7 @@ class DatabaseTest {
         val helperString = "CONTENT"
         val initialCount = messageDao.countMessagesByChannelAndTopic(TEST_CHANNEL, TEST_TOPIC)
         val message = createMessageEntity(TEST_CHANNEL, TEST_TOPIC, id = 99)
-        messageDao.insert(message)
+        messageDao.insert(listOf(message))
         val updatedMessage = message.copy(content = helperString)
         messageDao.upsert(listOf(updatedMessage))
 

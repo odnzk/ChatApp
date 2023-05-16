@@ -4,21 +4,21 @@ import com.study.database.model.MessageEntity
 import java.util.Calendar
 
 
-const val TEST_CHANNEL = "general"
+const val TEST_CHANNEL = -1
 const val TEST_TOPIC = "test"
 
 fun createMessageEntity(
-    channel: String = TEST_CHANNEL,
+    channelId: Int = TEST_CHANNEL,
     topic: String = TEST_TOPIC,
     id: Int = 0
 ): MessageEntity =
     MessageEntity(
         id = id,
-        channelTitle = channel,
         topicTitle = topic,
         senderAvatarUrl = null,
-        content = channel,
+        content = channelId.toString(),
         calendar = Calendar.getInstance(),
-        senderId = channel.length,
-        senderName = channel
+        senderId = channelId,
+        senderName = channelId.toString(),
+        channelId = channelId
     )

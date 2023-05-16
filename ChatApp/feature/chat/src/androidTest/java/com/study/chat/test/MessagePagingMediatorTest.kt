@@ -12,9 +12,10 @@ import com.study.chat.data.local.LocalDataSourceProvider
 import com.study.chat.data.local.MessageTestDatabase
 import com.study.chat.data.remote.RemoteDataSourceProvider
 import com.study.chat.di.GeneralDepContainer
+import com.study.chat.shared.data.source.local.LocalMessageDataSource
+import com.study.chat.shared.data.source.remote.RemoteMessageDataSource
 import com.study.database.dao.MessageDao
 import com.study.database.dao.ReactionDao
-import com.study.database.dataSource.MessageLocalDataSource
 import com.study.database.model.tuple.MessageWithReactionsTuple
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -32,7 +33,7 @@ class MessagePagingMediatorTest {
     private lateinit var reactionDao: ReactionDao
     private val server = RemoteDataSourceProvider().createServer()
     private val remoteProvider = RemoteDataSourceProvider()
-    private val networkDep = remoteProvider.createNetworkDep(server)
+    private val networkDep = remoteProvider.createNetworkDep()
 
     @After
     fun clear() {
@@ -61,10 +62,10 @@ class MessagePagingMediatorTest {
     @Test
     fun loadMessages_ByDefault() = runTest {
         val mediator = GeneralDepContainer.createMessagePagingMediator(
-            local = MessageLocalDataSource(
+            local = LocalMessageDataSource(
                 messageDao,
                 reactionDao
-            ), remote = remoteProvider.provide(networkDep)
+            ), remote = RemoteMessageDataSource(remoteProvider.provide(networkDep).zulipApi)
         )
         val pagingState = createPagingState()
         val result = mediator.load(LoadType.REFRESH, pagingState)
@@ -78,7 +79,7 @@ class MessagePagingMediatorTest {
     fun loadMessages_NoNetwork() = runTest {
         val mediator = GeneralDepContainer.createMessagePagingMediator(
             local = LocalDataSourceProvider().provide(messageDao, reactionDao),
-            remote = remoteProvider.provide(networkDep)
+            remote = RemoteMessageDataSource(remoteProvider.provide(networkDep).zulipApi)
         )
         val pagingState = createPagingState()
         server.shutdown()

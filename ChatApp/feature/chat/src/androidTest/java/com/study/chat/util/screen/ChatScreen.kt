@@ -26,7 +26,8 @@ class ChatScreen : KScreen<ChatScreen>() {
     override val layoutId: Int = R.layout.fragment_chat
     override val viewClass: Class<*> = ChatFragment::class.java
 
-    val inputViewTextInputLayout = KTextInputLayout { withId(R.id.view_input_til_message) }
+    val inputViewTextInputLayout =
+        KTextInputLayout { withId(R.id.fragment_chat_view_input_message) }
     val chatTopic = KTextView { withId(R.id.fragment_chat_tv_topic_title) }
     val messageList =
         KRecyclerView({ withId(R.id.fragment_chat_rv_chat) }, { itemType { MessageItem(it) } })
