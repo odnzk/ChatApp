@@ -9,10 +9,11 @@
 - [X] Single Activity
 - [X] Многомодульная архитектура
 - [X] Светлая и темная тема
-- [X] Возможность создать свой канал(кнопка "+" на экране с каналами)
+- [X] Возможность создать свой канал(кнопка "+" на экране с каналами `ChannelsFragment`)
 - [X] Bозможность открыть сообщения и для канала(**лонг тап** на канал в `ChannelsFragment`), и для
   топика(клик на топик в `ChannelsFragment`)
-- [X] Bозможность писать в разные топики(только с чата канала в `ChatFragment`)
+- [X] Bозможность писать в разные топики(только с **чата канала** в `ChatFragment`)
+- [X] Bозможность перейти в топик канала из **чата канала** в `ChatFragment` (клик на топик)
 - [X] Возможность поставить реакцию, удалить, отредактировать и скопировать сообщение(лонг тап на
   сообщение в `ChatFragment`)
 
@@ -32,7 +33,7 @@ base_url="https://tinkoff-android-spring-2023.zulipchat.com"
 
 Приложение следует принципам чистой архитектуры, слой представления реализует UDF архитектуру с
 помощью библиотеки `Elmslie`.
-Пример реализации модуля `feature:channels`
+**Пример** реализации модуля `feature:channels`
 
 ![ChatApp-Architecture](../images/Acrhitecture.png)
 
@@ -73,8 +74,10 @@ base_url="https://tinkoff-android-spring-2023.zulipchat.com"
 
 ## Скриншоты
 
-Светлая тема
+### Светлая тема
+
 ![ChatApp-LightTheme](../images/screeenshots_light_theme.png)
 
-Темная тема
+### Темная тема
+
 ![ChatApp-DarkTheme](../images/screeenshots_dark_theme.png)
