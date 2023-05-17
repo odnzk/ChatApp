@@ -14,10 +14,9 @@ import javax.inject.Singleton
 class AppNetworkModule {
     @Provides
     @Singleton
-    fun providesNetworkDep(context: Context): NetworkDep =
-        object : NetworkDep {
-            override val context: Context = context
-        }
+    fun providesNetworkDep(context: Context): NetworkDep = object : NetworkDep {
+        override val context: Context = context
+    }
 
     @Provides
     @Singleton

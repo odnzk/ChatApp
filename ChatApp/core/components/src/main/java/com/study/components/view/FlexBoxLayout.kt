@@ -2,6 +2,7 @@ package com.study.components.view
 
 import android.content.Context
 import android.content.res.ColorStateList
+import android.graphics.Color
 import android.util.AttributeSet
 import android.view.View.OnClickListener
 import android.view.ViewGroup
@@ -23,17 +24,11 @@ class FlexBoxLayout @JvmOverloads constructor(
 
     private val ivPlus = ShapeableImageView(context).apply {
         imageTintList = ColorStateList.valueOf(
-            MaterialColors.getColor(
-                context,
-                MaterialR.attr.colorOnBackground,
-                context.getColor(CoreR.color.white)
-            )
+            MaterialColors.getColor(context, MaterialR.attr.colorOnBackground, Color.WHITE)
         )
         setBackgroundColor(
             MaterialColors.getColor(
-                context,
-                MaterialR.attr.backgroundColor,
-                context.getColor(CoreR.color.dark_nero)
+                context, MaterialR.attr.backgroundColor, context.getColor(CoreR.color.dark_nero)
             )
         )
         setImageResource(CoreR.drawable.ic_baseline_add_24)

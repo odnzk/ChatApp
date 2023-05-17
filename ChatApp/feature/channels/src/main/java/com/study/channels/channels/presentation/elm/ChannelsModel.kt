@@ -31,6 +31,7 @@ internal sealed interface ChannelsCommand {
 
 internal sealed interface ChannelsEffect {
     class ShowWarning(val error: Throwable) : ChannelsEffect
+    class ShowSynchronizationError(val error: Throwable) : ChannelsEffect
 }
 
 internal sealed interface ChannelsEvent {

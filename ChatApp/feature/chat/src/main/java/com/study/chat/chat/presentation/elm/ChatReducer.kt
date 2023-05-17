@@ -18,15 +18,22 @@ internal class ChatReducer @Inject constructor() :
     override fun Result.reduce(event: ChatEvent) = when (event) {
         is ChatEvent.Ui.Init -> init(event)
         is ChatEvent.Internal.LoadingError -> handleError(event)
+        is ChatEvent.Internal.GetCurrentUserIdSuccess -> onSuccessUserIdReceiving(event)
+        is ChatEvent.Ui.Search -> search(event)
+        is ChatEvent.Ui.SendMessage -> sendMessage(event)
+        is ChatEvent.Ui.UploadFile -> {
+            prevUploadedUriWithTopic = event.uri to event.topicTitle
+            uploadFile(event.topicTitle, event.uri)
+        }
+        ChatEvent.Ui.ReUploadFile -> prevUploadedUriWithTopic?.let {
+            uploadFile(it.second, it.first)
+        }
         is ChatEvent.Internal.LoadingSuccess ->
             state { copy(isLoading = false, messages = event.messages, error = null) }
-        is ChatEvent.Internal.GetCurrentUserIdSuccess -> onSuccessUserIdReceiving(event)
         is ChatEvent.Ui.Reload -> {
             state { copy(isLoading = true, error = null) }
             commands { +ChatCommand.GetAllMessages(channelId, channelTopic, currUserId) }
         }
-        is ChatEvent.Ui.Search -> search(event)
-        is ChatEvent.Ui.SendMessage -> sendMessage(event)
         is ChatEvent.Ui.UpdateReaction -> {
             state { copy(isLoading = true, error = null) }
             commands { +ChatCommand.UpdateReaction(event.message, event.emoji, currUserId) }
@@ -34,14 +41,8 @@ internal class ChatReducer @Inject constructor() :
         is ChatEvent.Ui.RemoveIrrelevantMessages -> channelTopic?.let {
             commands { +ChatCommand.RemoveIrrelevantMessages(channelId, it) }
         }
-        ChatEvent.Internal.UpdateReactionSuccess ->
-            state { copy(isLoading = false, error = null) }
-        is ChatEvent.Internal.GettingTopicsSuccess ->
-            state { copy(topics = event.topics) }
-        is ChatEvent.Ui.UploadFile -> {
-            prevUploadedUriWithTopic = event.uri to event.topicTitle
-            uploadFile(event.topicTitle, event.uri)
-        }
+        ChatEvent.Internal.UpdateReactionSuccess -> state { copy(isLoading = false, error = null) }
+        is ChatEvent.Internal.GettingTopicsSuccess -> state { copy(topics = event.topics) }
         ChatEvent.Internal.FileUploaded -> {
             state { copy(isLoading = false, error = null) }
             effects { +ChatEffect.FileUploaded }
@@ -49,9 +50,6 @@ internal class ChatReducer @Inject constructor() :
         is ChatEvent.Internal.UploadingFileError -> {
             state { copy(isLoading = false) }
             effects { +ChatEffect.UploadingFileError(event.error) }
-        }
-        ChatEvent.Ui.ReUploadFile -> prevUploadedUriWithTopic?.let {
-            uploadFile(it.second, it.first)
         }
     }
 
@@ -65,18 +63,16 @@ internal class ChatReducer @Inject constructor() :
 
     private fun Result.onSuccessUserIdReceiving(event: ChatEvent.Internal.GetCurrentUserIdSuccess) {
         _currUserId = event.userId
-        if (channelTopic == null) {
-            commands {
-                +ChatCommand.LoadTopics(channelId)
-                +ChatCommand.GetTopics(channelId)
-            }
-        }
         commands {
             +ChatCommand.GetAllMessages(
                 channelId,
                 channelTopic,
                 currUserId
             )
+            if (channelTopic == null) {
+                +ChatCommand.LoadTopics(channelId)
+                +ChatCommand.GetTopics(channelId)
+            }
         }
     }
 
@@ -115,6 +111,7 @@ internal class ChatReducer @Inject constructor() :
     }
 
     private fun Result.sendMessage(event: ChatEvent.Ui.SendMessage) {
+        state { copy(isLoading = true) }
         commands {
             +ChatCommand.SendMessage(
                 channelId = channelId,

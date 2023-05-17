@@ -1,7 +1,7 @@
 package com.study.profile.domain.usecase
 
 import com.study.auth.api.UserNotAuthorizedException
-import com.study.components.model.UserPresenceStatus
+import com.study.components.model.UiUserPresenceStatus
 import com.study.profile.domain.repository.UserRepository
 import com.study.ui.NavConstants
 import kotlinx.coroutines.CoroutineDispatcher
@@ -12,7 +12,7 @@ internal class GetUserPresenceUseCase @Inject constructor(
     private val repository: UserRepository,
     private val dispatcher: CoroutineDispatcher
 ) {
-    suspend operator fun invoke(userId: Int): UserPresenceStatus = withContext(dispatcher) {
+    suspend operator fun invoke(userId: Int): UiUserPresenceStatus = withContext(dispatcher) {
         if (userId == NavConstants.CURRENT_USER_ID_KEY) {
             throw UserNotAuthorizedException("The user's presence cannot be obtained because the user id is invalid")
         }

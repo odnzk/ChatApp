@@ -31,10 +31,10 @@ import com.study.chat.shared.di.ChatComponentViewModel
 import com.study.chat.shared.domain.model.InvalidTopicTitleException
 import com.study.chat.shared.presentation.util.navigateToActionsFragment
 import com.study.chat.shared.presentation.util.navigateToChannelTopic
+import com.study.chat.shared.presentation.util.navigateToEmojiListFragment
 import com.study.chat.shared.presentation.util.setupSuggestionsAdapter
 import com.study.chat.shared.presentation.util.toErrorMessage
 import com.study.common.extension.fastLazy
-import com.study.common.search.NothingFoundForThisQueryException
 import com.study.components.extension.collectFlowSafely
 import com.study.components.extension.delegatesToList
 import com.study.components.extension.safeGetParcelable
@@ -117,25 +117,27 @@ internal class ChatFragment : ElmFragment<ChatEvent, ChatEffect, ChatState>() {
         _binding = null
     }
 
-    override fun render(state: ChatState) {
+    override fun render(state: ChatState) = with(binding) {
         when {
-            state.isLoading -> binding.screenStateView.setState(ViewState.Loading)
-            state.error != null -> {
-                binding.screenStateView.setState(ViewState.Success)
+            state.isLoading -> screenStateView.setState(ViewState.Loading)
+            state.error != null -> if (requireNotNull(adapter).snapshot().isEmpty()) {
+                screenStateView.setState(ViewState.Error(state.error.toErrorMessage()))
+            } else {
+                screenStateView.setState(ViewState.Success)
                 val customMessage = if (state.error is InvalidTopicTitleException) {
                     state.error.toErrorMessage().getDescription(requireContext())
                 } else null
-                binding.showErrorSnackbar(
+                showErrorSnackbar(
                     state.error,
                     Throwable::toErrorMessage,
                     customMessage = customMessage,
                 )
             }
-            else -> {
-                binding.screenStateView.setState(ViewState.Success)
+            else -> with(binding) {
+                screenStateView.setState(ViewState.Success)
                 lifecycleScope.launch { adapter?.submitData(state.messages as PagingData<Any>) }
                 if (state.topics.isNotEmpty()) {
-                    binding.fragmentChatEtTopicTitle.setupSuggestionsAdapter(state.topics)
+                    fragmentChatEtTopicTitle.setupSuggestionsAdapter(state.topics)
                 }
             }
         }
@@ -152,43 +154,38 @@ internal class ChatFragment : ElmFragment<ChatEvent, ChatEffect, ChatState>() {
             }
     }
 
-    private fun setupListeners() {
-        with(binding) {
-            fragmentChatViewInputMessage.btnSubmitClickListener = { input ->
-                if (input.isEmpty()) {
-                    selectFileLauncher.launch(ALL_CONTENT)
-                } else {
-                    val topic = topicTitle ?: fragmentChatEtTopicTitle.text.toString()
-                    store.accept(ChatEvent.Ui.SendMessage(input, topic))
-                }
+    private fun setupListeners() = with(binding) {
+        fragmentChatViewInputMessage.btnSubmitClickListener = { input ->
+            if (input.isEmpty()) {
+                selectFileLauncher.launch(ALL_CONTENT)
+            } else {
+                val topic = topicTitle ?: fragmentChatEtTopicTitle.text.toString()
+                store.accept(ChatEvent.Ui.SendMessage(input, topic))
             }
-            screenStateView.onTryAgainClickListener = View.OnClickListener {
-                store.accept(ChatEvent.Ui.Reload)
-            }
-            adapter?.addLoadStateListener { combinedState ->
-                when (val state = combinedState.refresh) {
-                    LoadState.Loading -> screenStateView.setState(ViewState.Loading)
-                    is LoadState.NotLoading -> {
-                        fragmentChatRvChat.isVisible = true
-                        val screenState = if (adapter?.snapshot()?.isEmpty() == true) {
-                            ViewState.Error(
-                                NothingFoundForThisQueryException().toErrorMessage(),
-                                false
-                            )
-                        } else ViewState.Success
-                        screenStateView.setState(screenState)
-                    }
-                    is LoadState.Error -> if (requireNotNull(adapter).itemCount > 0) {
-                        screenStateView.setState(ViewState.Success)
-                        showErrorSnackbar(state.error, Throwable::toErrorMessage) {
-                            store.accept(ChatEvent.Ui.Reload)
-                        }
-                    } else {
-                        screenStateView.setState(ViewState.Error(state.error.toErrorMessage()))
-                        fragmentChatRvChat.isVisible = false
-                    }
+        }
+        screenStateView.onTryAgainClickListener =
+            View.OnClickListener { store.accept(ChatEvent.Ui.Reload) }
+        setupPagingDataListener()
+    }
 
+    private fun setupPagingDataListener() = with(binding) {
+        adapter?.addLoadStateListener { combinedState ->
+            when (val state = combinedState.refresh) {
+                LoadState.Loading -> screenStateView.setState(ViewState.Loading)
+                is LoadState.NotLoading -> {
+                    fragmentChatRvChat.isVisible = true
+                    screenStateView.setState(ViewState.Success)
                 }
+                is LoadState.Error -> if (requireNotNull(adapter).itemCount > 0) {
+                    screenStateView.setState(ViewState.Success)
+                    showErrorSnackbar(state.error, Throwable::toErrorMessage) {
+                        store.accept(ChatEvent.Ui.Reload)
+                    }
+                } else {
+                    screenStateView.setState(ViewState.Error(state.error.toErrorMessage()))
+                    fragmentChatRvChat.isVisible = false
+                }
+
             }
         }
     }
@@ -215,25 +212,12 @@ internal class ChatFragment : ElmFragment<ChatEvent, ChatEffect, ChatState>() {
         }
     }
 
-    private fun observeSearchQuery() {
-        collectFlowSafely(searchFlow, Lifecycle.State.RESUMED) {
-            store.accept(ChatEvent.Ui.Search(it))
-        }
-    }
-
-    private fun selectEmoji(message: UiMessage) {
-        setFragmentResultListener(SELECTED_EMOJI_RESULT_KEY) { _, bundle ->
-            bundle.safeGetParcelable<UiEmoji>(SELECTED_EMOJI_RESULT_KEY)?.let { selectedEmoji ->
-                store.accept(ChatEvent.Ui.UpdateReaction(selectedEmoji, message))
-            }
-        }
-        navigateToActionsFragment(message.id, SELECTED_EMOJI_RESULT_KEY)
-    }
-
     private fun initDelegates() {
         val messageDelegate = MessageDelegate(
             onLongClickListener = { messageId -> selectEmoji(messageId) },
-            onAddReactionClickListener = { messageId -> selectEmoji(messageId) },
+            onAddReactionClickListener = {
+                navigateToEmojiListFragment(SELECTED_EMOJI_RESULT_KEY)
+            },
             onReactionClick = { mes, emoji ->
                 store.accept(ChatEvent.Ui.UpdateReaction(emoji, mes))
             }
@@ -247,6 +231,21 @@ internal class ChatFragment : ElmFragment<ChatEvent, ChatEffect, ChatState>() {
             )
         } else delegatesToList(messageDelegate, DateSeparatorDelegate())
         adapter = GeneralPaginationAdapterDelegate(delegates)
+    }
+
+    private fun observeSearchQuery() {
+        collectFlowSafely(searchFlow, Lifecycle.State.RESUMED) {
+            store.accept(ChatEvent.Ui.Search(it))
+        }
+    }
+
+    private fun selectEmoji(message: UiMessage) {
+        setFragmentResultListener(SELECTED_EMOJI_RESULT_KEY) { _, bundle ->
+            bundle.safeGetParcelable<UiEmoji>(SELECTED_EMOJI_RESULT_KEY)?.let { selectedEmoji ->
+                store.accept(ChatEvent.Ui.UpdateReaction(selectedEmoji, message))
+            }
+        }
+        navigateToActionsFragment(message.id, SELECTED_EMOJI_RESULT_KEY)
     }
 
     companion object {

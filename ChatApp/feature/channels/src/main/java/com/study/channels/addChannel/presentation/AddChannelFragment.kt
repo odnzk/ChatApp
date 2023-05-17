@@ -14,8 +14,8 @@ import com.study.channels.addChannel.presentation.elm.AddChannelState
 import com.study.channels.databinding.FragmentAddChannelBinding
 import com.study.channels.shared.di.ChannelsComponentViewModel
 import com.study.channels.shared.presentation.toErrorMessage
-import com.study.components.model.BaseBottomSheetFragment
 import com.study.components.model.UiError
+import com.study.components.view.BaseBottomSheetFragment
 import vivid.money.elmslie.android.storeholder.StoreHolder
 import javax.inject.Inject
 
@@ -29,7 +29,6 @@ internal class AddChannelFragment :
 
     @Inject
     lateinit var addChannelStoreHolder: StoreHolder<AddChannelEvent, AddChannelEffect, AddChannelState>
-
 
     override fun onAttach(context: Context) {
         ViewModelProvider(this).get<ChannelsComponentViewModel>().channelsComponent.inject(this)
@@ -55,8 +54,14 @@ internal class AddChannelFragment :
 
     override fun render(state: AddChannelState) {
         when {
-            state.isLoading -> binding.fragmentAddChannelTvError.isVisible = false
-            state.error != null -> showError(state.error.toErrorMessage())
+            state.isLoading -> with(binding) {
+                fragmentAddChannelPbLoading.show()
+                fragmentAddChannelTvError.isVisible = false
+            }
+            state.error != null -> {
+                binding.fragmentAddChannelPbLoading.hide()
+                showError(state.error.toErrorMessage())
+            }
             state.successfullyAdded -> dismiss()
         }
     }
@@ -71,6 +76,7 @@ internal class AddChannelFragment :
     private fun initUI() {
         with(binding) {
             fragmentAddChannelTvError.isVisible = false
+            fragmentAddChannelPbLoading.hide()
             fragmentAddChannelInputView.btnSubmitClickListener = { channelTitle ->
                 storeHolder.store.accept(AddChannelEvent.Ui.AddChannel(channelTitle))
             }

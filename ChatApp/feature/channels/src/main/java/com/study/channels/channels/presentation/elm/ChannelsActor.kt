@@ -12,6 +12,8 @@ import com.study.channels.channels.presentation.model.UiChannelTopic
 import com.study.channels.channels.presentation.util.mapper.toChannelsMap
 import com.study.channels.channels.presentation.util.mapper.toUiChannelTopics
 import com.study.channels.shared.domain.model.ChannelNotFoundException
+import com.study.channels.shared.domain.model.ServerSynchronizationException
+import com.study.channels.shared.domain.model.notYetSynchronizedChannelId
 import com.study.common.extension.firstInstance
 import com.study.common.extension.toFlow
 import kotlinx.coroutines.flow.Flow
@@ -34,49 +36,51 @@ internal class ChannelsActor @Inject constructor(
 
     override fun execute(command: ChannelsCommand): Flow<ChannelsEvent.Internal> = when (command) {
         is ChannelsCommand.GetChannels -> channelSwitcher.switch {
-            getChannelsUseCase(command.filter.isSubscribed()).map { it.toChannelsMap() }.mapEvents(
-                ChannelsEvent.Internal::LoadingChannelsWithTopicsSuccess,
-                ChannelsEvent.Internal::LoadingError
-            )
+            getChannelsUseCase(command.filter.isSubscribed())
+                .map { it.toChannelsMap() }
+                .mapEvents(
+                    ChannelsEvent.Internal::LoadingChannelsWithTopicsSuccess,
+                    ChannelsEvent.Internal::LoadingError
+                )
         }
         is ChannelsCommand.ShowChannelTopics -> topicSwitcher.switch {
-            val channel = command.channelsMap[command.channelId]?.first() as? UiChannel
-                ?: throw ChannelNotFoundException()
-            getChannelTopicsUseCase(command.channelId).map {
-                it.toUiChannelTopics(channel.id, channel.title, channel.color)
-            }.mapEvents(
-                eventMapper = {
-                    toUiEvent(channel.copy(isCollapsed = true), it, command.channelsMap)
-                },
-                errorMapper = ChannelsEvent.Internal::LoadingError
-            )
+            val channel = command.channelsMap.findChannel(command.channelId)
+
+            getChannelTopicsUseCase(command.channelId)
+                .map { it.toUiChannelTopics(channel.id, channel.title, channel.color) }
+                .mapEvents(
+                    eventMapper = {
+                        toUiEvent(channel.copy(isCollapsed = true), it, command.channelsMap)
+                    }, errorMapper = ChannelsEvent.Internal::LoadingError
+                )
         }
         is ChannelsCommand.HideChannelTopics -> topicSwitcher.switch {
             toFlow {
-                val channel = command.channelsMap[command.channelId]?.firstInstance<UiChannel>()
-                    ?: throw ChannelNotFoundException()
-                command.channelsMap.toMutableMap().apply {
-                    replace(command.channelId, listOf(channel.copy(isCollapsed = false)))
-                }
+                val channel = command.channelsMap.findChannel(command.channelId)
+
+                command.channelsMap
+                    .toMutableMap()
+                    .apply { replace(command.channelId, listOf(channel.copy(isCollapsed = false))) }
             }.mapEvents(
                 ChannelsEvent.Internal::LoadingChannelsWithTopicsSuccess,
                 ChannelsEvent.Internal::LoadingError
             )
         }
         is ChannelsCommand.SearchChannels -> channelSwitcher.switch {
-            searchChannelUseCase(
-                command.query, command.filter.isSubscribed()
-            ).map { it.toChannelsMap() }.mapEvents(
-                ChannelsEvent.Internal::LoadingChannelsWithTopicsSuccess,
-                ChannelsEvent.Internal::LoadingError
-            )
+            searchChannelUseCase(command.query, command.filter.isSubscribed())
+                .map { it.toChannelsMap() }
+                .mapEvents(
+                    ChannelsEvent.Internal::LoadingChannelsWithTopicsSuccess,
+                    ChannelsEvent.Internal::LoadingError
+                )
         }
-        is ChannelsCommand.LoadChannels -> toFlow { updateChannelsUseCase(command.filter.isSubscribed()) }.mapEvents(
-            errorMapper = ChannelsEvent.Internal::LoadingError
-        )
-        is ChannelsCommand.LoadChannelTopic -> toFlow { loadChannelTopicsUseCase(command.channelId) }.mapEvents(
-            errorMapper = ChannelsEvent.Internal::LoadingError
-        )
+        is ChannelsCommand.LoadChannels -> toFlow {
+            updateChannelsUseCase(command.filter.isSubscribed())
+        }.mapEvents(errorMapper = ChannelsEvent.Internal::LoadingError)
+        is ChannelsCommand.LoadChannelTopic -> toFlow {
+            if (command.channelId in notYetSynchronizedChannelId) throw ServerSynchronizationException()
+            loadChannelTopicsUseCase(command.channelId)
+        }.mapEvents(errorMapper = ChannelsEvent.Internal::LoadingError)
     }
 
     private fun toUiEvent(
@@ -84,16 +88,24 @@ internal class ChannelsActor @Inject constructor(
         topics: List<UiChannelTopic>,
         channels: Map<Int, List<UiChannelModel>>
     ): ChannelsEvent.Internal.LoadingChannelsWithTopicsSuccess {
-        val updatedMap = channels.toMutableMap().apply {
-            replace(updatedChannel.id,
-                mutableListOf<UiChannelModel>(updatedChannel).apply { addAll(topics) })
-        }
+        val updatedMap = channels
+            .toMutableMap()
+            .apply {
+                replace(updatedChannel.id,
+                    mutableListOf<UiChannelModel>(updatedChannel).apply { addAll(topics) })
+            }
         return ChannelsEvent.Internal.LoadingChannelsWithTopicsSuccess(updatedMap)
     }
 
     private fun UiChannelFilter.isSubscribed(): Boolean = when (this) {
         UiChannelFilter.ALL -> false
         UiChannelFilter.SUBSCRIBED_ONLY -> true
+    }
+
+    private fun Map<Int, List<UiChannelModel>>.findChannel(channelId: Int): UiChannel {
+        val channel = get(channelId)?.firstInstance<UiChannel>() ?: throw ChannelNotFoundException()
+        if (channel.id in notYetSynchronizedChannelId) throw ServerSynchronizationException()
+        return channel
     }
 
 }

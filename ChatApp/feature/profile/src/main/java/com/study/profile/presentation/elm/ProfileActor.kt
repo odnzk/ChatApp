@@ -1,6 +1,6 @@
 package com.study.profile.presentation.elm
 
-import com.study.components.model.UserPresenceStatus
+import com.study.components.model.UiUserPresenceStatus
 import com.study.profile.domain.usecase.GetUserPresenceUseCase
 import com.study.profile.domain.usecase.GetUserUseCase
 import com.study.profile.presentation.util.mapper.toUiUser
@@ -24,8 +24,8 @@ internal class ProfileActor @Inject constructor(
                     val user = getUserUseCase(command.userId)
                     when {
                         user.isActive -> emit(user.toUiUser(getUserPresenceUseCase(user.id)))
-                        user.isBot -> emit(user.toUiUser(UserPresenceStatus.BOT))
-                        else -> emit(user.toUiUser(UserPresenceStatus.OFFLINE))
+                        user.isBot -> emit(user.toUiUser(UiUserPresenceStatus.BOT))
+                        else -> emit(user.toUiUser(UiUserPresenceStatus.OFFLINE))
                     }
                 }.mapEvents(
                     ProfileEvent.Internal::LoadingUserSuccess,

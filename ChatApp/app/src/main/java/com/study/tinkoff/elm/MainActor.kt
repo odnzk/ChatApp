@@ -3,35 +3,34 @@
 package com.study.tinkoff.elm
 
 
-import com.study.tinkoff.di.MutableSearchFlow
+import com.study.tinkoff.di.SearchFlow
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.cancelChildren
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.launchIn
 import vivid.money.elmslie.coroutines.Actor
 import javax.inject.Inject
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class MainActor @Inject constructor(
     dispatcher: CoroutineDispatcher,
-    @MutableSearchFlow
+    @SearchFlow
     private val searchFlow: MutableSharedFlow<String>
-) :
-    Actor<MainCommand, MainEvent> {
+) : Actor<MainCommand, MainEvent> {
+
     private val actorScope = CoroutineScope(dispatcher + SupervisorJob())
+
     private val searchQueries: MutableSharedFlow<String> =
         MutableSharedFlow(
             replay = 1,
@@ -40,23 +39,20 @@ class MainActor @Inject constructor(
         )
 
     init {
-        actorScope.launch {
-            searchQueries
-                .filter { it.isEmpty() || it.isNotBlank() }
-                .distinctUntilChanged()
-                .debounce(SEARCH_DEBOUNCE)
-                .flatMapLatest { query ->
-                    flow<Unit> {
-                        searchFlow.emit(query)
-                    }
+        searchQueries
+            .filter { it.isEmpty() || it.isNotBlank() }
+            .distinctUntilChanged()
+            .debounce(SEARCH_DEBOUNCE)
+            .flatMapLatest { query ->
+                flow<Unit> {
+                    searchFlow.emit(query)
                 }
-                .flowOn(dispatcher)
-                .collect()
-        }
+            }
+            .launchIn(actorScope)
     }
 
     fun clear() {
-        actorScope.coroutineContext.cancelChildren()
+        actorScope.cancel()
     }
 
     override fun execute(command: MainCommand): Flow<MainEvent> = when (command) {
@@ -66,5 +62,4 @@ class MainActor @Inject constructor(
     companion object {
         private const val SEARCH_DEBOUNCE = 500L
     }
-
 }

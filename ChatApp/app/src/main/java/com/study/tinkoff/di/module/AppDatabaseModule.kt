@@ -23,8 +23,7 @@ class AppDatabaseModule {
 
     @Provides
     @Singleton
-    fun providesDatabaseImpl(dep: DatabaseDep): DatabaseImpl =
-        DatabaseImplFactory.create(dep)
+    fun providesDatabaseImpl(dep: DatabaseDep): DatabaseImpl = DatabaseImplFactory.create(dep)
 
     @Provides
     fun providesMessageDao(impl: DatabaseImpl): MessageDao = impl.messageDao

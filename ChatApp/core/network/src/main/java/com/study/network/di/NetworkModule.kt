@@ -50,9 +50,10 @@ internal class NetworkModule {
     @CoilAuthInterceptor
     fun providesImageAuthInterceptor(@NetworkCredentials credentials: String): Interceptor =
         Interceptor { chain ->
-            val request = if (chain.request().url.toString().contains(USER_UPLOADS_PATH)) {
-                chain.request().newBuilder().addHeader(AUTH_HEADER, credentials).build()
-            } else chain.request()
+            val request = chain.request()
+                .takeIf { it.url.toString().contains(USER_UPLOADS_PATH) }?.newBuilder()
+                ?.addHeader(AUTH_HEADER, credentials)?.build()
+                ?: chain.request()
             chain.proceed(request)
         }
 
@@ -66,14 +67,12 @@ internal class NetworkModule {
     @CacheInterceptor
     fun providesCacheInterceptor(connectionManager: ConnectionManager): Interceptor =
         Interceptor { chain ->
-            var request = chain.request()
             val cacheControl = if (connectionManager.isConnected()) {
                 CacheControl.Builder().maxAge(CACHE_MAX_AGE, TimeUnit.SECONDS).build()
             } else {
                 CacheControl.Builder().maxStale(CACHE_MAX_STALE, TimeUnit.DAYS).build()
             }
-            request = request.newBuilder().cacheControl(cacheControl).build()
-            chain.proceed(request)
+            chain.proceed(chain.request().newBuilder().cacheControl(cacheControl).build())
         }
 
     @Provides

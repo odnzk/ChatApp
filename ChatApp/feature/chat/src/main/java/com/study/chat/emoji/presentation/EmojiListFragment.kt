@@ -20,9 +20,9 @@ import com.study.chat.shared.presentation.util.toErrorMessage
 import com.study.components.extension.delegatesToList
 import com.study.components.extension.dp
 import com.study.components.extension.showErrorSnackbar
-import com.study.components.model.BaseBottomSheetFragment
 import com.study.components.recycler.delegates.GeneralAdapterDelegate
 import com.study.components.recycler.manager.VarSpanGridLayoutManager
+import com.study.components.view.BaseBottomSheetFragment
 import vivid.money.elmslie.android.storeholder.StoreHolder
 import javax.inject.Inject
 

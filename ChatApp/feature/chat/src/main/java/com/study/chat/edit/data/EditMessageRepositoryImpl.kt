@@ -26,8 +26,8 @@ internal class EditMessageRepositoryImpl @Inject constructor(
 
 
     override suspend fun updateMessage(messageId: Int, content: String, topic: String) {
-        val entity = localDS.updateMessage(messageId, content, topic)
-            ?: throw MessageDoesNotExistException()
+        val entity =
+            localDS.updateMessage(messageId, content, topic) ?: throw MessageDoesNotExistException()
         onFailureRestorePrevStateAndThrowError({
             remoteDS.updateMessage(
                 messageId,

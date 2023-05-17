@@ -21,20 +21,18 @@ internal class UsersActor @Inject constructor(
     override fun execute(command: UsersCommand): Flow<UsersEvent.Internal> =
         when (command) {
             is UsersCommand.LoadUsers -> switcher.switch {
-                toFlow {
-                    getUsersUseCase().toUiUsers(getUsersPresenceUseCase())
-                }.mapEvents(
-                    UsersEvent.Internal::LoadingUsersSuccess,
-                    UsersEvent.Internal::LoadingUsersError
-                )
+                toFlow { getUsersUseCase().toUiUsers(getUsersPresenceUseCase()) }
+                    .mapEvents(
+                        UsersEvent.Internal::LoadingUsersSuccess,
+                        UsersEvent.Internal::LoadingUsersError
+                    )
             }
             is UsersCommand.SearchUsers -> switcher.switch {
-                toFlow {
-                    searchUsersUseCase(command.query).toUiUsers(getUsersPresenceUseCase())
-                }.mapEvents(
-                    UsersEvent.Internal::LoadingUsersSuccess,
-                    UsersEvent.Internal::LoadingUsersError
-                )
+                toFlow { searchUsersUseCase(command.query).toUiUsers(getUsersPresenceUseCase()) }
+                    .mapEvents(
+                        UsersEvent.Internal::LoadingUsersSuccess,
+                        UsersEvent.Internal::LoadingUsersError
+                    )
             }
         }
 }

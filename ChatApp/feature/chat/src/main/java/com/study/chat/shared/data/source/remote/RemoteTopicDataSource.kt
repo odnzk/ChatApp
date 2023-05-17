@@ -12,4 +12,5 @@ internal class RemoteTopicDataSource @Inject constructor(private val api: ZulipA
 
     suspend fun getChannelTopics(streamId: Int): StreamTopicsResponse =
         safeRequest { api.getStreamTopics(streamId) }
+
 }

@@ -26,6 +26,7 @@ internal sealed interface EditMessageEvent {
 internal sealed interface EditMessageEffect {
     object Success : EditMessageEffect
     class ShowError(val error: Throwable) : EditMessageEffect
+    class ShowSynchronizationError(val error: Throwable) : EditMessageEffect
 }
 
 internal sealed interface EditMessageCommand {

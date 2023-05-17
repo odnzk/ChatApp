@@ -13,6 +13,12 @@
         android:layout_gravity="center"
         android:layout_marginTop="@dimen/margin_small" />
 
+    <androidx.core.widget.ContentLoadingProgressBar
+        android:id="@+id/fragment_add_channel_pb_loading"
+        style="@style/PrimarySmallProgressBar"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginVertical="@dimen/margin_medium" />
+
     <TextView
         android:id="@+id/fragment_add_channel_tv_error"
         android:layout_width="match_parent"

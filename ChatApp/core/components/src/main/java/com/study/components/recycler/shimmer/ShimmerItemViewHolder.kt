@@ -44,8 +44,7 @@ abstract class ShimmerItemViewHolder<T : Any>(private val binding: ViewBinding) 
             (binding.root as? ShimmerFrameLayout)?.run {
                 manageBackground(isShimmering = false)
                 hideShimmer()
-            }
-                ?: error("Binding root view must be ShimmerFrameLayout")
+            } ?: error("Binding root view must be ShimmerFrameLayout")
             (content as? T)?.let {
                 showContent(content)
             } ?: error("ShimmerItem type must match with ViewHolder type")
@@ -60,9 +59,7 @@ abstract class ShimmerItemViewHolder<T : Any>(private val binding: ViewBinding) 
     private fun ViewGroup.manageBackground(isShimmering: Boolean) {
         val background = if (isShimmering) shimmerBackgroundColor else transparentColor
         children.filterIsInstance<ViewGroup>().forEach { viewGroup ->
-            for (child in viewGroup.children) {
-                child.setBackgroundColor(background)
-            }
+            viewGroup.children.forEach { child -> child.setBackgroundColor(background) }
         }
     }
 }

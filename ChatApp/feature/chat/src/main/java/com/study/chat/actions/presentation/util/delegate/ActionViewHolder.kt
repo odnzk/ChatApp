@@ -10,8 +10,7 @@ import com.study.chat.databinding.ItemActionBinding
 internal class ActionViewHolder(
     private val binding: ItemActionBinding,
     private val onActionClick: ((UiAction) -> Unit)?
-) :
-    RecyclerView.ViewHolder(binding.root) {
+) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(action: UiAction) {
         with(binding) {

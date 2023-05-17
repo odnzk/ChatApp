@@ -16,9 +16,8 @@ import com.study.chat.edit.presentation.elm.EditMessageState
 import com.study.chat.shared.di.ChatComponentViewModel
 import com.study.chat.shared.presentation.util.setupSuggestionsAdapter
 import com.study.chat.shared.presentation.util.toErrorMessage
-import com.study.components.extension.showErrorSnackbar
 import com.study.components.extension.showToast
-import com.study.components.model.BaseBottomSheetFragment
+import com.study.components.view.BaseBottomSheetFragment
 import vivid.money.elmslie.android.storeholder.StoreHolder
 import javax.inject.Inject
 
@@ -60,28 +59,27 @@ internal class EditMessageFragment :
     }
 
     override fun handleEffect(effect: EditMessageEffect) = when (effect) {
-        is EditMessageEffect.ShowError ->
-            binding.showErrorSnackbar(effect.error, Throwable::toErrorMessage) {
-                updateMessage()
-            }
+        is EditMessageEffect.ShowError -> showToast(effect.error.toErrorMessage().messageRes)
         EditMessageEffect.Success -> {
             showToast(R.string.success_update_message)
+            dismiss()
+        }
+        is EditMessageEffect.ShowSynchronizationError -> {
+            showToast(effect.error.toErrorMessage().messageRes)
             dismiss()
         }
     }
 
     private fun initUI() = with(binding) {
         fragmentEditBtnDone.isEnabled = false
-        fragmentEditBtnDone.setOnClickListener { updateMessage() }
-    }
-
-    private fun updateMessage() = with(binding) {
-        storeHolder.store.accept(
-            EditMessageEvent.Ui.UpdateMessage(
-                topic = fragmentEditEtTopic.text.toString(),
-                content = fragmentEditEtContent.text.toString()
+        fragmentEditBtnDone.setOnClickListener {
+            storeHolder.store.accept(
+                EditMessageEvent.Ui.UpdateMessage(
+                    topic = fragmentEditEtTopic.text.toString(),
+                    content = fragmentEditEtContent.text.toString()
+                )
             )
-        )
+        }
     }
 
     private fun initMessage(topic: String, content: String) = with(binding) {

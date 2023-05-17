@@ -13,6 +13,8 @@
     <string name="error_channel_already_exists">Channel with this title already exists</string>
     <string name="error_invalid_channel_title">Invalid channel title</string>
     <string name="error_invalid_channel_title_description">Channel\'s cannot be blank, empty or contain more %1$d than symbols</string>
+    <string name="error_synchronization_error">Channel is not yet synchronized with the server</string>
+    <string name="error_synchronization_error_description">Restart the upp to sync all</string>
 
     <string name="content_description_btn_add_channel">Add channel</string>
     <string name="hint_channel_title">Channel title</string>

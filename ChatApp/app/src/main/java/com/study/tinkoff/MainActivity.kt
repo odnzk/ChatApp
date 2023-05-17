@@ -55,7 +55,7 @@ class MainActivity : ElmActivity<MainEvent, MainEffect, MainState>() {
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.activity_main_fragment_container) as NavHostFragment
         val navController = navHostFragment.navController
-        setupNavController(navController)
+        setupNavDestinationsListener(navController)
         setupNavigation(navController)
     }
 
@@ -88,7 +88,7 @@ class MainActivity : ElmActivity<MainEvent, MainEffect, MainState>() {
 
     override fun render(state: MainState) = Unit
 
-    private fun setupNavController(navController: NavController) {
+    private fun setupNavDestinationsListener(navController: NavController) {
         val accentToolbarColor = ColorDrawable(getColor(CoreR.color.navy_light))
         val defaultToolbarColor = ColorDrawable(
             MaterialColors.getColor(
@@ -98,7 +98,8 @@ class MainActivity : ElmActivity<MainEvent, MainEffect, MainState>() {
         navController.addOnDestinationChangedListener { _, destination, arguments ->
             setupToolbar(destination, defaultToolbarColor, accentToolbarColor)
             val isBottomNavVisible = when (destination.id) {
-                ProfileR.id.profileFragment -> arguments?.getInt(NavConstants.USER_ID_KEY) == NavConstants.CURRENT_USER_ID_KEY
+                ProfileR.id.profileFragment ->
+                    arguments?.getInt(NavConstants.USER_ID_KEY) == NavConstants.CURRENT_USER_ID_KEY
                 ChannelsR.id.holderChannelsFragment, UsersR.id.usersFragment -> true
                 else -> false
             }
@@ -110,11 +111,15 @@ class MainActivity : ElmActivity<MainEvent, MainEffect, MainState>() {
         destination: NavDestination, defaultColor: ColorDrawable, accentColor: ColorDrawable
     ) {
         setToolbarColor(defaultColor)
-        supportActionBar?.show()
         when {
             destination.id == ProfileR.id.profileFragment -> supportActionBar?.hide()
-            destination.parent?.id == ChatR.id.chat_graph -> setToolbarColor(accentColor)
-            else -> Unit
+            destination.parent?.id == ChatR.id.chat_graph -> {
+                setToolbarColor(accentColor)
+                supportActionBar?.show()
+            }
+            else -> {
+                supportActionBar?.show()
+            }
         }
     }
 

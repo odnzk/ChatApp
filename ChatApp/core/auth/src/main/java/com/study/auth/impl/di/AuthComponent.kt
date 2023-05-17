@@ -11,10 +11,11 @@ import javax.inject.Singleton
 )
 @Singleton
 internal interface AuthComponent {
+
+    val authImpl: AuthImpl
+
     @Component.Factory
     interface Factory {
         fun create(dependencies: AuthDep): AuthComponent
     }
-
-    val authImpl: AuthImpl
 }

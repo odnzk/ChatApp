@@ -12,6 +12,12 @@
         android:layout_height="wrap_content"
         app:constraint_referenced_ids="fragment_profile_tv_toolbar, fragment_profile_btn_back" />
 
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/fragment_profile_group_user_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="fragment_profile_iv_avatar, fragment_profile_tv_username, fragment_profile_tv_is_online" />
+
     <TextView
         android:id="@+id/fragment_profile_tv_toolbar"
         style="@style/ProfileToolbar"

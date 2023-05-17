@@ -10,7 +10,7 @@ import android.util.AttributeSet
 import com.google.android.material.R
 import com.google.android.material.color.MaterialColors
 import com.google.android.material.imageview.ShapeableImageView
-import com.study.components.model.UserPresenceStatus
+import com.study.components.model.UiUserPresenceStatus
 import java.lang.Integer.min
 
 class AvatarImageView @JvmOverloads constructor(
@@ -22,22 +22,22 @@ class AvatarImageView @JvmOverloads constructor(
     private var subtractionCircleRadius: Float = 0f
     private var circleStart: Float = 0f
     private var circleTop: Float = 0f
-    private val activeColor = getColor(UserPresenceStatus.ACTIVE)
-    private val idleColor = getColor(UserPresenceStatus.IDLE)
-    private val offlineColor = getColor(UserPresenceStatus.OFFLINE)
-    private val botColor = getColor(UserPresenceStatus.BOT)
+    private val activeColor = getColor(UiUserPresenceStatus.ACTIVE)
+    private val idleColor = getColor(UiUserPresenceStatus.IDLE)
+    private val offlineColor = getColor(UiUserPresenceStatus.OFFLINE)
+    private val botColor = getColor(UiUserPresenceStatus.BOT)
     private var circlePaint: Paint = Paint()
     private val initColor = MaterialColors.getColor(
         context, R.attr.backgroundColor, context.getColor(com.study.ui.R.color.dark_nero)
     )
-    var status: UserPresenceStatus? = null
+    var status: UiUserPresenceStatus? = null
         set(value) {
             field = value
             when (status) {
-                UserPresenceStatus.ACTIVE -> activeColor
-                UserPresenceStatus.IDLE -> idleColor
-                UserPresenceStatus.OFFLINE -> offlineColor
-                UserPresenceStatus.BOT -> botColor
+                UiUserPresenceStatus.ACTIVE -> activeColor
+                UiUserPresenceStatus.IDLE -> idleColor
+                UiUserPresenceStatus.OFFLINE -> offlineColor
+                UiUserPresenceStatus.BOT -> botColor
                 else -> initColor
             }.also { circlePaint.color = it }
             invalidate()
@@ -72,7 +72,7 @@ class AvatarImageView @JvmOverloads constructor(
         canvas?.drawCircle(circleStart, circleTop, circleRadius, circlePaint)
     }
 
-    private fun getColor(status: UserPresenceStatus): Int {
+    private fun getColor(status: UiUserPresenceStatus): Int {
         return context.getColor(status.colorResId)
     }
 

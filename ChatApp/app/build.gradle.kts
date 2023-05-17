@@ -61,7 +61,6 @@ dependencies {
     implementation(libs.coroutines.android)
     implementation(libs.coil)
     implementation(libs.fragment.ktx)
-    debugImplementation(libs.leak.canary)
     implementation(libs.timber)
     implementation(libs.dagger2)
     kapt(libs.dagger2.compiler)

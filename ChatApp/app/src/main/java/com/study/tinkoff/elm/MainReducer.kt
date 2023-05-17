@@ -8,8 +8,6 @@ class MainReducer @Inject constructor() :
 
     override fun Result.reduce(event: MainEvent) = when (event) {
         is MainEvent.Ui.Init -> Unit
-        is MainEvent.Ui.Search -> {
-            commands { +MainCommand.Search(event.query) }
-        }
+        is MainEvent.Ui.Search -> commands { +MainCommand.Search(event.query) }
     }
 }

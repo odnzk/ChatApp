@@ -8,7 +8,6 @@ import dagger.Reusable
 
 @Module
 internal interface AuthRepositoryModule {
-
     @Binds
     @Reusable
     fun bindsUserAuthRepository(impl: DefaultUserAuthRepository): UserAuthRepository

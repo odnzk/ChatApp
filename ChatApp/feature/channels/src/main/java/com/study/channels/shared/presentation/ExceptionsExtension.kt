@@ -5,6 +5,7 @@ import com.study.channels.shared.domain.model.ChannelAlreadyExistsException
 import com.study.channels.shared.domain.model.ChannelDoesNotHaveTopicsException
 import com.study.channels.shared.domain.model.ChannelNotFoundException
 import com.study.channels.shared.domain.model.InvalidChannelTitleException
+import com.study.channels.shared.domain.model.ServerSynchronizationException
 import com.study.components.extension.toBaseErrorMessage
 import com.study.components.model.UiError
 import com.study.components.R as ComponentsR
@@ -34,6 +35,13 @@ internal fun Throwable.toErrorMessage(): UiError = when (this) {
         descriptionRes = R.string.error_invalid_channel_title_description,
         imageRes = ComponentsR.drawable.ic_error,
         descriptionArgs = maxLength
+    )
+    is ServerSynchronizationException -> UiError(
+        this,
+        messageRes = R.string.error_synchronization_error,
+        descriptionRes = R.string.error_synchronization_error_description,
+        imageRes = null,
+        descriptionArgs = null
     )
     else -> toBaseErrorMessage()
 }

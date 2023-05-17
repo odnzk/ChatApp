@@ -1,8 +1,8 @@
 package com.study.profile.presentation.util.mapper
 
-import com.study.components.model.UserPresenceStatus
+import com.study.components.model.UiUserPresenceStatus
 import com.study.profile.domain.model.UserDetailed
-import com.study.profile.presentation.model.UiUser
+import com.study.profile.presentation.model.UiUserDetailed
 
-internal fun UserDetailed.toUiUser(presence: UserPresenceStatus): UiUser =
-    UiUser(username = name, avatarUrl = avatarUrl, presence = presence, isBot = isBot)
+internal fun UserDetailed.toUiUser(presence: UiUserPresenceStatus): UiUserDetailed =
+    UiUserDetailed(username = name, avatarUrl = avatarUrl, presence = presence, isBot = isBot)

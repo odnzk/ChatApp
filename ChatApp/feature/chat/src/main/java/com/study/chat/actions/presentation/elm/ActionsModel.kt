@@ -26,7 +26,7 @@ internal sealed interface ActionsEvent {
 internal sealed interface ActionsEffect {
     class SuccessAction(val action: UiAction) : ActionsEffect
     class ShowError(val error: Throwable) : ActionsEffect
-    object ShowSynchronizationError : ActionsEffect
+    class ShowSynchronizationError(val error: Throwable) : ActionsEffect
 }
 
 internal sealed interface ActionsCommand {
