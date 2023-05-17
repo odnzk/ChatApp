@@ -54,10 +54,7 @@ interface MessageDao {
                 " AND LOWER(content) LIKE '%' || LOWER(:query) || '%'" +
                 " ORDER BY calendar DESC"
     )
-    fun getMessages(
-        channelId: Int,
-        query: String
-    ): PagingSource<Int, MessageWithReactionsTuple>
+    fun getMessages(channelId: Int, query: String): PagingSource<Int, MessageWithReactionsTuple>
 
     @Query("SELECT * FROM $MESSAGES_TABLE WHERE id = :id")
     suspend fun getMessageById(id: Int): MessageEntity?

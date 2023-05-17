@@ -11,8 +11,8 @@ class PagerAdapter(
     private val fragmentFactory: FragmentPagerFactory
 ) : FragmentStateAdapter(fragmentManager, lifecycle) {
     override fun getItemCount(): Int = fragmentFactory.getFragmentCount()
-    override fun createFragment(position: Int): Fragment {
-        return fragmentFactory.getFragmentCreator(position).invoke()
-    }
+    override fun createFragment(position: Int): Fragment =
+        fragmentFactory.getFragmentCreator(position).invoke()
+
 }
 

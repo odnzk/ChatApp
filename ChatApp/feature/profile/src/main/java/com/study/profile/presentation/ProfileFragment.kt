@@ -18,7 +18,7 @@ import com.study.profile.di.ProfileComponentViewModel
 import com.study.profile.presentation.elm.ProfileEffect
 import com.study.profile.presentation.elm.ProfileEvent
 import com.study.profile.presentation.elm.ProfileState
-import com.study.profile.presentation.model.UiUser
+import com.study.profile.presentation.model.UiUserDetailed
 import com.study.profile.presentation.util.toErrorMessage
 import com.study.ui.NavConstants
 import vivid.money.elmslie.android.base.ElmFragment
@@ -63,33 +63,34 @@ internal class ProfileFragment : ElmFragment<ProfileEvent, ProfileEffect, Profil
 
     override fun render(state: ProfileState) {
         when {
-            state.error != null -> binding.screenStateView.setState(
-                ViewState.Error(state.error.toErrorMessage())
-            )
+            state.error != null -> with(binding) {
+                fragmentProfileGroupUserInfo.isVisible = true
+                screenStateView.setState(ViewState.Error(state.error.toErrorMessage()))
+            }
             state.isLoading -> binding.screenStateView.setState(ViewState.Loading)
             state.user != null -> with(binding) {
+                fragmentProfileGroupUserInfo.isVisible = true
                 screenStateView.setState(ViewState.Success)
                 displayUser(state.user)
             }
         }
     }
 
-    private fun displayUser(user: UiUser) {
-        with(binding) {
-            fragmentProfileTvIsOnline.run {
-                text = getString(user.presence.titleResId).lowercase()
-                setTextColor(ContextCompat.getColor(context, user.presence.colorResId))
-            }
-            if (user.avatarUrl != null) {
-                fragmentProfileIvAvatar.load(user.avatarUrl)
-            } else if (user.isBot) {
-                fragmentProfileIvAvatar.setImageResource(CoreR.drawable.ic_baseline_bot_24)
-            }
-            fragmentProfileTvUsername.text = user.username
+    private fun displayUser(user: UiUserDetailed) = with(binding) {
+        fragmentProfileTvIsOnline.run {
+            text = getString(user.presence.titleResId).lowercase()
+            setTextColor(ContextCompat.getColor(context, user.presence.colorResId))
         }
+        if (user.avatarUrl != null) {
+            fragmentProfileIvAvatar.load(user.avatarUrl)
+        } else if (user.isBot) {
+            fragmentProfileIvAvatar.setImageResource(CoreR.drawable.ic_baseline_bot_24)
+        }
+        fragmentProfileTvUsername.text = user.username
     }
 
     private fun initUI() = with(binding) {
+        fragmentProfileGroupUserInfo.isVisible = false
         screenStateView.onTryAgainClickListener =
             View.OnClickListener { store.accept(ProfileEvent.Ui.Reload(userId)) }
         fragmentProfileGroupToolbar.isVisible = if (userId != NavConstants.CURRENT_USER_ID_KEY) {

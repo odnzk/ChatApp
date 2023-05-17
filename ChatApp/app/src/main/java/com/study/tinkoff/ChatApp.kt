@@ -15,9 +15,7 @@ import timber.log.Timber.Forest.plant
 import com.study.ui.R as CoreR
 
 class ChatApp : Application(), ImageLoaderFactory {
-    val appComponent: AppComponent by lazy {
-        DaggerAppComponent.factory().create(this)
-    }
+    val appComponent: AppComponent by lazy { DaggerAppComponent.factory().create(this) }
 
     override fun onCreate() {
         super.onCreate()

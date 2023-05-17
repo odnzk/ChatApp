@@ -43,8 +43,7 @@ internal class UsersFragment : ElmFragment<UsersEvent, UsersEffect, UsersState>(
 
 
     override fun onAttach(context: Context) {
-        ViewModelProvider(this).get<UsersComponentViewModel>()
-            .usersComponent.inject(this)
+        ViewModelProvider(this).get<UsersComponentViewModel>().usersComponent.inject(this)
         super.onAttach(context)
     }
 

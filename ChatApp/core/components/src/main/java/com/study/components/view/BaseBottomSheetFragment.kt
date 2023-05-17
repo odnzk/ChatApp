@@ -1,4 +1,4 @@
-package com.study.components.model
+package com.study.components.view
 
 import android.os.Bundle
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment

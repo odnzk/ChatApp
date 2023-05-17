@@ -13,14 +13,8 @@ import com.study.components.databinding.ItemProgressBinding
 class LoadingViewHolder(binding: ItemProgressBinding) : RecyclerView.ViewHolder(binding.root) {
 
     companion object {
-        fun create(
-            parent: ViewGroup
-        ): LoadingViewHolder = LoadingViewHolder(
-            ItemProgressBinding.inflate(
-                LayoutInflater.from(parent.context),
-                parent,
-                false
-            )
+        fun create(parent: ViewGroup): LoadingViewHolder = LoadingViewHolder(
+            ItemProgressBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         )
     }
 }

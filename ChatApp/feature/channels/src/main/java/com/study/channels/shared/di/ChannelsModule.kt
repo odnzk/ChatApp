@@ -30,6 +30,8 @@ internal class ChannelsModule {
 
     @Provides
     @FeatureScope
-    fun providesAddChannelStore(actor: AddChannelActor): StoreHolder<AddChannelEvent, AddChannelEffect, AddChannelState> =
+    fun providesAddChannelStore(
+        actor: AddChannelActor
+    ): StoreHolder<AddChannelEvent, AddChannelEffect, AddChannelState> =
         DaggerStoreHolder { ElmStoreCompat(AddChannelState(), AddChannelReducer(), actor) }
 }

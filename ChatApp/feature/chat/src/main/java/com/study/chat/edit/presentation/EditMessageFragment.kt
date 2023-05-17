@@ -18,7 +18,7 @@ import com.study.chat.shared.presentation.util.setupSuggestionsAdapter
 import com.study.chat.shared.presentation.util.toErrorMessage
 import com.study.components.extension.showErrorSnackbar
 import com.study.components.extension.showToast
-import com.study.components.model.BaseBottomSheetFragment
+import com.study.components.view.BaseBottomSheetFragment
 import vivid.money.elmslie.android.storeholder.StoreHolder
 import javax.inject.Inject
 
@@ -70,9 +70,9 @@ internal class EditMessageFragment :
         }
     }
 
-    private fun initUI() = with(binding) {
-        fragmentEditBtnDone.isEnabled = false
-        fragmentEditBtnDone.setOnClickListener { updateMessage() }
+    private fun initUI() = with(binding.fragmentEditBtnDone) {
+        isEnabled = false
+        setOnClickListener { updateMessage() }
     }
 
     private fun updateMessage() = with(binding) {

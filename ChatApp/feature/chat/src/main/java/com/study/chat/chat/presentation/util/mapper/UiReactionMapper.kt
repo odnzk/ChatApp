@@ -27,7 +27,7 @@ internal fun List<UiReaction>.toMessageEmojiViews(
     message: UiMessage,
     onReactionClick: ((message: UiMessage, emoji: UiEmoji) -> Unit)? = null
 ): List<ReactionView> =
-    sortedByDescending { it.count }.map { reaction ->
+    sortedByDescending { it.count }.sortedByDescending { it.isSelected }.map { reaction ->
         reaction.toMessageEmojiView(context, reaction.count, reaction.isSelected).apply {
             setOnClickListener { onReactionClick?.invoke(message, reaction.emoji) }
         }

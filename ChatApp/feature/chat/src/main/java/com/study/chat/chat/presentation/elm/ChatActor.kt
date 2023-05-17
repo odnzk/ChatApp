@@ -20,6 +20,7 @@ import com.study.chat.shared.domain.usecase.LoadTopicsUseCase
 import com.study.common.extension.toFlow
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import vivid.money.elmslie.core.switcher.Switcher
 import vivid.money.elmslie.coroutines.Actor
@@ -49,6 +50,7 @@ internal class ChatActor @Inject constructor(
                 command.topicTitle
             )
                 .cachedIn(chatScope)
+                .distinctUntilChanged()
                 .map { it.toUiMessagesWithSeparators(command.userId, command.topicTitle == null) }
                 .mapEvents(Internal::LoadingSuccess, Internal::LoadingError)
         }
@@ -58,6 +60,7 @@ internal class ChatActor @Inject constructor(
             query = command.query
         )
             .map { it.toUiMessagesWithSeparators(command.userId, command.topicTitle == null) }
+            .distinctUntilChanged()
             .mapEvents(Internal::LoadingSuccess, Internal::LoadingError)
         is ChatCommand.SendMessage -> toFlow {
             sendMessageUseCase(
@@ -69,12 +72,13 @@ internal class ChatActor @Inject constructor(
         }.mapEvents(errorMapper = Internal::LoadingError)
         is ChatCommand.UpdateReaction -> toFlow {
             if (command.message.id == NOT_YET_SYNCHRONIZED_ID) throw SynchronizationException()
+
             val message = command.message
             val reaction = command.emoji.toReaction(message.id, command.userId)
-            message.reactions.find { it.emoji.code == command.emoji.code }?.takeIf { it.isSelected }
-                ?.let {
-                    removeReactionUseCase(reaction)
-                } ?: addReactionUseCase(reaction)
+            message.reactions
+                .find { it.emoji.code == command.emoji.code }
+                ?.takeIf { it.isSelected }
+                ?.let { removeReactionUseCase(reaction) } ?: addReactionUseCase(reaction)
         }.mapEvents(
             eventMapper = { Internal.UpdateReactionSuccess },
             errorMapper = Internal::LoadingError
@@ -82,12 +86,14 @@ internal class ChatActor @Inject constructor(
         ChatCommand.GetCurrentUserId -> toFlow { getCurrentUserId() }
             .mapEvents(
                 eventMapper = Internal::GetCurrentUserIdSuccess,
-                errorMapper = { Internal.LoadingError(UserNotAuthorizedException()) })
+                errorMapper = { Internal.LoadingError(UserNotAuthorizedException()) }
+            )
         is ChatCommand.RemoveIrrelevantMessages ->
             toFlow { removeIrrelevantMessages(command.channelId, command.topicTitle) }
                 .mapEvents(errorMapper = Internal::LoadingError)
-        is ChatCommand.LoadTopics -> toFlow { loadTopicsUseCase(command.channelId) }
-            .mapEvents(errorMapper = Internal::LoadingError)
+        is ChatCommand.LoadTopics ->
+            toFlow { loadTopicsUseCase(command.channelId) }
+                .mapEvents(errorMapper = Internal::LoadingError)
         is ChatCommand.GetTopics -> topicsSwitcher.switch {
             getTopicsUseCase(command.channelId)
                 .mapEvents(

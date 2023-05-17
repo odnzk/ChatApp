@@ -100,12 +100,19 @@ internal class ChannelsFragment : ElmFragment<ChannelsEvent, ChannelsEffect, Cha
         }
     }
 
-    override fun handleEffect(effect: ChannelsEffect) {
-        when (effect) {
-            is ChannelsEffect.ShowWarning ->
-                binding.showErrorSnackbar(effect.error, Throwable::toErrorMessage)
+    override fun handleEffect(effect: ChannelsEffect) = when (effect) {
+        is ChannelsEffect.ShowWarning -> binding.showErrorSnackbar(
+            effect.error,
+            Throwable::toErrorMessage
+        )
+        is ChannelsEffect.ShowSynchronizationError -> binding.showErrorSnackbar(
+            effect.error,
+            Throwable::toErrorMessage
+        ) {
+            store.accept(ChannelsEvent.Ui.Reload)
         }
     }
+
 
     private fun initUI() {
         channelsAdapter = GeneralAdapterDelegate(

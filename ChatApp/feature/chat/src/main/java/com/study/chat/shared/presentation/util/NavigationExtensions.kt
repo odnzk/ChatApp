@@ -17,21 +17,25 @@ internal fun ChatFragment.navigateToChannelTopic(
     channelId: Int,
     channelTitle: String,
     topicTitle: String
-) =
-    findNavController().navigate(
-        ChatFragmentDirections.actionChatFragmentSelf(channelId, channelTitle, topicTitle)
-    )
-
+) = findNavController().navigate(
+    ChatFragmentDirections.actionChatFragmentSelf(channelId, channelTitle, topicTitle)
+)
 
 internal fun ActionsFragment.navigateToEmojiListFragment(resultKey: String) =
     findNavController().navigate(
         ActionsFragmentDirections.actionActionsFragmentToEmojiListFragment(resultKey)
     )
 
-internal fun ActionsFragment.navigateToEditMessageFragment(messageId: Int) {
+internal fun ActionsFragment.navigateToEditMessageFragment(messageId: Int) =
     findNavController().navigate(
         ActionsFragmentDirections.actionActionsFragmentToEditMessageFragment(
             messageId
         )
     )
-}
+
+internal fun ChatFragment.navigateToEmojiListFragment(resultKey: String) =
+    findNavController().navigate(
+        ChatFragmentDirections.actionChatFragmentToEmojiListFragment(
+            resultKey
+        )
+    )

@@ -14,8 +14,8 @@ import com.study.channels.addChannel.presentation.elm.AddChannelState
 import com.study.channels.databinding.FragmentAddChannelBinding
 import com.study.channels.shared.di.ChannelsComponentViewModel
 import com.study.channels.shared.presentation.toErrorMessage
-import com.study.components.model.BaseBottomSheetFragment
 import com.study.components.model.UiError
+import com.study.components.view.BaseBottomSheetFragment
 import vivid.money.elmslie.android.storeholder.StoreHolder
 import javax.inject.Inject
 
@@ -29,7 +29,6 @@ internal class AddChannelFragment :
 
     @Inject
     lateinit var addChannelStoreHolder: StoreHolder<AddChannelEvent, AddChannelEffect, AddChannelState>
-
 
     override fun onAttach(context: Context) {
         ViewModelProvider(this).get<ChannelsComponentViewModel>().channelsComponent.inject(this)

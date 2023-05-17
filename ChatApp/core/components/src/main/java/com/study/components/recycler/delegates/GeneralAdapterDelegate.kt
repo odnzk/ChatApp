@@ -25,16 +25,15 @@ class GeneralAdapterDelegate(private val delegates: List<Delegate<RecyclerView.V
     /**
      * Creates a new [RecyclerView.ViewHolder] instance for the item specified by [viewType].
      */
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return delegates[viewType].viewHolderCreator(parent)
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
+        delegates[viewType].viewHolderCreator(parent)
+
 
     /**
      * Binds the data at the specified [position] to the specified [holder].
      */
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) =
         delegates[getItemViewType(position)].viewBinder(holder, getItem(position))
-    }
 
     /**
      * Binds the data at the specified [position] to the specified [holder], with the given [payloads].
@@ -60,19 +59,14 @@ class GeneralAdapterDelegate(private val delegates: List<Delegate<RecyclerView.V
 
 internal class GeneralItemCallback(private val delegates: List<Delegate<RecyclerView.ViewHolder, Any>>) :
     DiffUtil.ItemCallback<Any>() {
-    override fun areItemsTheSame(oldItem: Any, newItem: Any): Boolean {
-        return oldItem::class == newItem::class && delegates.first { it.isType(oldItem) }.comparator.areItemsTheSame(
-            newItem, oldItem
-        )
-    }
+    override fun areItemsTheSame(oldItem: Any, newItem: Any) = oldItem::class == newItem::class
+            && delegates.first { it.isType(oldItem) }.comparator.areItemsTheSame(newItem, oldItem)
 
-    override fun areContentsTheSame(oldItem: Any, newItem: Any): Boolean {
-        return delegates.find { it.isType(oldItem) }?.comparator?.areContentsTheSame(
-            newItem, oldItem
-        ) == true
-    }
+    override fun areContentsTheSame(oldItem: Any, newItem: Any) =
+        delegates
+            .find { it.isType(oldItem) }
+            ?.comparator?.areContentsTheSame(newItem, oldItem) == true
 
-    override fun getChangePayload(oldItem: Any, newItem: Any): Any? {
-        return delegates.find { it.isType(oldItem) }?.comparator?.getChangePayload(oldItem, newItem)
-    }
+    override fun getChangePayload(oldItem: Any, newItem: Any): Any? =
+        delegates.find { it.isType(oldItem) }?.comparator?.getChangePayload(oldItem, newItem)
 }

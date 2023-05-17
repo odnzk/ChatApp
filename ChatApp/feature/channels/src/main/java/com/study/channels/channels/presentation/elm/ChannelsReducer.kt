@@ -2,6 +2,7 @@ package com.study.channels.channels.presentation.elm
 
 import com.study.channels.shared.domain.model.ChannelDoesNotHaveTopicsException
 import com.study.channels.shared.domain.model.ChannelNotFoundException
+import com.study.channels.shared.domain.model.ServerSynchronizationException
 import com.study.network.model.ConnectionLostException
 import com.study.network.model.NetworkException
 import vivid.money.elmslie.core.store.dsl_reducer.DslReducer
@@ -43,21 +44,26 @@ internal class ChannelsReducer @Inject constructor() :
         is ChannelsEvent.Internal.LoadingChannelsWithTopicsSuccess -> {
             state { copy(isLoading = false, channelsWithTopics = event.channels, error = null) }
         }
-        is ChannelsEvent.Internal.LoadingError -> {
-            state { copy(isLoading = false) }
-            when (val error = event.error) {
-                is ChannelDoesNotHaveTopicsException, is ChannelNotFoundException -> {
-                    effects { +ChannelsEffect.ShowWarning(error) }
-                }
-                is ConnectionLostException, is NetworkException -> {
-                    if (state.channelsWithTopics.isNotEmpty()) {
-                        effects { +ChannelsEffect.ShowWarning(error) }
-                    } else {
-                        state { copy(error = error) }
-                    }
-                }
-                else -> state { copy(error = error) }
+        is ChannelsEvent.Internal.LoadingError -> handleError(event)
+    }
+
+    private fun Result.handleError(event: ChannelsEvent.Internal.LoadingError) {
+        state { copy(isLoading = false) }
+        when (val error = event.error) {
+            is ChannelDoesNotHaveTopicsException, is ChannelNotFoundException -> {
+                effects { +ChannelsEffect.ShowWarning(error) }
             }
+            is ServerSynchronizationException -> {
+                effects { +ChannelsEffect.ShowSynchronizationError(event.error) }
+            }
+            is ConnectionLostException, is NetworkException -> {
+                if (state.channelsWithTopics.isNotEmpty()) {
+                    effects { +ChannelsEffect.ShowWarning(error) }
+                } else {
+                    state { copy(error = error) }
+                }
+            }
+            else -> state { copy(error = error) }
         }
     }
 }

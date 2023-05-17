@@ -10,10 +10,11 @@ import javax.inject.Singleton
 )
 @Singleton
 internal interface DatabaseComponent {
+
+    val impl: DatabaseImpl
+
     @Component.Factory
     interface Factory {
         fun create(dep: DatabaseDep): DatabaseComponent
     }
-
-    val impl: DatabaseImpl
 }

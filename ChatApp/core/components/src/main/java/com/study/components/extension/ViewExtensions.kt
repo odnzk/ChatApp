@@ -18,9 +18,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.google.android.material.snackbar.Snackbar
-import com.study.components.model.UiError
 import com.study.components.recycler.delegates.Delegate
-import com.study.ui.R
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -42,13 +40,13 @@ inline fun <T : Any> Fragment.collectFlowSafely(
     }
 }
 
-inline fun <reified T> Bundle.safeGetParcelable(key: String): T? {
-    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+inline fun <reified T> Bundle.safeGetParcelable(key: String): T? =
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
         getParcelable(key, T::class.java)
     } else {
         getParcelable(key)
     }
-}
+
 
 fun delegatesToList(vararg delegates: Delegate<*, *>): List<Delegate<RecyclerView.ViewHolder, Any>> {
     return delegates.toList() as? List<Delegate<RecyclerView.ViewHolder, Any>>
@@ -57,24 +55,6 @@ fun delegatesToList(vararg delegates: Delegate<*, *>): List<Delegate<RecyclerVie
 
 fun ViewBinding.showSnackbar(@StringRes messageRes: Int) =
     Snackbar.make(root, messageRes, Snackbar.LENGTH_SHORT).show()
-
-inline fun ViewBinding.showErrorSnackbar(
-    error: Throwable,
-    errorHandler: ((Throwable) -> UiError) = Throwable::toBaseErrorMessage,
-    customMessage: String? = null,
-    onReloadActionListener: View.OnClickListener? = null
-) {
-    val displayedMessage = customMessage ?: errorHandler(error).getMessage(root.context)
-    Snackbar.make(root, displayedMessage, Snackbar.LENGTH_SHORT).apply {
-        setTextColor(view.context.getColor(R.color.white))
-        onReloadActionListener?.let {
-            setAction(
-                com.study.components.R.string.error_snackbar_action,
-                it
-            )
-        }
-    }.show()
-}
 
 fun Fragment.showToast(@StringRes messageRes: Int) =
     Toast.makeText(requireContext(), messageRes, Toast.LENGTH_SHORT).show()

@@ -8,6 +8,7 @@ import com.study.channels.shared.data.source.RemoteChannelDataSource
 import com.study.channels.shared.domain.model.Channel
 import com.study.channels.shared.domain.model.ChannelAlreadyExistsException
 import com.study.common.extension.runCatchingNonCancellation
+import com.study.network.model.ConnectionLostException
 import dagger.Reusable
 import javax.inject.Inject
 
@@ -30,6 +31,7 @@ internal class AddChannelRepositoryImpl @Inject constructor(
             }
         }.onFailure {
             localDS.deleteChannel(entity)
+            throw ConnectionLostException()
         }
     }
 }

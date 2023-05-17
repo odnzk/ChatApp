@@ -13,5 +13,4 @@ internal class GetChannelsUseCase @Inject constructor(
 ) {
     operator fun invoke(isSubscribed: Boolean): Flow<List<Channel>> =
         repository.getChannels(isSubscribed, "").flowOn(dispatcher)
-
 }

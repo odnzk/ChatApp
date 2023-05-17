@@ -12,5 +12,4 @@ internal class LoadChannelTopicsUseCase @Inject constructor(
     suspend operator fun invoke(channelId: Int) = withContext(dispatcher) {
         repository.loadChannelTopics(channelId)
     }
-
 }

@@ -1,10 +1,10 @@
 package com.study.profile.presentation.elm
 
-import com.study.profile.presentation.model.UiUser
+import com.study.profile.presentation.model.UiUserDetailed
 
 internal data class ProfileState(
     val isLoading: Boolean = false,
-    val user: UiUser? = null,
+    val user: UiUserDetailed? = null,
     val error: Throwable? = null
 )
 
@@ -21,7 +21,7 @@ internal sealed interface ProfileEvent {
     }
 
     sealed interface Internal : ProfileEvent {
-        class LoadingUserSuccess(val user: UiUser) : Internal
+        class LoadingUserSuccess(val user: UiUserDetailed) : Internal
         class ErrorLoadingUser(val error: Throwable) : Internal
     }
 }

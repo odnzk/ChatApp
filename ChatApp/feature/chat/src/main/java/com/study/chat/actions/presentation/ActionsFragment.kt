@@ -20,11 +20,11 @@ import com.study.chat.databinding.FragmentBottomSheetListBinding
 import com.study.chat.shared.di.ChatComponentViewModel
 import com.study.chat.shared.presentation.util.navigateToEditMessageFragment
 import com.study.chat.shared.presentation.util.navigateToEmojiListFragment
+import com.study.chat.shared.presentation.util.toErrorMessage
 import com.study.components.extension.delegatesToList
-import com.study.components.extension.showErrorSnackbar
 import com.study.components.extension.showToast
-import com.study.components.model.BaseBottomSheetFragment
 import com.study.components.recycler.delegates.GeneralAdapterDelegate
+import com.study.components.view.BaseBottomSheetFragment
 import vivid.money.elmslie.android.storeholder.StoreHolder
 import javax.inject.Inject
 
@@ -76,12 +76,10 @@ internal class ActionsFragment :
 
     override fun handleEffect(effect: ActionsEffect) {
         when (effect) {
-            is ActionsEffect.ShowError -> binding.showErrorSnackbar(effect.error)
+            is ActionsEffect.ShowError -> showToast(effect.error.toErrorMessage().messageRes)
             is ActionsEffect.SuccessAction -> {
                 showToast(effect.action.successTextRes)
-                if (effect.action == UiAction.DELETE) {
-                    dismiss()
-                }
+                if (effect.action == UiAction.DELETE) dismiss()
             }
             ActionsEffect.ShowSynchronizationError -> {
                 showToast(R.string.error_message_is_not_synchronized)
