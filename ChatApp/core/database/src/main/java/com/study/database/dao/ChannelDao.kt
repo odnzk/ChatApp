@@ -29,7 +29,7 @@ interface ChannelDao {
 
     @Query(
         "SELECT * FROM $CHANNELS_TABLE" +
-                " WHERE is_subscribed IS :isSubscribed" +
+                " WHERE is_subscribed IS :isSubscribed AND 1" +
                 " AND LOWER(title) LIKE '%' || LOWER(:query) || '%'"
     )
     fun getChannels(isSubscribed: Boolean, query: String): Flow<List<ChannelEntity>>

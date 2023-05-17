@@ -42,7 +42,11 @@ internal class ChannelsReducer @Inject constructor() :
             commands { +ChannelsCommand.SearchChannels(event.query, state.channelFilter) }
         }
         is ChannelsEvent.Internal.LoadingChannelsWithTopicsSuccess -> {
-            state { copy(isLoading = false, channelsWithTopics = event.channels, error = null) }
+            if (event.channels.isEmpty()) {
+                state { copy(isLoading = false) }
+            } else {
+                state { copy(isLoading = false, channelsWithTopics = event.channels, error = null) }
+            }
         }
         is ChannelsEvent.Internal.LoadingError -> handleError(event)
     }
