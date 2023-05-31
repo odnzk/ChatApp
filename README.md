@@ -1,32 +1,88 @@
-# TFS Android Spring 2023
+# ChatApp
 
-#### Общие требования:
+## Description
 
-- Данная работа является проверкой всех знаний, полученных на курсе.
-- Рекомендуется выбирать средства/подходы/инструменты, о которых говорилось на лекциях/семинарах. Использование других средств не запрещено, однако их следует выбирать исходя из здравого смысла и не злоупотреблять ими(например, если нужно показать диалог, лучше пользоваться средствами, предоставленными Android Sdk/Support Library, а не тащить какую-то библиотеку с навороченными диалогами.)
-- Прежде всего оценивается работоспособность (реализация всех функций, описанных в ТЗ) и качество кода (архитектура, читаемость, организация кода) приложения. Далее по приоритету - UI/анимация.
-- Поощряется стандартный подход к дизайну: material design. Это сэкономит время т.к. многие компоненты material design реализованы в support библиотеках, а иконки для большинства случаев можно импортировать прямо в AndroidStudio
-- Моменты не оговоренные в ТЗ могут быть реализованы по своему усмотрению
+A messaging application, a mobile client for the Zulip API.
 
-#### Особо стоит обратить внимание на:
+## Features
 
-- **Ресурсы**: все строки, используемые в нескольких местах размеры, цвета, и т.п. должны находиться в ресурсах
-- **Дублирование кода** (в том числе и в xml-ках с версткой): оно должно быть сведено к минимуму, если вы копируете кусок кода в другое место - это повод задуматься о выносе в переиспользуемый код. В java/kotlin у вас есть интерфейсы, классы, композиция и декорирование (наследование старайтесь не использовать). А для xml можно использовать include, чтобы переиспользовать уже имеющийся layout.
-- **Большие классы**: старайтесь не раздувать класс до 100+ строк кода, их становится сложно читать, и скорее всего в этом случае он делает слишком много вещей (single responsibility и все такое).
-- **Комментарии**: вместо многочисленных комментариев, старайтесь разбивать код на классы методы с осмысленным именованием, чаще всего это может заменить комментарий. Это избавит вас от надобности поддерживать комментарии в актуальном состоянии при изменении/рефакторинге кода.
-- **Следите за утечками**: можно периодически (например после каждого реализованного экрана) включать leak canary и проходиться по экранам.
+- [X] Single Activity
+- [X] Multi-module architecture
+- [X] Light and Dark theme
+- [X] Ability to create your own channel ("+" button on the screen with
+  channels `Channels Fragment`)
+- [X] The ability to open messages for both the channel (**long tap** on the channel
+  in `Channels Fragment`) and the
+  topic (click on the topic in `Channels Fragment`)
+- [X] The ability to write to different topics (only from the **chat channel** in `ChatFragment`)
+- [X] Ability to go to the channel topic from **channel chat** to `ChatFragment` (click on the
+  topic)
+- [X] The ability to put a reaction, delete, edit and copy a message (long tap on
+  message in `Chat Fragment`)
 
-### Порядок выполнения домашних заданий
+## Requirements
 
-* [Делаете форк](https://gitlab.com/android-tfs-mentors/tfs-android-spring-2023/-/forks/new) от главного проекта
-* В настройках репозитория (Project information -> Members) предоставляете доступ к проекту Вашему ментору(его ник можете спросить у него самого в личке, контакты у вас есть). Роль - developer.
-- Если еще не ставили, то устанавливаете git и [настраиваете ssh](https://docs.gitlab.com/ce/ssh/README.html)
-- Клонируете форкнутый репозиторий к себе на комп (git clone "адрес репозитория"), адрес репозитория можно посмотреть по нажатию на кнопку "Clone" на странице вашего проекта на гитлабе
-- Материалы к каждой дом.работе находятся в отдельных папках (например, HomeWork_1). В папке только описание. Для первой домашки неоходимо самостоятельно создать проект в папке. Начиная со второй начнётся наша курсовая и необходимо создать отдельную папку под него и там разместить свой проект.
-- Чтобы для каждой дом. работы не делать форк, нужно каждую домашку делать в отдельной ветке
-- После выполнения задания, заходите в "Ваш форк на гитлабе"->"Merge
-  Requests"->"New merge request" и в качестве Source branch выбираете
-  ветку, в которой выполнено задание, в Target branch должна быть ветка
-  master(мастер для первых двух, в дальнейшем это будет HomeWork_3->HomeWork_2 и так далее). Реквест нужно делать в ВАШ репозиторий с форком (а не в общий, от которого был сделан форк), т.е. source project и target project должны быть ВАШИМ форком.
-- После того, как ваш merge-request был проверен(ментор поставил лайк или approve), необходимо влить его в основную ветку (каскадно до master).
-- Если предыдущий merge-request не был проверен (например, hw_1 -> master), то в качестве target branch необходимо выбрать ветку с предыдущей домашки (hw_2 -> hw_1)
+To fully work with the Zulip API used in the application, an API key is required.
+[How to get an API key](https://zulip.com/api/api-keys ).
+After receiving the key, you need to add the following lines to the `local.properties` file:
+
+```
+username=<логин>
+password=<API-ключ>
+base_url=<URL>
+```
+
+## Arhitecture
+
+The application follows the principles of pure architecture, the representation layer implements the
+UDF architecture
+using the `Elmslie' library.
+****Example** implementation of the `feature:channel` module
+
+![ChatApp-Architecture](../images/Acrhitecture.png)
+
+## Modularization
+
+| Модуль             | Тип модуля          | Описание                                                                                                                                                                                          |
+|--------------------|---------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `:app`             | Android Application | Combines everything necessary for the correct operation of the application.                                                                                                                       |
+| `core:common`      | Java/Kotlin Library | Common classes, for use by other modules.                                                                                                                                                         |
+| `core:components`  | Android Library     | UI components, extension functions, base classes.                                                                                                                                                 |
+| `core:network`     | Android Library     | API for processing network requests and responses from a remote data source.                                                                                                                      |
+| `core:database`    | Android Library     | Implementation of a local database using the 'Room` library.                                                                                                                                      |
+| `core:auth`        | Android Library     | Classes responsible for authorization logic.                                                                                                                                                      |
+| `core:ui`          | Android Library     | Resources used by modules.                                                                                                                                                                        |
+| `feature:channels` | Android Library     | Displaying channels using `Channel Fragment` and `HolderChannelFragment`, the ability to add a channel (`AddChannelFragment').                                                                    |
+| `feature:chat`     | Android Library     | Displaying channel/topic messages (`ChatFragment'), the ability to change the message (`Action Fragment` and `EditMessageFragment`), choosing an emoji to add a reaction (`SelectEmojiFragment`). |
+| `feature:profile`  | Android Library     | Displaying the user profile using the `Profile Fragment'.                                                                                                                                         |
+| `feature:users`    | Android Library     | Displaying information about all users in the organization using the `Users Fragment'                                                                                                             |
+
+## Технологии
+
+- **Coroutines, Flow** - Asynchronous operation.
+- **-**Retrofit 2** - Requests to the network.
+- **- **Ok Http** - Requests to the network.
+- **-**Kotlin Serialization** - Serialization of data.
+- **-**Co il** - Uploading images over the network, caching downloaded images.
+- **Jetpack Paging 3** - Loading data in small parts.
+- **Android Navigation Component** - Navigation through the application.
+- **ViewBinding** - Improvement and optimization of the code associated with the view layer.
+- **-**Shimmer** - Data loading display.
+- **Dagger2** - Dependency injection.
+- **Elmslie** - Simplification of the implementation of the ELM architecture.
+- **Room** - Abstraction layer on top of SQLite, allowing free access to
+  the database.
+- **DataStore** - Storing data in the form of key-value pairs using Coroutines and Flow.
+- **Timber** is a Logger that provides a utility on top of the usual Log class.
+- **Leak Canary** - Detection of memory leaks.
+
+## Screenshots
+
+### Light theme
+
+![![ChatApp-Light Theme](../images/screenshots_light_theme.png)
+
+### Dark theme
+
+![![ChatApp-DarkTheme](../images/screenshots_dark_theme.png)
+
