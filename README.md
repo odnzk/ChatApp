@@ -27,19 +27,16 @@ To fully work with the Zulip API used in the application, an API key is required
 After receiving the key, you need to add the following lines to the `local.properties` file:
 
 ```
-username=<логин>
-password=<API-ключ>
+username=<login>
+password=<API-key>
 base_url=<URL>
 ```
 
 ## Arhitecture
 
-The application follows the principles of pure architecture, the representation layer implements the
-UDF architecture
-using the `Elmslie' library.
-****Example** implementation of the `feature:channel` module
+The application follows the principles of pure architecture, the representation layer implements the UDF architectureusing the `Elmslie` library. **Example** implementation of the `feature:channel` module
 
-![ChatApp-Architecture](../images/Acrhitecture.png)
+![ChatApp-Architecture](images/Acrhitecture.png)
 
 ## Modularization
 
@@ -49,25 +46,25 @@ using the `Elmslie' library.
 | `core:common`      | Java/Kotlin Library | Common classes, for use by other modules.                                                                                                                                                         |
 | `core:components`  | Android Library     | UI components, extension functions, base classes.                                                                                                                                                 |
 | `core:network`     | Android Library     | API for processing network requests and responses from a remote data source.                                                                                                                      |
-| `core:database`    | Android Library     | Implementation of a local database using the 'Room` library.                                                                                                                                      |
+| `core:database`    | Android Library     | Implementation of a local database using the `Room` library.                                                                                                                                      |
 | `core:auth`        | Android Library     | Classes responsible for authorization logic.                                                                                                                                                      |
 | `core:ui`          | Android Library     | Resources used by modules.                                                                                                                                                                        |
-| `feature:channels` | Android Library     | Displaying channels using `Channel Fragment` and `HolderChannelFragment`, the ability to add a channel (`AddChannelFragment').                                                                    |
-| `feature:chat`     | Android Library     | Displaying channel/topic messages (`ChatFragment'), the ability to change the message (`Action Fragment` and `EditMessageFragment`), choosing an emoji to add a reaction (`SelectEmojiFragment`). |
-| `feature:profile`  | Android Library     | Displaying the user profile using the `Profile Fragment'.                                                                                                                                         |
-| `feature:users`    | Android Library     | Displaying information about all users in the organization using the `Users Fragment'                                                                                                             |
+| `feature:channels` | Android Library     | Displaying channels using `Channel Fragment` and `HolderChannelFragment`, the ability to add a channel (`AddChannelFragment`).                                                                    |
+| `feature:chat`     | Android Library     | Displaying channel/topic messages (`ChatFragment`), the ability to change the message (`Action Fragment` and `EditMessageFragment`), choosing an emoji to add a reaction (`SelectEmojiFragment`). |
+| `feature:profile`  | Android Library     | Displaying the user profile using the `Profile Fragment`.                                                                                                                                         |
+| `feature:users`    | Android Library     | Displaying information about all users in the organization using the `Users Fragment`                                                                                                             |
 
 ## Технологии
 
 - **Coroutines, Flow** - Asynchronous operation.
-- **-**Retrofit 2** - Requests to the network.
-- **- **Ok Http** - Requests to the network.
-- **-**Kotlin Serialization** - Serialization of data.
-- **-**Co il** - Uploading images over the network, caching downloaded images.
+- **Retrofit 2** - Requests to the network.
+- **Ok Http** - Requests to the network.
+- **Kotlin Serialization** - Serialization of data.
+- **Coil** - Uploading images over the network, caching downloaded images.
 - **Jetpack Paging 3** - Loading data in small parts.
 - **Android Navigation Component** - Navigation through the application.
 - **ViewBinding** - Improvement and optimization of the code associated with the view layer.
-- **-**Shimmer** - Data loading display.
+- **Shimmer** - Data loading display.
 - **Dagger2** - Dependency injection.
 - **Elmslie** - Simplification of the implementation of the ELM architecture.
 - **Room** - Abstraction layer on top of SQLite, allowing free access to
@@ -80,9 +77,9 @@ using the `Elmslie' library.
 
 ### Light theme
 
-![![ChatApp-Light Theme](../images/screenshots_light_theme.png)
+![ChatApp-LightTheme](images/screeenshots_light_theme.png)
 
 ### Dark theme
 
-![![ChatApp-DarkTheme](../images/screenshots_dark_theme.png)
+![ChatApp-DarkTheme](images/screeenshots_dark_theme.png)
 
