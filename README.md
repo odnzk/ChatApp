@@ -40,7 +40,7 @@ The application follows the principles of pure architecture, the representation 
 
 ## Modularization
 
-| Модуль             | Тип модуля          | Описание                                                                                                                                                                                          |
+| Module             | Type       | Description                                                                                                                                                                                       |
 |--------------------|---------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `:app`             | Android Application | Combines everything necessary for the correct operation of the application.                                                                                                                       |
 | `core:common`      | Java/Kotlin Library | Common classes, for use by other modules.                                                                                                                                                         |
@@ -54,7 +54,7 @@ The application follows the principles of pure architecture, the representation 
 | `feature:profile`  | Android Library     | Displaying the user profile using the `Profile Fragment`.                                                                                                                                         |
 | `feature:users`    | Android Library     | Displaying information about all users in the organization using the `Users Fragment`                                                                                                             |
 
-## Технологии
+## Tech stack
 
 - **Coroutines, Flow** - Asynchronous operation.
 - **Retrofit 2** - Requests to the network.
