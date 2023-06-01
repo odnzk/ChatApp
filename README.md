@@ -58,7 +58,7 @@ The application follows the principles of pure architecture, the representation 
 
 - **Coroutines, Flow** - Asynchronous operation.
 - **Retrofit 2** - Requests to the network.
-- **Ok Http** - Requests to the network.
+- **OkHttp** - Requests to the network.
 - **Kotlin Serialization** - Serialization of data.
 - **Coil** - Uploading images over the network, caching downloaded images.
 - **Jetpack Paging 3** - Loading data in small parts.
