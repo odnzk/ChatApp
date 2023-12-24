@@ -13,14 +13,14 @@ import javax.inject.Inject
 internal class RemoteChannelDataSource @Inject constructor(private val api: ZulipApi) :
     BaseNetworkDataSource() {
     suspend fun getChannels(isSubscribed: Boolean): AllStreamsResponse =
-        safeRequest { if (isSubscribed) api.getSubscribedStreams() else api.getAllStreams() }
+        makeNetworkRequest { if (isSubscribed) api.getSubscribedStreams() else api.getAllStreams() }
 
     suspend fun getChannelTopics(streamId: Int): StreamTopicsResponse =
-        safeRequest { api.getStreamTopics(streamId) }
+        makeNetworkRequest { api.getStreamTopics(streamId) }
 
     suspend fun addChannel(title: String): AddStreamResponse =
-        safeRequest { api.createStream(ChannelRequestDto(title)) }
+        makeNetworkRequest { api.createStream(ChannelRequestDto(title)) }
 
     suspend fun unsubscribeFromChannel(title: String) =
-        safeRequest { api.unsubscribeFromStream("[\"$title]\"") }
+        makeNetworkRequest { api.unsubscribeFromStream("[\"$title]\"") }
 }

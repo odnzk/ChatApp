@@ -8,6 +8,7 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.study.auth.api.UserAuthRepository
+import com.study.auth.api.UserNotAuthorizedException
 import dagger.Reusable
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.first
@@ -23,13 +24,13 @@ internal class DefaultUserAuthRepository @Inject constructor(
 ) : UserAuthRepository {
 
     override suspend fun getUserId(): Int = withContext(dispatcher) {
-        getCurrentValue(USER_ID) { requireNotNull(userDataSource.getCurrentUser().userId) }
-    }
+        getCurrentValue(USER_ID) { userDataSource.getCurrentUser().userId }
+    } ?: throw UserNotAuthorizedException("Can't get userId")
 
     private suspend fun <T> getCurrentValue(
         key: Preferences.Key<T>,
-        itemProducer: suspend () -> T
-    ): T = getLocallySaved(key) ?: run {
+        itemProducer: suspend () -> T?
+    ): T? = getLocallySaved(key) ?: run {
         val item = itemProducer()
         saveLocally(key, item)
         item
@@ -37,21 +38,22 @@ internal class DefaultUserAuthRepository @Inject constructor(
 
     override suspend fun isAdmin(): Boolean = withContext(dispatcher) {
         getCurrentValue(IS_ADMIN) { requireNotNull(userDataSource.getCurrentUser().isAdmin) }
-    }
+    } ?: throw UserNotAuthorizedException("Can't get isAdmin")
 
     private suspend fun <T> getLocallySaved(key: Preferences.Key<T>): T? =
         context.dataStore.data.map { preferences -> preferences[key] }.first()
 
-    private suspend fun <T> saveLocally(key: Preferences.Key<T>, newValue: T) =
-        context.dataStore.edit { preferences ->
-            preferences[key] = newValue
+    private suspend fun <T> saveLocally(key: Preferences.Key<T>, newValue: T?) =
+        newValue?.let {
+            context.dataStore.edit { preferences ->
+                preferences[key] = newValue
+            }
         }
+
 
     companion object {
         private const val DATA_STORE_NAME = "user info"
-        private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(
-            DATA_STORE_NAME
-        )
+        private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(DATA_STORE_NAME)
         private val USER_ID = intPreferencesKey("userId")
         private val IS_ADMIN = booleanPreferencesKey("isAdmin")
     }

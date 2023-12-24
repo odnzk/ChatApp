@@ -8,6 +8,6 @@ import javax.inject.Inject
 
 internal class RemoteUserDataSource @Inject constructor(private val api: ZulipApi) :
     BaseNetworkDataSource() {
-    suspend fun getAllUsers(): AllUsersResponse = safeRequest { api.getAllUsers() }
-    suspend fun getAllUserPresence(): AllUserPresenceDto = safeRequest { api.getAllUserPresence() }
+    suspend fun getAllUsers(): AllUsersResponse = makeNetworkRequest { api.getAllUsers() }
+    suspend fun getAllUserPresence(): AllUserPresenceDto = makeNetworkRequest { api.getAllUserPresence() }
 }

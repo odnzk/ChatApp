@@ -9,8 +9,8 @@ import javax.inject.Inject
 
 class RemoteUserDataSource @Inject constructor(private val api: ZulipApi) :
     BaseNetworkDataSource() {
-    suspend fun getCurrentUser(): DetailedUserDto = safeRequest { api.getCurrentUser() }
-    suspend fun getUserById(id: Int): UserResponse = safeRequest { api.getUserById(id) }
+    suspend fun getCurrentUser(): DetailedUserDto = makeNetworkRequest { api.getCurrentUser() }
+    suspend fun getUserById(id: Int): UserResponse = makeNetworkRequest { api.getUserById(id) }
     suspend fun getUserPresence(userId: Int): UserPresenceResponse =
-        safeRequest { api.getUserPresence(userId) }
+        makeNetworkRequest { api.getUserPresence(userId) }
 }

@@ -11,6 +11,6 @@ internal class RemoteTopicDataSource @Inject constructor(private val api: ZulipA
     BaseNetworkDataSource() {
 
     suspend fun getChannelTopics(streamId: Int): StreamTopicsResponse =
-        safeRequest { api.getStreamTopics(streamId) }
+        makeNetworkRequest { api.getStreamTopics(streamId) }
 
 }
