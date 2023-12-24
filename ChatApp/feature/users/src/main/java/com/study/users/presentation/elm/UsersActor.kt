@@ -1,6 +1,6 @@
 package com.study.users.presentation.elm
 
-import com.study.common.extension.toFlow
+import com.study.common.ext.toFlow
 import com.study.users.domain.usecase.GetUsersPresenceCase
 import com.study.users.domain.usecase.GetUsersUseCase
 import com.study.users.domain.usecase.SearchUsersUseCase

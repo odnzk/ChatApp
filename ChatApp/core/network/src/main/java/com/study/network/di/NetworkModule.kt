@@ -6,11 +6,14 @@ import coil.request.CachePolicy
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.study.network.BuildConfig
 import com.study.network.BuildConfig.BASE_URL
-import com.study.network.ZulipApi
-import com.study.network.di.util.AuthInterceptor
-import com.study.network.di.util.CacheInterceptor
-import com.study.network.di.util.CoilAuthInterceptor
-import com.study.network.di.util.NetworkCredentials
+import com.study.network.api.AuthApi
+import com.study.network.api.ChannelsApi
+import com.study.network.api.MessagesApi
+import com.study.network.api.UsersApi
+import com.study.network.di.annotations.AuthInterceptor
+import com.study.network.di.annotations.CacheInterceptor
+import com.study.network.di.annotations.CoilAuthInterceptor
+import com.study.network.di.annotations.NetworkCredentials
 import com.study.network.util.ConnectionManager
 import com.study.network.util.EnumConverterFactory
 import dagger.Module
@@ -28,7 +31,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
-import com.study.network.di.util.HttpLoggingInterceptor as DaggerHttpLoggingInterceptor
+import com.study.network.di.annotations.HttpLoggingInterceptor as DaggerHttpLoggingInterceptor
 
 @Module
 internal class NetworkModule {
@@ -110,17 +113,41 @@ internal class NetworkModule {
 
     @Provides
     @Singleton
-    fun providesApi(retrofit: Retrofit): ZulipApi {
-        return retrofit.create(ZulipApi::class.java)
+    fun providesMessagesApi(retrofit: Retrofit): MessagesApi {
+        return retrofit.create(MessagesApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun providesChannelsApi(retrofit: Retrofit): ChannelsApi {
+        return retrofit.create(ChannelsApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun providesUsersApi(retrofit: Retrofit): UsersApi {
+        return retrofit.create(UsersApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun providesAuthApi(retrofit: Retrofit): AuthApi {
+        return retrofit.create(AuthApi::class.java)
     }
 
     @Provides
     @Reusable
     fun providesNetworkImpl(
-        api: ZulipApi,
+        messagesApi: MessagesApi,
+        channelsApi: ChannelsApi,
+        usersApi: UsersApi,
+        authApi: AuthApi,
         imageLoader: ImageLoader
-    ): NetworkImpl = object : NetworkImpl {
-        override val zulipApi: ZulipApi = api
+    ): NetworkProvider = object : NetworkProvider {
+        override val messagesApi: MessagesApi = messagesApi
+        override val channelsApi: ChannelsApi = channelsApi
+        override val usersApi: UsersApi = usersApi
+        override val authApi: AuthApi = authApi
         override val imageLoader: ImageLoader = imageLoader
     }
 

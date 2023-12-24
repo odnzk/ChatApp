@@ -1,9 +1,9 @@
 package com.study.profile.di
 
-import com.study.network.ZulipApi
+import com.study.network.api.UsersApi
 import kotlinx.coroutines.CoroutineDispatcher
 
 interface ProfileDep {
     val dispatcher: CoroutineDispatcher
-    val api: ZulipApi
+    val profileApi: UsersApi
 }

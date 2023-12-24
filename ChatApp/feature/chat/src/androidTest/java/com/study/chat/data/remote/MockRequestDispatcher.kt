@@ -1,19 +1,21 @@
 package com.study.chat.data.remote
 
 import androidx.test.platform.app.InstrumentationRegistry
-import com.study.network.ZulipApi
 import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.RecordedRequest
 
+private const val MESSAGES_ENDPOINT = "messages"
+private const val UPDATE_REACTION_ENDPOINT = "messages/{message_id}/reactions"
+
 class MockRequestDispatcher : Dispatcher() {
 
     private val getResponses: MutableMap<String, String> = mutableMapOf(
-        ZulipApi.MESSAGES_END_POINT to "messages.json"
+         MESSAGES_ENDPOINT to "messages.json"
     )
     private val postResponses: MutableMap<String, String> = mutableMapOf(
-        ZulipApi.MESSAGES_END_POINT to "send_message.json",
-        ZulipApi.UPDATE_REACTION_END_POINT to EMPTY_RESPONSE
+        MESSAGES_ENDPOINT to "send_message.json",
+        UPDATE_REACTION_ENDPOINT to EMPTY_RESPONSE
     )
 
     override fun dispatch(request: RecordedRequest): MockResponse {

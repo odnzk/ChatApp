@@ -1,7 +1,7 @@
 package com.study.chat.chat.domain.usecase
 
 import com.study.chat.chat.domain.repository.ChatRepository
-import com.study.chat.shared.domain.model.OutcomeMessage
+import com.study.chat.common.domain.model.OutcomeMessage
 import com.study.common.validation.Validator
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext

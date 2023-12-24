@@ -4,7 +4,7 @@ import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.DiffUtil
 import com.study.chat.chat.presentation.model.UiEmoji
 import com.study.chat.chat.presentation.model.UiMessage
-import com.study.chat.shared.domain.model.NOT_YET_SYNCHRONIZED_ID
+import com.study.chat.common.domain.model.NOT_YET_SYNCHRONIZED_ID
 import com.study.components.recycler.delegates.Delegate
 
 internal class MessageDelegate(

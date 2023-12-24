@@ -13,11 +13,11 @@ import com.study.chat.databinding.FragmentEditMessageBinding
 import com.study.chat.edit.presentation.elm.EditMessageEffect
 import com.study.chat.edit.presentation.elm.EditMessageEvent
 import com.study.chat.edit.presentation.elm.EditMessageState
-import com.study.chat.shared.di.ChatComponentViewModel
-import com.study.chat.shared.presentation.util.setupSuggestionsAdapter
-import com.study.chat.shared.presentation.util.toErrorMessage
-import com.study.components.extension.showToast
-import com.study.components.view.BaseBottomSheetFragment
+import com.study.chat.common.di.ChatComponentViewModel
+import com.study.chat.common.presentation.util.setupSuggestionsAdapter
+import com.study.chat.common.presentation.util.toErrorMessage
+import com.study.components.ext.showToast
+import com.study.components.customview.BaseBottomSheetFragment
 import vivid.money.elmslie.android.storeholder.StoreHolder
 import javax.inject.Inject
 

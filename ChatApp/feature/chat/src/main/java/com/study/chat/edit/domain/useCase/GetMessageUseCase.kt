@@ -1,9 +1,9 @@
 package com.study.chat.edit.domain.useCase
 
 import com.study.chat.edit.domain.repository.EditMessageRepository
-import com.study.chat.shared.domain.model.IncomeMessage
-import com.study.chat.shared.domain.model.NOT_YET_SYNCHRONIZED_ID
-import com.study.chat.shared.domain.model.SynchronizationException
+import com.study.chat.common.domain.model.IncomeMessage
+import com.study.chat.common.domain.model.NOT_YET_SYNCHRONIZED_ID
+import com.study.chat.common.domain.model.SynchronizationException
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject

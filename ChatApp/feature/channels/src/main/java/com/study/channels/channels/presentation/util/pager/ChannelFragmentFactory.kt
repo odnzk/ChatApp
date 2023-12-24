@@ -1,9 +1,8 @@
 package com.study.channels.channels.presentation.util.pager
 
 import androidx.fragment.app.Fragment
-import com.study.channels.channels.presentation.ChannelsFragment
 import com.study.channels.channels.presentation.model.UiChannelFilter
-import com.study.components.util.FragmentPagerFactory
+import com.study.channels.channels.presentation.ChannelsFragment
 
 internal class ChannelFragmentFactory : FragmentPagerFactory {
     override fun getFragmentCount(): Int = 2

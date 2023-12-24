@@ -13,8 +13,8 @@ import androidx.core.graphics.ColorUtils
 import androidx.core.view.setPadding
 import com.google.android.material.color.MaterialColors
 import com.study.chat.R
-import com.study.components.extension.dp
-import com.study.components.extension.sp
+import com.study.components.ext.dp
+import com.study.components.ext.sp
 import com.google.android.material.R as MaterialR
 import com.study.ui.R as CoreR
 

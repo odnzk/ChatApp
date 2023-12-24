@@ -1,6 +1,6 @@
 package com.study.profile.presentation.util
 
-import com.study.components.extension.toBaseErrorMessage
+import com.study.components.ext.toBaseErrorMessage
 import com.study.components.model.UiError
 import com.study.profile.R
 import com.study.profile.domain.model.UserNotFoundException

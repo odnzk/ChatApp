@@ -11,11 +11,11 @@ import androidx.lifecycle.get
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.study.common.search.NothingFoundForThisQueryException
 import com.study.components.databinding.FragmentRecyclerViewBinding
-import com.study.components.extension.collectFlowSafely
-import com.study.components.extension.delegatesToList
-import com.study.components.extension.toBaseErrorMessage
+import com.study.components.ext.collectFlowSafely
+import com.study.components.ext.delegatesToList
+import com.study.components.ext.toBaseErrorMessage
 import com.study.components.recycler.delegates.GeneralAdapterDelegate
-import com.study.components.view.ScreenStateView.ViewState
+import com.study.components.customview.ScreenStateView.ViewState
 import com.study.users.di.UsersComponentViewModel
 import com.study.users.presentation.elm.UsersEffect
 import com.study.users.presentation.elm.UsersEvent

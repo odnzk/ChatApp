@@ -1,7 +1,7 @@
 package com.study.chat.edit.presentation.elm
 
 import com.study.chat.edit.presentation.model.EditableMessage
-import com.study.chat.shared.domain.model.NOT_YET_SYNCHRONIZED_ID
+import com.study.chat.common.domain.model.NOT_YET_SYNCHRONIZED_ID
 
 internal data class EditMessageState(
     val messageId: Int = NOT_YET_SYNCHRONIZED_ID,

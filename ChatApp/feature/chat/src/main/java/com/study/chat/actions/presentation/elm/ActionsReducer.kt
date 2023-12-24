@@ -1,7 +1,7 @@
 package com.study.chat.actions.presentation.elm
 
 import com.study.chat.actions.presentation.model.UiAction
-import com.study.chat.shared.domain.model.SynchronizationException
+import com.study.chat.common.domain.model.SynchronizationException
 import vivid.money.elmslie.core.store.dsl_reducer.DslReducer
 import javax.inject.Inject
 

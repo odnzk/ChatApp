@@ -47,7 +47,7 @@
         android:visibility="gone"
         app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.ImageView.RoundCorners.Small" />
 
-    <com.study.components.view.FlexBoxLayout
+    <com.study.components.customview.FlexBoxLayout
         android:id="@+id/view_message_fl_emoji"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

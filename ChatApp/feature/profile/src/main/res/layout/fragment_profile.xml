@@ -74,7 +74,7 @@
         app:layout_constraintTop_toBottomOf="@id/fragment_profile_tv_username"
         tools:text="online" />
 
-    <com.study.components.view.ScreenStateView
+    <com.study.components.customview.ScreenStateView
         android:id="@+id/screen_state_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

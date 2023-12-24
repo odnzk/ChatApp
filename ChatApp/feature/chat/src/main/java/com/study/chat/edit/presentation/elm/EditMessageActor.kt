@@ -3,8 +3,8 @@ package com.study.chat.edit.presentation.elm
 import com.study.chat.edit.domain.useCase.GetMessageUseCase
 import com.study.chat.edit.domain.useCase.UpdateMessageUseCase
 import com.study.chat.edit.presentation.util.toEditableMessage
-import com.study.chat.shared.domain.usecase.GetTopicsUseCase
-import com.study.common.extension.toFlow
+import com.study.chat.common.domain.usecase.GetTopicsUseCase
+import com.study.common.ext.toFlow
 import kotlinx.coroutines.flow.Flow
 import vivid.money.elmslie.core.switcher.Switcher
 import vivid.money.elmslie.coroutines.Actor

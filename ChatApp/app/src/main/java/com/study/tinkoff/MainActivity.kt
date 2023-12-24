@@ -14,7 +14,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.color.MaterialColors
-import com.study.common.extension.fastLazy
+import com.study.common.ext.fastLazy
 import com.study.tinkoff.databinding.ActivityMainBinding
 import com.study.tinkoff.elm.MainActor
 import com.study.tinkoff.elm.MainEffect

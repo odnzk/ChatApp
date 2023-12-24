@@ -1,14 +1,14 @@
 package com.study.channels.addChannel.data
 
 import com.study.channels.addChannel.domain.repository.AddChannelRepository
-import com.study.channels.shared.data.mapper.mapToIsChannelAlreadyExistBoolean
-import com.study.channels.shared.data.mapper.toChannelEntity
-import com.study.channels.shared.data.mapper.toChannelEntityList
-import com.study.channels.shared.data.source.LocalChannelDataSource
-import com.study.channels.shared.data.source.RemoteChannelDataSource
-import com.study.channels.shared.domain.model.Channel
-import com.study.channels.shared.domain.model.ChannelAlreadyExistsException
-import com.study.common.extension.runCatchingNonCancellation
+import com.study.channels.common.data.mapper.mapToIsChannelAlreadyExistBoolean
+import com.study.channels.common.data.mapper.toChannelEntity
+import com.study.channels.common.data.mapper.toChannelEntityList
+import com.study.channels.common.data.source.LocalChannelDataSource
+import com.study.channels.common.data.source.RemoteChannelDataSource
+import com.study.channels.common.domain.model.Channel
+import com.study.channels.common.domain.model.ChannelAlreadyExistsException
+import com.study.common.ext.runCatchingNonCancellation
 import com.study.network.model.ConnectionLostException
 import dagger.Reusable
 import javax.inject.Inject

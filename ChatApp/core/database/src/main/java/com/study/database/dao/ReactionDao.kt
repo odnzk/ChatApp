@@ -10,6 +10,8 @@ import androidx.room.Upsert
 import com.study.database.model.ReactionEntity
 import com.study.database.model.ReactionEntity.Companion.REACTIONS_TABLE
 
+// todo somehow move to :feature:channels
+
 @Dao
 interface ReactionDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)

@@ -3,8 +3,8 @@ package com.study.tinkoff.di
 import android.content.Context
 import coil.ImageLoader
 import com.study.auth.api.di.AuthDep
-import com.study.channels.shared.di.ChannelsDep
-import com.study.chat.shared.di.ChatDep
+import com.study.channels.common.di.ChannelsDep
+import com.study.chat.common.di.ChatDep
 import com.study.database.di.DatabaseDep
 import com.study.network.di.NetworkDep
 import com.study.profile.di.ProfileDep

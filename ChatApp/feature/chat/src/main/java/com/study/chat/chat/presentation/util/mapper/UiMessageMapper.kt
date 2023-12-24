@@ -7,8 +7,8 @@ import com.study.chat.chat.presentation.model.ChatListItem
 import com.study.chat.chat.presentation.model.DateSeparator
 import com.study.chat.chat.presentation.model.TopicSeparator
 import com.study.chat.chat.presentation.model.UiMessage
-import com.study.chat.shared.domain.model.IncomeMessage
-import com.study.common.extension.isSameDay
+import com.study.chat.common.domain.model.IncomeMessage
+import com.study.common.ext.isSameDay
 
 internal fun IncomeMessage.toChatMessage(currUserId: Int): UiMessage.ChatMessage {
     val imageUrlResult = content.findImageUrl()

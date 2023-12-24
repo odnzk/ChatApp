@@ -8,7 +8,7 @@ import com.study.chat.data.StubUserAuthRepository
 import com.study.chat.data.local.MessageTestDatabase
 import com.study.chat.data.remote.RemoteDataSourceProvider
 import com.study.chat.di.launchChatFragment
-import com.study.chat.shared.presentation.util.toEmojiString
+import com.study.chat.common.presentation.util.toEmojiString
 import com.study.chat.util.TEST_TOPIC
 import com.study.chat.util.screen.ChatScreen
 import com.study.chat.util.screen.TestState
@@ -37,7 +37,9 @@ internal class ChatFragmentTest : TestCase() {
     private val remoteProvider = RemoteDataSourceProvider()
     private val networkDep = remoteProvider.createNetworkDep()
     private val context: Context = ApplicationProvider.getApplicationContext()
-    private val zulipApi = remoteProvider.provide(networkDep).zulipApi
+    private val zulipApi = remoteProvider.provide(networkDep).messagesApi
+    private val channelsApi = remoteProvider.provide(networkDep).channelsApi
+
 
     @After
     fun clear() {
@@ -64,7 +66,7 @@ internal class ChatFragmentTest : TestCase() {
     @Test
     fun messagesAreDisplayed_ByDefault() = run {
         launchChatFragment(
-            zulipApi, reactionDao, messageDao, topicDao, authRepository, context, dispatcher
+            zulipApi, channelsApi, reactionDao, messageDao, topicDao, authRepository, context, dispatcher
         )
         val chatScreen = ChatScreen()
 
@@ -87,7 +89,7 @@ internal class ChatFragmentTest : TestCase() {
     @Test
     fun messageWithoutReaction_ByDefault() = run {
         launchChatFragment(
-            zulipApi, reactionDao, messageDao, topicDao, authRepository, context, dispatcher
+            zulipApi, channelsApi, reactionDao, messageDao, topicDao, authRepository, context, dispatcher
         )
         val chatScreen = ChatScreen()
 
@@ -105,7 +107,7 @@ internal class ChatFragmentTest : TestCase() {
     @Test
     fun messageWithMyReaction_ByDefault() = run {
         launchChatFragment(
-            zulipApi, reactionDao, messageDao, topicDao, authRepository, context, dispatcher
+            zulipApi, channelsApi, reactionDao, messageDao, topicDao, authRepository, context, dispatcher
         )
         val chatScreen = ChatScreen()
 
@@ -127,7 +129,7 @@ internal class ChatFragmentTest : TestCase() {
     @Test
     fun initStateIsDisplayed_ByDefault() = run {
         launchChatFragment(
-            zulipApi, reactionDao, messageDao, topicDao, authRepository, context, dispatcher
+            zulipApi, channelsApi, reactionDao, messageDao, topicDao, authRepository, context, dispatcher
         )
         val chatScreen = ChatScreen()
 
@@ -155,7 +157,7 @@ internal class ChatFragmentTest : TestCase() {
     fun getMessages_NetworkError() = run {
         server.shutdown()
         launchChatFragment(
-            zulipApi, reactionDao, messageDao, topicDao, authRepository, context, dispatcher
+            zulipApi, channelsApi, reactionDao, messageDao, topicDao, authRepository, context, dispatcher
         )
         val chatScreen = ChatScreen()
 

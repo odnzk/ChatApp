@@ -37,7 +37,7 @@
         app:layout_constraintStart_toStartOf="parent"
         tools:ignore="LabelFor" />
 
-    <com.study.components.view.InputView
+    <com.study.components.customview.InputView
         android:id="@+id/fragment_chat_view_input_message"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -47,7 +47,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <com.study.components.view.ScreenStateView
+    <com.study.components.customview.ScreenStateView
         android:id="@+id/screen_state_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

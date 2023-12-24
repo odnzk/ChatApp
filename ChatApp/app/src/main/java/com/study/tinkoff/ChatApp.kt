@@ -3,8 +3,8 @@ package com.study.tinkoff
 import android.app.Application
 import coil.ImageLoader
 import coil.ImageLoaderFactory
-import com.study.channels.shared.di.ChannelsDepStore
-import com.study.chat.shared.di.ChatDepStore
+import com.study.channels.common.di.ChannelsDepStore
+import com.study.chat.common.di.ChatDepStore
 import com.study.profile.di.ProfileDepStore
 import com.study.tinkoff.di.AppComponent
 import com.study.tinkoff.di.DaggerAppComponent

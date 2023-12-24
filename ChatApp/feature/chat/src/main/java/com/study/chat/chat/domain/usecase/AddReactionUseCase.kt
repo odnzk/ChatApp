@@ -1,7 +1,7 @@
 package com.study.chat.chat.domain.usecase
 
 import com.study.chat.chat.domain.repository.ChatRepository
-import com.study.chat.shared.domain.model.Reaction
+import com.study.chat.common.domain.model.Reaction
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject

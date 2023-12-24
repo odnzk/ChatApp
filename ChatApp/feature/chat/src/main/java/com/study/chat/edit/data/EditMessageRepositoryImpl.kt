@@ -1,13 +1,13 @@
 package com.study.chat.edit.data
 
 import com.study.chat.edit.domain.repository.EditMessageRepository
-import com.study.chat.shared.data.mapper.toFirstMessageSenderId
-import com.study.chat.shared.data.mapper.toIncomeMessage
-import com.study.chat.shared.data.source.local.LocalMessageDataSource
-import com.study.chat.shared.data.source.remote.RemoteMessageDataSource
-import com.study.chat.shared.domain.model.IncomeMessage
-import com.study.chat.shared.domain.model.MessageDoesNotExistException
-import com.study.common.extension.onFailureRestorePrevStateAndThrowError
+import com.study.chat.common.data.mapper.toFirstMessageSenderId
+import com.study.chat.common.data.mapper.toIncomeMessage
+import com.study.chat.common.data.source.local.LocalMessageDataSource
+import com.study.chat.common.data.source.remote.RemoteMessageDataSource
+import com.study.chat.common.domain.model.IncomeMessage
+import com.study.chat.common.domain.model.MessageDoesNotExistException
+import com.study.common.ext.onFailureRestorePrevStateAndThrowError
 import com.study.network.model.request.message.MessageNarrowList
 import dagger.Reusable
 import javax.inject.Inject

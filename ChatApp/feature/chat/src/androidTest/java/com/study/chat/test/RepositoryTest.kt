@@ -7,7 +7,7 @@ import com.study.chat.data.local.LocalDataSourceProvider
 import com.study.chat.data.local.MessageTestDatabase
 import com.study.chat.data.remote.RemoteDataSourceProvider
 import com.study.chat.di.GeneralDepContainer
-import com.study.chat.shared.data.source.remote.RemoteMessageDataSource
+import com.study.chat.common.data.source.remote.RemoteMessageDataSource
 import com.study.chat.util.TEST_CHANNEL
 import com.study.chat.util.TEST_TOPIC
 import com.study.database.dao.MessageDao
@@ -52,7 +52,7 @@ class RepositoryTest {
     @Test
     fun getMessages_DbNotEmpty() = runTest {
         val localDS = LocalDataSourceProvider().provide(messageDao, reactionDao)
-        val api = RemoteDataSourceProvider().provide(networkDep).zulipApi
+        val api = RemoteDataSourceProvider().provide(networkDep).messagesApi
         val repository =
             GeneralDepContainer.createMessageRepositoryImpl(localDS, RemoteMessageDataSource(api))
 

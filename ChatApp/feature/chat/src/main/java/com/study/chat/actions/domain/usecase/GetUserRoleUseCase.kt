@@ -3,8 +3,8 @@ package com.study.chat.actions.domain.usecase
 import com.study.auth.api.UserAuthRepository
 import com.study.chat.actions.domain.model.UserRole
 import com.study.chat.actions.domain.repository.ActionsRepository
-import com.study.chat.shared.domain.model.NOT_YET_SYNCHRONIZED_ID
-import com.study.chat.shared.domain.model.SynchronizationException
+import com.study.chat.common.domain.model.NOT_YET_SYNCHRONIZED_ID
+import com.study.chat.common.domain.model.SynchronizationException
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject

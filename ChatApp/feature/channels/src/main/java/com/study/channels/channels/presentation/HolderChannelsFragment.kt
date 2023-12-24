@@ -9,8 +9,8 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.study.channels.R
 import com.study.channels.channels.presentation.util.pager.ChannelFragmentFactory
 import com.study.channels.databinding.FragmentChannelsHolderBinding
-import com.study.channels.shared.presentation.navigateToAddChannel
-import com.study.components.util.PagerAdapter
+import com.study.channels.common.presentation.navigateToAddChannel
+import com.study.channels.channels.presentation.util.pager.PagerAdapter
 
 internal class HolderChannelsFragment : Fragment() {
     private var _binding: FragmentChannelsHolderBinding? = null

@@ -15,14 +15,14 @@ import com.study.chat.emoji.presentation.elm.EmojiListEffect
 import com.study.chat.emoji.presentation.elm.EmojiListEvent
 import com.study.chat.emoji.presentation.elm.EmojiListState
 import com.study.chat.emoji.presentation.util.EmojiDelegate
-import com.study.chat.shared.di.ChatComponentViewModel
-import com.study.chat.shared.presentation.util.toErrorMessage
-import com.study.components.extension.delegatesToList
-import com.study.components.extension.dp
-import com.study.components.extension.showErrorSnackbar
+import com.study.chat.common.di.ChatComponentViewModel
+import com.study.chat.common.presentation.util.toErrorMessage
+import com.study.components.ext.delegatesToList
+import com.study.components.ext.dp
+import com.study.components.ext.showErrorSnackbar
 import com.study.components.recycler.delegates.GeneralAdapterDelegate
-import com.study.components.recycler.manager.VarSpanGridLayoutManager
-import com.study.components.view.BaseBottomSheetFragment
+import com.study.components.recycler.VarSpanGridLayoutManager
+import com.study.components.customview.BaseBottomSheetFragment
 import vivid.money.elmslie.android.storeholder.StoreHolder
 import javax.inject.Inject
 

@@ -1,8 +1,8 @@
 package com.study.channels.channels.presentation.elm
 
-import com.study.channels.shared.domain.model.ChannelDoesNotHaveTopicsException
-import com.study.channels.shared.domain.model.ChannelNotFoundException
-import com.study.channels.shared.domain.model.ServerSynchronizationException
+import com.study.channels.common.domain.model.ChannelDoesNotHaveTopicsException
+import com.study.channels.common.domain.model.ChannelNotFoundException
+import com.study.channels.common.domain.model.ServerSynchronizationException
 import com.study.network.model.ConnectionLostException
 import com.study.network.model.NetworkException
 import vivid.money.elmslie.core.store.dsl_reducer.DslReducer

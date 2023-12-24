@@ -11,8 +11,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
 import androidx.navigation.fragment.findNavController
 import coil.load
-import com.study.common.extension.fastLazy
-import com.study.components.view.ScreenStateView.ViewState
+import com.study.common.ext.fastLazy
+import com.study.components.customview.ScreenStateView.ViewState
 import com.study.profile.databinding.FragmentProfileBinding
 import com.study.profile.di.ProfileComponentViewModel
 import com.study.profile.presentation.elm.ProfileEffect

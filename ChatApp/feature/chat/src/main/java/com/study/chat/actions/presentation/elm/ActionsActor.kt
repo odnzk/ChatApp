@@ -4,7 +4,7 @@ import com.study.chat.actions.domain.usecase.CopyMessageUseCase
 import com.study.chat.actions.domain.usecase.DeleteMessageUseCase
 import com.study.chat.actions.domain.usecase.GetUserRoleUseCase
 import com.study.chat.actions.presentation.util.mapper.toUiUserRole
-import com.study.common.extension.toFlow
+import com.study.common.ext.toFlow
 import kotlinx.coroutines.flow.Flow
 import vivid.money.elmslie.coroutines.Actor
 import javax.inject.Inject

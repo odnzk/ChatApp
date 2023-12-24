@@ -21,7 +21,7 @@ internal class DatabaseModule {
         reactionDao: ReactionDao,
         channelDao: ChannelDao,
         topicDao: ChannelTopicDao
-    ): DatabaseImpl = object : DatabaseImpl {
+    ): DatabaseProvider = object : DatabaseProvider {
         override val messageDao: MessageDao = messageDao
         override val reactionDao: ReactionDao = reactionDao
         override val channelDao: ChannelDao = channelDao

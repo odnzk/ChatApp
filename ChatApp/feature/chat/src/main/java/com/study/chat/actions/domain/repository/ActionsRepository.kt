@@ -1,6 +1,6 @@
 package com.study.chat.actions.domain.repository
 
-import com.study.chat.shared.domain.model.IncomeMessage
+import com.study.chat.common.domain.model.IncomeMessage
 
 internal interface ActionsRepository {
     suspend fun copyMessage(messageId: Int)

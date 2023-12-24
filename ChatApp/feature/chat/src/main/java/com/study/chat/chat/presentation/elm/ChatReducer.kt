@@ -1,7 +1,7 @@
 package com.study.chat.chat.presentation.elm
 
 import com.study.auth.api.UserNotAuthorizedException
-import com.study.chat.shared.domain.model.SynchronizationException
+import com.study.chat.common.domain.model.SynchronizationException
 import vivid.money.elmslie.core.store.dsl_reducer.DslReducer
 import javax.inject.Inject
 

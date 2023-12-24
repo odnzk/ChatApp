@@ -12,10 +12,10 @@ import com.study.channels.addChannel.presentation.elm.AddChannelEffect
 import com.study.channels.addChannel.presentation.elm.AddChannelEvent
 import com.study.channels.addChannel.presentation.elm.AddChannelState
 import com.study.channels.databinding.FragmentAddChannelBinding
-import com.study.channels.shared.di.ChannelsComponentViewModel
-import com.study.channels.shared.presentation.toErrorMessage
+import com.study.channels.common.di.ChannelsComponentViewModel
+import com.study.channels.common.presentation.toErrorMessage
 import com.study.components.model.UiError
-import com.study.components.view.BaseBottomSheetFragment
+import com.study.components.customview.BaseBottomSheetFragment
 import vivid.money.elmslie.android.storeholder.StoreHolder
 import javax.inject.Inject
 

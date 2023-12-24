@@ -4,10 +4,10 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
-import com.study.chat.shared.data.mapper.getAllReactionEntities
-import com.study.chat.shared.data.mapper.toMessageEntities
-import com.study.chat.shared.data.source.local.LocalMessageDataSource
-import com.study.chat.shared.data.source.remote.RemoteMessageDataSource
+import com.study.chat.common.data.mapper.getAllReactionEntities
+import com.study.chat.common.data.mapper.toMessageEntities
+import com.study.chat.common.data.source.local.LocalMessageDataSource
+import com.study.chat.common.data.source.remote.RemoteMessageDataSource
 import com.study.database.model.tuple.MessageWithReactionsTuple
 import com.study.network.model.request.message.MessageNarrow
 import com.study.network.model.request.message.MessageNarrowList

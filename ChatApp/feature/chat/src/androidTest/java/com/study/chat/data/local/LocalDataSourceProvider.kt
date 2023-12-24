@@ -2,8 +2,8 @@ package com.study.chat.data.local
 
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
-import com.study.chat.shared.data.source.local.LocalMessageDataSource
-import com.study.common.extension.fastLazy
+import com.study.chat.common.data.source.local.LocalMessageDataSource
+import com.study.common.ext.fastLazy
 import com.study.database.dao.MessageDao
 import com.study.database.dao.ReactionDao
 

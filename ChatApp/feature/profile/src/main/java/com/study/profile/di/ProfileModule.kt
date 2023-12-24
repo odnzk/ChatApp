@@ -1,7 +1,7 @@
 package com.study.profile.di
 
 import com.study.common.di.FeatureScope
-import com.study.components.util.DaggerStoreHolder
+import com.study.components.di.SingletoneStoreHolder
 import com.study.profile.presentation.elm.ProfileActor
 import com.study.profile.presentation.elm.ProfileEffect
 import com.study.profile.presentation.elm.ProfileEvent
@@ -21,5 +21,5 @@ internal class ProfileModule {
         reducer: ProfileReducer,
         actor: ProfileActor
     ): StoreHolder<ProfileEvent, ProfileEffect, ProfileState> =
-        DaggerStoreHolder { ElmStoreCompat(ProfileState(), reducer, actor) }
+        SingletoneStoreHolder { ElmStoreCompat(ProfileState(), reducer, actor) }
 }

@@ -11,11 +11,11 @@ import com.study.channels.channels.presentation.model.UiChannelModel
 import com.study.channels.channels.presentation.model.UiChannelTopic
 import com.study.channels.channels.presentation.util.mapper.toChannelsMap
 import com.study.channels.channels.presentation.util.mapper.toUiChannelTopics
-import com.study.channels.shared.domain.model.ChannelNotFoundException
-import com.study.channels.shared.domain.model.ServerSynchronizationException
-import com.study.channels.shared.domain.model.notYetSynchronizedChannelId
-import com.study.common.extension.firstInstance
-import com.study.common.extension.toFlow
+import com.study.channels.common.domain.model.ChannelNotFoundException
+import com.study.channels.common.domain.model.ServerSynchronizationException
+import com.study.channels.common.domain.model.notYetSynchronizedChannelId
+import com.study.common.ext.firstInstance
+import com.study.common.ext.toFlow
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import vivid.money.elmslie.core.switcher.Switcher

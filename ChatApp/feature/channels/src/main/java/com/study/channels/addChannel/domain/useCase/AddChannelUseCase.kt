@@ -1,8 +1,8 @@
 package com.study.channels.addChannel.domain.useCase
 
 import com.study.channels.addChannel.domain.repository.AddChannelRepository
-import com.study.channels.shared.domain.model.Channel
-import com.study.channels.shared.domain.model.notYetSynchronizedChannelId
+import com.study.channels.common.domain.model.Channel
+import com.study.channels.common.domain.model.notYetSynchronizedChannelId
 import com.study.common.validation.Validator
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext

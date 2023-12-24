@@ -12,7 +12,7 @@ import com.study.database.model.update.ChannelUpdateEntity
 import com.study.database.util.mapper.toChannelUpdateEntity
 import kotlinx.coroutines.flow.Flow
 
-
+// todo somehow move to :feature:channels
 @Dao
 interface ChannelDao {
     @Insert

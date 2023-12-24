@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:padding="16dp">
 
-        <com.study.components.view.AvatarImageView
+        <com.study.components.customview.AvatarImageView
             android:id="@+id/item_user_iv_avatar"
             android:layout_width="@dimen/avatar_size_medium"
             android:layout_height="@dimen/avatar_size_medium"

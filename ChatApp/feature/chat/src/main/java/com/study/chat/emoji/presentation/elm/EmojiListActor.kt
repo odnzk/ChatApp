@@ -2,7 +2,7 @@ package com.study.chat.emoji.presentation.elm
 
 import com.study.chat.chat.presentation.util.mapper.toUiEmojis
 import com.study.chat.emoji.domain.usecase.GetEmojiListUseCase
-import com.study.common.extension.toFlow
+import com.study.common.ext.toFlow
 import kotlinx.coroutines.flow.Flow
 import vivid.money.elmslie.coroutines.Actor
 import javax.inject.Inject

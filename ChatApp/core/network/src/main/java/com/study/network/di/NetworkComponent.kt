@@ -10,7 +10,7 @@ import javax.inject.Singleton
 )
 @Singleton
 internal interface NetworkComponent {
-    val networkImpl: NetworkImpl
+    val networkProvider: NetworkProvider
 
     @Component.Factory
     interface Factory {

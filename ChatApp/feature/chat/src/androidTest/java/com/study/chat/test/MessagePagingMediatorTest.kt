@@ -12,8 +12,8 @@ import com.study.chat.data.local.LocalDataSourceProvider
 import com.study.chat.data.local.MessageTestDatabase
 import com.study.chat.data.remote.RemoteDataSourceProvider
 import com.study.chat.di.GeneralDepContainer
-import com.study.chat.shared.data.source.local.LocalMessageDataSource
-import com.study.chat.shared.data.source.remote.RemoteMessageDataSource
+import com.study.chat.common.data.source.local.LocalMessageDataSource
+import com.study.chat.common.data.source.remote.RemoteMessageDataSource
 import com.study.database.dao.MessageDao
 import com.study.database.dao.ReactionDao
 import com.study.database.model.tuple.MessageWithReactionsTuple
@@ -65,7 +65,7 @@ class MessagePagingMediatorTest {
             local = LocalMessageDataSource(
                 messageDao,
                 reactionDao
-            ), remote = RemoteMessageDataSource(remoteProvider.provide(networkDep).zulipApi)
+            ), remote = RemoteMessageDataSource(remoteProvider.provide(networkDep).messagesApi)
         )
         val pagingState = createPagingState()
         val result = mediator.load(LoadType.REFRESH, pagingState)
@@ -79,7 +79,7 @@ class MessagePagingMediatorTest {
     fun loadMessages_NoNetwork() = runTest {
         val mediator = GeneralDepContainer.createMessagePagingMediator(
             local = LocalDataSourceProvider().provide(messageDao, reactionDao),
-            remote = RemoteMessageDataSource(remoteProvider.provide(networkDep).zulipApi)
+            remote = RemoteMessageDataSource(remoteProvider.provide(networkDep).messagesApi)
         )
         val pagingState = createPagingState()
         server.shutdown()

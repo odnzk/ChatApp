@@ -1,7 +1,7 @@
 package com.study.channels.addChannel.presentation.elm
 
 import com.study.channels.addChannel.domain.useCase.AddChannelUseCase
-import com.study.common.extension.toFlow
+import com.study.common.ext.toFlow
 import kotlinx.coroutines.flow.Flow
 import vivid.money.elmslie.core.switcher.Switcher
 import vivid.money.elmslie.coroutines.Actor

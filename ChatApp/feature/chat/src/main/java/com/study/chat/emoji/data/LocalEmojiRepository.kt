@@ -1,7 +1,7 @@
 package com.study.chat.emoji.data
 
 import com.study.chat.emoji.domain.repository.EmojiRepository
-import com.study.chat.shared.domain.model.Emoji
+import com.study.chat.common.domain.model.Emoji
 import javax.inject.Inject
 
 internal class LocalEmojiRepository @Inject constructor() : EmojiRepository {

@@ -23,13 +23,13 @@ import com.study.chat.chat.presentation.model.UiEmoji
 import com.study.chat.chat.presentation.model.UiMessage
 import com.study.chat.chat.presentation.model.UiReaction
 import com.study.chat.chat.presentation.util.mapper.toMessageEmojiViews
-import com.study.common.extension.maxOfThee
-import com.study.components.extension.dp
-import com.study.components.extension.measureFullHeight
-import com.study.components.extension.measureFullWidth
-import com.study.components.extension.measureHeightIfVisible
-import com.study.components.extension.measureWidthIfVisible
-import com.study.components.view.FlexBoxLayout
+import com.study.common.ext.maxOfThee
+import com.study.components.ext.dp
+import com.study.components.ext.measureFullHeight
+import com.study.components.ext.measureFullWidth
+import com.study.components.ext.measureHeightIfVisible
+import com.study.components.ext.measureWidthIfVisible
+import com.study.components.customview.FlexBoxLayout
 import com.study.network.util.toUserUploadsUrl
 import java.lang.Integer.max
 import com.google.android.material.R as MaterialR

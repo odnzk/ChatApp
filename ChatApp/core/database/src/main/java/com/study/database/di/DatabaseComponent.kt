@@ -11,7 +11,7 @@ import javax.inject.Singleton
 @Singleton
 internal interface DatabaseComponent {
 
-    val impl: DatabaseImpl
+    val impl: DatabaseProvider
 
     @Component.Factory
     interface Factory {

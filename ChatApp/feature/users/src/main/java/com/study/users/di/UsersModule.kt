@@ -2,7 +2,7 @@ package com.study.users.di
 
 import com.study.common.di.FeatureScope
 import com.study.common.search.Searcher
-import com.study.components.util.DaggerStoreHolder
+import com.study.components.di.SingletoneStoreHolder
 import com.study.users.domain.model.User
 import com.study.users.presentation.elm.UsersActor
 import com.study.users.presentation.elm.UsersEffect
@@ -24,7 +24,7 @@ internal class UsersModule {
         reducer: UsersReducer,
         actor: UsersActor
     ): StoreHolder<UsersEvent, UsersEffect, UsersState> =
-        DaggerStoreHolder { ElmStoreCompat(UsersState(), reducer, actor) }
+        SingletoneStoreHolder { ElmStoreCompat(UsersState(), reducer, actor) }
 
     @Provides
     @Reusable

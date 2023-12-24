@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.study.chat.chat.presentation.model.UiEmoji
 import com.study.chat.databinding.ItemEmojiBinding
-import com.study.chat.shared.presentation.util.toEmojiString
+import com.study.chat.common.presentation.util.toEmojiString
 
 internal class EmojiViewHolder(
     private val binding: ItemEmojiBinding,

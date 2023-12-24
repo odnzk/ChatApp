@@ -7,14 +7,15 @@ import androidx.fragment.app.testing.launchFragment
 import androidx.fragment.app.testing.launchFragmentInContainer
 import com.study.auth.api.UserAuthRepository
 import com.study.chat.chat.presentation.ChatFragment
-import com.study.chat.shared.di.ChatDep
-import com.study.chat.shared.di.ChatDepStore
+import com.study.chat.common.di.ChatDep
+import com.study.chat.common.di.ChatDepStore
 import com.study.chat.util.TEST_CHANNEL
 import com.study.chat.util.TEST_TOPIC
 import com.study.database.dao.ChannelTopicDao
 import com.study.database.dao.MessageDao
 import com.study.database.dao.ReactionDao
-import com.study.network.ZulipApi
+import com.study.network.api.ChannelsApi
+import com.study.network.api.MessagesApi
 import com.study.ui.NavConstants
 import com.study.ui.R
 import kotlinx.coroutines.CoroutineDispatcher
@@ -24,7 +25,8 @@ import kotlinx.coroutines.flow.flowOf
 private val searchQueryFlow: Flow<String> = flowOf()
 
 internal fun launchChatFragment(
-    zulipApi: ZulipApi,
+    zulipApi: MessagesApi,
+    channelsApi: ChannelsApi,
     reactionDao: ReactionDao,
     messageDao: MessageDao,
     topicDao: ChannelTopicDao,
@@ -34,7 +36,9 @@ internal fun launchChatFragment(
     isUiNeeded: Boolean = true,
 ): FragmentScenario<ChatFragment> {
     ChatDepStore.dep = chatFragmentDep(
-        zulipApi, reactionDao, messageDao, topicDao, userAuthRepository, context, dispatcher
+        zulipApi = zulipApi,
+        channelsApi = channelsApi,
+        reactionDao, messageDao, topicDao, userAuthRepository, context, dispatcher
     )
     val args = bundleOf(
         NavConstants.CHANNEL_ID_KEY to TEST_CHANNEL, NavConstants.TOPIC_TITLE_KEY to TEST_TOPIC
@@ -49,7 +53,8 @@ internal fun launchChatFragment(
 
 
 fun chatFragmentDep(
-    zulipApi: ZulipApi,
+    zulipApi: MessagesApi,
+    channelsApi: ChannelsApi,
     reactionDao: ReactionDao,
     messageDao: MessageDao,
     topicDao: ChannelTopicDao,
@@ -59,7 +64,8 @@ fun chatFragmentDep(
 ) = object : ChatDep {
     override val dispatcher: CoroutineDispatcher = dispatcher
     override val searchFlow: Flow<String> = searchQueryFlow
-    override val zulipApi: ZulipApi = zulipApi
+    override val messagesApi: MessagesApi = zulipApi
+    override val channelsApi: ChannelsApi = channelsApi
     override val messageDao: MessageDao = messageDao
     override val reactionDao: ReactionDao = reactionDao
     override val topicDao: ChannelTopicDao = topicDao

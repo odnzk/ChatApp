@@ -1,7 +1,7 @@
 package com.study.channels.channels.domain.repository
 
 import com.study.channels.channels.domain.model.ChannelTopic
-import com.study.channels.shared.domain.model.Channel
+import com.study.channels.common.domain.model.Channel
 import kotlinx.coroutines.flow.Flow
 
 internal interface ChannelRepository {

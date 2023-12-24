@@ -5,7 +5,7 @@ import com.study.channels.channels.domain.model.ChannelTopic
 import com.study.channels.channels.presentation.model.UiChannel
 import com.study.channels.channels.presentation.model.UiChannelModel
 import com.study.channels.channels.presentation.model.UiChannelTopic
-import com.study.channels.shared.domain.model.Channel
+import com.study.channels.common.domain.model.Channel
 
 private fun Channel.toUiChannel(isCollapsed: Boolean = false): UiChannel =
     UiChannel(

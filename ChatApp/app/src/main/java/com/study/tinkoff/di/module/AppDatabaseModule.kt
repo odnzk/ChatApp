@@ -6,8 +6,8 @@ import com.study.database.dao.ChannelTopicDao
 import com.study.database.dao.MessageDao
 import com.study.database.dao.ReactionDao
 import com.study.database.di.DatabaseDep
-import com.study.database.di.DatabaseImpl
-import com.study.database.di.DatabaseImplFactory
+import com.study.database.di.DatabaseProvider
+import com.study.database.di.DatabaseProviderFactory
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -23,18 +23,18 @@ class AppDatabaseModule {
 
     @Provides
     @Singleton
-    fun providesDatabaseImpl(dep: DatabaseDep): DatabaseImpl = DatabaseImplFactory.create(dep)
+    fun providesDatabaseImpl(dep: DatabaseDep): DatabaseProvider = DatabaseProviderFactory.create(dep)
 
     @Provides
-    fun providesMessageDao(impl: DatabaseImpl): MessageDao = impl.messageDao
+    fun providesMessageDao(impl: DatabaseProvider): MessageDao = impl.messageDao
 
     @Provides
-    fun providesReactionDao(impl: DatabaseImpl): ReactionDao = impl.reactionDao
+    fun providesReactionDao(impl: DatabaseProvider): ReactionDao = impl.reactionDao
 
     @Provides
-    fun providesChannelDao(impl: DatabaseImpl): ChannelDao = impl.channelDao
+    fun providesChannelDao(impl: DatabaseProvider): ChannelDao = impl.channelDao
 
     @Provides
-    fun providesTopicDao(impl: DatabaseImpl): ChannelTopicDao = impl.topicDao
+    fun providesTopicDao(impl: DatabaseProvider): ChannelTopicDao = impl.topicDao
 
 }

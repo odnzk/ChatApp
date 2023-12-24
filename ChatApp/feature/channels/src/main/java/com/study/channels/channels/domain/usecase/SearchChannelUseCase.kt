@@ -1,7 +1,7 @@
 package com.study.channels.channels.domain.usecase
 
 import com.study.channels.channels.domain.repository.ChannelRepository
-import com.study.channels.shared.domain.model.Channel
+import com.study.channels.common.domain.model.Channel
 import com.study.common.search.toSearchFlow
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow

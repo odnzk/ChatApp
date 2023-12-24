@@ -1,8 +1,8 @@
 package com.study.chat.edit.domain.useCase
 
 import com.study.chat.edit.domain.repository.EditMessageRepository
-import com.study.chat.shared.domain.model.NOT_YET_SYNCHRONIZED_ID
-import com.study.chat.shared.domain.model.OutcomeMessage
+import com.study.chat.common.domain.model.NOT_YET_SYNCHRONIZED_ID
+import com.study.chat.common.domain.model.OutcomeMessage
 import com.study.common.validation.Validator
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext

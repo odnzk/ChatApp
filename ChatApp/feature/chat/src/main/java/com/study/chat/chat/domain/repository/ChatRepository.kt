@@ -1,9 +1,9 @@
 package com.study.chat.chat.domain.repository
 
 import androidx.paging.PagingData
-import com.study.chat.shared.domain.model.IncomeMessage
-import com.study.chat.shared.domain.model.OutcomeMessage
-import com.study.chat.shared.domain.model.Reaction
+import com.study.chat.common.domain.model.IncomeMessage
+import com.study.chat.common.domain.model.OutcomeMessage
+import com.study.chat.common.domain.model.Reaction
 import kotlinx.coroutines.flow.Flow
 
 internal interface ChatRepository {

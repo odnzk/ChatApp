@@ -5,6 +5,7 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import com.study.database.model.ReactionEntity.Companion.REACTIONS_TABLE
 
+// todo somehow move to :feature:channels
 @Entity(
     tableName = REACTIONS_TABLE,
     primaryKeys = ["message_id", "emoji_code", "user_id"],

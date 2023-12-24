@@ -6,9 +6,9 @@ import com.study.chat.chat.presentation.model.UiEmoji
 import com.study.chat.chat.presentation.model.UiMessage
 import com.study.chat.chat.presentation.model.UiReaction
 import com.study.chat.chat.presentation.util.view.ReactionView
-import com.study.chat.shared.domain.model.IncomeMessage
-import com.study.chat.shared.domain.model.Reaction
-import com.study.chat.shared.presentation.util.toEmojiString
+import com.study.chat.common.domain.model.IncomeMessage
+import com.study.chat.common.domain.model.Reaction
+import com.study.chat.common.presentation.util.toEmojiString
 
 internal fun IncomeMessage.mapUiReactions(currentUserId: Int): List<UiReaction> =
     reactions.groupBy { it.emoji.code }.map { group ->

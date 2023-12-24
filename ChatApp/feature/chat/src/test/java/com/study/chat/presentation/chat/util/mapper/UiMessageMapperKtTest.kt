@@ -2,9 +2,9 @@ package com.study.chat.presentation.chat.util.mapper
 
 import com.study.chat.chat.presentation.util.mapper.toChatMessage
 import com.study.chat.chat.presentation.util.mapper.toMeMessage
-import com.study.chat.shared.domain.model.Emoji
-import com.study.chat.shared.domain.model.IncomeMessage
-import com.study.chat.shared.domain.model.Reaction
+import com.study.chat.common.domain.model.Emoji
+import com.study.chat.common.domain.model.IncomeMessage
+import com.study.chat.common.domain.model.Reaction
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
 import java.util.Calendar

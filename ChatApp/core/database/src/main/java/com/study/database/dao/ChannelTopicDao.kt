@@ -8,6 +8,7 @@ import com.study.database.model.ChannelTopicEntity
 import com.study.database.model.ChannelTopicEntity.Companion.TOPICS_TABLE
 import kotlinx.coroutines.flow.Flow
 
+// todo somehow move to :feature:channels
 @Dao
 interface ChannelTopicDao {
 

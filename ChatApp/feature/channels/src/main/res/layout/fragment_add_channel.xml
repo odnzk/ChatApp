@@ -28,7 +28,7 @@
         tools:text="@string/error_channel_already_exists"
         tools:textColor="@color/romegranate" />
 
-    <com.study.components.view.InputView
+    <com.study.components.customview.InputView
         android:id="@+id/fragment_add_channel_input_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
