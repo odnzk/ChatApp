@@ -26,7 +26,6 @@ import com.study.chat.chat.presentation.model.UiMessage
 import com.study.chat.chat.presentation.util.delegate.date.DateSeparatorDelegate
 import com.study.chat.chat.presentation.util.delegate.message.MessageDelegate
 import com.study.chat.chat.presentation.util.delegate.topic.TopicSeparatorDelegate
-import com.study.chat.databinding.FragmentChatBinding
 import com.study.chat.common.di.ChatComponentViewModel
 import com.study.chat.common.domain.model.InvalidTopicTitleException
 import com.study.chat.common.presentation.util.navigateToActionsFragment
@@ -34,7 +33,9 @@ import com.study.chat.common.presentation.util.navigateToChannelTopic
 import com.study.chat.common.presentation.util.navigateToEmojiListFragment
 import com.study.chat.common.presentation.util.setupSuggestionsAdapter
 import com.study.chat.common.presentation.util.toErrorMessage
+import com.study.chat.databinding.FragmentChatBinding
 import com.study.common.ext.fastLazy
+import com.study.components.customview.ScreenStateView.ViewState
 import com.study.components.ext.collectFlowSafely
 import com.study.components.ext.delegatesToList
 import com.study.components.ext.safeGetParcelable
@@ -42,9 +43,9 @@ import com.study.components.ext.showErrorSnackbar
 import com.study.components.ext.showSnackbar
 import com.study.components.recycler.SpaceVerticalDividerItemDecorator
 import com.study.components.recycler.delegates.GeneralPaginationAdapterDelegate
-import com.study.components.customview.ScreenStateView.ViewState
 import com.study.ui.NavConstants.CHANNEL_ID_KEY
 import com.study.ui.NavConstants.CHANNEL_TITLE_KEY
+import com.study.ui.NavConstants.TOPIC_COLOR_KEY
 import com.study.ui.NavConstants.TOPIC_TITLE_KEY
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
@@ -63,8 +64,10 @@ internal class ChatFragment : ElmFragment<ChatEvent, ChatEffect, ChatState>() {
         arguments?.getString(CHANNEL_TITLE_KEY) ?: error("Invalid channel title")
     }
     private val topicTitle: String? by fastLazy {
-        val argsTitle = arguments?.getString(TOPIC_TITLE_KEY)
-        if (argsTitle != null && argsTitle != "{$TOPIC_TITLE_KEY}") argsTitle else null
+        arguments?.getString(TOPIC_TITLE_KEY)?.takeIf { title -> title != "{$TOPIC_TITLE_KEY}" }
+    }
+    private val topicColor: Int? by fastLazy {
+        arguments?.getInt(TOPIC_COLOR_KEY)
     }
     private val selectFileLauncher =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
@@ -155,13 +158,11 @@ internal class ChatFragment : ElmFragment<ChatEvent, ChatEffect, ChatState>() {
     }
 
     private fun setupListeners() = with(binding) {
-        fragmentChatViewInputMessage.btnSubmitClickListener = { input ->
-            if (input.isEmpty()) {
-                selectFileLauncher.launch(ALL_CONTENT)
-            } else {
-                val topic = topicTitle ?: fragmentChatEtTopicTitle.text.toString()
-                store.accept(ChatEvent.Ui.SendMessage(input, topic))
-            }
+        fragmentChatViewInputMessage.btnUploadContentListener =
+            { selectFileLauncher.launch(ALL_CONTENT) }
+        fragmentChatViewInputMessage.btnSendMessageClickListener = { input ->
+            val topic = topicTitle ?: fragmentChatEtTopicTitle.text.toString()
+            store.accept(ChatEvent.Ui.SendMessage(input, topic))
         }
         screenStateView.onTryAgainClickListener =
             View.OnClickListener { store.accept(ChatEvent.Ui.Reload) }
@@ -200,9 +201,11 @@ internal class ChatFragment : ElmFragment<ChatEvent, ChatEffect, ChatState>() {
                 adapter = this@ChatFragment.adapter
                 layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true)
             }
+
             if (topicTitle != null) {
                 fragmentChatTvTopicTitle.text = getString(R.string.channel_topic_title, topicTitle)
                 fragmentChatEtTopicTitle.isVisible = false
+                topicColor?.let(fragmentChatTvTopicTitle::setBackgroundColor)
             } else {
                 fragmentChatTvTopicTitle.isVisible = false
             }

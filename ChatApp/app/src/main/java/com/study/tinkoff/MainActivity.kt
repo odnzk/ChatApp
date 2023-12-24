@@ -1,7 +1,6 @@
 package com.study.tinkoff
 
 
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.Menu
 import androidx.appcompat.widget.SearchView
@@ -13,7 +12,6 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.google.android.material.color.MaterialColors
 import com.study.common.ext.fastLazy
 import com.study.tinkoff.databinding.ActivityMainBinding
 import com.study.tinkoff.elm.MainActor
@@ -26,11 +24,9 @@ import vivid.money.elmslie.android.storeholder.LifecycleAwareStoreHolder
 import vivid.money.elmslie.android.storeholder.StoreHolder
 import vivid.money.elmslie.core.store.Store
 import javax.inject.Inject
-import com.google.android.material.R as MaterialR
 import com.study.channels.R as ChannelsR
 import com.study.chat.R as ChatR
 import com.study.profile.R as ProfileR
-import com.study.ui.R as CoreR
 import com.study.users.R as UsersR
 
 class MainActivity : ElmActivity<MainEvent, MainEffect, MainState>() {
@@ -89,14 +85,8 @@ class MainActivity : ElmActivity<MainEvent, MainEffect, MainState>() {
     override fun render(state: MainState) = Unit
 
     private fun setupNavDestinationsListener(navController: NavController) {
-        val accentToolbarColor = ColorDrawable(getColor(CoreR.color.navy_light))
-        val defaultToolbarColor = ColorDrawable(
-            MaterialColors.getColor(
-                this, MaterialR.attr.backgroundColor, getColor(CoreR.color.dark_nero)
-            )
-        )
         navController.addOnDestinationChangedListener { _, destination, arguments ->
-            setupToolbar(destination, defaultToolbarColor, accentToolbarColor)
+            setupToolbar(destination)
             val isBottomNavVisible = when (destination.id) {
                 ProfileR.id.profileFragment ->
                     arguments?.getInt(NavConstants.USER_ID_KEY) == NavConstants.CURRENT_USER_ID_KEY
@@ -107,25 +97,18 @@ class MainActivity : ElmActivity<MainEvent, MainEffect, MainState>() {
         }
     }
 
-    private fun setupToolbar(
-        destination: NavDestination, defaultColor: ColorDrawable, accentColor: ColorDrawable
-    ) {
-        setToolbarColor(defaultColor)
+    private fun setupToolbar(destination: NavDestination) {
         when {
             destination.id == ProfileR.id.profileFragment -> supportActionBar?.hide()
             destination.parent?.id == ChatR.id.chat_graph -> {
-                setToolbarColor(accentColor)
                 supportActionBar?.show()
+                // TODO() hide search icon
             }
+
             else -> {
                 supportActionBar?.show()
             }
         }
-    }
-
-    private fun setToolbarColor(colorDrawable: ColorDrawable) {
-        supportActionBar?.setBackgroundDrawable(colorDrawable)
-        binding.activityMainToolbar.background = colorDrawable
     }
 
     private fun setupNavigation(navController: NavController) {

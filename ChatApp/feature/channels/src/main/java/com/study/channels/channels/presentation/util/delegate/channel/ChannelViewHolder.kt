@@ -3,11 +3,11 @@ package com.study.channels.channels.presentation.util.delegate.channel
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import com.study.channels.R
 import com.study.channels.channels.presentation.model.UiChannel
 import com.study.channels.databinding.ItemChannelBinding
 import com.study.components.recycler.shimmer.ShimmerItem
 import com.study.components.recycler.shimmer.ShimmerItemViewHolder
-import com.study.ui.R as CoreR
 
 internal class ChannelViewHolder(
     private val binding: ItemChannelBinding,
@@ -40,9 +40,9 @@ internal class ChannelViewHolder(
 
     private fun setCollapsedStatusIcon(isCollapsed: Boolean) {
         val icon = if (isCollapsed) {
-            CoreR.drawable.ic_baseline_hide_24
+            R.drawable.ic_baseline_hide_24
         } else {
-            CoreR.drawable.ic_baseline_more_24
+            R.drawable.ic_baseline_more_24
         }
         binding.itemChannelIvBtnShowTopics.setImageResource(icon)
     }

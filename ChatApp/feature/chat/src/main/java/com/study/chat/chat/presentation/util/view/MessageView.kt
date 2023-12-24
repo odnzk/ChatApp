@@ -56,9 +56,9 @@ internal class MessageView @JvmOverloads constructor(
     private val colorAccent = MaterialColors.getColor(
         context,
         androidx.appcompat.R.attr.colorPrimary,
-        context.getColor(CoreResources.color.navy_light)
+        context.getColor(CoreResources.color.purple_light)
     )
-    private val colorDarkAccent = context.getColor(com.study.ui.R.color.navy_dark)
+    private val colorDarkAccent = context.getColor(com.study.ui.R.color.purple_dark)
     private val textBackground = RectF()
     private val textBackgroundCornerRadius = 16f.dp(context).toFloat()
     private var messageType: MessageType = MessageType.CHAT_MESSAGE

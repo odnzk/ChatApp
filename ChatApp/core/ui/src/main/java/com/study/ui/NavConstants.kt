@@ -6,4 +6,6 @@ object NavConstants {
     const val CHANNEL_ID_KEY = "channelId"
     const val CHANNEL_TITLE_KEY = "channelTitle"
     const val TOPIC_TITLE_KEY = "topicTitle"
+    const val TOPIC_COLOR_KEY = "topicColor"
+    const val NO_TOPIC_COLOR = "-1"
 }

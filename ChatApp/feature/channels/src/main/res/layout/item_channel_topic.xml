@@ -6,7 +6,7 @@
     android:orientation="horizontal"
     android:paddingHorizontal="40dp"
     android:paddingVertical="10dp"
-    tools:background="@color/navy_light">
+    tools:background="@color/purple_light">
 
     <TextView
         android:id="@+id/item_channel_topic_tv_name"

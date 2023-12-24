@@ -8,11 +8,6 @@
     android:padding="@dimen/margin_medium"
     android:theme="@style/Theme.ChatApp">
 
-    <View
-        style="@style/BottomSheetHelperView"
-        android:layout_gravity="center"
-        android:layout_marginTop="@dimen/margin_small" />
-
     <androidx.core.widget.ContentLoadingProgressBar
         android:id="@+id/fragment_add_channel_pb_loading"
         style="@style/PrimarySmallProgressBar"
@@ -26,16 +21,29 @@
         android:layout_marginVertical="@dimen/margin_small"
         android:gravity="center"
         tools:text="@string/error_channel_already_exists"
-        tools:textColor="@color/romegranate" />
+        tools:textColor="@color/dark_red" />
 
-    <com.study.components.customview.InputView
-        android:id="@+id/fragment_add_channel_input_view"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/fragment_add_til_channel"
+        style="@style/PrimaryTextInputLayout"
+        android:hint="@string/hint_channel_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_medium"
-        app:hint="@string/hint_channel_title"
-        app:maxLength="50"
-        app:singleLine="true"
-        app:viewBackgroundColor="@android:color/transparent" />
+        app:maxLength="50">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/fragment_add_et_channel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/fragment_add_channel_btn_add_channel"
+        style="@style/PrimaryButton"
+        android:text="@string/content_description_btn_add_channel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_small"
+ />
 
 </LinearLayout>

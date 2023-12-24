@@ -11,7 +11,7 @@
         android:layout_height="@dimen/avatar_size_small"
         android:layout_marginHorizontal="9dp"
         app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.ImageView.Circle"
-        tools:src="@color/navy_light" />
+        tools:src="@color/purple_light" />
 
     <TextView
         android:id="@+id/view_message_tv_user"
@@ -22,7 +22,7 @@
         android:ellipsize="end"
         android:maxLines="1"
         android:textAppearance="@style/TextAppearance.Messenger.Body.Small"
-        android:textColor="@color/navy_light"
+        android:textColor="@color/purple_light"
         tools:text="Darrel Steward" />
 
 

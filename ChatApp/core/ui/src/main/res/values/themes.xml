@@ -2,10 +2,10 @@
 <resources>
 
     <style name="Base.V25.Theme.ChatApp" parent="Theme.MaterialComponents.DayNight.NoActionBar.Bridge">
-        <item name="colorPrimary">@color/navy_light</item>
+        <item name="colorPrimary">@color/purple_light</item>
         <item name="colorPrimaryVariant">@color/white</item>
         <item name="colorOnPrimary">@color/white</item>
-        <item name="colorSecondary">@color/navy_dark</item>
+        <item name="colorSecondary">@color/purple_dark</item>
         <item name="colorSecondaryVariant">@color/white</item>
         <item name="colorOnSecondary">@color/white</item>
         <item name="android:statusBarColor">@color/white</item>
@@ -14,7 +14,7 @@
         <item name="backgroundColor">@color/white</item>
         <item name="android:textColor">@color/black</item>
         <item name="fontFamily">@font/inter_regular</item>
-        <item name="android:windowBackground">@color/gray_mercury</item>
+        <item name="android:windowBackground">@color/white</item>
     </style>
 
     <style name="Theme.ChatApp" parent="Base.Theme.ChatApp" />

@@ -19,17 +19,17 @@ import com.study.channels.channels.presentation.model.UiChannelShimmer
 import com.study.channels.channels.presentation.util.delegate.channel.ChannelDelegate
 import com.study.channels.channels.presentation.util.delegate.topic.ChannelTopicDelegate
 import com.study.channels.channels.presentation.util.mapper.toChannelsList
-import com.study.channels.databinding.FragmentChannelsBinding
 import com.study.channels.common.di.ChannelsComponentViewModel
 import com.study.channels.common.presentation.navigateToChatFragment
 import com.study.channels.common.presentation.toErrorMessage
+import com.study.channels.databinding.FragmentChannelsBinding
 import com.study.common.search.NothingFoundForThisQueryException
+import com.study.components.customview.ScreenStateView.ViewState
 import com.study.components.ext.collectFlowSafely
 import com.study.components.ext.delegatesToList
 import com.study.components.ext.safeGetParcelable
 import com.study.components.ext.showErrorSnackbar
 import com.study.components.recycler.delegates.GeneralAdapterDelegate
-import com.study.components.customview.ScreenStateView.ViewState
 import kotlinx.coroutines.flow.Flow
 import vivid.money.elmslie.android.base.ElmFragment
 import vivid.money.elmslie.android.storeholder.StoreHolder
@@ -124,7 +124,12 @@ internal class ChannelsFragment : ElmFragment<ChannelsEvent, ChannelsEffect, Cha
                     onChannelLongClick = ::navigateToChatFragment
                 ),
                 ChannelTopicDelegate(onTopicClick = { topic ->
-                    navigateToChatFragment(topic.channelId, topic.channelTitle, topic.title)
+                    navigateToChatFragment(
+                        topic.channelId,
+                        channelTitle = topic.channelTitle,
+                        topicTitle = topic.title,
+                        topicColor = topic.backgroundColor
+                    )
                 })
             )
         )

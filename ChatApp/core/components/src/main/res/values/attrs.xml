@@ -4,12 +4,4 @@
         <attr name="line_spacing" format="integer" />
         <attr name="item_spacing" format="integer" />
     </declare-styleable>
-
-    <declare-styleable name="InputView">
-        <attr name="singleLine" format="boolean" />
-        <attr name="enableAddContentState" format="boolean" />
-        <attr name="maxLength" format="integer" />
-        <attr name="hint" format="string" />
-        <attr name="viewBackgroundColor" format="reference" />
-    </declare-styleable>
 </resources>

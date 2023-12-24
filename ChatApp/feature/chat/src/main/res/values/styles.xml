@@ -13,8 +13,8 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">center</item>
-        <item name="android:textColor">@color/gray80</item>
-        <item name="chipBackgroundColor">@color/navy_light</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="chipBackgroundColor">@color/light_gray</item>
     </style>
 
     <style name="ChannelTopicTextView" parent="Widget.AppCompat.TextView">
@@ -36,7 +36,7 @@
     <style name="ChannelTopicItem">
         <item name="android:padding">4dp</item>
         <item name="android:paddingBottom">8dp</item>
-        <item name="android:background">@color/navy_light</item>
+        <item name="android:background">@color/purple_light</item>
     </style>
 
     <style name="ActionTextView">

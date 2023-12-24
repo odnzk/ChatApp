@@ -2,21 +2,25 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="navy_light">#2A9D8F</color>
-    <color name="navy_dark">#03806D</color>
+    <color name="purple_neutral">#A98FE5</color>
+    <color name="purple_light">#8653FF</color>
+    <color name="purple_dark">#5837A5</color>
     <color name="gray7">#121212</color>
     <color name="darkest_nero">#1E1E1E</color>
     <color name="dark_nero">#1C1C1C</color>
     <color name="black07">#070707</color>
     <color name="gray57">#919191</color>
-    <color name="gray80">#CCCCCC</color>
+    <color name="light_gray">#CCCCCC</color>
+
+<!--    todo delete-->
     <color name="gray_mercury">#E3EAE9</color>
+
     <color name="gray_mercury_darker">#94B8B6</color>
     <color name="gray60">#999999</color>
     <color name="davys_grey">#555555</color>
     <color name="charcoal">#464646</color>
-    <color name="apple_green">#4AB54D</color>
-    <color name="romegranate">#FF774C</color>
+    <color name="apple_green">#87F68A</color>
+    <color name="romegranate">#F88C6A</color>
     <color name="nero">#282828</color>
-    <color name="dark_red">#FF1100</color>
+    <color name="dark_red">#EA655C</color>
 </resources>

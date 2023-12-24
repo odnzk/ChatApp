@@ -10,5 +10,5 @@ enum class UiUserPresenceStatus(@StringRes val titleResId: Int, @ColorRes val co
     ACTIVE(R.string.user_status_active, CoreR.color.apple_green),
     IDLE(R.string.user_status_idle, CoreR.color.romegranate),
     OFFLINE(R.string.user_status_offline, CoreR.color.dark_red),
-    BOT(R.string.user_status_bot, CoreR.color.navy_light)
+    BOT(R.string.user_status_bot, CoreR.color.purple_light)
 }

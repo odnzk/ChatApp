@@ -77,7 +77,8 @@ internal class AddChannelFragment :
         with(binding) {
             fragmentAddChannelTvError.isVisible = false
             fragmentAddChannelPbLoading.hide()
-            fragmentAddChannelInputView.btnSubmitClickListener = { channelTitle ->
+            fragmentAddChannelBtnAddChannel.setOnClickListener {
+                val channelTitle = fragmentAddEtChannel.text?.toString() ?: return@setOnClickListener
                 storeHolder.store.accept(AddChannelEvent.Ui.AddChannel(channelTitle))
             }
         }

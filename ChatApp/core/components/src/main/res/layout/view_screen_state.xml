@@ -8,6 +8,7 @@
     <androidx.core.widget.ContentLoadingProgressBar
         android:id="@+id/view_screen_state_pb_loading"
         style="?android:attr/progressBarStyleLarge"
+        android:indeterminateTint="@color/purple_light"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -22,7 +23,7 @@
         android:scaleType="fitCenter"
         app:tint="@color/gray57"
         tools:src="@drawable/ic_no_connection"
-        tools:tint="@color/gray80" />
+        tools:tint="@color/light_gray" />
 
     <TextView
         android:id="@+id/view_screen_state_tv_error"
@@ -33,7 +34,7 @@
         android:maxLines="1"
         android:textAppearance="@style/TextAppearance.ChatApp.Body.Large"
         tools:text="@string/error_connection_lost"
-        tools:textColor="@color/gray80" />
+        tools:textColor="@color/light_gray" />
 
     <TextView
         android:id="@+id/view_screen_state_tv_error_description"
@@ -45,11 +46,12 @@
         android:maxWidth="@dimen/screen_state_view_max_width"
         android:textAppearance="@style/TextAppearance.Messenger.Body.Small"
         tools:text="@string/error_description_connection_lost"
-        tools:textColor="@color/gray80" />
+        tools:textColor="@color/light_gray" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/view_screen_state_btn_try_again"
-        style="@style/TryAgainButton"
+        style="@style/PrimaryButton"
+        android:text="@string/btn_try_again"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"

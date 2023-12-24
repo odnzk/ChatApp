@@ -7,10 +7,6 @@
     android:orientation="vertical"
     android:theme="@style/Theme.ChatApp">
 
-    <View
-        style="@style/BottomSheetHelperView"
-        android:layout_gravity="center" />
-
     <androidx.core.widget.ContentLoadingProgressBar
         android:id="@+id/bottom_sheet_pb_loading"
         style="@style/PrimarySmallProgressBar"

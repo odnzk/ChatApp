@@ -110,6 +110,6 @@ internal class ReactionView @JvmOverloads constructor(
         private const val ROUND_CORNERS_SIZE = 32f
         private const val DEFAULT_EMOJI_COUNT = 0
         private const val TEXT_SIZE = 14f
-        private const val BLEND_COEFFICIENT = 0.3f
+        private const val BLEND_COEFFICIENT = 0.2f
     }
 }

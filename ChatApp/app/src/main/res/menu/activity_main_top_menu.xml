@@ -7,7 +7,7 @@
         android:icon="@drawable/ic_baseline_search_24"
         android:title="@string/default_search_hint"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
-        app:iconTint="@color/white"
+        app:iconTint="@color/purple_light"
         app:showAsAction="always|collapseActionView" />
 
 </menu>

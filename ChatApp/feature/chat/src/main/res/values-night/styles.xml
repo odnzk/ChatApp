@@ -5,14 +5,14 @@
         <item name="android:background">@color/dark_nero</item>
         <item name="android:padding">@dimen/paddings_medium</item>
         <item name="android:textAlignment">center</item>
-        <item name="android:textColor">@color/gray80</item>
+        <item name="android:textColor">@color/light_gray</item>
         <item name="android:textAppearance">@style/TextAppearance.ChatApp.Title.Small</item>
     </style>
 
     <style name="MessageDateChip" parent="ShapeAppearanceOverlay.Material3.Chip">
         <item name="android:gravity">center</item>
-        <item name="android:textColor">@color/gray80</item>
-        <item name="chipBackgroundColor">@color/black07</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="chipBackgroundColor">@color/light_gray</item>
     </style>
 
     <style name="ChannelTopicTextView" parent="Widget.AppCompat.TextView">
@@ -40,8 +40,8 @@
     <style name="ActionTextView">
         <item name="android:drawablePadding">6dp</item>
         <item name="android:padding">@dimen/margin_small</item>
-        <item name="android:drawableTint">@color/gray80</item>
-        <item name="android:textColor">@color/gray80</item>
+        <item name="android:drawableTint">@color/light_gray</item>
+        <item name="android:textColor">@color/light_gray</item>
         <item name="android:textAppearance">@style/TextAppearance.ChatApp.Body</item>
     </style>
 

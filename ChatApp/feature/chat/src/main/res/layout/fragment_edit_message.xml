@@ -4,25 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingHorizontal="@dimen/paddings_medium"
+    android:padding="@dimen/margin_medium"
     android:theme="@style/Base.Theme.ChatApp">
 
-    <View
-        android:id="@+id/fragment_edit_helper_view"
-        style="@style/BottomSheetHelperView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
+<!--    todo use when creating channel?-->
     <AutoCompleteTextView
         android:id="@+id/fragment_edit_et_topic"
         style="@style/ChannelTopicAutoCompleteTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/bottom_sheet_margin_top"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/fragment_edit_helper_view"
         tools:ignore="LabelFor" />
 
     <com.google.android.material.textfield.TextInputLayout

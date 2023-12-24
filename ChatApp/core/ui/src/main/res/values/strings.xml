@@ -14,6 +14,6 @@
     <string name="error_not_found">Nothing was found</string>
     <string name="error_description_not_found">It looks like nothing was found for this query</string>
 
-    <string name="deeplink_chat" translatable="false">chatapp://com.study.chatapp/chatFragment/{channelId}&amp;{channelTitle}&amp;{topicTitle}</string>
+    <string name="deeplink_chat" translatable="false">chatapp://com.study.chatapp/chatFragment/{channelId}&amp;{channelTitle}&amp;{topicTitle}&amp;{topicColor}</string>
     <string name="deeplink_user_profile" translatable="false">chatapp://com.study.chatapp/profileFragment/{userId}</string>
 </resources>

@@ -19,6 +19,9 @@
         <item name="boxBackgroundColor">@color/nero</item>
         <item name="boxCornerRadiusTopEnd">@dimen/text_input_layout_corner_radius</item>
         <item name="boxCornerRadiusTopStart">@dimen/text_input_layout_corner_radius</item>
+        <item name="android:textColorHint">@color/white</item>
+        <item name="boxStrokeWidth">0dp</item>
+        <item name="boxStrokeWidthFocused">0dp</item>
     </style>
 
     <style name="BaseBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">

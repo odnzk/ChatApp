@@ -24,6 +24,11 @@
             android:defaultValue="@null"
             app:argType="string"
             app:nullable="true" />
+        <argument
+            android:name="topicColor"
+            android:defaultValue="-1"
+            app:argType="integer"
+            app:nullable="false"/>
         <action
             android:id="@+id/action_chatFragment_self"
             app:destination="@id/chatFragment" />
