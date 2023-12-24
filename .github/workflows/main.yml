@@ -1,0 +1,23 @@
+name: PR_unit_tests
+
+on:
+  # Triggers the workflow on push or pull request events but only for the "master" branch
+  pull_request:
+    branches: [ "main" ]
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  Unit-test:
+    name: Run unit tests on PR in master
+    runs-on: ubuntu-20.04
+
+    steps:
+      # выкачивает репозиторий и встаёт на нужный коммит
+      - uses: actions/checkout@v2
+      # Java 8 environment setup
+      - uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+      - name: Run unit tests
+        run: ./gradlew test
