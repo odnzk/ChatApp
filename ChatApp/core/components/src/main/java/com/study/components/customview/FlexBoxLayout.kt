@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.util.AttributeSet
 import android.view.View.OnClickListener
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.core.content.withStyledAttributes
 import androidx.core.view.children
 import androidx.core.view.isVisible
@@ -28,7 +29,7 @@ class FlexBoxLayout @JvmOverloads constructor(
         )
         setBackgroundColor(
             MaterialColors.getColor(
-                context, MaterialR.attr.backgroundColor, context.getColor(CoreR.color.dark_nero)
+                context, MaterialR.attr.backgroundColor, ContextCompat.getColor(context, CoreR.color.dark_nero)
             )
         )
         setImageResource(CoreR.drawable.ic_baseline_add_24)

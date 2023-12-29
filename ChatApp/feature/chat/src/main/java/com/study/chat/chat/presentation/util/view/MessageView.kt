@@ -6,11 +6,14 @@ import android.graphics.LinearGradient
 import android.graphics.Paint
 import android.graphics.RectF
 import android.graphics.Shader
+import android.os.Build
 import android.util.AttributeSet
 import android.view.View.OnClickListener
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
 import androidx.core.content.withStyledAttributes
 import androidx.core.view.isVisible
 import androidx.core.view.marginLeft
@@ -36,6 +39,7 @@ import com.google.android.material.R as MaterialR
 import com.study.ui.R as CoreResources
 
 
+@RequiresApi(Build.VERSION_CODES.LOLLIPOP)
 internal class MessageView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0, defStyleRes: Int = 0
 ) : ViewGroup(context, attrs, defStyleAttr, defStyleRes) {
@@ -51,7 +55,7 @@ internal class MessageView @JvmOverloads constructor(
     private val colorDark = MaterialColors.getColor(
         context,
         MaterialR.attr.backgroundColor,
-        context.getColor(CoreResources.color.dark_nero)
+        ContextCompat.getColor(context, CoreResources.color.dark_nero)
     )
     private val colorAccent = MaterialColors.getColor(
         context,
@@ -113,6 +117,7 @@ internal class MessageView @JvmOverloads constructor(
             MessageType.ME_MESSAGE -> {
                 measureMeMessage(allowedWidthSpec, widthMeasureSpec, heightMeasureSpec)
             }
+
             MessageType.CHAT_MESSAGE -> measureChatMessage(
                 allowedWidthSpec, widthMeasureSpec, heightMeasureSpec
             )
@@ -128,8 +133,8 @@ internal class MessageView @JvmOverloads constructor(
         }
     }
 
-    override fun dispatchDraw(canvas: Canvas?) {
-        canvas?.drawRoundRect(
+    override fun dispatchDraw(canvas: Canvas) {
+        canvas.drawRoundRect(
             textBackground,
             textBackgroundCornerRadius,
             textBackgroundCornerRadius,
@@ -357,6 +362,7 @@ internal class MessageView @JvmOverloads constructor(
                     Shader.TileMode.MIRROR
                 )
             }
+
             MessageType.CHAT_MESSAGE -> {
                 val offsetX = (paddingLeft + measureFullWidth(ivAvatar)).toFloat()
                 val chatContentWidth = max(measureFullWidth(tvSender), contentWidth)

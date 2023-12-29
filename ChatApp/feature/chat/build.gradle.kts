@@ -9,19 +9,18 @@ plugins {
 
 android {
     namespace = "com.study.chat"
-    compileSdk = 33
+    compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
+        minSdk = libs.versions.minSdk.get().toInt()
         testInstrumentationRunnerArguments += mapOf("clearPackageData" to "true")
-        minSdk = 24
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
     testOptions {
         execution = "ANDROIDX_TEST_ORCHESTRATOR"
     }
-    @Suppress("UnstableApiUsage")
+
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -31,14 +30,14 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-    kotlinOptions {
-        jvmTarget = "1.8"
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     buildFeatures {
         viewBinding = true
+    }
+    kotlinOptions {
+        jvmTarget = libs.versions.kotlinCompileOptions.jvmTarget.get()
     }
 }
 

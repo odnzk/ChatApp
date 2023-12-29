@@ -1,6 +1,7 @@
 package com.study.components.recycler.shimmer
 
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.core.view.children
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
@@ -19,11 +20,13 @@ import com.google.android.material.R as MaterialR
  */
 abstract class ShimmerItemViewHolder<T : Any>(private val binding: ViewBinding) :
     RecyclerView.ViewHolder(binding.root) {
-    protected open val shimmerBackgroundColor: Int = itemView.context.let {
-        MaterialColors.getColor(it, MaterialR.attr.backgroundColor, it.getColor(R.color.dark_nero))
-    }
+    protected open val shimmerBackgroundColor: Int = MaterialColors.getColor(
+        itemView.context, MaterialR.attr.backgroundColor,
+        ContextCompat.getColor(itemView.context, R.color.dark_nero)
+    )
+
     protected open val transparentColor: Int =
-        itemView.context.getColor((android.R.color.transparent))
+        ContextCompat.getColor(itemView.context, android.R.color.transparent)
 
     /**
      * Displays the content represented by the data object.

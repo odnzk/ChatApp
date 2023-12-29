@@ -8,6 +8,7 @@ import android.graphics.Path
 import android.graphics.Region
 import android.os.Build
 import android.util.AttributeSet
+import androidx.core.content.ContextCompat
 import com.google.android.material.R
 import com.google.android.material.color.MaterialColors
 import com.google.android.material.imageview.ShapeableImageView
@@ -53,8 +54,8 @@ class AvatarImageView @JvmOverloads constructor(
         circleTop = measuredHeight - circleRadius
     }
 
-    override fun onDraw(canvas: Canvas?) {
-        canvas?.save()
+    override fun onDraw(canvas: Canvas) {
+        canvas.save()
         subtractionCirclePath.rewind()
         subtractionCirclePath.addCircle(
             circleStart,
@@ -63,18 +64,17 @@ class AvatarImageView @JvmOverloads constructor(
             Path.Direction.CCW
         )
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-            canvas?.clipPath(subtractionCirclePath, Region.Op.DIFFERENCE)
+            canvas.clipPath(subtractionCirclePath, Region.Op.DIFFERENCE)
         } else {
-            canvas?.clipOutPath(subtractionCirclePath)
+            canvas.clipOutPath(subtractionCirclePath)
         }
         super.onDraw(canvas)
-        canvas?.restore()
-        canvas?.drawCircle(circleStart, circleTop, circleRadius, circlePaint)
+        canvas.restore()
+        canvas.drawCircle(circleStart, circleTop, circleRadius, circlePaint)
     }
 
-    private fun getColor(status: UiUserPresenceStatus): Int {
-        return context.getColor(status.colorResId)
-    }
+    private fun getColor(status: UiUserPresenceStatus): Int =
+        ContextCompat.getColor(context, status.colorResId)
 
     companion object {
         private const val CIRCLE_SIZE_DIVIDER = 8

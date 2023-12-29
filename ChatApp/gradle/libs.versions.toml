@@ -1,14 +1,18 @@
 [versions]
 # Project
 android_gradle_plugin = "8.2.0"
-kotlin = "1.8.0"
+kotlin = "1.9.10"
+minSdk="26"
+compileSdk="34"
+targetSdk="34"
+kotlinCompileOptions_jvmTarget="17"
 
 # AndroidX
-core = "1.9.0"
+core = "1.12.0"
 appcompat = "1.6.1"
-material = "1.8.0"
+material = "1.11.0"
 constraint = "2.1.4"
-fragments = "1.5.5"
+fragments = "1.6.2"
 
 # Test
 test_junit = "4.13.2"
@@ -17,33 +21,33 @@ test_runner = "1.5.2"
 test_orhestrator = "1.4.2"
 test_core = "1.5.0"
 test_arch = "2.2.0"
-kaspresso = "1.5.1"
+kaspresso = "1.5.3"
 test_monitor = "1.6.1"
 
 #Navigation
-navigation = "2.5.3"
+navigation = "2.7.6"
 
 #Network
 retrofit = "2.9.0"
-okHttp = "4.10.0"
-kotlinx_serialization = "0.8.0"
-kotlinx_serialization_gson = "1.5.0"
-coil = "2.3.0"
+okHttp = "4.12.0"
+kotlinx_serialization = "1.0.0"
+kotlinx_serialization_gson = "1.6.2"
+coil = "2.5.0"
 
 # Coroutines
-coroutines = "1.6.4"
+coroutines = "1.7.3"
 
 # DI: Dagger
-dagger = "2.45"
+dagger = "2.50"
 
 # MVI
 elmslie = "2.1.0"
 
 # Database
-room = "2.5.1"
+room = "2.6.1"
 
 # Additional
-pagination = "3.1.1"
+pagination = "3.2.1"
 leak_canary = "2.10"
 timber = "5.0.1"
 datastore = "1.0.0"

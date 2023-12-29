@@ -14,19 +14,18 @@ plugins {
 
 android {
     namespace = "com.study.tinkoff"
-    compileSdk = 33
+    compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
         applicationId = "com.study.tinkoff"
-        minSdk = 25
-        targetSdk = 33
+        minSdk = libs.versions.minSdk.get().toInt()
+        targetSdk = libs.versions.targetSdk.get().toInt()
         versionCode = 1
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    @Suppress("UnstableApiUsage")
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -41,14 +40,17 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
         jvmTarget = "11"
     }
     buildFeatures {
         viewBinding = true
+    }
+    kotlinOptions {
+        jvmTarget = libs.versions.kotlinCompileOptions.jvmTarget.get()
     }
 }
 
