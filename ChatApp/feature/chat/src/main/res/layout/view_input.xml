@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:theme="@style/Theme.ChatApp"
-    tools:parentTag="com.study.chat.InputView">
+    tools:parentTag="com.study.chat.chat.presentation.util.view.InputView">
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/view_input_til_message"

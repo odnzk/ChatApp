@@ -1,4 +1,4 @@
-package com.study.chat
+package com.study.chat.chat.presentation.util.view
 
 import android.content.Context
 import android.text.InputFilter
@@ -10,6 +10,7 @@ import androidx.core.widget.addTextChangedListener
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import com.study.chat.R
 import com.study.components.ext.hideKeyboard
 import com.study.ui.R as CoreR
 

@@ -37,7 +37,7 @@
         app:layout_constraintStart_toStartOf="parent"
         tools:ignore="LabelFor" />
 
-    <com.study.chat.InputView
+    <com.study.chat.chat.presentation.util.view.InputView
         android:id="@+id/fragment_chat_view_input_message"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

@@ -2,6 +2,7 @@ package com.study.components.customview
 
 import android.content.Context
 import android.graphics.Canvas
+import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Path
 import android.graphics.Region
@@ -27,9 +28,8 @@ class AvatarImageView @JvmOverloads constructor(
     private val offlineColor = getColor(UiUserPresenceStatus.OFFLINE)
     private val botColor = getColor(UiUserPresenceStatus.BOT)
     private var circlePaint: Paint = Paint()
-    private val initColor = MaterialColors.getColor(
-        context, R.attr.backgroundColor, context.getColor(com.study.ui.R.color.dark_nero)
-    )
+    private val initColor =
+        MaterialColors.getColor(context, R.attr.backgroundColor, Color.TRANSPARENT)
     var status: UiUserPresenceStatus? = null
         set(value) {
             field = value
@@ -77,7 +77,7 @@ class AvatarImageView @JvmOverloads constructor(
     }
 
     companion object {
-        private const val CIRCLE_SIZE_DIVIDER = 7
+        private const val CIRCLE_SIZE_DIVIDER = 8
         private const val SUBTRACTION_CIRCLE_SIZE_COEFF = 1.4f
     }
 }

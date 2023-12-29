@@ -12,10 +12,10 @@ android {
     compileSdk = 33
 
     defaultConfig {
+        testInstrumentationRunnerArguments += mapOf("clearPackageData" to "true")
         minSdk = 24
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        testInstrumentationRunnerArguments(mapOf("clearPackageData" to "true"))
         consumerProguardFiles("consumer-rules.pro")
     }
     testOptions {

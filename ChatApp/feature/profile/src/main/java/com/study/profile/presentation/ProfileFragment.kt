@@ -86,6 +86,7 @@ internal class ProfileFragment : ElmFragment<ProfileEvent, ProfileEffect, Profil
         } else if (user.isBot) {
             fragmentProfileIvAvatar.setImageResource(CoreR.drawable.ic_baseline_bot_24)
         }
+        fragmentProfileIvAvatar.status = user.presence
         fragmentProfileTvUsername.text = user.username
     }
 

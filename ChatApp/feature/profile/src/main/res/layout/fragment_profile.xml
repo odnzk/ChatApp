@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginHorizontal="@dimen/margin_medium"
     android:theme="@style/Theme.ChatApp">
 
     <androidx.constraintlayout.widget.Group
@@ -36,7 +37,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.imageview.ShapeableImageView
+    <com.study.components.customview.AvatarImageView
         android:id="@+id/fragment_profile_iv_avatar"
         android:layout_width="@dimen/avatar_size_large"
         android:layout_height="@dimen/avatar_size_large"
@@ -45,22 +46,33 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/fragment_profile_tv_toolbar"
         app:layout_constraintVertical_bias=".4"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.ImageView.Circle"
         app:layout_constraintVertical_chainStyle="packed"
-        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.ImageView.RoundCorners" />
+        tools:src="@tools:sample/avatars" />
 
     <TextView
         android:id="@+id/fragment_profile_tv_username"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/margin_medium"
         android:layout_marginTop="16dp"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.ChatApp.Title.Large"
-        app:layout_constraintBottom_toTopOf="@id/fragment_profile_tv_is_online"
+        app:layout_constraintBottom_toTopOf="@id/fragment_profile_tv_email"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/fragment_profile_iv_avatar"
         tools:text="Darrel Steward" />
+
+    <TextView
+        android:id="@+id/fragment_profile_tv_email"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.ChatApp.Body"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="user8231739823@gmail.com"
+        app:layout_constraintTop_toBottomOf="@id/fragment_profile_tv_username"
+        app:layout_constraintBottom_toTopOf="@id/fragment_profile_tv_is_online"/>
 
     <TextView
         android:id="@+id/fragment_profile_tv_is_online"
@@ -68,15 +80,17 @@
         android:layout_height="wrap_content"
         android:textAppearance="@style/TextAppearance.ChatApp.Body"
         android:textColor="@color/apple_green"
+        android:textAllCaps="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/fragment_profile_tv_username"
+        app:layout_constraintTop_toBottomOf="@id/fragment_profile_tv_email"
         tools:text="online" />
 
     <com.study.components.customview.ScreenStateView
         android:id="@+id/screen_state_view"
         android:layout_width="wrap_content"
+        tools:visibility="gone"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
