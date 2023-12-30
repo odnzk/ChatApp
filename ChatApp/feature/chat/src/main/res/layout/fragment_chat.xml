@@ -7,6 +7,16 @@
     android:orientation="vertical"
     android:theme="@style/Theme.ChatApp">
 
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/fragment_chat_search_view"
+        style="@style/PrimarySearchView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:queryHint="@string/fragment_chat_search_hint" />
+
     <TextView
         android:id="@+id/fragment_chat_tv_topic_title"
         style="@style/ChannelTopicTitleTextView"
@@ -14,7 +24,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/fragment_chat_search_view"
         tools:text="Topic: #general" />
 
     <androidx.recyclerview.widget.RecyclerView

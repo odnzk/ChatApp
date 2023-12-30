@@ -2,8 +2,9 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="purple_neutral">#A98FE5</color>
-    <color name="purple_light">#8653FF</color>
+    <color name="purple_neutral">#6C71DC</color>
+    <!--    <color name="purple_light">#8653FF</color>-->
+    <color name="purple_light">#5C4DE8</color>
     <color name="purple_dark">#5837A5</color>
     <color name="gray7">#121212</color>
     <color name="darkest_nero">#1E1E1E</color>
@@ -12,7 +13,7 @@
     <color name="gray57">#919191</color>
     <color name="light_gray">#CCCCCC</color>
 
-<!--    todo delete-->
+    <!--    todo delete-->
     <color name="gray_mercury">#E3EAE9</color>
 
     <color name="gray_mercury_darker">#94B8B6</color>

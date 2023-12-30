@@ -23,21 +23,21 @@
         <item name="android:textSize">32sp</item>
         <item name="fontWeight">500</item>
         <item name="lineHeight">38sp</item>
-        <item name="fontFamily">@font/inter_medium</item>
+        <item name="android:fontFamily">@font/satoshi_bold</item>
     </style>
 
     <style name="TextAppearance.ChatApp.Title" parent="TextAppearance.AppCompat.Large">
         <item name="android:textSize">21sp</item>
         <item name="fontWeight">400</item>
-        <item name="fontFamily">@font/inter_medium</item>
         <item name="lineHeight">18sp</item>
+        <item name="android:fontFamily">@font/satoshi_bold</item>
     </style>
 
     <style name="TextAppearance.ChatApp.Title.Small" parent="TextAppearance.AppCompat.Medium">
         <item name="android:textSize">18sp</item>
         <item name="fontWeight">400</item>
         <item name="lineHeight">26sp</item>
-        <item name="fontFamily">@font/inter_medium</item>
+        <item name="android:fontFamily">@font/satoshi_bold</item>
     </style>
 
 </resources>

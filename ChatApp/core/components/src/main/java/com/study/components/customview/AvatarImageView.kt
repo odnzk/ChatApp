@@ -5,12 +5,8 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Path
-import android.graphics.Region
-import android.os.Build
 import android.util.AttributeSet
 import androidx.core.content.ContextCompat
-import com.google.android.material.R
-import com.google.android.material.color.MaterialColors
 import com.google.android.material.imageview.ShapeableImageView
 import com.study.components.model.UiUserPresenceStatus
 import java.lang.Integer.min
@@ -28,9 +24,10 @@ class AvatarImageView @JvmOverloads constructor(
     private val idleColor = getColor(UiUserPresenceStatus.IDLE)
     private val offlineColor = getColor(UiUserPresenceStatus.OFFLINE)
     private val botColor = getColor(UiUserPresenceStatus.BOT)
-    private var circlePaint: Paint = Paint()
-    private val initColor =
-        MaterialColors.getColor(context, R.attr.backgroundColor, Color.TRANSPARENT)
+    private var circlePaint: Paint = Paint().apply {
+        color = initColor
+    }
+    private val initColor = Color.TRANSPARENT
     var status: UiUserPresenceStatus? = null
         set(value) {
             field = value
@@ -63,11 +60,7 @@ class AvatarImageView @JvmOverloads constructor(
             subtractionCircleRadius,
             Path.Direction.CCW
         )
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-            canvas.clipPath(subtractionCirclePath, Region.Op.DIFFERENCE)
-        } else {
-            canvas.clipOutPath(subtractionCirclePath)
-        }
+        canvas.clipOutPath(subtractionCirclePath)
         super.onDraw(canvas)
         canvas.restore()
         canvas.drawCircle(circleStart, circleTop, circleRadius, circlePaint)

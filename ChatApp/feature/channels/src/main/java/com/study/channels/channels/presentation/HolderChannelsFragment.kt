@@ -4,13 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import com.google.android.material.tabs.TabLayoutMediator
 import com.study.channels.R
 import com.study.channels.channels.presentation.util.pager.ChannelFragmentFactory
-import com.study.channels.databinding.FragmentChannelsHolderBinding
-import com.study.channels.common.presentation.navigateToAddChannel
 import com.study.channels.channels.presentation.util.pager.PagerAdapter
+import com.study.channels.common.presentation.navigateToAddChannel
+import com.study.channels.databinding.FragmentChannelsHolderBinding
 
 internal class HolderChannelsFragment : Fragment() {
     private var _binding: FragmentChannelsHolderBinding? = null
@@ -56,6 +57,20 @@ internal class HolderChannelsFragment : Fragment() {
             }
             pagerMediator?.attach()
             fragmentChannelsBtnAddChannel.setOnClickListener { navigateToAddChannel() }
+            fragmentChannelsHolderSearchView.setOnQueryTextListener(object :
+                SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    // todo
+//                    query?.let { store.accept(MainEvent.Ui.Search(query)) }
+                    return false
+                }
+
+                override fun onQueryTextChange(query: String?): Boolean {
+                    // todo
+//                    query?.let { store.accept(MainEvent.Ui.Search(query)) }
+                    return false
+                }
+            })
         }
     }
 }

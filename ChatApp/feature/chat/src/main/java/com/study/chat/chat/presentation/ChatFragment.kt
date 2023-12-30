@@ -6,11 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.fragment.app.clearFragmentResultListener
 import androidx.fragment.app.setFragmentResultListener
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
 import androidx.lifecycle.lifecycleScope
@@ -36,7 +35,6 @@ import com.study.chat.common.presentation.util.toErrorMessage
 import com.study.chat.databinding.FragmentChatBinding
 import com.study.common.ext.fastLazy
 import com.study.components.customview.ScreenStateView.ViewState
-import com.study.components.ext.collectFlowSafely
 import com.study.components.ext.delegatesToList
 import com.study.components.ext.safeGetParcelable
 import com.study.components.ext.showErrorSnackbar
@@ -47,7 +45,6 @@ import com.study.ui.NavConstants.CHANNEL_ID_KEY
 import com.study.ui.NavConstants.CHANNEL_TITLE_KEY
 import com.study.ui.NavConstants.TOPIC_COLOR_KEY
 import com.study.ui.NavConstants.TOPIC_TITLE_KEY
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import vivid.money.elmslie.android.base.ElmFragment
 import vivid.money.elmslie.android.storeholder.StoreHolder
@@ -85,9 +82,6 @@ internal class ChatFragment : ElmFragment<ChatEvent, ChatEffect, ChatState>() {
 
     @Inject
     lateinit var chatStore: StoreHolder<ChatEvent, ChatEffect, ChatState>
-
-    @Inject
-    lateinit var searchFlow: Flow<String>
 
     override fun onAttach(context: Context) {
         ViewModelProvider(this).get<ChatComponentViewModel>().chatComponent.inject(this)
@@ -210,9 +204,6 @@ internal class ChatFragment : ElmFragment<ChatEvent, ChatEffect, ChatState>() {
                 fragmentChatTvTopicTitle.isVisible = false
             }
         }
-        (activity as? AppCompatActivity)?.supportActionBar?.let {
-            it.title = getString(R.string.channel_title, channelTitle)
-        }
     }
 
     private fun initDelegates() {
@@ -237,9 +228,19 @@ internal class ChatFragment : ElmFragment<ChatEvent, ChatEffect, ChatState>() {
     }
 
     private fun observeSearchQuery() {
-        collectFlowSafely(searchFlow, Lifecycle.State.RESUMED) {
-            store.accept(ChatEvent.Ui.Search(it))
-        }
+        binding.fragmentChatSearchView.setOnQueryTextListener(object :
+            SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                store.accept(ChatEvent.Ui.Search(query.orEmpty()))
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                store.accept(ChatEvent.Ui.Search(newText.orEmpty()))
+                return false
+            }
+
+        })
     }
 
     private fun selectEmoji(message: UiMessage) {

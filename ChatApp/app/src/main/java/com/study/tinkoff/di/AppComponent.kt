@@ -10,7 +10,6 @@ import com.study.network.di.NetworkDep
 import com.study.profile.di.ProfileDep
 import com.study.tinkoff.MainActivity
 import com.study.tinkoff.di.module.AppAuthModule
-import com.study.tinkoff.di.module.AppBindsModule
 import com.study.tinkoff.di.module.AppDatabaseModule
 import com.study.tinkoff.di.module.AppModule
 import com.study.tinkoff.di.module.AppNetworkModule
@@ -23,7 +22,6 @@ import javax.inject.Singleton
 @Component(
     modules = [
         AppModule::class,
-        AppBindsModule::class,
         AppNetworkModule::class,
         AppAuthModule::class,
         AppDatabaseModule::class

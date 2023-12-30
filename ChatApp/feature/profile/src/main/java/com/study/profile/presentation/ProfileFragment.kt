@@ -9,7 +9,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
-import androidx.navigation.fragment.findNavController
 import coil.load
 import com.study.common.ext.fastLazy
 import com.study.components.customview.ScreenStateView.ViewState
@@ -77,10 +76,13 @@ internal class ProfileFragment : ElmFragment<ProfileEvent, ProfileEffect, Profil
     }
 
     private fun displayUser(user: UiUserDetailed) = with(binding) {
-        fragmentProfileTvIsOnline.run {
-            text = getString(user.presence.titleResId).lowercase()
-            setTextColor(ContextCompat.getColor(context, user.presence.colorResId))
-        }
+        fragmentProfileTvIsOnline.text = getString(user.presence.titleResId).lowercase()
+        fragmentProfileTvIsOnline.setTextColor(
+            ContextCompat.getColor(
+                requireContext(),
+                user.presence.colorResId
+            )
+        )
         if (user.avatarUrl != null) {
             fragmentProfileIvAvatar.load(user.avatarUrl)
         } else if (user.isBot) {
@@ -88,15 +90,15 @@ internal class ProfileFragment : ElmFragment<ProfileEvent, ProfileEffect, Profil
         }
         fragmentProfileIvAvatar.status = user.presence
         fragmentProfileTvUsername.text = user.username
+        fragmentProfileTvEmail.text = user.email
     }
 
     private fun initUI() = with(binding) {
         fragmentProfileGroupUserInfo.isVisible = false
         screenStateView.onTryAgainClickListener =
             View.OnClickListener { store.accept(ProfileEvent.Ui.Reload(userId)) }
-        fragmentProfileGroupToolbar.isVisible = if (userId != NavConstants.CURRENT_USER_ID_KEY) {
-            fragmentProfileBtnBack.setOnClickListener { findNavController().popBackStack() }
-            true
-        } else false
+        fragmentProfileBtnLogout.setOnClickListener {
+            // TODO() implement logout
+        }
     }
 }

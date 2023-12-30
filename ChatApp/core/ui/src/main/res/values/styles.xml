@@ -17,12 +17,6 @@
         <item name="boxStrokeWidthFocused">0dp</item>
     </style>
 
-    <style name="SearchToolbarTheme" parent="ThemeOverlay.AppCompat.Light">
-        <item name="android:textColorPrimary">@color/black</item>
-        <item name="android:textColorSecondary">@color/black</item>
-        <item name="minHeight">?android:attr/actionBarSize</item>
-    </style>
-
     <style name="PrimaryBottomNavigationMenu">
         <item name="android:background">@color/white</item>
         <item name="itemIconTint">@color/dark_bnv_item_color_selector</item>
@@ -49,6 +43,11 @@
         <item name="progressBarStyle">?android:attr/progressBarStyleLarge</item>
         <item name="android:indeterminateTint">@color/purple_light</item>
         <item name="android:indeterminate">true</item>
+    </style>
+
+    <style name="PrimarySearchView" parent="Widget.AppCompat.SearchView">
+        <item name="queryBackground">@android:color/transparent</item>
+        <item name="iconifiedByDefault">false</item>
     </style>
 
 </resources>

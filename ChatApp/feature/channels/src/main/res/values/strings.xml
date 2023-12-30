@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="fragment_channels_tab_subscribed_channels">Subscribed</string>
-    <string name="fragment_channels_tab_all_channels">All streams</string>
+    <string name="fragment_channels_tab_all_channels">All</string>
 
     <string name="item_channel_iv_show_topics_content_description">Show channel topics</string>
     <string name="item_channel_topic_messages_count">%1$d mes</string>
@@ -19,4 +19,5 @@
     <string name="content_description_btn_add_channel">Add channel</string>
     <string name="hint_channel_title">Channel title</string>
     <string name="fragment_add_channel_cb_show_history_new_members">Show message history new members</string>
+    <string name="channel_holder_search_hint">Find channel</string>
 </resources>

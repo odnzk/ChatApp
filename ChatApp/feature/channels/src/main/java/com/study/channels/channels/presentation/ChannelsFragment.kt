@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -25,12 +24,10 @@ import com.study.channels.common.presentation.toErrorMessage
 import com.study.channels.databinding.FragmentChannelsBinding
 import com.study.common.search.NothingFoundForThisQueryException
 import com.study.components.customview.ScreenStateView.ViewState
-import com.study.components.ext.collectFlowSafely
 import com.study.components.ext.delegatesToList
 import com.study.components.ext.safeGetParcelable
 import com.study.components.ext.showErrorSnackbar
 import com.study.components.recycler.delegates.GeneralAdapterDelegate
-import kotlinx.coroutines.flow.Flow
 import vivid.money.elmslie.android.base.ElmFragment
 import vivid.money.elmslie.android.storeholder.StoreHolder
 import javax.inject.Inject
@@ -44,9 +41,6 @@ internal class ChannelsFragment : ElmFragment<ChannelsEvent, ChannelsEffect, Cha
             ?: error("Invalid channel filter ")
     override val initEvent: ChannelsEvent get() = ChannelsEvent.Ui.Init(channelFilter)
     override val storeHolder: StoreHolder<ChannelsEvent, ChannelsEffect, ChannelsState> get() = channelsHolder
-
-    @Inject
-    lateinit var searchFlow: Flow<String>
 
     @Inject
     lateinit var channelsHolder: StoreHolder<ChannelsEvent, ChannelsEffect, ChannelsState>
@@ -152,9 +146,10 @@ internal class ChannelsFragment : ElmFragment<ChannelsEvent, ChannelsEffect, Cha
     }
 
     private fun observeSearchQuery() {
-        collectFlowSafely(searchFlow, Lifecycle.State.RESUMED) {
-            store.accept(ChannelsEvent.Ui.Search(it))
-        }
+        // TODO()
+//        collectFlowSafely(searchFlow, Lifecycle.State.RESUMED) {
+//            store.accept(ChannelsEvent.Ui.Search(it))
+//        }
     }
 
     companion object {

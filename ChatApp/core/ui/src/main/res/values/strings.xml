@@ -2,7 +2,7 @@
     <string name="app_name">ChatApp</string>
 
     <string name="btn_try_again">Try again</string>
-    <string name="fragment_users_search_query">Users…</string>
+    <string name="fragment_users_search_hint">Find user</string>
     <string name="default_search_hint">Search…</string>
 
     <string name="error_connection_lost">Connection lost</string>

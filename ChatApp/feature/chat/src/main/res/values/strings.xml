@@ -30,5 +30,6 @@
     <string name="success_update_message">Successfully updated</string>
     <string name="success_uploading_file">Successfully uploaded</string>
 
+    <string name="fragment_chat_search_hint">Find message</string>
 
 </resources>

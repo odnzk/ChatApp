@@ -1,17 +1,10 @@
-@file:OptIn(FlowPreview::class)
+package com.study.common.search
 
-package com.study.tinkoff.elm
-
-
-import com.study.tinkoff.di.SearchFlow
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.BufferOverflow
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -19,17 +12,12 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.launchIn
-import vivid.money.elmslie.coroutines.Actor
-import javax.inject.Inject
 
-@OptIn(ExperimentalCoroutinesApi::class)
-class MainActor @Inject constructor(
-    dispatcher: CoroutineDispatcher,
-    @SearchFlow
-    private val searchFlow: MutableSharedFlow<String>
-) : Actor<MainCommand, MainEvent> {
+@OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
+abstract class BaseSearcher {
 
-    private val actorScope = CoroutineScope(dispatcher + SupervisorJob())
+    abstract val scope: CoroutineScope
+    abstract val filteredQueries: MutableSharedFlow<String>
 
     private val searchQueries: MutableSharedFlow<String> =
         MutableSharedFlow(
@@ -44,19 +32,17 @@ class MainActor @Inject constructor(
             .distinctUntilChanged()
             .debounce(SEARCH_DEBOUNCE)
             .flatMapLatest { query ->
-                flow<Unit> {
-                    searchFlow.emit(query)
-                }
+                flow<Unit> { filteredQueries.emit(query) }
             }
-            .launchIn(actorScope)
+            .launchIn(scope)
     }
 
     fun clear() {
-        actorScope.cancel()
+        scope.cancel()
     }
 
-    override fun execute(command: MainCommand): Flow<MainEvent> = when (command) {
-        is MainCommand.Search -> flow { searchQueries.tryEmit(command.query) }
+    fun emitQuery(newQuery: String) {
+        searchQueries.tryEmit(newQuery)
     }
 
     companion object {
