@@ -44,7 +44,7 @@
         android:layout_marginTop="@dimen/margin_small"
         android:gravity="center"
         android:maxWidth="@dimen/screen_state_view_max_width"
-        android:textAppearance="@style/TextAppearance.Messenger.Body.Small"
+        android:textAppearance="@style/TextAppearance.ChatApp.Body.Small"
         tools:text="@string/error_description_connection_lost"
         tools:textColor="@color/light_gray" />
 

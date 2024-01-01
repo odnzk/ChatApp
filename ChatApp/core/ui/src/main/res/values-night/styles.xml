@@ -7,17 +7,6 @@
         <item name="itemTextColor">@color/light_bnv_item_color_selector</item>
     </style>
 
-    <style name="PrimaryTextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
-        <item name="boxCornerRadiusBottomEnd">@dimen/text_input_layout_corner_radius</item>
-        <item name="boxCornerRadiusBottomStart">@dimen/text_input_layout_corner_radius</item>
-        <item name="boxBackgroundColor">@color/nero</item>
-        <item name="boxCornerRadiusTopEnd">@dimen/text_input_layout_corner_radius</item>
-        <item name="boxCornerRadiusTopStart">@dimen/text_input_layout_corner_radius</item>
-        <item name="android:textColorHint">@color/white</item>
-        <item name="boxStrokeWidth">0dp</item>
-        <item name="boxStrokeWidthFocused">0dp</item>
-    </style>
-
     <style name="BaseBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/BaseBottomSheetStyle</item>
     </style>

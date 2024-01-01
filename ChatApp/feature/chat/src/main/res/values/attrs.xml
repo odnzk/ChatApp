@@ -4,10 +4,14 @@
     <declare-styleable name="EmojiView">
         <attr name="emoji" format="string" />
         <attr name="emoji_count" format="integer" />
+        <attr name="emoji_padding" format="dimension" />
     </declare-styleable>
 
     <declare-styleable name="MessageView">
         <attr name="maxWidthPercent" format="float" />
+        <attr name="meMessageColor" format="color" />
+        <attr name="messageTextColor" format="color" />
+        <attr name="otherUserMessageColor" format="color" />
     </declare-styleable>
 
     <declare-styleable name="InputView">

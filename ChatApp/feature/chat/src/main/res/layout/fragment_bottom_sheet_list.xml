@@ -3,22 +3,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="@dimen/margin_large"
+    android:layout_margin="@dimen/margin_medium"
     android:orientation="vertical"
     android:theme="@style/Theme.ChatApp">
 
     <androidx.core.widget.ContentLoadingProgressBar
         android:id="@+id/bottom_sheet_pb_loading"
         style="@style/PrimarySmallProgressBar"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginVertical="@dimen/margin_medium" />
+        android:layout_gravity="center_horizontal" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/bottom_sheet_rv_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/bottom_sheet_margin_top"
         tools:itemCount="4"
         tools:listitem="@layout/item_action" />
 </LinearLayout>

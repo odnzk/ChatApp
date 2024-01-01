@@ -1,47 +1,22 @@
-package com.study.components.customview
+package com.study.chat.chat.presentation.util.view
 
 import android.content.Context
-import android.content.res.ColorStateList
-import android.graphics.Color
 import android.util.AttributeSet
 import android.view.View.OnClickListener
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.core.content.withStyledAttributes
 import androidx.core.view.children
 import androidx.core.view.isVisible
-import com.google.android.material.color.MaterialColors
-import com.google.android.material.imageview.ShapeableImageView
-import com.google.android.material.shape.ShapeAppearanceModel
 import com.study.components.R
 import com.study.components.ext.dp
 import java.lang.Integer.max
-import com.google.android.material.R as MaterialR
-import com.study.ui.R as CoreR
 
-class FlexBoxLayout @JvmOverloads constructor(
+internal class FlexBoxLayout @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : ViewGroup(context, attrs, defStyleAttr) {
 
-    private val ivPlus = ShapeableImageView(context).apply {
-        imageTintList = ColorStateList.valueOf(
-            MaterialColors.getColor(context, MaterialR.attr.colorOnBackground, Color.WHITE)
-        )
-        setBackgroundColor(
-            MaterialColors.getColor(
-                context, MaterialR.attr.backgroundColor, ContextCompat.getColor(context, CoreR.color.dark_nero)
-            )
-        )
-        setImageResource(CoreR.drawable.ic_baseline_add_24)
-        shapeAppearanceModel = ShapeAppearanceModel().withCornerSize(ICON_PLUS_CORNERS)
-        post {
-            setContentPadding(
-                ICON_PLUS_HORIZONTAL_PADDING.dp(context),
-                ICON_PLUS_VERTICAL_PADDING.dp(context),
-                ICON_PLUS_HORIZONTAL_PADDING.dp(context),
-                ICON_PLUS_VERTICAL_PADDING.dp(context)
-            )
-        }
+    private val ivPlus = ReactionView(context).apply {
+        setEmoji("➕", -1, false)
     }
     private var lineSpacing = DEFAULT_LINE_SPACING
     private var itemSpacing = DEFAULT_ITEM_SPACING
@@ -130,9 +105,6 @@ class FlexBoxLayout @JvmOverloads constructor(
     companion object {
         private const val DEFAULT_LINE_SPACING = 4
         private const val DEFAULT_ITEM_SPACING = 2
-        private const val ICON_PLUS_CORNERS = 32f
-        private const val ICON_PLUS_HORIZONTAL_PADDING = 8f
-        private const val ICON_PLUS_VERTICAL_PADDING = 4f
     }
 
 }

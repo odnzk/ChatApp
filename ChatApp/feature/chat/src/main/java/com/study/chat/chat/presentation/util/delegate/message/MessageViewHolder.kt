@@ -37,7 +37,6 @@ internal class MessageViewHolder(
 
     companion object {
         internal const val PAYLOAD_EMOJI_LIST_CHANGED = "reactionsUpdate"
-        private const val MAX_MESSAGE_WIDTH_PERCENT = 0.8f
         fun create(
             parent: ViewGroup,
             onLongClickListener: ((message: UiMessage) -> Unit)? = null,
@@ -46,7 +45,6 @@ internal class MessageViewHolder(
         ): MessageViewHolder {
             val itemView = MessageView(parent.context).apply {
                 layoutParams = ViewGroup.LayoutParams(MATCH_PARENT, WRAP_CONTENT)
-                maxWidthPercent = MAX_MESSAGE_WIDTH_PERCENT
             }
             return MessageViewHolder(
                 itemView,

@@ -13,8 +13,8 @@ import androidx.core.graphics.ColorUtils
 import androidx.core.view.setPadding
 import com.google.android.material.color.MaterialColors
 import com.study.chat.R
-import com.study.components.ext.dp
 import com.study.components.ext.sp
+import kotlin.math.roundToInt
 import com.google.android.material.R as MaterialR
 import com.study.ui.R as CoreR
 
@@ -22,7 +22,7 @@ internal class ReactionView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0, defStyleRes: Int = 0
 ) : View(context, attrs, defStyleAttr, defStyleRes) {
 
-    private val defaultPadding = 6.dp(context)
+    private var paddings = DEFAULT_PADDING
     private val textPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         textSize = TEXT_SIZE.sp(context)
         color = MaterialColors.getColor(
@@ -50,11 +50,10 @@ internal class ReactionView @JvmOverloads constructor(
             val reaction = this.getString(R.styleable.EmojiView_emoji)
             val count =
                 this.getInt(R.styleable.EmojiView_emoji_count, DEFAULT_EMOJI_COUNT)
+            paddings = this.getDimension(R.styleable.EmojiView_emoji_padding, DEFAULT_PADDING)
             reaction?.let { textToDraw = toEmoji(it, count) }
         }
-        if (paddingBottom == 0 && paddingTop == 0 && paddingRight == 0 && paddingLeft == 0) {
-            setPadding(defaultPadding)
-        }
+        setPadding(paddings.roundToInt())
     }
 
     fun setEmoji(emojiUnicode: String, count: Int = DEFAULT_EMOJI_COUNT, isSelected: Boolean) {
@@ -111,5 +110,6 @@ internal class ReactionView @JvmOverloads constructor(
         private const val DEFAULT_EMOJI_COUNT = 0
         private const val TEXT_SIZE = 14f
         private const val BLEND_COEFFICIENT = 0.2f
+        private const val DEFAULT_PADDING = 12f
     }
 }

@@ -2,19 +2,18 @@
 <resources>
 
     <style name="PrimaryButton" parent="Widget.MaterialComponents.Button">
-        <item name="android:textAppearance">@style/TextAppearance.Messenger.Body.Small</item>
+        <item name="android:textAppearance">@style/TextAppearance.ChatApp.Body.Small</item>
         <item name="cornerRadius">@dimen/primary_button_corner_radius</item>
+        <item name="android:paddingVertical">12dp</item>
+        <item name="android:textAllCaps">true</item>
     </style>
 
-    <style name="PrimaryTextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
+    <style name="PrimaryTextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="boxCornerRadiusBottomEnd">@dimen/text_input_layout_corner_radius</item>
         <item name="boxCornerRadiusBottomStart">@dimen/text_input_layout_corner_radius</item>
-        <item name="boxBackgroundColor">@color/light_gray</item>
         <item name="boxCornerRadiusTopEnd">@dimen/text_input_layout_corner_radius</item>
         <item name="boxCornerRadiusTopStart">@dimen/text_input_layout_corner_radius</item>
-        <item name="android:textColorHint">@color/white</item>
-        <item name="boxStrokeWidth">0dp</item>
-        <item name="boxStrokeWidthFocused">0dp</item>
+        <item name="android:textColorHint">@color/purple_light</item>
     </style>
 
     <style name="PrimaryBottomNavigationMenu">

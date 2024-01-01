@@ -32,6 +32,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="@dimen/margin_small"
+        android:layout_marginHorizontal="@dimen/margin_small"
         app:layout_constraintBottom_toTopOf="@id/fragment_chat_et_topic_title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -48,6 +49,8 @@
         tools:ignore="LabelFor" />
 
     <com.study.chat.chat.presentation.util.view.InputView
+        android:layout_marginHorizontal="@dimen/margin_medium"
+        android:layout_marginBottom="@dimen/margin_medium"
         android:id="@+id/fragment_chat_view_input_message"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

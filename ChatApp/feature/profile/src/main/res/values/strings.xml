@@ -4,7 +4,7 @@
     <string name="error_description_user_not_found">Try to check validity of the user id you use</string>
     <string name="fragment_profile">Profile</string>
     <string name="content_description_btn_back">Navigate back</string>
-    <string name="fragment_profile_btn_logout">Log out</string>
+    <string name="fragment_profile_btn_logout">Logout</string>
     <string name="user_role_bot">bot</string>
     <string name="user_role_admin">admin</string>
     <string name="user_role_billing_admin">billing admin</string>

@@ -2,17 +2,13 @@ package com.study.chat.chat.presentation.util.view
 
 import android.content.Context
 import android.graphics.Canvas
-import android.graphics.LinearGradient
 import android.graphics.Paint
 import android.graphics.RectF
-import android.graphics.Shader
-import android.os.Build
 import android.util.AttributeSet
 import android.view.View.OnClickListener
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.core.content.withStyledAttributes
 import androidx.core.view.isVisible
@@ -20,26 +16,20 @@ import androidx.core.view.marginLeft
 import androidx.core.view.marginRight
 import androidx.core.view.marginTop
 import coil.load
-import com.google.android.material.color.MaterialColors
 import com.study.chat.R
 import com.study.chat.chat.presentation.model.UiEmoji
 import com.study.chat.chat.presentation.model.UiMessage
 import com.study.chat.chat.presentation.model.UiReaction
 import com.study.chat.chat.presentation.util.mapper.toMessageEmojiViews
 import com.study.common.ext.maxOfThee
-import com.study.components.ext.dp
 import com.study.components.ext.measureFullHeight
 import com.study.components.ext.measureFullWidth
 import com.study.components.ext.measureHeightIfVisible
 import com.study.components.ext.measureWidthIfVisible
-import com.study.components.customview.FlexBoxLayout
 import com.study.network.util.toUserUploadsUrl
 import java.lang.Integer.max
-import com.google.android.material.R as MaterialR
 import com.study.ui.R as CoreResources
 
-
-@RequiresApi(Build.VERSION_CODES.LOLLIPOP)
 internal class MessageView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0, defStyleRes: Int = 0
 ) : ViewGroup(context, attrs, defStyleAttr, defStyleRes) {
@@ -49,40 +39,53 @@ internal class MessageView @JvmOverloads constructor(
     private val tvContent: TextView
     private val ivContent: ImageView
     private val flexboxEmoji: FlexBoxLayout
-    private val textBackgroundPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-        style = Paint.Style.FILL
-    }
-    private val colorDark = MaterialColors.getColor(
-        context,
-        MaterialR.attr.backgroundColor,
-        ContextCompat.getColor(context, CoreResources.color.dark_nero)
-    )
-    private val colorAccent = MaterialColors.getColor(
-        context,
-        androidx.appcompat.R.attr.colorPrimary,
-        context.getColor(CoreResources.color.purple_light)
-    )
-    private val colorDarkAccent = context.getColor(com.study.ui.R.color.purple_dark)
+
+    private val backgroundPaint =
+        Paint(Paint.ANTI_ALIAS_FLAG).apply { style = Paint.Style.FILL }
+
+    private val defaultOtherUserMessageBackgroundColor =
+        ContextCompat.getColor(context, R.color.view_message_other_user_message_background_color)
+    private val defaultMeMessageBackgroundColor =
+        ContextCompat.getColor(context, R.color.view_message_me_message_background_color)
     private val textBackground = RectF()
-    private val textBackgroundCornerRadius = 16f.dp(context).toFloat()
+    private val textBackgroundCornerRadius =
+        resources?.getDimension(R.dimen.view_message_corners_radius) ?: 0f
+    private val defaultContentTextColor: Int =
+        ContextCompat.getColor(context, CoreResources.color.black)
+
     private var messageType: MessageType = MessageType.CHAT_MESSAGE
+
+    private var otherUserMessageBackgroundColor: Int = defaultOtherUserMessageBackgroundColor
+    private var meMessageBackgroundColor: Int = defaultMeMessageBackgroundColor
+    private var contentTextColor: Int = defaultContentTextColor
+    private var maxWidthPercent: Float = 0.8f
+
+
     var onAddReactionClickListener = OnClickListener { }
         set(value) {
             field = value
             flexboxEmoji.onPlusClickListener = field
         }
-    var maxWidthPercent: Float = 1f
 
     init {
-        context.withStyledAttributes(attrs, R.styleable.MessageView) {
-            maxWidthPercent = this.getFloat(R.styleable.MessageView_maxWidthPercent, 0f)
-        }
         inflate(context, R.layout.view_message, this)
         ivAvatar = findViewById(R.id.view_message_iv_avatar)
         tvSender = findViewById(R.id.view_message_tv_user)
         tvContent = findViewById(R.id.view_message_tv_content)
         ivContent = findViewById(R.id.view_message_iv_content)
         flexboxEmoji = findViewById(R.id.view_message_fl_emoji)
+
+        context.withStyledAttributes(attrs, R.styleable.MessageView) {
+            maxWidthPercent = getFloat(R.styleable.MessageView_maxWidthPercent, 0.8f)
+            otherUserMessageBackgroundColor = getColor(
+                R.styleable.MessageView_otherUserMessageColor,
+                otherUserMessageBackgroundColor
+            )
+            meMessageBackgroundColor =
+                getColor(R.styleable.MessageView_meMessageColor, defaultMeMessageBackgroundColor)
+            contentTextColor =
+                getColor(R.styleable.MessageView_messageTextColor, defaultContentTextColor)
+        }
     }
 
 
@@ -102,9 +105,10 @@ internal class MessageView @JvmOverloads constructor(
         onReactionClick: ((message: UiMessage, emoji: UiEmoji) -> Unit)? = null
     ) {
         flexboxEmoji.removeAllViews()
-        reactions.toMessageEmojiViews(context, message, onReactionClick).forEach {
-            flexboxEmoji.addView(it)
-        }
+        reactions
+            .toMessageEmojiViews(context, message, onReactionClick)
+            .forEach(flexboxEmoji::addView)
+
     }
 
 
@@ -138,7 +142,7 @@ internal class MessageView @JvmOverloads constructor(
             textBackground,
             textBackgroundCornerRadius,
             textBackgroundCornerRadius,
-            textBackgroundPaint
+            backgroundPaint
         )
         super.dispatchDraw(canvas)
     }
@@ -352,15 +356,7 @@ internal class MessageView @JvmOverloads constructor(
                     totalWidth.toFloat() - paddingRight,
                     (paddingTop + contentHeight).toFloat()
                 )
-                textBackgroundPaint.shader = LinearGradient(
-                    offsetX,
-                    paddingTop.toFloat(),
-                    totalWidth.toFloat() - paddingRight,
-                    (paddingTop + contentWidth).toFloat(),
-                    colorAccent,
-                    colorDarkAccent,
-                    Shader.TileMode.MIRROR
-                )
+                backgroundPaint.color = meMessageBackgroundColor
             }
 
             MessageType.CHAT_MESSAGE -> {
@@ -374,10 +370,7 @@ internal class MessageView @JvmOverloads constructor(
                     offsetX + chatContentWidth,
                     chatContentHeight
                 )
-                with(textBackgroundPaint) {
-                    shader = null
-                    color = colorDark
-                }
+                backgroundPaint.color = otherUserMessageBackgroundColor
             }
         }
     }

@@ -7,11 +7,11 @@
     android:padding="@dimen/margin_medium"
     android:theme="@style/Base.Theme.ChatApp">
 
-<!--    todo use when creating channel?-->
     <AutoCompleteTextView
         android:id="@+id/fragment_edit_et_topic"
         style="@style/ChannelTopicAutoCompleteTextView"
         android:layout_width="0dp"
+        android:textColor="@color/purple_light"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

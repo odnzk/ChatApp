@@ -23,8 +23,14 @@ class SpaceVerticalDividerItemDecorator(spacingDp: Int) :
 
         with(outRect) {
             when (currentPosition) {
-                0 -> bottom = oneSideDivider
-                state.itemCount - 1 -> top = oneSideDivider
+                0 -> {
+                    bottom = oneSideDivider
+                }
+
+                state.itemCount - 1 -> {
+                    top = oneSideDivider
+                }
+
                 else -> {
                     top = oneSideDivider
                     bottom = oneSideDivider
