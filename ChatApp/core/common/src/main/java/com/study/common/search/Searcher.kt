@@ -3,7 +3,6 @@ package com.study.common.search
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.debounce
@@ -12,37 +11,42 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
-abstract class BaseSearcher {
+class Searcher(
+    scope: CoroutineScope,
+    private val searchListener: SearchListener
+) {
 
-    abstract val scope: CoroutineScope
-    abstract val filteredQueries: MutableSharedFlow<String>
-
-    private val searchQueries: MutableSharedFlow<String> =
+    private val allQueries: MutableSharedFlow<String> =
         MutableSharedFlow(
             replay = 1,
             extraBufferCapacity = 1,
             onBufferOverflow = BufferOverflow.DROP_OLDEST
         )
 
+    private val filteredQueries = MutableSharedFlow<String>()
+
     init {
-        searchQueries
+        allQueries
             .filter { it.isEmpty() || it.isNotBlank() }
             .distinctUntilChanged()
             .debounce(SEARCH_DEBOUNCE)
             .flatMapLatest { query ->
                 flow<Unit> { filteredQueries.emit(query) }
-            }
-            .launchIn(scope)
-    }
+            }.launchIn(scope)
 
-    fun clear() {
-        scope.cancel()
+        scope.launch {
+            filteredQueries.collect { query ->
+                searchListener.onNewQuery(query)
+            }
+        }
+
     }
 
     fun emitQuery(newQuery: String) {
-        searchQueries.tryEmit(newQuery)
+        allQueries.tryEmit(newQuery)
     }
 
     companion object {

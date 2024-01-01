@@ -11,20 +11,16 @@ import javax.inject.Inject
 internal class ChannelsReducer @Inject constructor() :
     DslReducer<ChannelsEvent, ChannelsState, ChannelsEffect, ChannelsCommand>() {
     override fun Result.reduce(event: ChannelsEvent) = when (event) {
-        is ChannelsEvent.Ui.Init -> if (state.channelsWithTopics.isEmpty()) {
-            state { copy(isLoading = true, channelFilter = event.channelFilter) }
-            commands {
-                +ChannelsCommand.GetChannels(state.channelFilter)
-                +ChannelsCommand.LoadChannels(state.channelFilter)
-            }
-        } else Unit
+        is ChannelsEvent.Ui.Init -> {
+            state { copy(isLoading = true) }
+            commands { +ChannelsCommand.LoadChannels }
+        }
+
         ChannelsEvent.Ui.Reload -> {
             state { copy(isLoading = true, error = null) }
-            commands {
-                +ChannelsCommand.GetChannels(state.channelFilter)
-                +ChannelsCommand.LoadChannels(state.channelFilter)
-            }
+            commands { +ChannelsCommand.LoadChannels }
         }
+
         is ChannelsEvent.Ui.ManageChannelTopics -> {
             state { copy(isLoading = true, error = null) }
             if (event.isCollapsed)
@@ -37,19 +33,17 @@ internal class ChannelsReducer @Inject constructor() :
                     +ChannelsCommand.ShowChannelTopics(event.channelId, state.channelsWithTopics)
                 }
         }
-        is ChannelsEvent.Ui.Search -> {
-            state { copy(isLoading = true, error = null) }
-            commands { +ChannelsCommand.SearchChannels(event.query, state.channelFilter) }
+
+        is ChannelsEvent.Internal.ReceivedChannelsFromDatabase -> {
+            state { copy(isLoading = false, channelsWithTopics = event.channels, error = null) }
         }
-        is ChannelsEvent.Internal.LoadingChannelsWithTopicsSuccess -> {
-            if (event.channels.isEmpty()) {
-                state { copy(isLoading = false) }
-            } else {
-                state { copy(isLoading = false, channelsWithTopics = event.channels, error = null) }
-            }
-        }
+
         is ChannelsEvent.Internal.LoadingError -> handleError(event)
+        ChannelsEvent.Internal.ChannelsWereLoaded -> {
+            commands { +ChannelsCommand.GetChannels }
+        }
     }
+
 
     private fun Result.handleError(event: ChannelsEvent.Internal.LoadingError) {
         state { copy(isLoading = false) }
@@ -57,9 +51,11 @@ internal class ChannelsReducer @Inject constructor() :
             is ChannelDoesNotHaveTopicsException, is ChannelNotFoundException -> {
                 effects { +ChannelsEffect.ShowWarning(error) }
             }
+
             is ServerSynchronizationException -> {
                 effects { +ChannelsEffect.ShowSynchronizationError(event.error) }
             }
+
             is ConnectionLostException, is NetworkException -> {
                 if (state.channelsWithTopics.isNotEmpty()) {
                     effects { +ChannelsEffect.ShowWarning(error) }
@@ -67,6 +63,7 @@ internal class ChannelsReducer @Inject constructor() :
                     state { copy(error = error) }
                 }
             }
+
             else -> state { copy(error = error) }
         }
     }

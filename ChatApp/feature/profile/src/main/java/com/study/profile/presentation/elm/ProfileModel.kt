@@ -10,14 +10,15 @@ internal data class ProfileState(
 
 internal sealed interface ProfileCommand {
     class LoadUser(val userId: Int) : ProfileCommand
+    data object LoadCurrentUser : ProfileCommand
 }
 
 internal sealed interface ProfileEffect
 
 internal sealed interface ProfileEvent {
     sealed interface Ui : ProfileEvent {
-        class Init(val userId: Int) : Ui
-        class Reload(val userId: Int) : Ui
+        data object Init : Ui
+        data object Reload : Ui
     }
 
     sealed interface Internal : ProfileEvent {

@@ -10,7 +10,7 @@ internal data class UsersState(
 )
 
 internal sealed interface UsersCommand {
-    object LoadUsers : UsersCommand
+    data object LoadUsers : UsersCommand
     class SearchUsers(val query: String) : UsersCommand
 }
 
@@ -18,8 +18,8 @@ internal sealed interface UsersEffect
 
 internal sealed interface UsersEvent {
     sealed interface Ui : UsersEvent {
-        object Init : Ui
-        object Reload : Ui
+        data object Init : Ui
+        data object Reload : Ui
         class Search(val query: String) : Ui
     }
 

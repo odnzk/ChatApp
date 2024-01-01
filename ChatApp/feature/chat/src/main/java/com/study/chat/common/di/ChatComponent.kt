@@ -5,9 +5,6 @@ import com.study.chat.actions.presentation.elm.ActionsEffect
 import com.study.chat.actions.presentation.elm.ActionsEvent
 import com.study.chat.actions.presentation.elm.ActionsState
 import com.study.chat.chat.presentation.ChatFragment
-import com.study.chat.chat.presentation.elm.ChatEffect
-import com.study.chat.chat.presentation.elm.ChatEvent
-import com.study.chat.chat.presentation.elm.ChatState
 import com.study.chat.edit.presentation.EditMessageFragment
 import com.study.chat.edit.presentation.elm.EditMessageEffect
 import com.study.chat.edit.presentation.elm.EditMessageEvent
@@ -33,7 +30,6 @@ internal interface ChatComponent {
     fun inject(fragment: EditMessageFragment)
 
     val chatScope: CoroutineScope
-    val chatStoreHolder: StoreHolder<ChatEvent, ChatEffect, ChatState>
     val emojiStoreHolder: StoreHolder<EmojiListEvent, EmojiListEffect, EmojiListState>
     val actionsStoreHolder: StoreHolder<ActionsEvent, ActionsEffect, ActionsState>
     val editMessageStoreHolder: StoreHolder<EditMessageEvent, EditMessageEffect, EditMessageState>

@@ -5,11 +5,6 @@ import com.study.chat.actions.presentation.elm.ActionsEffect
 import com.study.chat.actions.presentation.elm.ActionsEvent
 import com.study.chat.actions.presentation.elm.ActionsReducer
 import com.study.chat.actions.presentation.elm.ActionsState
-import com.study.chat.chat.presentation.elm.ChatActor
-import com.study.chat.chat.presentation.elm.ChatEffect
-import com.study.chat.chat.presentation.elm.ChatEvent
-import com.study.chat.chat.presentation.elm.ChatReducer
-import com.study.chat.chat.presentation.elm.ChatState
 import com.study.chat.edit.presentation.elm.EditMessageActor
 import com.study.chat.edit.presentation.elm.EditMessageEffect
 import com.study.chat.edit.presentation.elm.EditMessageEvent
@@ -32,14 +27,6 @@ import vivid.money.elmslie.coroutines.ElmStoreCompat
 
 @Module
 internal class ChatModule {
-
-    @Provides
-    @FeatureScope
-    fun providesStore(
-        reducer: ChatReducer,
-        actor: ChatActor
-    ): StoreHolder<ChatEvent, ChatEffect, ChatState> =
-        SingletoneStoreHolder { ElmStoreCompat(ChatState(), reducer, actor) }
 
     @Provides
     @FeatureScope

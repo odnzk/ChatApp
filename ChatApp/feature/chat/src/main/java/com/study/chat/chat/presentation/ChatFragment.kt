@@ -17,8 +17,10 @@ import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.study.chat.R
+import com.study.chat.chat.presentation.elm.ChatActor
 import com.study.chat.chat.presentation.elm.ChatEffect
 import com.study.chat.chat.presentation.elm.ChatEvent
+import com.study.chat.chat.presentation.elm.ChatReducer
 import com.study.chat.chat.presentation.elm.ChatState
 import com.study.chat.chat.presentation.model.UiEmoji
 import com.study.chat.chat.presentation.model.UiMessage
@@ -34,6 +36,7 @@ import com.study.chat.common.presentation.util.setupSuggestionsAdapter
 import com.study.chat.common.presentation.util.toErrorMessage
 import com.study.chat.databinding.FragmentChatBinding
 import com.study.common.ext.fastLazy
+import com.study.common.search.Searcher
 import com.study.components.customview.ScreenStateView.ViewState
 import com.study.components.ext.delegatesToList
 import com.study.components.ext.safeGetParcelable
@@ -45,12 +48,38 @@ import com.study.ui.NavConstants.CHANNEL_ID_KEY
 import com.study.ui.NavConstants.CHANNEL_TITLE_KEY
 import com.study.ui.NavConstants.TOPIC_COLOR_KEY
 import com.study.ui.NavConstants.TOPIC_TITLE_KEY
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import vivid.money.elmslie.android.base.ElmFragment
+import vivid.money.elmslie.android.storeholder.LifecycleAwareStoreHolder
 import vivid.money.elmslie.android.storeholder.StoreHolder
+import vivid.money.elmslie.coroutines.ElmStoreCompat
 import javax.inject.Inject
 
 internal class ChatFragment : ElmFragment<ChatEvent, ChatEffect, ChatState>() {
+
+    @Inject
+    lateinit var reducerFactory: ChatReducer.Factory
+
+    @Inject
+    lateinit var actorFactory: ChatActor.Factory
+
+    @Inject
+    lateinit var chatScope: CoroutineScope
+
+    override val initEvent: ChatEvent get() = ChatEvent.Ui.Init
+
+    override val storeHolder: StoreHolder<ChatEvent, ChatEffect, ChatState> by fastLazy {
+        LifecycleAwareStoreHolder(lifecycle) {
+            val actor = actorFactory.create(channelId, topicTitle)
+            ElmStoreCompat(
+                ChatState(),
+                reducerFactory.create(topicTitle, Searcher(chatScope, actor)),
+                actor
+            )
+        }
+    }
+
     private val binding: FragmentChatBinding get() = _binding!!
     private var _binding: FragmentChatBinding? = null
     private var adapter: GeneralPaginationAdapterDelegate? = null
@@ -71,17 +100,14 @@ internal class ChatFragment : ElmFragment<ChatEvent, ChatEffect, ChatState>() {
             uri?.let {
                 store.accept(
                     ChatEvent.Ui.UploadFile(
-                        topicTitle = topicTitle ?: binding.fragmentChatEtTopicTitle.text.toString(),
+                        uploadTopic = topicTitle
+                            ?: binding.fragmentChatEtTopicTitle.text.toString(),
                         uri = uri.toString()
                     )
                 )
             }
         }
-    override val initEvent: ChatEvent get() = ChatEvent.Ui.Init(channelId, topicTitle)
-    override val storeHolder: StoreHolder<ChatEvent, ChatEffect, ChatState> get() = chatStore
 
-    @Inject
-    lateinit var chatStore: StoreHolder<ChatEvent, ChatEffect, ChatState>
 
     override fun onAttach(context: Context) {
         ViewModelProvider(this).get<ChatComponentViewModel>().chatComponent.inject(this)
@@ -130,6 +156,7 @@ internal class ChatFragment : ElmFragment<ChatEvent, ChatEffect, ChatState>() {
                     customMessage = customMessage,
                 )
             }
+
             else -> with(binding) {
                 screenStateView.setState(ViewState.Success)
                 lifecycleScope.launch { adapter?.submitData(state.messages as PagingData<Any>) }
@@ -143,8 +170,10 @@ internal class ChatFragment : ElmFragment<ChatEvent, ChatEffect, ChatState>() {
     override fun handleEffect(effect: ChatEffect) = when (effect) {
         is ChatEffect.ShowWarning ->
             binding.showErrorSnackbar(effect.error, Throwable::toErrorMessage)
+
         ChatEffect.FileUploaded ->
             binding.showSnackbar(R.string.success_uploading_file)
+
         is ChatEffect.UploadingFileError ->
             binding.showErrorSnackbar(effect.error, Throwable::toErrorMessage) {
                 store.accept(ChatEvent.Ui.ReUploadFile)
@@ -171,6 +200,7 @@ internal class ChatFragment : ElmFragment<ChatEvent, ChatEffect, ChatState>() {
                     fragmentChatRvChat.isVisible = true
                     screenStateView.setState(ViewState.Success)
                 }
+
                 is LoadState.Error -> if (requireNotNull(adapter).itemCount > 0) {
                     screenStateView.setState(ViewState.Success)
                     showErrorSnackbar(state.error, Throwable::toErrorMessage) {
@@ -191,7 +221,6 @@ internal class ChatFragment : ElmFragment<ChatEvent, ChatEffect, ChatState>() {
         with(binding) {
             fragmentChatRvChat.run {
                 addItemDecoration(SpaceVerticalDividerItemDecorator(CHAT_DIVIDER_SIZE))
-                isNestedScrollingEnabled = false
                 adapter = this@ChatFragment.adapter
                 layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true)
             }

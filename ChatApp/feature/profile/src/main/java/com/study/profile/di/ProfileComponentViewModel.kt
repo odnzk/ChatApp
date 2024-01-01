@@ -18,9 +18,4 @@ object ProfileDepStore : ProfileDepsProvider {
 
 internal class ProfileComponentViewModel : ViewModel() {
     val profileComponent = DaggerProfileComponent.factory().create(ProfileDepsProvider.dep)
-
-    override fun onCleared() {
-        super.onCleared()
-        profileComponent.profileStoreHolder.store.stop()
-    }
 }

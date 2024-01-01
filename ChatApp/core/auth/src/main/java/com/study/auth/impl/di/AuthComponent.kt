@@ -1,7 +1,7 @@
 package com.study.auth.impl.di
 
 import com.study.auth.api.di.AuthDep
-import com.study.auth.api.di.AuthImpl
+import com.study.auth.api.di.AuthProvider
 import dagger.Component
 import javax.inject.Singleton
 
@@ -12,7 +12,7 @@ import javax.inject.Singleton
 @Singleton
 internal interface AuthComponent {
 
-    val authImpl: AuthImpl
+    val authProvider: AuthProvider
 
     @Component.Factory
     interface Factory {

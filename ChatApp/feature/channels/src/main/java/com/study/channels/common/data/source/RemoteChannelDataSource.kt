@@ -13,14 +13,14 @@ import javax.inject.Inject
 internal class RemoteChannelDataSource @Inject constructor(private val api: ChannelsApi) :
     BaseNetworkDataSource() {
     suspend fun getChannels(isSubscribed: Boolean): AllStreamsResponse =
-        makeNetworkRequest { if (isSubscribed) api.getSubscribedStreams() else api.getAllStreams() }
+        safeNetworkRequest { if (isSubscribed) api.getSubscribedStreams() else api.getAllStreams() }
 
     suspend fun getChannelTopics(streamId: Int): StreamTopicsResponse =
-        makeNetworkRequest { api.getStreamTopics(streamId) }
+        safeNetworkRequest { api.getStreamTopics(streamId) }
 
     suspend fun addChannel(title: String): AddStreamResponse =
-        makeNetworkRequest { api.createStream(ChannelRequestDto(title)) }
+        safeNetworkRequest { api.createStream(ChannelRequestDto(title)) }
 
     suspend fun unsubscribeFromChannel(title: String) =
-        makeNetworkRequest { api.unsubscribeFromStream("[\"$title]\"") }
+        safeNetworkRequest { api.unsubscribeFromStream("[\"$title]\"") }
 }

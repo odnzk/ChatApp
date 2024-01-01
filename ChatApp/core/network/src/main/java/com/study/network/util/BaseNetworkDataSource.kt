@@ -24,7 +24,7 @@ open class BaseNetworkDataSource {
      * @throws NetworkException if an HTTP exception occurs.
      * @throws ConnectionLostException if an IO exception occurs.
      */
-    suspend inline fun <T : Any> makeNetworkRequest(crossinline request: suspend () -> T): T =
+    suspend inline fun <T : Any> safeNetworkRequest(crossinline request: suspend () -> T): T =
         withContext(Dispatchers.IO) {
             try {
                 request()

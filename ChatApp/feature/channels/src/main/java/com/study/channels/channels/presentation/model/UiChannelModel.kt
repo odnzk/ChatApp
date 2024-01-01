@@ -9,7 +9,12 @@ internal sealed interface UiChannelModel
 
 @Parcelize
 internal enum class UiChannelFilter : Parcelable {
-    ALL, SUBSCRIBED_ONLY
+    ALL, SUBSCRIBED_ONLY;
+
+    fun isSubscribed(): Boolean = when (this) {
+        ALL -> false
+        SUBSCRIBED_ONLY -> true
+    }
 }
 
 internal data class UiChannel(

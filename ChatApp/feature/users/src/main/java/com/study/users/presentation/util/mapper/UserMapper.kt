@@ -24,6 +24,7 @@ internal fun List<User>.toUiUsers(presence: List<UserPresence>): List<UiUser> =
                 } ?: UiUserPresenceStatus.OFFLINE
                 user.toUiUser(status)
             }
+
             user.isBot -> user.toUiUser(UiUserPresenceStatus.BOT)
             else -> user.toUiUser(UiUserPresenceStatus.OFFLINE)
         }

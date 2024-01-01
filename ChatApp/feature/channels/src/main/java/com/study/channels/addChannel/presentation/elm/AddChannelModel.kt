@@ -8,12 +8,12 @@ internal data class AddChannelState(
 
 internal sealed interface AddChannelEvent {
     sealed interface Ui : AddChannelEvent {
-        object Init : Ui
+        data object Init : Ui
         class AddChannel(val title: String) : Ui
     }
 
     sealed interface Internal : AddChannelEvent {
-        object ChannelSuccessfullyAdded : Internal
+        data object ChannelSuccessfullyAdded : Internal
         class ChannelNotAdded(val error: Throwable) : Internal
     }
 }

@@ -1,6 +1,5 @@
 package com.study.profile.data
 
-import com.study.components.model.UiUserPresenceStatus
 import com.study.profile.data.mapper.toDetailedUser
 import com.study.profile.data.mapper.toUserPresenceStatus
 import com.study.profile.data.source.RemoteUserDataSource
@@ -24,7 +23,7 @@ internal class RemoteUserRepository @Inject constructor(
         dataSource.getCurrentUser().toDetailedUser()
     }
 
-    override suspend fun getUserPresence(userId: Int): UiUserPresenceStatus =
+    override suspend fun getUserPresence(userId: Int) =
         withContext(dispatcher) { dataSource.getUserPresence(userId).toUserPresenceStatus() }
 
 }

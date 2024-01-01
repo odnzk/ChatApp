@@ -27,6 +27,7 @@ internal class UsersActor @Inject constructor(
                         UsersEvent.Internal::LoadingUsersError
                     )
             }
+
             is UsersCommand.SearchUsers -> switcher.switch {
                 toFlow { searchUsersUseCase(command.query).toUiUsers(getUsersPresenceUseCase()) }
                     .mapEvents(
@@ -35,4 +36,7 @@ internal class UsersActor @Inject constructor(
                     )
             }
         }
+
+
+    //  TODO("implement search")
 }

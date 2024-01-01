@@ -28,8 +28,8 @@ internal fun List<ChannelTopic>.toUiChannelTopics(
     )
 }
 
-internal fun List<Channel>.toChannelsMap(): Map<Int, List<UiChannelModel>> =
-    associate { channel -> channel.id to listOf(channel.toUiChannel()) }
+internal fun toChannelsMap(channels: List<Channel>): Map<Int, List<UiChannelModel>> =
+    channels.associate { channel -> channel.id to listOf(channel.toUiChannel()) }
 
 internal fun Map<Int, List<UiChannelModel>>.toChannelsList(): List<UiChannelModel> {
     val resList = mutableListOf<UiChannelModel>()

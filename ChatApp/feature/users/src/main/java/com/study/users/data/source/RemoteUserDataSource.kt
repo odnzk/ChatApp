@@ -8,6 +8,7 @@ import javax.inject.Inject
 
 internal class RemoteUserDataSource @Inject constructor(private val api: UsersApi) :
     BaseNetworkDataSource() {
-    suspend fun getAllUsers(): AllUsersResponse = makeNetworkRequest { api.getAllUsers() }
-    suspend fun getAllUserPresence(): AllUserPresenceDto = makeNetworkRequest { api.getAllUserPresence() }
+    suspend fun getAllUsers(): AllUsersResponse = safeNetworkRequest { api.getAllUsers() }
+    suspend fun getAllUserPresence(): AllUserPresenceDto =
+        safeNetworkRequest { api.getAllUserPresence() }
 }
