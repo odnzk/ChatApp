@@ -26,6 +26,7 @@ internal class MessagesPagingMediator @AssistedInject constructor(
     @Assisted("channelId") private val channelId: Int,
     @Assisted("topicName") private val topicTitle: String?,
 ) : RemoteMediator<Int, MessageWithReactionsTuple>() {
+
     private val narrows = MessageNarrowList()
 
     init {
@@ -39,8 +40,6 @@ internal class MessagesPagingMediator @AssistedInject constructor(
             }
         }
     }
-
-    override suspend fun initialize(): InitializeAction = InitializeAction.LAUNCH_INITIAL_REFRESH
 
     override suspend fun load(
         loadType: LoadType,
@@ -78,7 +77,6 @@ internal class MessagesPagingMediator @AssistedInject constructor(
             MediatorResult.Error(ex)
         }
     }
-
     @AssistedFactory
     interface Factory {
         fun create(

@@ -14,41 +14,24 @@ internal data class ChatState(
 )
 
 internal sealed interface ChatCommand {
-    class GetAllMessages(
-        val channelId: Int,
-        val topicTitle: String?,
-        val userId: Int
-    ) : ChatCommand
+    data object GetAllMessages : ChatCommand
 
     class SendMessage(
-        val channelId: Int,
-        val topicTitle: String,
         val messageContent: String,
-        val senderId: Int
+        val topic: String
     ) : ChatCommand
 
     class UpdateReaction(
         val message: UiMessage,
         val emoji: UiEmoji,
-        val userId: Int
     ) : ChatCommand
 
-    class SearchMessages(
-        val channelId: Int,
-        val topicTitle: String?,
-        val userId: Int,
-        val query: String
-    ) : ChatCommand
-
-    object GetCurrentUserId : ChatCommand
-    class RemoveIrrelevantMessages(val channelId: Int, val topicTitle: String) : ChatCommand
-    class LoadTopics(val channelId: Int) : ChatCommand
-    class GetTopics(val channelId: Int) : ChatCommand
+    class RemoveIrrelevantMessages(val topic: String) : ChatCommand
+    data object LoadTopics : ChatCommand
+    data object GetTopics : ChatCommand
     class UploadFile(
-        val channelId: Int,
-        val topicTitle: String,
-        val senderId: Int,
-        val uri: String
+        val uri: String,
+        val topic: String
     ) : ChatCommand
 }
 
@@ -60,23 +43,22 @@ internal sealed interface ChatEffect {
 
 internal sealed interface ChatEvent {
     sealed interface Ui : ChatEvent {
-        class Init(val channelId: Int, val topicTitle: String?) : Ui
-        object Reload : Ui
+        data object Init : Ui
+        data object Reload : Ui
         class SendMessage(val messageContent: String, val topic: String) : Ui
-        class UploadFile(val topicTitle: String, val uri: String) : Ui
-        object ReUploadFile : Ui
+        class UploadFile(val uploadTopic: String, val uri: String) : Ui
+        data object ReUploadFile : Ui
         class UpdateReaction(val emoji: UiEmoji, val message: UiMessage) : Ui
         class Search(val query: String) : Ui
-        object RemoveIrrelevantMessages : Ui
+        data object RemoveIrrelevantMessages : Ui
     }
 
     sealed interface Internal : ChatEvent {
         class LoadingSuccess(val messages: PagingData<ChatListItem>) : Internal
-        object UpdateReactionSuccess : Internal
+        data object UpdateReactionSuccess : Internal
         class LoadingError(val error: Throwable) : Internal
-        class GetCurrentUserIdSuccess(val userId: Int) : Internal
         class GettingTopicsSuccess(val topics: List<String>) : Internal
-        object FileUploaded : Internal
+        data object FileUploaded : Internal
         class UploadingFileError(val error: Throwable) : Internal
     }
 }

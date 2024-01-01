@@ -27,6 +27,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
+// todo fix loading messages
 internal class ChatRepositoryImpl @Inject constructor(
     private val remoteDS: RemoteMessageDataSource,
     private val localDS: LocalMessageDataSource,
@@ -48,6 +49,7 @@ internal class ChatRepositoryImpl @Inject constructor(
             val receivedMessage = uploadFile(message)
             sendTextMessage(receivedMessage)
         }
+
         is OutcomeMessage.Text -> sendTextMessage(message)
     }
 
@@ -87,14 +89,17 @@ internal class ChatRepositoryImpl @Inject constructor(
         channelId: Int, topicName: String?, searchQuery: String
     ): Pager<Int, MessageWithReactionsTuple> = Pager(
         config = PagingConfig(
-            PAGE_SIZE, enablePlaceholders = false,
+            PAGE_SIZE,
+            enablePlaceholders = false,
             maxSize = MAX_PAGER_SIZE,
             prefetchDistance = PREFETCH_DISTANCE,
-            initialLoadSize = PAGE_SIZE * 2
+            initialLoadSize = PAGE_SIZE * 3
         ),
         remoteMediator = messagePagingMediatorFactory.create(channelId, topicName, searchQuery)
     )
-    { localDS.getMessages(channelId, topicName, searchQuery) }
+    {
+        localDS.getMessages(channelId, topicName, searchQuery)
+    }
 
     private suspend fun uploadFile(message: OutcomeMessage.File): OutcomeMessage.Text {
         val file = readFile(Uri.parse(message.uri))

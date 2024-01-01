@@ -23,7 +23,6 @@ internal class ChatComponentViewModel : ViewModel() {
         super.onCleared()
         chatComponent.run {
             chatScope.cancel()
-            chatStoreHolder.store.stop()
             actionsStoreHolder.store.stop()
             editMessageStoreHolder.store.stop()
             emojiStoreHolder.store.stop()
