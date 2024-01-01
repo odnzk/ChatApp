@@ -11,6 +11,6 @@ internal class RemoteTopicDataSource @Inject constructor(private val api: Channe
     BaseNetworkDataSource() {
 
     suspend fun getChannelTopics(streamId: Int): StreamTopicsResponse =
-        makeNetworkRequest { api.getStreamTopics(streamId) }
+        safeNetworkRequest { api.getStreamTopics(streamId) }
 
 }

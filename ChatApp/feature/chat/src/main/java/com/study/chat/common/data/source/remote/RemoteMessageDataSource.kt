@@ -21,7 +21,7 @@ internal class RemoteMessageDataSource @Inject constructor(private val api: Mess
 
     suspend fun sendMessage(
         type: MessageType, to: Int, content: String, topic: String?
-    ): SentMessageResponse = makeNetworkRequest { api.sendMessage(type, to, content, topic) }
+    ): SentMessageResponse = safeNetworkRequest { api.sendMessage(type, to, content, topic) }
 
     suspend fun getMessages(
         numBefore: Int,
@@ -30,7 +30,7 @@ internal class RemoteMessageDataSource @Inject constructor(private val api: Mess
         narrow: MessageNarrowList,
         applyMarkdown: Boolean = false
     ): AllMessagesResponse =
-        makeNetworkRequest { api.getMessages(numBefore, numAfter, anchor, narrow, applyMarkdown) }
+        safeNetworkRequest { api.getMessages(numBefore, numAfter, anchor, narrow, applyMarkdown) }
 
     suspend fun getMessages(
         numBefore: Int,
@@ -39,20 +39,28 @@ internal class RemoteMessageDataSource @Inject constructor(private val api: Mess
         narrow: MessageNarrowList,
         applyMarkdown: Boolean = false
     ): AllMessagesResponse =
-        makeNetworkRequest { api.getMessages(numBefore, numAfter, anchorMessageId, narrow, applyMarkdown) }
+        safeNetworkRequest {
+            api.getMessages(
+                numBefore,
+                numAfter,
+                anchorMessageId,
+                narrow,
+                applyMarkdown
+            )
+        }
 
     suspend fun addReaction(messageId: Int, emojiName: String) =
-        makeNetworkRequest { api.addReactionToMessage(messageId, emojiName) }
+        safeNetworkRequest { api.addReactionToMessage(messageId, emojiName) }
 
     suspend fun removeReaction(messageId: Int, emojiName: String) =
-        makeNetworkRequest { api.removeReactionFromMessage(messageId, emojiName) }
+        safeNetworkRequest { api.removeReactionFromMessage(messageId, emojiName) }
 
-    suspend fun deleteMessage(messageId: Int) = makeNetworkRequest { api.deleteMessage(messageId) }
+    suspend fun deleteMessage(messageId: Int) = safeNetworkRequest { api.deleteMessage(messageId) }
 
     suspend fun updateMessage(messageId: Int, content: String, topic: String) =
-        makeNetworkRequest { api.updateMessage(messageId, topic, content) }
+        safeNetworkRequest { api.updateMessage(messageId, topic, content) }
 
-    suspend fun upload(file: FileMessageRequest): UploadedFileResponse = makeNetworkRequest {
+    suspend fun upload(file: FileMessageRequest): UploadedFileResponse = safeNetworkRequest {
         val filePart = MultipartBody.Part.createFormData(
             name = FILE_FORM_DATA,
             filename = file.name,
