@@ -16,9 +16,9 @@ internal fun List<ReactionDto?>?.toReactionEntities(messageId: Int): List<Reacti
 
 private fun ReactionDto.toReactionEntity(messageId: Int): ReactionEntity = ReactionEntity(
     messageId = messageId,
-    userId = requireNotNull(userId),
-    emojiName = requireNotNull(emojiName),
-    emojiCode = requireNotNull(emojiCode)
+    userId = userId,
+    emojiName = emojiName,
+    emojiCode = emojiCode
 )
 
 private fun ReactionEntity.toReaction(): Reaction =
@@ -26,6 +26,6 @@ private fun ReactionEntity.toReaction(): Reaction =
 
 internal fun ReactionDto.toReaction(messageId: Int) =
     Reaction(
-        messageId = messageId, userId = requireNotNull(userId), emoji =
-        Emoji(requireNotNull(emojiCode), requireNotNull(emojiName))
+        messageId = messageId, userId = userId, emoji =
+        Emoji(emojiCode, emojiName)
     )

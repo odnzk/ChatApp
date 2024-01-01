@@ -7,5 +7,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class SentMessageResponse(
     @SerialName("id")
-    val id: Int?
+    val id: Int
 )

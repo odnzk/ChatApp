@@ -13,8 +13,8 @@ internal fun AllStreamsResponse.toChannelEntityList(isSubscribed: Boolean): List
     streams?.filterNotNull()?.map { it.toChannelEntity(isSubscribed) } ?: emptyList()
 
 private fun StreamDto.toChannelEntity(isSubscribed: Boolean) = ChannelEntity(
-    id = requireNotNull(streamId),
-    title = requireNotNull(name),
+    id = streamId,
+    title = name,
     isSubscribed = isSubscribed,
     color = if (isSubscribed) requireNotNull(color) else color
 )

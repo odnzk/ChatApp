@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class StreamDto(
-    @SerialName("name") val name: String?,
-    @SerialName("stream_id") val streamId: Int?,
+    @SerialName("name") val name: String,
+    @SerialName("stream_id") val streamId: Int,
     @SerialName("color") val color: String? = null
 )

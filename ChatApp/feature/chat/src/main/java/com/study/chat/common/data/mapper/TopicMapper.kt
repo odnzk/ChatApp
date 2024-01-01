@@ -7,7 +7,7 @@ import com.study.network.model.response.stream.TopicDto
 internal fun List<ChannelTopicEntity>.toTopicTitles() = map { it.title }
 
 private fun TopicDto.toChannelTopicEntity(channelId: Int): ChannelTopicEntity = ChannelTopicEntity(
-    title = requireNotNull(name), channelId = channelId, id = requireNotNull(maxId)
+    title = name, channelId = channelId, id = maxId
 )
 
 internal fun StreamTopicsResponse.toChannelTopicEntities(channelId: Int): List<ChannelTopicEntity> =

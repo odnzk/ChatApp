@@ -9,7 +9,7 @@ data class PresenceDetails(
     @SerialName("status")
     val status: PresenceStatusDto? = PresenceStatusDto.OFFLINE,
     @SerialName("timestamp")
-    val timestamp: Int?
+    val timestamp: Int
 )
 
 @Serializable

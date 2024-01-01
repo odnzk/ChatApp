@@ -12,7 +12,7 @@ internal fun AllMessagesResponse.getAllReactionEntities(): List<ReactionEntity> 
     val resultList = mutableListOf<ReactionEntity>()
     messages?.filterNotNull()?.map { messageDto ->
         val id = requireNotNull(messageDto.id)
-        resultList.addAll(messageDto.reactions?.toReactionEntities(id) ?: emptyList())
+        resultList.addAll(messageDto.reactions.toReactionEntities(id))
     } ?: emptyList()
     return resultList
 }
@@ -23,16 +23,16 @@ internal fun AllMessagesResponse.toMessageEntities(channelId: Int): List<Message
         ?: emptyList()
 
 internal fun MessageDto.toMessageEntity(channelId: Int): MessageEntity {
-    val id = requireNotNull(id)
+    val id = id
     return MessageEntity(
         id = id,
-        content = requireNotNull(content),
-        calendar = requireNotNull(timestamp).unixToCalendar(),
+        content = content,
+        calendar = timestamp.unixToCalendar(),
         senderName = senderFullName,
         senderAvatarUrl = avatarUrl,
-        senderId = requireNotNull(senderId),
+        senderId = senderId,
         channelId = channelId,
-        topicTitle = requireNotNull(subject)
+        topicTitle = subject
     )
 }
 
@@ -53,17 +53,17 @@ internal fun AllMessagesResponse.toFirstMessageSenderId(messageId: Int): IncomeM
     messages?.filterNotNull()?.find { it.id == messageId }?.toIncomeMessage()
 
 internal fun MessageDto.toIncomeMessage(): IncomeMessage {
-    val id = requireNotNull(id)
+    val id = id
     return IncomeMessage(
         id = id,
         senderAvatarUrl = avatarUrl,
         senderName = senderFullName,
-        senderId = requireNotNull(senderId),
-        content = requireNotNull(content),
-        calendar = requireNotNull(timestamp).unixToCalendar(),
-        topic = requireNotNull(subject),
-        reactions = reactions?.filterNotNull()?.map { it.toReaction(id) } ?: emptyList(),
-        channelId = requireNotNull(channelId)
+        senderId = senderId,
+        content = content,
+        calendar = timestamp.unixToCalendar(),
+        topic = subject,
+        reactions = reactions.filterNotNull().map { it.toReaction(id) },
+        channelId = channelId
     )
 }
 

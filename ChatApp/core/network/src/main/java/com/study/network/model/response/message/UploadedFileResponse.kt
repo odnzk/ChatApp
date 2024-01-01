@@ -7,5 +7,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class UploadedFileResponse(
     @SerialName("uri")
-    val uri: String?
+    val uri: String
 )

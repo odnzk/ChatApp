@@ -4,7 +4,6 @@ package com.study.network.model.response.user
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-// todo fix mapping with require and ? in every dto
 @Serializable
 data class DetailedUserDto(
     @SerialName("avatar_url") val avatarUrl: String?,

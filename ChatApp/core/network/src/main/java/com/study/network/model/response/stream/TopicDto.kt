@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class TopicDto(
     @SerialName("max_id")
-    val maxId: Int?,
+    val maxId: Int,
     @SerialName("name")
-    val name: String?
+    val name: String
 )
