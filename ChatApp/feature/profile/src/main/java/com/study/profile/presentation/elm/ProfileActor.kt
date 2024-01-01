@@ -1,9 +1,14 @@
 package com.study.profile.presentation.elm
 
 import com.study.components.model.UiUserPresenceStatus
+import com.study.profile.domain.model.UserDetailed
+import com.study.profile.domain.usecase.GetCurrentUserPresenceUseCase
+import com.study.profile.domain.usecase.GetCurrentUserUseCase
 import com.study.profile.domain.usecase.GetUserPresenceUseCase
 import com.study.profile.domain.usecase.GetUserUseCase
+import com.study.profile.presentation.model.UiUserDetailed
 import com.study.profile.presentation.util.mapper.toUiUser
+import com.study.profile.presentation.util.mapper.toUserPresenceStatus
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import vivid.money.elmslie.core.switcher.Switcher
@@ -13,7 +18,9 @@ import javax.inject.Inject
 
 internal class ProfileActor @Inject constructor(
     private val getUserUseCase: GetUserUseCase,
-    private val getUserPresenceUseCase: GetUserPresenceUseCase
+    private val getCurrentUserUseCase: GetCurrentUserUseCase,
+    private val getUserPresenceUseCase: GetUserPresenceUseCase,
+    private val getCurrentUserPresenceUseCase: GetCurrentUserPresenceUseCase
 ) : Actor<ProfileCommand, ProfileEvent.Internal> {
 
     private val switcher = Switcher()
@@ -21,17 +28,38 @@ internal class ProfileActor @Inject constructor(
         when (command) {
             is ProfileCommand.LoadUser -> switcher.switch {
                 flow {
-                    val user = getUserUseCase(command.userId)
-                    when {
-                        user.isActive -> emit(user.toUiUser(getUserPresenceUseCase(user.id)))
-                        user.isBot -> emit(user.toUiUser(UiUserPresenceStatus.BOT))
-                        else -> emit(user.toUiUser(UiUserPresenceStatus.OFFLINE))
-                    }
+                    emit(getUserUseCase(command.userId).mapUserPresenceStatus())
+                }.mapEvents(
+                    ProfileEvent.Internal::LoadingUserSuccess,
+                    ProfileEvent.Internal::ErrorLoadingUser
+                )
+            }
+
+            ProfileCommand.LoadCurrentUser -> switcher.switch {
+                flow {
+                    emit(getCurrentUserUseCase().mapCurrentUserPresenceStatus())
                 }.mapEvents(
                     ProfileEvent.Internal::LoadingUserSuccess,
                     ProfileEvent.Internal::ErrorLoadingUser
                 )
             }
         }
+
+    private suspend fun UserDetailed.mapUserPresenceStatus(): UiUserDetailed {
+        return when {
+            isActive -> toUiUser(getUserPresenceUseCase(id).toUserPresenceStatus())
+            isBot -> toUiUser(UiUserPresenceStatus.BOT)
+            else -> toUiUser(UiUserPresenceStatus.OFFLINE)
+        }
+    }
+
+
+    private suspend fun UserDetailed.mapCurrentUserPresenceStatus(): UiUserDetailed {
+        return when {
+            isActive -> toUiUser(getCurrentUserPresenceUseCase().toUserPresenceStatus())
+            isBot -> toUiUser(UiUserPresenceStatus.BOT)
+            else -> toUiUser(UiUserPresenceStatus.OFFLINE)
+        }
+    }
 
 }

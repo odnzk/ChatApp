@@ -14,29 +14,47 @@ import com.study.common.ext.fastLazy
 import com.study.components.customview.ScreenStateView.ViewState
 import com.study.profile.databinding.FragmentProfileBinding
 import com.study.profile.di.ProfileComponentViewModel
+import com.study.profile.presentation.elm.ProfileActor
 import com.study.profile.presentation.elm.ProfileEffect
 import com.study.profile.presentation.elm.ProfileEvent
+import com.study.profile.presentation.elm.ProfileReducer
 import com.study.profile.presentation.elm.ProfileState
 import com.study.profile.presentation.model.UiUserDetailed
 import com.study.profile.presentation.util.toErrorMessage
 import com.study.ui.NavConstants
 import vivid.money.elmslie.android.base.ElmFragment
+import vivid.money.elmslie.android.storeholder.LifecycleAwareStoreHolder
 import vivid.money.elmslie.android.storeholder.StoreHolder
+import vivid.money.elmslie.coroutines.ElmStoreCompat
 import javax.inject.Inject
 import com.study.ui.R as CoreR
 
 
 internal class ProfileFragment : ElmFragment<ProfileEvent, ProfileEffect, ProfileState>() {
-    private var _binding: FragmentProfileBinding? = null
-    private val binding: FragmentProfileBinding get() = _binding!!
-    private val userId by fastLazy {
-        arguments?.getInt(NavConstants.USER_ID_KEY) ?: NavConstants.CURRENT_USER_ID_KEY
-    }
-    override val initEvent: ProfileEvent get() = ProfileEvent.Ui.Init(userId)
-    override val storeHolder: StoreHolder<ProfileEvent, ProfileEffect, ProfileState> get() = profileStore
+    @Inject
+    lateinit var actor: ProfileActor
 
     @Inject
-    lateinit var profileStore: StoreHolder<ProfileEvent, ProfileEffect, ProfileState>
+    lateinit var reducerFactory: ProfileReducer.Factory
+
+    private var _binding: FragmentProfileBinding? = null
+    private val binding: FragmentProfileBinding get() = _binding!!
+    private val userId: Int? by fastLazy {
+        arguments
+            ?.getInt(NavConstants.USER_ID_KEY)
+            ?.takeIf { userId -> userId != NavConstants.CURRENT_USER_ID_KEY }
+    }
+    override val initEvent: ProfileEvent get() = ProfileEvent.Ui.Init
+
+    override val storeHolder: StoreHolder<ProfileEvent, ProfileEffect, ProfileState> by fastLazy {
+        LifecycleAwareStoreHolder(lifecycle) {
+            ElmStoreCompat(
+                ProfileState(),
+                reducerFactory.create(userId),
+                actor
+            )
+        }
+    }
 
     override fun onAttach(context: Context) {
         ViewModelProvider(this).get<ProfileComponentViewModel>().profileComponent.inject(this)
@@ -64,12 +82,21 @@ internal class ProfileFragment : ElmFragment<ProfileEvent, ProfileEffect, Profil
         when {
             state.error != null -> with(binding) {
                 fragmentProfileGroupUserInfo.isVisible = false
+                fragmentProfileBtnLogout.isVisible = false
                 screenStateView.setState(ViewState.Error(state.error.toErrorMessage()))
             }
-            state.isLoading -> binding.screenStateView.setState(ViewState.Loading)
+
+            state.isLoading -> {
+                with(binding) {
+                    screenStateView.setState(ViewState.Loading)
+                    fragmentProfileBtnLogout.isVisible = false
+                }
+            }
+
             state.user != null -> with(binding) {
                 fragmentProfileGroupUserInfo.isVisible = true
                 screenStateView.setState(ViewState.Success)
+                fragmentProfileBtnLogout.isVisible = true
                 displayUser(state.user)
             }
         }
@@ -88,7 +115,6 @@ internal class ProfileFragment : ElmFragment<ProfileEvent, ProfileEffect, Profil
         } else if (user.isBot) {
             fragmentProfileIvAvatar.setImageResource(CoreR.drawable.ic_baseline_bot_24)
         }
-        fragmentProfileIvAvatar.status = user.presence
         fragmentProfileTvUsername.text = user.username
         fragmentProfileTvEmail.text = user.email
     }
@@ -96,7 +122,7 @@ internal class ProfileFragment : ElmFragment<ProfileEvent, ProfileEffect, Profil
     private fun initUI() = with(binding) {
         fragmentProfileGroupUserInfo.isVisible = false
         screenStateView.onTryAgainClickListener =
-            View.OnClickListener { store.accept(ProfileEvent.Ui.Reload(userId)) }
+            View.OnClickListener { store.accept(ProfileEvent.Ui.Reload) }
         fragmentProfileBtnLogout.setOnClickListener {
             // TODO() implement logout
         }

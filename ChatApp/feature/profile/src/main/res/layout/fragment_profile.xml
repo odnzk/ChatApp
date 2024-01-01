@@ -13,13 +13,16 @@
         android:layout_height="wrap_content"
         app:constraint_referenced_ids="fragment_profile_iv_avatar, fragment_profile_tv_username, fragment_profile_tv_is_online" />
 
-    <com.study.components.customview.AvatarImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/fragment_profile_iv_avatar"
+        app:layout_constraintBottom_toTopOf="@id/fragment_profile_tv_username"
         android:layout_width="@dimen/avatar_size_large"
         android:layout_height="@dimen/avatar_size_large"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.ImageView.Circle"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.ImageView.RoundCorners"
         tools:src="@tools:sample/avatars" />
 
     <TextView
@@ -27,9 +30,13 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_medium"
+        android:layout_marginTop="@dimen/margin_small"
         android:textAppearance="@style/TextAppearance.ChatApp.Title.Large"
-        app:layout_constraintStart_toEndOf="@id/fragment_profile_iv_avatar"
-        app:layout_constraintTop_toTopOf="parent"
+        android:gravity="center_horizontal"
+        app:layout_constraintBottom_toTopOf="@id/fragment_profile_tv_email"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/fragment_profile_iv_avatar"
         tools:text="Darrel Steward" />
 
     <TextView
@@ -38,6 +45,8 @@
         android:layout_height="wrap_content"
         android:textAppearance="@style/TextAppearance.ChatApp.Body"
         app:layout_constraintEnd_toEndOf="parent"
+        android:gravity="center_horizontal"
+        app:layout_constraintBottom_toTopOf="@id/fragment_profile_tv_is_online"
         app:layout_constraintStart_toStartOf="@id/fragment_profile_tv_username"
         app:layout_constraintTop_toBottomOf="@id/fragment_profile_tv_username"
         tools:text="user8231739823@gmail.com" />
@@ -48,6 +57,8 @@
         android:layout_height="wrap_content"
         android:textAppearance="@style/TextAppearance.ChatApp.Body"
         app:layout_constraintEnd_toEndOf="parent"
+        android:gravity="center_horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@id/fragment_profile_tv_username"
         app:layout_constraintTop_toBottomOf="@id/fragment_profile_tv_email"
         tools:text="online" />
@@ -56,6 +67,7 @@
         android:id="@+id/screen_state_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
