@@ -3,8 +3,8 @@ package com.study.tinkoff.di.module
 import android.content.Context
 import com.study.auth.api.UserAuthRepository
 import com.study.auth.api.di.AuthDep
-import com.study.auth.api.di.AuthImpl
 import com.study.auth.api.di.AuthImplFactory
+import com.study.auth.api.di.AuthProvider
 import com.study.network.api.AuthApi
 import dagger.Module
 import dagger.Provides
@@ -28,9 +28,9 @@ class AppAuthModule {
 
     @Provides
     @Singleton
-    fun providesAuthImpl(authDep: AuthDep): AuthImpl = AuthImplFactory.create(authDep)
+    fun providesAuthImpl(authDep: AuthDep): AuthProvider = AuthImplFactory.create(authDep)
 
     @Provides
-    fun providesAuthRepository(impl: AuthImpl): UserAuthRepository = impl.userAuthRepository
+    fun providesAuthRepository(impl: AuthProvider): UserAuthRepository = impl.userAuthRepository
 
 }
