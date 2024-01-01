@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
 class Searcher(
-    private val scope: CoroutineScope,
+    scope: CoroutineScope,
     private val searchListener: SearchListener
 ) {
 

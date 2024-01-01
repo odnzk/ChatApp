@@ -38,7 +38,6 @@ import com.study.chat.databinding.FragmentChatBinding
 import com.study.common.ext.fastLazy
 import com.study.common.search.Searcher
 import com.study.components.customview.ScreenStateView.ViewState
-import com.study.components.di.SingletoneStoreHolder
 import com.study.components.ext.delegatesToList
 import com.study.components.ext.safeGetParcelable
 import com.study.components.ext.showErrorSnackbar
@@ -52,6 +51,7 @@ import com.study.ui.NavConstants.TOPIC_TITLE_KEY
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import vivid.money.elmslie.android.base.ElmFragment
+import vivid.money.elmslie.android.storeholder.LifecycleAwareStoreHolder
 import vivid.money.elmslie.android.storeholder.StoreHolder
 import vivid.money.elmslie.coroutines.ElmStoreCompat
 import javax.inject.Inject
@@ -63,12 +63,14 @@ internal class ChatFragment : ElmFragment<ChatEvent, ChatEffect, ChatState>() {
 
     @Inject
     lateinit var actorFactory: ChatActor.Factory
+
     @Inject
     lateinit var chatScope: CoroutineScope
 
     override val initEvent: ChatEvent get() = ChatEvent.Ui.Init
-    override val storeHolder: StoreHolder<ChatEvent, ChatEffect, ChatState>
-        get() = SingletoneStoreHolder {
+
+    override val storeHolder: StoreHolder<ChatEvent, ChatEffect, ChatState> by fastLazy {
+        LifecycleAwareStoreHolder(lifecycle) {
             val actor = actorFactory.create(channelId, topicTitle)
             ElmStoreCompat(
                 ChatState(),
@@ -76,6 +78,7 @@ internal class ChatFragment : ElmFragment<ChatEvent, ChatEffect, ChatState>() {
                 actor
             )
         }
+    }
 
     private val binding: FragmentChatBinding get() = _binding!!
     private var _binding: FragmentChatBinding? = null

@@ -115,6 +115,7 @@ internal class ChatActor @AssistedInject constructor(
     }
 
     override fun onNewQuery(query: String) {
+        // TODO("implement search")
         searchMessagesUseCase(
             channelTopicTitle = topicTitle,
             channelId = channelId,

@@ -10,8 +10,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.study.channels.channels.presentation.elm.ChannelsActor
 import com.study.channels.channels.presentation.elm.ChannelsEffect
 import com.study.channels.channels.presentation.elm.ChannelsEvent
+import com.study.channels.channels.presentation.elm.ChannelsReducer
 import com.study.channels.channels.presentation.elm.ChannelsState
 import com.study.channels.channels.presentation.model.UiChannelFilter
 import com.study.channels.channels.presentation.model.UiChannelShimmer
@@ -22,6 +24,7 @@ import com.study.channels.common.di.ChannelsComponentViewModel
 import com.study.channels.common.presentation.navigateToChatFragment
 import com.study.channels.common.presentation.toErrorMessage
 import com.study.channels.databinding.FragmentChannelsBinding
+import com.study.common.ext.fastLazy
 import com.study.common.search.NothingFoundForThisQueryException
 import com.study.components.customview.ScreenStateView.ViewState
 import com.study.components.ext.delegatesToList
@@ -29,21 +32,37 @@ import com.study.components.ext.safeGetParcelable
 import com.study.components.ext.showErrorSnackbar
 import com.study.components.recycler.delegates.GeneralAdapterDelegate
 import vivid.money.elmslie.android.base.ElmFragment
+import vivid.money.elmslie.android.storeholder.LifecycleAwareStoreHolder
 import vivid.money.elmslie.android.storeholder.StoreHolder
+import vivid.money.elmslie.coroutines.ElmStoreCompat
 import javax.inject.Inject
 
 internal class ChannelsFragment : ElmFragment<ChannelsEvent, ChannelsEffect, ChannelsState>() {
+
+    @Inject
+    lateinit var reducer: ChannelsReducer
+
+    @Inject
+    lateinit var actorFactory: ChannelsActor.Factory
+
     private val binding: FragmentChannelsBinding get() = _binding!!
     private var _binding: FragmentChannelsBinding? = null
     private var channelsAdapter: GeneralAdapterDelegate? = null
     private val channelFilter
         get() = arguments?.safeGetParcelable<UiChannelFilter>(CHANNEL_SETTING_KEY)
             ?: error("Invalid channel filter ")
-    override val initEvent: ChannelsEvent get() = ChannelsEvent.Ui.Init(channelFilter)
-    override val storeHolder: StoreHolder<ChannelsEvent, ChannelsEffect, ChannelsState> get() = channelsHolder
 
-    @Inject
-    lateinit var channelsHolder: StoreHolder<ChannelsEvent, ChannelsEffect, ChannelsState>
+    override val initEvent: ChannelsEvent get() = ChannelsEvent.Ui.Init
+
+    override val storeHolder: StoreHolder<ChannelsEvent, ChannelsEffect, ChannelsState> by fastLazy {
+        LifecycleAwareStoreHolder(lifecycle) {
+            ElmStoreCompat(
+                ChannelsState(),
+                reducer,
+                actorFactory.create(channelFilter)
+            )
+        }
+    }
 
     override fun onAttach(context: Context) {
         ViewModelProvider(this).get<ChannelsComponentViewModel>().channelsComponent.inject(this)
@@ -81,11 +100,13 @@ internal class ChannelsFragment : ElmFragment<ChannelsEvent, ChannelsEffect, Cha
                     )
                 )
             }
+
             state.isLoading && state.channelsWithTopics.isEmpty() -> {
                 binding.screenStateView.setState(ViewState.Success)
                 val shimmers = List(UiChannelShimmer.DEFAULT_SHIMMER_COUNT) { UiChannelShimmer }
                 channelsAdapter?.submitList(shimmers)
             }
+
             state.isLoading -> binding.screenStateView.setState(ViewState.Loading)
             else -> {
                 binding.screenStateView.setState(ViewState.Success)
@@ -99,6 +120,7 @@ internal class ChannelsFragment : ElmFragment<ChannelsEvent, ChannelsEffect, Cha
             effect.error,
             Throwable::toErrorMessage
         )
+
         is ChannelsEffect.ShowSynchronizationError -> binding.showErrorSnackbar(
             effect.error,
             Throwable::toErrorMessage
@@ -146,7 +168,7 @@ internal class ChannelsFragment : ElmFragment<ChannelsEvent, ChannelsEffect, Cha
     }
 
     private fun observeSearchQuery() {
-        // TODO()
+        // TODO("implement search")
 //        collectFlowSafely(searchFlow, Lifecycle.State.RESUMED) {
 //            store.accept(ChannelsEvent.Ui.Search(it))
 //        }

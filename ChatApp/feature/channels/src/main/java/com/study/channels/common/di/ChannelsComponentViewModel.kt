@@ -23,7 +23,6 @@ internal class ChannelsComponentViewModel : ViewModel() {
     override fun onCleared() {
         super.onCleared()
         channelsComponent.run {
-            channelsStoreHolder.store.stop()
             addChannelStoreHolder.store.stop()
         }
     }
