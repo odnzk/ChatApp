@@ -11,11 +11,11 @@ internal fun AllUsersResponse.toUserList(): List<User> =
 
 
 private fun DetailedUserDto.toUser(): User = User(
-    id = requireNotNull(userId),
-    name = requireNotNull(fullName),
-    email = requireNotNull(email),
+    id = userId,
+    name = fullName,
+    email = email,
     avatarUrl = avatarUrl,
-    isBot = requireNotNull(isBot),
-    isActive = requireNotNull(isActive)
+    isBot = isBot,
+    isActive = isActive
 )
 

@@ -9,9 +9,13 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
+import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
 import com.study.common.ext.fastLazy
 import com.study.components.customview.ScreenStateView.ViewState
+import com.study.components.ext.delegatesToList
+import com.study.components.recycler.SpaceHorizontalDividerItemDecorator
+import com.study.components.recycler.delegates.GeneralAdapterDelegate
 import com.study.profile.databinding.FragmentProfileBinding
 import com.study.profile.di.ProfileComponentViewModel
 import com.study.profile.presentation.elm.ProfileActor
@@ -20,6 +24,7 @@ import com.study.profile.presentation.elm.ProfileEvent
 import com.study.profile.presentation.elm.ProfileReducer
 import com.study.profile.presentation.elm.ProfileState
 import com.study.profile.presentation.model.UiUserDetailed
+import com.study.profile.presentation.util.delegate.RoleDelegate
 import com.study.profile.presentation.util.toErrorMessage
 import com.study.ui.NavConstants
 import vivid.money.elmslie.android.base.ElmFragment
@@ -44,6 +49,7 @@ internal class ProfileFragment : ElmFragment<ProfileEvent, ProfileEffect, Profil
             ?.getInt(NavConstants.USER_ID_KEY)
             ?.takeIf { userId -> userId != NavConstants.CURRENT_USER_ID_KEY }
     }
+    private var adapter: GeneralAdapterDelegate? = null
     override val initEvent: ProfileEvent get() = ProfileEvent.Ui.Init
 
     override val storeHolder: StoreHolder<ProfileEvent, ProfileEffect, ProfileState> by fastLazy {
@@ -75,6 +81,7 @@ internal class ProfileFragment : ElmFragment<ProfileEvent, ProfileEffect, Profil
 
     override fun onDestroyView() {
         super.onDestroyView()
+        adapter = null
         _binding = null
     }
 
@@ -82,21 +89,18 @@ internal class ProfileFragment : ElmFragment<ProfileEvent, ProfileEffect, Profil
         when {
             state.error != null -> with(binding) {
                 fragmentProfileGroupUserInfo.isVisible = false
-                fragmentProfileBtnLogout.isVisible = false
                 screenStateView.setState(ViewState.Error(state.error.toErrorMessage()))
             }
 
             state.isLoading -> {
                 with(binding) {
                     screenStateView.setState(ViewState.Loading)
-                    fragmentProfileBtnLogout.isVisible = false
                 }
             }
 
             state.user != null -> with(binding) {
                 fragmentProfileGroupUserInfo.isVisible = true
                 screenStateView.setState(ViewState.Success)
-                fragmentProfileBtnLogout.isVisible = true
                 displayUser(state.user)
             }
         }
@@ -117,6 +121,7 @@ internal class ProfileFragment : ElmFragment<ProfileEvent, ProfileEffect, Profil
         }
         fragmentProfileTvUsername.text = user.username
         fragmentProfileTvEmail.text = user.email
+        adapter?.submitList(user.roles)
     }
 
     private fun initUI() = with(binding) {
@@ -124,7 +129,17 @@ internal class ProfileFragment : ElmFragment<ProfileEvent, ProfileEffect, Profil
         screenStateView.onTryAgainClickListener =
             View.OnClickListener { store.accept(ProfileEvent.Ui.Reload) }
         fragmentProfileBtnLogout.setOnClickListener {
-            // TODO() implement logout
+            // TODO() implement logout && hide if it is not current user
         }
+        adapter = GeneralAdapterDelegate(delegatesToList(RoleDelegate()))
+        fragmentProfileRvRoles.adapter = adapter
+        fragmentProfileRvRoles.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        fragmentProfileRvRoles.setHasFixedSize(true)
+        fragmentProfileRvRoles.addItemDecoration(SpaceHorizontalDividerItemDecorator(ITEM_ROLE_SPACE))
+    }
+
+    companion object {
+        private const val ITEM_ROLE_SPACE = 10
     }
 }

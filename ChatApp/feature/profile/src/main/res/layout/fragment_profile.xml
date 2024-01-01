@@ -11,7 +11,7 @@
         android:id="@+id/fragment_profile_group_user_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:constraint_referenced_ids="fragment_profile_iv_avatar, fragment_profile_tv_username, fragment_profile_tv_is_online" />
+        app:constraint_referenced_ids="fragment_profile_iv_avatar, fragment_profile_tv_username, fragment_profile_tv_is_online, fragment_profile_btn_logout, fragment_profile_rv_roles" />
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/fragment_profile_iv_avatar"
@@ -29,7 +29,6 @@
         android:id="@+id/fragment_profile_tv_username"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_medium"
         android:layout_marginTop="@dimen/margin_small"
         android:textAppearance="@style/TextAppearance.ChatApp.Title.Large"
         android:gravity="center_horizontal"
@@ -58,10 +57,20 @@
         android:textAppearance="@style/TextAppearance.ChatApp.Body"
         app:layout_constraintEnd_toEndOf="parent"
         android:gravity="center_horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/fragment_profile_rv_roles"
         app:layout_constraintStart_toStartOf="@id/fragment_profile_tv_username"
         app:layout_constraintTop_toBottomOf="@id/fragment_profile_tv_email"
         tools:text="online" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/fragment_profile_rv_roles"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="48dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/fragment_profile_tv_is_online" />
 
     <com.study.components.customview.ScreenStateView
         android:id="@+id/screen_state_view"

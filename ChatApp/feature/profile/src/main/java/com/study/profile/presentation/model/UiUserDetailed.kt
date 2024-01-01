@@ -7,5 +7,6 @@ internal class UiUserDetailed(
     val avatarUrl: String?,
     val email: String,
     val isBot: Boolean,
-    val presence: UiUserPresenceStatus
+    val presence: UiUserPresenceStatus,
+    val roles: List<Int>
 )

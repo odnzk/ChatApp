@@ -7,12 +7,16 @@ import com.study.profile.domain.model.UserDetailed
 import com.study.profile.domain.model.UserPresence
 
 internal fun DetailedUserDto.toDetailedUser(): UserDetailed = UserDetailed(
-    id = requireNotNull(userId),
-    name = requireNotNull(fullName),
-    email = requireNotNull(email),
+    id = userId,
+    name = fullName,
+    email = email,
     avatarUrl = avatarUrl,
-    isBot = requireNotNull(isBot),
-    isActive = requireNotNull(isActive)
+    isBot = isBot,
+    isActive = isActive,
+    isAdmin = isAdmin,
+    isBillingAdmin = isBillingAdmin,
+    isGuest = isGuest,
+    isOwner = isOwner
 )
 
 

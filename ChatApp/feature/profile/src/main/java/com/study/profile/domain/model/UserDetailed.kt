@@ -5,6 +5,10 @@ internal data class UserDetailed(
     val name: String,
     val email: String,
     val avatarUrl: String?,
+    val isActive: Boolean,
     val isBot: Boolean,
-    val isActive: Boolean
+    val isAdmin: Boolean,
+    val isBillingAdmin: Boolean,
+    val isGuest: Boolean,
+    val isOwner: Boolean
 )

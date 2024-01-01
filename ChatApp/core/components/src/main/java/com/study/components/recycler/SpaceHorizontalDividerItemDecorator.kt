@@ -4,7 +4,7 @@ import android.graphics.Rect
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 
-class SpaceVerticalDividerItemDecorator(spacingDp: Int) :
+class SpaceHorizontalDividerItemDecorator(spacingDp: Int) :
     RecyclerView.ItemDecoration() {
 
     private val oneSideDivider = spacingDp / SIDE_DIVIDER
@@ -23,11 +23,11 @@ class SpaceVerticalDividerItemDecorator(spacingDp: Int) :
 
         with(outRect) {
             when (currentPosition) {
-                0 -> bottom = oneSideDivider
-                state.itemCount - 1 -> top = oneSideDivider
+                0 -> right = oneSideDivider
+                state.itemCount - 1 -> left = oneSideDivider
                 else -> {
-                    top = oneSideDivider
-                    bottom = oneSideDivider
+                    right = oneSideDivider
+                    left = oneSideDivider
                 }
             }
         }
