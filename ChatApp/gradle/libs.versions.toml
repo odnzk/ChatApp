@@ -1,7 +1,7 @@
 [versions]
 # Project
 android_gradle_plugin = "8.2.0"
-kotlin = "1.9.10"
+kotlin = "1.9.21"
 minSdk = "26"
 compileSdk = "34"
 targetSdk = "34"
