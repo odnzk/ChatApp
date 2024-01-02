@@ -1,4 +1,4 @@
-package com.study.tinkoff
+package com.study.tinkoff.presentation
 
 import android.app.Application
 import coil.ImageLoader

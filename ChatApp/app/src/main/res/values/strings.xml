@@ -3,4 +3,5 @@
     <string name="activity_main_bottom_nav_item_channels">Channels</string>
     <string name="activity_main_bottom_nav_item_people">People</string>
     <string name="activity_main_bottom_nav_item_profile">Profile</string>
+    <string name="activity_main_user_not_authorized">Authorization error</string>
 </resources>

@@ -47,6 +47,8 @@ dependencies {
     implementation(libs.shimmers)
     implementation(libs.bundles.elmslie)
     implementation(libs.timber)
+    // DI
+    implementation(libs.dagger2)
 
     implementation(project(":core:ui"))
     implementation(project(":core:network"))

@@ -80,4 +80,5 @@ dependencies {
     implementation(project(":feature:chat"))
     implementation(project(":feature:profile"))
     implementation(project(":feature:users"))
+    implementation(project(":feature:auth"))
 }
