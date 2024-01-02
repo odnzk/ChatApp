@@ -1,4 +1,4 @@
-package com.study.network.model.request
+package com.study.network.model.request.channel
 
 import com.study.network.util.toJsonArrayString
 import kotlinx.serialization.SerialName

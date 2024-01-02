@@ -2,10 +2,10 @@
 # Project
 android_gradle_plugin = "8.2.0"
 kotlin = "1.9.10"
-minSdk="26"
-compileSdk="34"
-targetSdk="34"
-kotlinCompileOptions_jvmTarget="17"
+minSdk = "26"
+compileSdk = "34"
+targetSdk = "34"
+kotlinCompileOptions_jvmTarget = "17"
 
 # AndroidX
 core = "1.12.0"
@@ -52,6 +52,9 @@ leak_canary = "2.10"
 timber = "5.0.1"
 datastore = "1.0.0"
 shimmer = "0.5.0"
+core-ktx = "1.12.0"
+espresso-core = "3.5.1"
+kapt = "1.8.10"
 
 
 [libraries]
@@ -117,6 +120,8 @@ timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 datastore = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore" }
 shimmers = { module = "com.facebook.shimmer:shimmer", version.ref = "shimmer" }
 pagination = { module = "androidx.paging:paging-runtime", version.ref = "pagination" }
+core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
+espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
 
 [bundles]
 elmslie = ["elmslie_core", "elmslie_android", "elmslie_coroutines"]
@@ -130,4 +135,6 @@ kotlin_parcelize_plugin = { id = "kotlin-parcelize" }
 kotlinx_serialization = { id = "kotlinx-serialization", version.ref = "kotlin" }
 android_kotlin = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin_jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin_kapt = { id = "kotlin-kapt", version.ref = "kapt" }
+navigation_safeargs = { id = "androidx.navigation.safeargs.kotlin", version.ref = "navigation" }
 

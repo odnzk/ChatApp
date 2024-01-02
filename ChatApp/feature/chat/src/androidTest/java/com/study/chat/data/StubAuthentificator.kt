@@ -1,8 +1,8 @@
 package com.study.chat.data
 
-import com.study.auth.api.UserAuthRepository
+import com.study.auth.api.Authentificator
 
-class StubUserAuthRepository : UserAuthRepository {
+class StubAuthentificator : Authentificator {
     override suspend fun getUserId(): Int = TEST_USER_ID
     override suspend fun isAdmin(): Boolean = true
 

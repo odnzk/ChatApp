@@ -1,6 +1,6 @@
 package com.study.chat.actions.domain.model
 
-enum class UserRole {
+internal enum class UserRole {
     USER,
     ADMIN,
     OWNER

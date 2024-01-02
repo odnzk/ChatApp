@@ -2,6 +2,7 @@ package com.study.tinkoff.di.module
 
 import android.content.Context
 import coil.ImageLoader
+import com.study.auth.api.Authentificator
 import com.study.network.api.AuthApi
 import com.study.network.api.ChannelsApi
 import com.study.network.api.MessagesApi
@@ -17,9 +18,11 @@ import javax.inject.Singleton
 class AppNetworkModule {
     @Provides
     @Singleton
-    fun providesNetworkDep(context: Context): NetworkDep = object : NetworkDep {
-        override val context: Context = context
-    }
+    fun providesNetworkDep(context: Context, authentificator: Authentificator): NetworkDep =
+        object : NetworkDep {
+            override val context: Context = context
+            override val authentificator: Authentificator = authentificator
+        }
 
     @Provides
     @Singleton

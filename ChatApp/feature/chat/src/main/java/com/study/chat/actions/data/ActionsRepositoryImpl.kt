@@ -3,6 +3,8 @@ package com.study.chat.actions.data
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import com.study.chat.actions.data.mapper.toUser
+import com.study.chat.actions.domain.model.User
 import com.study.chat.actions.domain.repository.ActionsRepository
 import com.study.chat.common.data.mapper.toFirstMessageSenderId
 import com.study.chat.common.data.mapper.toIncomeMessage
@@ -43,6 +45,10 @@ internal class ActionsRepositoryImpl @Inject constructor(
             remoteDS.getMessages(1, 0, messageId, MessageNarrowList())
                 .toFirstMessageSenderId(messageId)
         )
+
+    override suspend fun getCurrentUser(): User {
+        return remoteDS.getCurrentUser().toUser()
+    }
 
     private fun String.createLabel(): String = take(LABEL_LENGTH).plus("...")
 

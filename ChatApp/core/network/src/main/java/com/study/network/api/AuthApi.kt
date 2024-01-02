@@ -1,12 +1,21 @@
 package com.study.network.api
 
 
-import com.study.network.model.response.user.DetailedUserDto
-import retrofit2.http.GET
+import com.study.network.model.request.user.CreateUserRequest
+import com.study.network.model.response.user.ApiKeyResponse
+import retrofit2.http.Body
+import retrofit2.http.Field
+import retrofit2.http.POST
 
 interface AuthApi {
 
-    @GET("users/me")
-    suspend fun getCurrentUser(): DetailedUserDto
+    @POST("fetch_api_key")
+    suspend fun fetchApiKey(
+        @Field("username") username: String,
+        @Field("password") password: String
+    ): ApiKeyResponse
+
+    @POST("users")
+    suspend fun createUser(@Body request: CreateUserRequest): Int
 
 }

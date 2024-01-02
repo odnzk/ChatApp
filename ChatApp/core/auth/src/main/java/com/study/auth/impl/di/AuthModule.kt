@@ -1,6 +1,6 @@
 package com.study.auth.impl.di
 
-import com.study.auth.api.UserAuthRepository
+import com.study.auth.api.Authentificator
 import com.study.auth.api.di.AuthProvider
 import dagger.Module
 import dagger.Provides
@@ -11,8 +11,8 @@ internal class AuthModule {
 
     @Reusable
     @Provides
-    fun providesAuthImpl(userAuthRepository: UserAuthRepository): AuthProvider =
+    fun providesAuthImpl(authentificator: Authentificator): AuthProvider =
         object : AuthProvider {
-            override val userAuthRepository: UserAuthRepository = userAuthRepository
+            override val authentificator: Authentificator = authentificator
         }
 }

@@ -1,6 +1,7 @@
 package com.study.chat.common.data.source.remote
 
 import com.study.network.api.MessagesApi
+import com.study.network.api.UsersApi
 import com.study.network.model.request.message.FileMessageRequest
 import com.study.network.model.request.message.MessageNarrowList
 import com.study.network.model.request.message.MessageType
@@ -8,6 +9,7 @@ import com.study.network.model.request.message.MessagesAnchor
 import com.study.network.model.response.message.AllMessagesResponse
 import com.study.network.model.response.message.SentMessageResponse
 import com.study.network.model.response.message.UploadedFileResponse
+import com.study.network.model.response.user.DetailedUserDto
 import com.study.network.util.BaseNetworkDataSource
 import dagger.Reusable
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -16,8 +18,10 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import javax.inject.Inject
 
 @Reusable
-internal class RemoteMessageDataSource @Inject constructor(private val api: MessagesApi) :
-    BaseNetworkDataSource() {
+internal class RemoteMessageDataSource @Inject constructor(
+    private val api: MessagesApi,
+    private val usersApi: UsersApi
+) : BaseNetworkDataSource() {
 
     suspend fun sendMessage(
         type: MessageType, to: Int, content: String, topic: String?
@@ -67,6 +71,10 @@ internal class RemoteMessageDataSource @Inject constructor(private val api: Mess
             file.bytes.toRequestBody(contentType = file.type.toMediaTypeOrNull())
         )
         api.upload(filePart)
+    }
+
+    suspend fun getCurrentUser(): DetailedUserDto {
+        return safeNetworkRequest { usersApi.getCurrentUser() }
     }
 
     companion object {

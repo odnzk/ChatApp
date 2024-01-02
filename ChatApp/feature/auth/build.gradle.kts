@@ -1,3 +1,4 @@
+@Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.android.kotlin)
@@ -5,11 +6,12 @@ plugins {
 }
 
 android {
-    namespace = "com.study.auth"
+    namespace = "com.odnzk.auth"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
         minSdk = libs.versions.minSdk.get().toInt()
+
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
@@ -24,8 +26,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
     kotlinOptions {
         jvmTarget = libs.versions.kotlinCompileOptions.jvmTarget.get()
@@ -33,12 +35,19 @@ android {
 }
 
 dependencies {
-    implementation(libs.androidx.core)
+    implementation(libs.core.ktx)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.material)
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.junit.android)
+    androidTestImplementation(libs.espresso.core)
+
+    // Architecture
+    implementation(libs.bundles.elmslie)
     // DI
     implementation(libs.dagger2)
     kapt(libs.dagger2.compiler)
-    // Storage
-    implementation(libs.datastore)
 
-    implementation(project(":core:common"))
+    implementation(project(":core:network"))
+    implementation(project(":core:auth"))
 }

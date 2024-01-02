@@ -3,7 +3,7 @@ package com.study.network.di
 import android.content.Context
 import coil.ImageLoader
 import coil.request.CachePolicy
-import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import com.study.auth.api.Authentificator
 import com.study.network.BuildConfig
 import com.study.network.BuildConfig.BASE_URL
 import com.study.network.api.AuthApi
@@ -11,21 +11,20 @@ import com.study.network.api.ChannelsApi
 import com.study.network.api.MessagesApi
 import com.study.network.api.UsersApi
 import com.study.network.di.annotations.AuthInterceptor
+import com.study.network.di.annotations.AuthorizedOkHttp
+import com.study.network.di.annotations.AuthorizedRetrofit
 import com.study.network.di.annotations.CacheInterceptor
 import com.study.network.di.annotations.CoilAuthInterceptor
-import com.study.network.di.annotations.NetworkCredentials
 import com.study.network.util.ConnectionManager
-import com.study.network.util.EnumConverterFactory
+import com.study.network.util.RetrofitFactory
 import dagger.Module
 import dagger.Provides
 import dagger.Reusable
-import kotlinx.serialization.ExperimentalSerializationApi
-import kotlinx.serialization.json.Json
+import kotlinx.coroutines.runBlocking
 import okhttp3.Cache
 import okhttp3.CacheControl
 import okhttp3.Credentials
 import okhttp3.Interceptor
-import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -35,30 +34,33 @@ import com.study.network.di.annotations.HttpLoggingInterceptor as DaggerHttpLogg
 
 @Module
 internal class NetworkModule {
-    @Provides
-    @Singleton
-    @NetworkCredentials
-    fun providesCredentials(): String =
-        Credentials.basic(BuildConfig.USERNAME, BuildConfig.PASSWORD)
 
     @Provides
     @AuthInterceptor
-    fun providesAuthInterceptor(@NetworkCredentials credentials: String): Interceptor =
+    fun providesAuthInterceptor(authentificator: Authentificator): Interceptor =
         Interceptor { chain ->
+            val credentials = runBlocking {
+                Credentials.basic(authentificator.getUsername(), authentificator.getApiKey())
+            }
             val request = chain.request().newBuilder().addHeader(AUTH_HEADER, credentials).build()
             chain.proceed(request)
         }
 
     @Provides
     @CoilAuthInterceptor
-    fun providesImageAuthInterceptor(@NetworkCredentials credentials: String): Interceptor =
+    fun providesImageAuthInterceptor(authentificator: Authentificator): Interceptor =
         Interceptor { chain ->
+            val credentials = runBlocking {
+                Credentials.basic(authentificator.getUsername(), authentificator.getApiKey())
+            }
             val request = chain.request()
                 .takeIf { it.url.toString().contains(USER_UPLOADS_PATH) }?.newBuilder()
                 ?.addHeader(AUTH_HEADER, credentials)?.build()
                 ?: chain.request()
             chain.proceed(request)
         }
+
+    // todo create separate retrofits
 
     @Provides
     @DaggerHttpLoggingInterceptor
@@ -80,21 +82,24 @@ internal class NetworkModule {
 
     @Provides
     @Singleton
-    @OptIn(ExperimentalSerializationApi::class)
-    fun providesRetrofit(okHttpClient: OkHttpClient): Retrofit {
-        val json = Json {
-            ignoreUnknownKeys = true
-            coerceInputValues = true
-        }
-        return Retrofit.Builder().baseUrl(BASE_URL.plus(API_PATH)).client(okHttpClient)
-            .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
-            .addConverterFactory(EnumConverterFactory())
-            .build()
+    @AuthorizedRetrofit
+    fun providesAuthorizedRetrofit(
+        @AuthorizedOkHttp okHttpClient: OkHttpClient,
+        retrofitFactory: RetrofitFactory
+    ): Retrofit {
+        return retrofitFactory.create(BASE_URL, okHttpClient)
     }
 
     @Provides
     @Singleton
-    fun providesOkHttp(
+    fun providesRetrofit(okHttpClient: OkHttpClient, retrofitFactory: RetrofitFactory): Retrofit {
+        return retrofitFactory.create(BASE_URL, okHttpClient)
+    }
+
+    @Provides
+    @Singleton
+    @AuthorizedOkHttp
+    fun providesAuthorizedOkHttp(
         context: Context,
         @AuthInterceptor authInterceptor: Interceptor,
         @DaggerHttpLoggingInterceptor httpLoggingInterceptor: Interceptor,
@@ -113,19 +118,32 @@ internal class NetworkModule {
 
     @Provides
     @Singleton
-    fun providesMessagesApi(retrofit: Retrofit): MessagesApi {
+    fun providesOkHttp(
+        @DaggerHttpLoggingInterceptor httpLoggingInterceptor: Interceptor,
+    ): OkHttpClient {
+        return OkHttpClient.Builder()
+            .connectTimeout(CONNECTION_TIMEOUT_SEC, TimeUnit.SECONDS)
+            .readTimeout(CONNECTION_TIMEOUT_SEC, TimeUnit.SECONDS)
+            .writeTimeout(CONNECTION_TIMEOUT_SEC, TimeUnit.SECONDS)
+            .addInterceptor(httpLoggingInterceptor)
+            .build()
+    }
+
+    @Provides
+    @Singleton
+    fun providesMessagesApi(@AuthorizedRetrofit retrofit: Retrofit): MessagesApi {
         return retrofit.create(MessagesApi::class.java)
     }
 
     @Provides
     @Singleton
-    fun providesChannelsApi(retrofit: Retrofit): ChannelsApi {
+    fun providesChannelsApi(@AuthorizedRetrofit retrofit: Retrofit): ChannelsApi {
         return retrofit.create(ChannelsApi::class.java)
     }
 
     @Provides
     @Singleton
-    fun providesUsersApi(retrofit: Retrofit): UsersApi {
+    fun providesUsersApi(@AuthorizedRetrofit retrofit: Retrofit): UsersApi {
         return retrofit.create(UsersApi::class.java)
     }
 
@@ -154,7 +172,8 @@ internal class NetworkModule {
     @Provides
     @Reusable
     fun providesCoilLoader(
-        @CoilAuthInterceptor authInterceptor: Interceptor, context: Context
+        @CoilAuthInterceptor authInterceptor: Interceptor,
+        context: Context
     ): ImageLoader = ImageLoader.Builder(context)
         .okHttpClient { OkHttpClient.Builder().addInterceptor(authInterceptor).build() }
         .memoryCachePolicy(CachePolicy.ENABLED)
@@ -169,6 +188,5 @@ internal class NetworkModule {
         private const val CACHE_SIZE = (10 * 1024 * 1024).toLong()
         private const val CACHE_MAX_AGE = 10
         private const val CACHE_MAX_STALE = 5
-        private const val API_PATH = "/api/v1/"
     }
 }

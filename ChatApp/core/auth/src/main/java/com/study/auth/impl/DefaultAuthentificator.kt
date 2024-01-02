@@ -3,11 +3,11 @@ package com.study.auth.impl
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
-import com.study.auth.api.UserAuthRepository
+import com.study.auth.api.Authentificator
 import com.study.auth.api.UserNotAuthorizedException
 import dagger.Reusable
 import kotlinx.coroutines.CoroutineDispatcher
@@ -17,28 +17,35 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @Reusable
-internal class DefaultUserAuthRepository @Inject constructor(
-    private val userDataSource: RemoteUserDataSource,
+internal class DefaultAuthentificator @Inject constructor(
     private val context: Context,
     private val dispatcher: CoroutineDispatcher
-) : UserAuthRepository {
-
-    override suspend fun getUserId(): Int = withContext(dispatcher) {
-        getCurrentValue(USER_ID) { userDataSource.getCurrentUser().userId }
-    } ?: throw UserNotAuthorizedException("Can't get userId")
-
-    private suspend fun <T> getCurrentValue(
-        key: Preferences.Key<T>,
-        itemProducer: suspend () -> T?
-    ): T? = getLocallySaved(key) ?: run {
-        val item = itemProducer()
-        saveLocally(key, item)
-        item
+) : Authentificator {
+    override suspend fun getUsername(): String {
+        return getLocallySaved(USERNAME)
+            ?: throw UserNotAuthorizedException("Can't get the username")
     }
 
-    override suspend fun isAdmin(): Boolean = withContext(dispatcher) {
-        getCurrentValue(IS_ADMIN) { requireNotNull(userDataSource.getCurrentUser().isAdmin) }
-    } ?: throw UserNotAuthorizedException("Can't get isAdmin")
+    override suspend fun getApiKey(): String {
+        return getLocallySaved(API_KEY) ?: throw UserNotAuthorizedException("Can't get the api key")
+    }
+
+    override suspend fun saveUserId(userId: Int) {
+        saveLocally(USER_ID, userId)
+    }
+
+    override suspend fun saveApiKey(apiKey: String) {
+        saveLocally(API_KEY, apiKey)
+    }
+
+    override suspend fun getUserId(): Int = withContext(dispatcher) {
+        getLocallySaved(USER_ID) ?: throw UserNotAuthorizedException("Can't get the userId")
+    }
+
+
+    override suspend fun clear() {
+        // TODO
+    }
 
     private suspend fun <T> getLocallySaved(key: Preferences.Key<T>): T? =
         context.dataStore.data.map { preferences -> preferences[key] }.first()
@@ -53,8 +60,11 @@ internal class DefaultUserAuthRepository @Inject constructor(
 
     companion object {
         private const val DATA_STORE_NAME = "user info"
-        private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(DATA_STORE_NAME)
+        private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(
+            DATA_STORE_NAME
+        )
         private val USER_ID = intPreferencesKey("userId")
-        private val IS_ADMIN = booleanPreferencesKey("isAdmin")
+        private val USERNAME = stringPreferencesKey("username")
+        private val API_KEY = stringPreferencesKey("apiKey")
     }
 }
