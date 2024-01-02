@@ -1,4 +1,4 @@
-package com.odnzk.auth.domain
+package com.odnzk.auth.domain.repository
 
 internal interface AuthRepository {
     suspend fun login(username: String, password: String)

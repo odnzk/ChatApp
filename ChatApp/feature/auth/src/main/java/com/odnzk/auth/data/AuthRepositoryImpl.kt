@@ -1,6 +1,6 @@
 package com.odnzk.auth.data
 
-import com.odnzk.auth.domain.AuthRepository
+import com.odnzk.auth.domain.repository.AuthRepository
 import com.study.auth.api.Authentificator
 import dagger.Reusable
 import javax.inject.Inject

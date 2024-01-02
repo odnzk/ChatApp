@@ -43,10 +43,6 @@ android {
 dependencies {
     implementation(libs.core.ktx)
     implementation(libs.androidx.appcompat)
-    implementation(libs.androidx.material)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.junit.android)
-    androidTestImplementation(libs.espresso.core)
 
     // Architecture
     implementation(libs.bundles.elmslie)
@@ -58,6 +54,9 @@ dependencies {
     platform(libs.compose.bom)
 
     implementation(project(":core:common"))
+    implementation(project(":core:components"))
     implementation(project(":core:network"))
     implementation(project(":core:auth"))
+    implementation(project(":core:ui"))
+    implementation(project(":core:ui-compose"))
 }

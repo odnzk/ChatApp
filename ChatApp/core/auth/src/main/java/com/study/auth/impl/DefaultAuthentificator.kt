@@ -47,6 +47,12 @@ internal class DefaultAuthentificator @Inject constructor(
         // TODO
     }
 
+    override suspend fun isAuthorized(): Boolean {
+        return getLocallySaved(USERNAME) != null
+                && getLocallySaved(USER_ID) != null
+                && getLocallySaved(API_KEY) != null
+    }
+
     private suspend fun <T> getLocallySaved(key: Preferences.Key<T>): T? =
         context.dataStore.data.map { preferences -> preferences[key] }.first()
 

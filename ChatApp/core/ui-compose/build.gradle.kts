@@ -42,6 +42,7 @@ android {
 dependencies {
     // Compose
     implementation(libs.bundles.compose)
+    debugImplementation(libs.ui.tooling)
     platform(libs.compose.bom)
 
     implementation(project(":core:ui"))

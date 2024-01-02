@@ -7,7 +7,7 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
-import com.odnzk.auth.presentation.AuthActivity
+import com.odnzk.auth.presentation.AuthStarter
 import com.study.common.ext.fastLazy
 import com.study.tinkoff.R
 import com.study.tinkoff.databinding.ActivityMainBinding
@@ -60,7 +60,7 @@ class MainActivity : ElmActivity<MainActivityEvent, MainActivityEffect, MainActi
     override fun handleEffect(effect: MainActivityEffect) {
         when (effect) {
             MainActivityEffect.NavigateToLogin -> {
-                startActivity(AuthActivity.createIntent(this))
+                AuthStarter.start(this)
             }
 
             is MainActivityEffect.Toast -> {
