@@ -1,4 +1,4 @@
-@Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.android.kotlin)
@@ -32,6 +32,12 @@ android {
     kotlinOptions {
         jvmTarget = libs.versions.kotlinCompileOptions.jvmTarget.get()
     }
+    buildFeatures {
+        compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
+    }
 }
 
 dependencies {
@@ -47,6 +53,9 @@ dependencies {
     // DI
     implementation(libs.dagger2)
     kapt(libs.dagger2.compiler)
+    // Compose
+    implementation(libs.bundles.compose)
+    platform(libs.compose.bom)
 
     implementation(project(":core:network"))
     implementation(project(":core:auth"))

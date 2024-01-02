@@ -56,6 +56,11 @@ core-ktx = "1.12.0"
 espresso-core = "3.5.1"
 kapt = "1.8.10"
 
+compose = "1.5.4"
+compose_activity = "1.7.2"
+compose_bom = "2022.10.00"
+compose_compiler = "1.5.7"
+
 
 [libraries]
 android_gradle_plugin = { module = "com.android.tools.build:gradle", version.ref = "android_gradle_plugin" }
@@ -123,9 +128,18 @@ pagination = { module = "androidx.paging:paging-runtime", version.ref = "paginat
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
 
+# Compose
+compose_ui = { module = "androidx.compose.ui:ui", version.ref = "compose" }
+compose_material = { module = "androidx.compose.material:material", version.ref = "compose" }
+compose_runtime = { module = "androidx.compose.runtime:runtime", version.ref = "compose" }
+compose_activty = { module = "androidx.activity:activity-compose", version.ref = "compose_activity" }
+compose_bom = { module = "androidx.compose:compose-bom", version.ref = "compose_bom" }
+compose_tooling_preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose" }
+
 [bundles]
 elmslie = ["elmslie_core", "elmslie_android", "elmslie_coroutines"]
 navigation = ["navigation_fragment", "navigation_ui_ktx"]
+compose = ["compose_ui", "compose_activty", "compose_material", "compose_runtime", "compose_tooling_preview"]
 
 [plugins]
 android_application = { id = "com.android.application", version.ref = "android_gradle_plugin" }
