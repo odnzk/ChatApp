@@ -3,14 +3,15 @@ package com.odnzk.auth.presentation.signup.elm
 import com.odnzk.auth.R
 import com.study.components.util.ResourcesProvider
 import vivid.money.elmslie.core.store.dsl_reducer.DslReducer
+import javax.inject.Inject
 
-internal class SignupReducer(private val resourcesProvider: ResourcesProvider) :
+internal class SignupReducer @Inject constructor(private val resourcesProvider: ResourcesProvider) :
     DslReducer<SignupEvent, SignupState, SignupEffect, SignupCommand>() {
     override fun Result.reduce(event: SignupEvent): Any = when (event) {
         is SignupEvent.Internal.SignupFailure -> {
             state { copy(isLoading = false) }
             effects {
-                +SignupEffect.Snackbar(
+                +SignupEffect.ShowSnackbar(
                     resourcesProvider.getString(
                         R.string.screen_signup_failure,
                         event.error.message.orEmpty()
@@ -21,7 +22,7 @@ internal class SignupReducer(private val resourcesProvider: ResourcesProvider) :
 
         SignupEvent.Internal.SignupSuccess -> {
             state { copy(isLoading = false) }
-            effects { +SignupEffect.Snackbar(resourcesProvider.getString(R.string.screen_signup_success)) }
+            effects { +SignupEffect.ShowSnackbar(resourcesProvider.getString(R.string.screen_signup_success)) }
         }
 
         is SignupEvent.Ui.Signup -> {

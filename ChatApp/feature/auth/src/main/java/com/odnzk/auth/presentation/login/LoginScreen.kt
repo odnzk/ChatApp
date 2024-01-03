@@ -44,12 +44,15 @@ import vivid.money.elmslie.core.store.Store
 import vivid.money.elmslie.coroutines.effects
 import vivid.money.elmslie.coroutines.states
 
-// todo show loading
-// todo implement navigation
+
 internal typealias LoginStore = Store<LoginEvent, LoginEffect, LoginState>
 
 @Composable
-internal fun LoginScreen(store: LoginStore, modifier: Modifier = Modifier) {
+internal fun LoginScreen(
+    store: LoginStore,
+    modifier: Modifier = Modifier,
+    onNavigateToMainGraph: () -> Unit
+) {
     val state = store.states.collectAsState(initial = LoginState())
     val snackbarHostState = remember { SnackbarHostState() }
     val localCoroutineScope = rememberCoroutineScope()
@@ -73,11 +76,18 @@ internal fun LoginScreen(store: LoginStore, modifier: Modifier = Modifier) {
     LaunchedEffect(Unit) {
         store.effects.collect { effect ->
             when (effect) {
-                LoginEffect.NavigateToSignup -> TODO()
-                is LoginEffect.Snackbar -> {
+                LoginEffect.NavigateToSignup -> {
+                    // TODO("implement compose navigation")
+                }
+
+                is LoginEffect.ShowSnackbar -> {
                     localCoroutineScope.launch {
                         snackbarHostState.showSnackbar(message = effect.message)
                     }
+                }
+
+                LoginEffect.NavigateToMainGraph -> {
+                    onNavigateToMainGraph()
                 }
             }
         }
@@ -154,5 +164,6 @@ private fun LoginContent(store: LoginStore, modifier: Modifier) {
 @Preview
 @Composable
 fun DefaultPreview() {
-    LoginScreen(Mockito.mock())
+    LoginScreen(Mockito.mock()) {
+    }
 }

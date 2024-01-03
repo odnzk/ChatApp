@@ -13,6 +13,7 @@ import com.study.users.di.UsersDepStore
 import com.study.ui.R as CoreR
 
 class ChatApp : Application(), ImageLoaderFactory {
+
     val appComponent: AppComponent by lazy { DaggerAppComponent.factory().create(this) }
 
     override fun onCreate() {

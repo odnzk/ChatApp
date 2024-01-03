@@ -18,7 +18,7 @@ internal sealed interface SignupEvent {
 }
 
 internal sealed interface SignupEffect {
-    class Snackbar(val message: String) : SignupEffect
+    class ShowSnackbar(val message: String) : SignupEffect
 
     data object NavigateToLogin : SignupEffect
 }

@@ -9,7 +9,7 @@ class AndroidResourcesProvider @Inject constructor(private val context: Context)
         return context.getString(stringResId)
     }
 
-    override fun getString(stringResId: Int, vararg args: Any): String {
+    override fun getString(stringResId: Int, args: String): String {
         return context.getString(stringResId, args)
     }
 

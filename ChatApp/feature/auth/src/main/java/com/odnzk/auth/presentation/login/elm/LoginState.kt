@@ -19,8 +19,9 @@ internal sealed interface LoginEvent {
 }
 
 internal sealed interface LoginEffect {
-    class Snackbar(val message: String) : LoginEffect
+    class ShowSnackbar(val message: String) : LoginEffect
     data object NavigateToSignup : LoginEffect
+    data object NavigateToMainGraph : LoginEffect
 }
 
 internal sealed interface LoginCommand {

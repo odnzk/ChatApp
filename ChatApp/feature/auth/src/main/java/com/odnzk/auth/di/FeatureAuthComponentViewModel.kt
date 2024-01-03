@@ -18,4 +18,11 @@ object FeatureAuthDepStore : FeatureAuthDepsProvider {
 
 internal class FeatureAuthComponentViewModel : ViewModel() {
     val component = DaggerFeatureAuthComponent.factory().create(FeatureAuthDepsProvider.dep)
+
+    override fun onCleared() {
+        super.onCleared()
+        component.authStoreHolder.store.stop()
+        component.loginStoreHolder.store.stop()
+        component.signupStoreHolder.store.stop()
+    }
 }

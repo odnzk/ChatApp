@@ -13,7 +13,7 @@ internal class LoginReducer @Inject constructor(
         is LoginEvent.Internal.LoginFailure -> {
             state { copy(isLoading = false) }
             effects {
-                +LoginEffect.Snackbar(
+                +LoginEffect.ShowSnackbar(
                     resourcesProvider.getString(
                         R.string.screen_login_failure,
                         event.error.message.orEmpty()
@@ -24,7 +24,8 @@ internal class LoginReducer @Inject constructor(
 
         LoginEvent.Internal.LoginSuccess -> {
             state { copy(isLoading = false) }
-            effects { +LoginEffect.Snackbar(resourcesProvider.getString(R.string.screen_login_success)) }
+            effects { +LoginEffect.ShowSnackbar(resourcesProvider.getString(R.string.screen_login_success)) }
+            effects { +LoginEffect.NavigateToMainGraph }
         }
 
         is LoginEvent.Ui.Login -> {

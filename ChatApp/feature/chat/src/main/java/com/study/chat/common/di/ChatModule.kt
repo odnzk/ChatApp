@@ -16,7 +16,7 @@ import com.study.chat.emoji.presentation.elm.EmojiListEvent
 import com.study.chat.emoji.presentation.elm.EmojiListReducer
 import com.study.chat.emoji.presentation.elm.EmojiListState
 import com.study.common.di.FeatureScope
-import com.study.components.di.SingletoneStoreHolder
+import com.study.components.di.ManualStoreHolder
 import dagger.Module
 import dagger.Provides
 import kotlinx.coroutines.CoroutineDispatcher
@@ -33,21 +33,21 @@ internal class ChatModule {
     fun providesEmojiStore(
         reducer: EmojiListReducer, actor: EmojiListActor
     ): StoreHolder<EmojiListEvent, EmojiListEffect, EmojiListState> =
-        SingletoneStoreHolder { ElmStoreCompat(EmojiListState(), reducer, actor) }
+        ManualStoreHolder { ElmStoreCompat(EmojiListState(), reducer, actor) }
 
     @Provides
     @FeatureScope
     fun providesActionsStore(
         reducer: ActionsReducer, actor: ActionsActor
     ): StoreHolder<ActionsEvent, ActionsEffect, ActionsState> =
-        SingletoneStoreHolder { ElmStoreCompat(ActionsState(), reducer, actor) }
+        ManualStoreHolder { ElmStoreCompat(ActionsState(), reducer, actor) }
 
     @Provides
     @FeatureScope
     fun providesEditMessageStore(
         reducer: EditMessageReducer, actor: EditMessageActor
     ): StoreHolder<EditMessageEvent, EditMessageEffect, EditMessageState> =
-        SingletoneStoreHolder { ElmStoreCompat(EditMessageState(), reducer, actor) }
+        ManualStoreHolder { ElmStoreCompat(EditMessageState(), reducer, actor) }
 
     @Provides
     @FeatureScope

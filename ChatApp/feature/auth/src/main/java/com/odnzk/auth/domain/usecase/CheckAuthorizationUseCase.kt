@@ -1,4 +1,4 @@
-package com.study.tinkoff.domain
+package com.odnzk.auth.domain.usecase
 
 import com.study.auth.api.Authentificator
 import kotlinx.coroutines.Dispatchers

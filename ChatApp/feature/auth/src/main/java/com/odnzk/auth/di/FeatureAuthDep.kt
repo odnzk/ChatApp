@@ -8,4 +8,5 @@ interface FeatureAuthDep {
     val authentificator: Authentificator
     val authApi: AuthApi
     val context: Context
+    val mainFeaturesStarter: MainFeaturesStarter
 }

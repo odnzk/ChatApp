@@ -6,6 +6,7 @@
     <string name="common_icon_password_visibility_content_description">Password visibility icon</string>
     <string name="common_field_email">Email</string>
     <string name="common_field_email_hint">Enter email</string>
+    <string name="common_error_user_not_authorized">You are not authorized</string>
 
     <string name="screen_login_title">Login</string>
     <string name="screen_login_button_login">Login</string>
