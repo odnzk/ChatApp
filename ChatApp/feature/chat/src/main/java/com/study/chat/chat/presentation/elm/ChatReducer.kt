@@ -2,22 +2,20 @@ package com.study.chat.chat.presentation.elm
 
 import com.study.auth.api.UserNotAuthorizedException
 import com.study.chat.common.domain.model.SynchronizationException
-import com.study.common.search.Searcher
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import vivid.money.elmslie.core.store.dsl_reducer.DslReducer
 
 internal class ChatReducer @AssistedInject constructor(
-    @Assisted("topicTitle") private val topicTitle: String?,
-    @Assisted("messageSearcher") private val messageSearcher: Searcher
+    @Assisted("topicTitle") private val topicTitle: String?
 ) : DslReducer<ChatEvent, ChatState, ChatEffect, ChatCommand>() {
 
     private var prevUploadedUriWithTopic: Pair<String, String>? = null
 
     override fun Result.reduce(event: ChatEvent) = when (event) {
         is ChatEvent.Ui.Init -> init()
-        is ChatEvent.Internal.LoadingError -> showError(event)
+        is ChatEvent.Internal.Error -> showError(event)
         is ChatEvent.Ui.Search -> search(event)
         is ChatEvent.Ui.SendMessage -> sendMessage(event)
         is ChatEvent.Ui.UploadFile -> uploadFile(event)
@@ -30,10 +28,15 @@ internal class ChatReducer @AssistedInject constructor(
         is ChatEvent.Internal.GettingTopicsSuccess -> showTopics(event)
         ChatEvent.Internal.FileUploaded -> fileWasUploaded()
         is ChatEvent.Internal.UploadingFileError -> errorWhileUploadingFile(event)
+        is ChatEvent.Internal.SearchSuccess -> showSearchSuccess(event)
     }
 
+    private fun Result.showSearchSuccess(event: ChatEvent.Internal.SearchSuccess) {
+        state { copy(isLoading = false, messages = event.messages, error = null) }
+        effects { +ChatEffect.ScrollToLastItem }
+    }
 
-    private fun Result.showError(event: ChatEvent.Internal.LoadingError) {
+    private fun Result.showError(event: ChatEvent.Internal.Error) {
         state { copy(isLoading = false) }
         when (val error = event.error) {
             is SynchronizationException, is UserNotAuthorizedException -> {
@@ -44,7 +47,7 @@ internal class ChatReducer @AssistedInject constructor(
         }
     }
 
-    private fun Result.appluUploadFileState(topic: String, uri: String) {
+    private fun Result.applyUploadFileState(topic: String, uri: String) {
         state { copy(isLoading = true, error = null) }
         commands {
             +ChatCommand.UploadFile(uri = uri, topic = topic)
@@ -53,15 +56,15 @@ internal class ChatReducer @AssistedInject constructor(
 
     private fun Result.uploadFile(event: ChatEvent.Ui.UploadFile) {
         prevUploadedUriWithTopic = event.uri to event.uploadTopic
-        appluUploadFileState(event.uploadTopic, event.uri)
+        applyUploadFileState(event.uploadTopic, event.uri)
     }
 
     private fun Result.reUploadFile() {
-        prevUploadedUriWithTopic?.let { appluUploadFileState(it.second, it.first) }
+        prevUploadedUriWithTopic?.let { applyUploadFileState(it.second, it.first) }
     }
 
-    private fun search(event: ChatEvent.Ui.Search) {
-        messageSearcher.emitQuery(event.query)
+    private fun Result.search(event: ChatEvent.Ui.Search) {
+        commands { +ChatCommand.Search(event.query) }
     }
 
     private fun Result.sendMessage(event: ChatEvent.Ui.SendMessage) {
@@ -126,8 +129,7 @@ internal class ChatReducer @AssistedInject constructor(
     @AssistedFactory
     interface Factory {
         fun create(
-            @Assisted("topicTitle") topicTitle: String?,
-            @Assisted("messageSearcher") messageSearcher: Searcher
+            @Assisted("topicTitle") topicTitle: String?
         ): ChatReducer
     }
 }

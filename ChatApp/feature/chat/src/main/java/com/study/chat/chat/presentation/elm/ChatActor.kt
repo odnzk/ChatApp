@@ -17,7 +17,6 @@ import com.study.chat.common.domain.model.SynchronizationException
 import com.study.chat.common.domain.usecase.GetTopicsUseCase
 import com.study.chat.common.domain.usecase.LoadTopicsUseCase
 import com.study.common.ext.toFlow
-import com.study.common.search.SearchListener
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -43,7 +42,7 @@ internal class ChatActor @AssistedInject constructor(
     private val getTopicsUseCase: GetTopicsUseCase,
     private val uploadFileUseCase: UploadFileUseCase,
     private val chatScope: CoroutineScope
-) : Actor<ChatCommand, Internal>, SearchListener {
+) : Actor<ChatCommand, Internal> {
 
     private val topicsSwitcher = Switcher()
     private val messagesSwitcher = Switcher()
@@ -61,7 +60,7 @@ internal class ChatActor @AssistedInject constructor(
                         topicTitle == null
                     )
                 }
-                .mapEvents(Internal::LoadingSuccess, Internal::LoadingError)
+                .mapEvents(Internal::LoadingSuccess, Internal::Error)
         }
 
         is ChatCommand.SendMessage -> toFlow {
@@ -70,7 +69,7 @@ internal class ChatActor @AssistedInject constructor(
                 content = command.messageContent,
                 topicTitle = command.topic
             )
-        }.mapEvents(errorMapper = Internal::LoadingError)
+        }.mapEvents(errorMapper = Internal::Error)
 
         is ChatCommand.UpdateReaction -> toFlow {
             if (command.message.id == NOT_YET_SYNCHRONIZED_ID) throw SynchronizationException()
@@ -83,22 +82,22 @@ internal class ChatActor @AssistedInject constructor(
                 ?.let { removeReactionUseCase(reaction) } ?: addReactionUseCase(reaction)
         }.mapEvents(
             eventMapper = { Internal.UpdateReactionSuccess },
-            errorMapper = Internal::LoadingError
+            errorMapper = Internal::Error
         )
 
         is ChatCommand.RemoveIrrelevantMessages ->
             toFlow { removeIrrelevantMessages(channelId, command.topic) }
-                .mapEvents(errorMapper = Internal::LoadingError)
+                .mapEvents(errorMapper = Internal::Error)
 
         is ChatCommand.LoadTopics ->
             toFlow { loadTopicsUseCase(channelId) }
-                .mapEvents(errorMapper = Internal::LoadingError)
+                .mapEvents(errorMapper = Internal::Error)
 
         is ChatCommand.GetTopics -> topicsSwitcher.switch {
             getTopicsUseCase(channelId)
                 .mapEvents(
                     eventMapper = Internal::GettingTopicsSuccess,
-                    errorMapper = Internal::LoadingError
+                    errorMapper = Internal::Error
                 )
         }
 
@@ -112,23 +111,22 @@ internal class ChatActor @AssistedInject constructor(
             eventMapper = { Internal.FileUploaded },
             errorMapper = Internal::UploadingFileError
         )
-    }
 
-    override fun onNewQuery(query: String) {
-        // TODO("implement search")
-        searchMessagesUseCase(
-            channelTopicTitle = topicTitle,
-            channelId = channelId,
-            query = query
-        )
-            .map {
-                it.toUiMessagesWithSeparators(
-                    authentificator.getUserId(),
-                    topicTitle == null
-                )
-            }
-            .distinctUntilChanged()
-            .mapEvents(Internal::LoadingSuccess, Internal::LoadingError)
+        is ChatCommand.Search -> {
+            searchMessagesUseCase(
+                channelTopicTitle = topicTitle,
+                channelId = channelId,
+                query = command.query
+            )
+                .map {
+                    it.toUiMessagesWithSeparators(
+                        authentificator.getUserId(),
+                        topicTitle == null
+                    )
+                }
+                .distinctUntilChanged()
+                .mapEvents(Internal::SearchSuccess, Internal::Error)
+        }
     }
 
     @AssistedFactory

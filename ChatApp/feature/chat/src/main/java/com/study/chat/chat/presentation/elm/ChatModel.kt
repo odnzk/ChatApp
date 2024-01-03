@@ -33,12 +33,15 @@ internal sealed interface ChatCommand {
         val uri: String,
         val topic: String
     ) : ChatCommand
+
+    class Search(val query: String) : ChatCommand
 }
 
 internal sealed interface ChatEffect {
     class ShowWarning(val error: Throwable) : ChatEffect
-    object FileUploaded : ChatEffect
+    data object FileUploaded : ChatEffect
     class UploadingFileError(val error: Throwable) : ChatEffect
+    data object ScrollToLastItem : ChatEffect
 }
 
 internal sealed interface ChatEvent {
@@ -55,8 +58,9 @@ internal sealed interface ChatEvent {
 
     sealed interface Internal : ChatEvent {
         class LoadingSuccess(val messages: PagingData<ChatListItem>) : Internal
+        class SearchSuccess(val messages: PagingData<ChatListItem>) : Internal
         data object UpdateReactionSuccess : Internal
-        class LoadingError(val error: Throwable) : Internal
+        class Error(val error: Throwable) : Internal
         class GettingTopicsSuccess(val topics: List<String>) : Internal
         data object FileUploaded : Internal
         class UploadingFileError(val error: Throwable) : Internal
