@@ -24,6 +24,7 @@ internal class ChannelsComponentViewModel : ViewModel() {
         super.onCleared()
         channelsComponent.run {
             addChannelStoreHolder.store.stop()
+            channelsStoreHolder.store.stop()
         }
     }
 }

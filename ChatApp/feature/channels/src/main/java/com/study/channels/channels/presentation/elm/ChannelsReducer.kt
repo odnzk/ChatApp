@@ -13,12 +13,12 @@ internal class ChannelsReducer @Inject constructor() :
     override fun Result.reduce(event: ChannelsEvent) = when (event) {
         is ChannelsEvent.Ui.Init -> {
             state { copy(isLoading = true) }
-            commands { +ChannelsCommand.LoadChannels }
+            commands { +ChannelsCommand.LoadChannels(event.filter) }
         }
 
-        ChannelsEvent.Ui.Reload -> {
+        is ChannelsEvent.Ui.Reload -> {
             state { copy(isLoading = true, error = null) }
-            commands { +ChannelsCommand.LoadChannels }
+            commands { +ChannelsCommand.LoadChannels(event.filter) }
         }
 
         is ChannelsEvent.Ui.ManageChannelTopics -> {
@@ -39,8 +39,13 @@ internal class ChannelsReducer @Inject constructor() :
         }
 
         is ChannelsEvent.Internal.LoadingError -> handleError(event)
-        ChannelsEvent.Internal.ChannelsWereLoaded -> {
-            commands { +ChannelsCommand.GetChannels }
+        is ChannelsEvent.Internal.ChannelsWereLoaded -> {
+            commands { +ChannelsCommand.GetChannels(event.filter) }
+        }
+
+        is ChannelsEvent.Ui.Search -> {
+            state { copy(isLoading = true, error = null) }
+            commands { +ChannelsCommand.Search(event.filter, event.query) }
         }
     }
 

@@ -1,5 +1,6 @@
 package com.study.channels.channels.presentation.elm
 
+import com.study.channels.channels.presentation.model.UiChannelFilter
 import com.study.channels.channels.presentation.model.UiChannelModel
 
 
@@ -11,8 +12,8 @@ internal data class ChannelsState(
 )
 
 internal sealed interface ChannelsCommand {
-    data object GetChannels : ChannelsCommand
-    data object LoadChannels : ChannelsCommand
+    class GetChannels(val filter: UiChannelFilter) : ChannelsCommand
+    class LoadChannels(val filter: UiChannelFilter) : ChannelsCommand
     class LoadChannelTopic(val channelId: Int) : ChannelsCommand
     class ShowChannelTopics(
         val channelId: Int,
@@ -23,6 +24,8 @@ internal sealed interface ChannelsCommand {
         val channelId: Int,
         val channelsMap: Map<Int, List<UiChannelModel>>
     ) : ChannelsCommand
+
+    class Search(val filter: UiChannelFilter, val query: String) : ChannelsCommand
 }
 
 internal sealed interface ChannelsEffect {
@@ -32,13 +35,15 @@ internal sealed interface ChannelsEffect {
 
 internal sealed interface ChannelsEvent {
     sealed interface Ui : ChannelsEvent {
-        data object Init : Ui
-        data object Reload : Ui
+        class Init(val filter: UiChannelFilter) : Ui
+        class Reload(val filter: UiChannelFilter) : Ui
         class ManageChannelTopics(val channelId: Int, val isCollapsed: Boolean) : Ui
+
+        class Search(val filter: UiChannelFilter, val query: String) : Ui
     }
 
     sealed interface Internal : ChannelsEvent {
-        data object ChannelsWereLoaded : Internal
+        class ChannelsWereLoaded(val filter: UiChannelFilter) : Internal
         class ReceivedChannelsFromDatabase(val channels: Map<Int, List<UiChannelModel>>) :
             Internal
 
