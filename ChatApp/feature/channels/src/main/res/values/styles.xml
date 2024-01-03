@@ -9,6 +9,12 @@
         <item name="android:background">@color/purple_light</item>
     </style>
 
+    <style name="ChannelItemTitle" parent="Widget.AppCompat.TextView">
+        <item name="android:ellipsize">end</item>
+        <item name="maxLines">1</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
     <style name="ChannelTabLayoutTitle" parent="TextAppearance.ChatApp.Body">
         <item name="textAllCaps">true</item>
         <item name="android:textAllCaps">true</item>

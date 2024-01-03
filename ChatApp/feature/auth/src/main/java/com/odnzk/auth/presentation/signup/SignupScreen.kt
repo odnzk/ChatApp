@@ -72,7 +72,7 @@ internal fun SignupScreen(store: SignupStore, modifier: Modifier = Modifier) {
     LaunchedEffect(Unit) {
         store.effects.collect { effect ->
             when (effect) {
-                SignupEffect.NavigateToLogin -> TODO()
+                SignupEffect.NavigateToLogin -> TODO("implement compose navigation")
                 is SignupEffect.ShowSnackbar -> {
                     localCoroutineScope.launch {
                         snackbarHostState.showSnackbar(message = effect.message)

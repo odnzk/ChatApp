@@ -10,7 +10,7 @@ internal class LoginActor @Inject constructor(private val loginUseCase: LoginUse
     Actor<LoginCommand, LoginEvent> {
     override fun execute(command: LoginCommand): Flow<LoginEvent> = when (command) {
         is LoginCommand.Login -> flow {
-            emit(loginUseCase(username = command.username, password = command.password))
+            emit(loginUseCase(email = command.email, password = command.password))
         }.mapEvents(
             eventMapper = { LoginEvent.Internal.LoginSuccess },
             errorMapper = LoginEvent.Internal::LoginFailure

@@ -7,7 +7,7 @@ internal data class LoginState(
 internal sealed interface LoginEvent {
     sealed interface Ui : LoginEvent {
         data object Init : Ui
-        class Login(val username: String, val password: String) : Ui
+        class Login(val email: String, val password: String) : Ui
 
         data object UserDoesNotHaveAnAccount : Ui
     }
@@ -25,5 +25,5 @@ internal sealed interface LoginEffect {
 }
 
 internal sealed interface LoginCommand {
-    class Login(val username: String, val password: String) : LoginCommand
+    class Login(val email: String, val password: String) : LoginCommand
 }

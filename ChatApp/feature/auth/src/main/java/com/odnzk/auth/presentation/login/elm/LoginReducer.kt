@@ -31,7 +31,7 @@ internal class LoginReducer @Inject constructor(
         is LoginEvent.Ui.Login -> {
             state { copy(isLoading = true) }
             commands {
-                +LoginCommand.Login(event.username, event.password)
+                +LoginCommand.Login(event.email, event.password)
             }
         }
 

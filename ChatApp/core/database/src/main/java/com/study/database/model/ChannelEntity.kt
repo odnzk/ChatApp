@@ -6,7 +6,6 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 import com.study.database.model.ChannelEntity.Companion.CHANNELS_TABLE
 
-// todo somehow move to :feature:channels
 @Entity(
     tableName = CHANNELS_TABLE,
     indices = [Index(value = ["title"])],

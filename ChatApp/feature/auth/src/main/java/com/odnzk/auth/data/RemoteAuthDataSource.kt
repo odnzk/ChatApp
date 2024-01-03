@@ -10,8 +10,8 @@ import javax.inject.Inject
 @Reusable
 internal class RemoteAuthDataSource @Inject constructor(private val api: AuthApi) :
     BaseNetworkDataSource() {
-    suspend fun login(username: String, password: String): ApiKeyResponse {
-        return safeNetworkRequest { api.fetchApiKey(username, password) }
+    suspend fun login(email: String, password: String): ApiKeyResponse {
+        return safeNetworkRequest { api.fetchApiKey(email, password) }
     }
 
     suspend fun signup(email: String, password: String, fullName: String) {

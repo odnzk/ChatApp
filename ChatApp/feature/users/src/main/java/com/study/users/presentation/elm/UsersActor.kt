@@ -36,7 +36,4 @@ internal class UsersActor @Inject constructor(
                     )
             }
         }
-
-
-    //  TODO("implement search")
 }

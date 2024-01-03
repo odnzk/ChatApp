@@ -60,13 +60,13 @@ internal class HolderChannelsFragment : Fragment() {
             fragmentChannelsHolderSearchView.setOnQueryTextListener(object :
                 SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
-                    // todo
+                    //TODO("implement search")
 //                    query?.let { store.accept(MainEvent.Ui.Search(query)) }
                     return false
                 }
 
                 override fun onQueryTextChange(query: String?): Boolean {
-                    // todo
+                    //  TODO("implement search")
 //                    query?.let { store.accept(MainEvent.Ui.Search(query)) }
                     return false
                 }

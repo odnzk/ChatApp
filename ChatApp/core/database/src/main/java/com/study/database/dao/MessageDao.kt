@@ -12,9 +12,6 @@ import androidx.room.Upsert
 import com.study.database.model.MessageEntity
 import com.study.database.model.MessageEntity.Companion.MESSAGES_TABLE
 import com.study.database.model.tuple.MessageWithReactionsTuple
-
-// todo somehow move to :feature:channels
-
 @Dao
 interface MessageDao {
 

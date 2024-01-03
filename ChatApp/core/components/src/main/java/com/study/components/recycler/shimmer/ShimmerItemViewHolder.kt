@@ -6,9 +6,7 @@ import androidx.core.view.children
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.facebook.shimmer.ShimmerFrameLayout
-import com.google.android.material.color.MaterialColors
 import com.study.ui.R
-import com.google.android.material.R as MaterialR
 
 /**
  * An abstract class for [RecyclerView.ViewHolder] that can display shimmer layouts.
@@ -20,10 +18,8 @@ import com.google.android.material.R as MaterialR
  */
 abstract class ShimmerItemViewHolder<T : Any>(private val binding: ViewBinding) :
     RecyclerView.ViewHolder(binding.root) {
-    protected open val shimmerBackgroundColor: Int = MaterialColors.getColor(
-        itemView.context, MaterialR.attr.backgroundColor,
-        ContextCompat.getColor(itemView.context, R.color.dark_nero)
-    )
+    protected open val shimmerBackgroundColor: Int =
+        ContextCompat.getColor(itemView.context, R.color.common_shimmer_background_color)
 
     protected open val transparentColor: Int =
         ContextCompat.getColor(itemView.context, android.R.color.transparent)

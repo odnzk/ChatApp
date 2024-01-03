@@ -29,6 +29,7 @@
             android:textAppearance="@style/TextAppearance.ChatApp.Title.Small"
             app:layout_constraintBottom_toTopOf="@id/item_user_tv_email"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@id/item_user_iv_avatar"
             app:layout_constraintTop_toTopOf="@id/item_user_iv_avatar"
             tools:text="Darrel Steward" />

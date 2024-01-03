@@ -26,8 +26,6 @@ import com.study.network.model.request.message.FileMessageRequest
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
-
-// todo fix loading messages
 internal class ChatRepositoryImpl @Inject constructor(
     private val remoteDS: RemoteMessageDataSource,
     private val localDS: LocalMessageDataSource,

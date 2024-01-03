@@ -40,7 +40,7 @@ internal class NetworkModule {
     fun providesAuthInterceptor(authentificator: Authentificator): Interceptor =
         Interceptor { chain ->
             val credentials = runBlocking {
-                Credentials.basic(authentificator.getUsername(), authentificator.getApiKey())
+                Credentials.basic(authentificator.getEmail(), authentificator.getApiKey())
             }
             val request = chain.request().newBuilder().addHeader(AUTH_HEADER, credentials).build()
             chain.proceed(request)
@@ -51,7 +51,7 @@ internal class NetworkModule {
     fun providesImageAuthInterceptor(authentificator: Authentificator): Interceptor =
         Interceptor { chain ->
             val credentials = runBlocking {
-                Credentials.basic(authentificator.getUsername(), authentificator.getApiKey())
+                Credentials.basic(authentificator.getEmail(), authentificator.getApiKey())
             }
             val request = chain.request()
                 .takeIf { it.url.toString().contains(USER_UPLOADS_PATH) }?.newBuilder()
@@ -59,8 +59,6 @@ internal class NetworkModule {
                 ?: chain.request()
             chain.proceed(request)
         }
-
-    // todo create separate retrofits
 
     @Provides
     @DaggerHttpLoggingInterceptor

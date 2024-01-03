@@ -96,7 +96,7 @@ internal fun LoginScreen(
 
 @Composable
 private fun LoginContent(store: LoginStore, modifier: Modifier) {
-    var username by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var isError by remember { mutableStateOf(false) }
     val error = stringResource(id = R.string.common_error_empty_fields)
@@ -119,11 +119,11 @@ private fun LoginContent(store: LoginStore, modifier: Modifier) {
         PrimaryTextInputLayout(
             label = stringResource(id = R.string.common_field_email),
             hint = stringResource(id = R.string.common_field_email_hint),
-            value = username,
+            value = email,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
             singleLine = true
         ) {
-            username = it
+            email = it
         }
         Spacer(modifier = Modifier.height(LocalDim.current.small))
 
@@ -137,9 +137,9 @@ private fun LoginContent(store: LoginStore, modifier: Modifier) {
         Spacer(modifier = Modifier.height(LocalDim.current.small))
 
         PrimaryButton(text = stringResource(id = R.string.screen_login_button_login)) {
-            isError = username.isBlank() || password.isBlank()
+            isError = email.isBlank() || password.isBlank()
             if (!isError) {
-                store.accept(LoginEvent.Ui.Login(username = username, password = password))
+                store.accept(LoginEvent.Ui.Login(email = email, password = password))
             }
         }
 

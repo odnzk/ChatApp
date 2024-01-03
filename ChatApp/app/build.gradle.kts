@@ -1,7 +1,5 @@
 import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 
-val username: String = gradleLocalProperties(rootDir).getProperty("username")
-val password: String = gradleLocalProperties(rootDir).getProperty("password")
 val baseUrl: String = gradleLocalProperties(rootDir).getProperty("base_url")
 
 plugins {
@@ -34,17 +32,12 @@ android {
             )
         }
         debug {
-            buildConfigField("String", "USERNAME", username)
-            buildConfigField("String", "PASSWORD", password)
             buildConfigField("String", "BASE_URL", baseUrl)
         }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
-    }
-    kotlinOptions {
-        jvmTarget = "11"
     }
     buildFeatures {
         viewBinding = true

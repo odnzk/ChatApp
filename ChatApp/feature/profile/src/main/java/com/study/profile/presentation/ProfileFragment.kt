@@ -129,7 +129,8 @@ internal class ProfileFragment : ElmFragment<ProfileEvent, ProfileEffect, Profil
         screenStateView.onTryAgainClickListener =
             View.OnClickListener { store.accept(ProfileEvent.Ui.Reload) }
         fragmentProfileBtnLogout.setOnClickListener {
-            // TODO() implement logout && hide if it is not current user
+            // TODO() implement logout
+            //  TODO hide logout if it is not current user
         }
         adapter = GeneralAdapterDelegate(delegatesToList(RoleDelegate()))
         fragmentProfileRvRoles.adapter = adapter

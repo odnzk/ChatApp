@@ -6,8 +6,6 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 import com.study.database.model.MessageEntity.Companion.MESSAGES_TABLE
 import java.util.Calendar
-
-// todo somehow move to :feature:channels
 @Entity(
     tableName = MESSAGES_TABLE,
     indices = [Index(value = ["topic_title", "channel_id"])]

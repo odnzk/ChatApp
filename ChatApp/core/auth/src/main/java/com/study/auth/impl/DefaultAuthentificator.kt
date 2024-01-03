@@ -21,13 +21,17 @@ internal class DefaultAuthentificator @Inject constructor(
     private val context: Context,
     private val dispatcher: CoroutineDispatcher
 ) : Authentificator {
-    override suspend fun getUsername(): String {
-        return getLocallySaved(USERNAME)
-            ?: throw UserNotAuthorizedException("Can't get the username")
+    override suspend fun getEmail(): String {
+        return getLocallySaved(EMAIL)
+            ?: throw UserNotAuthorizedException("Can't get the email")
     }
 
     override suspend fun getApiKey(): String {
         return getLocallySaved(API_KEY) ?: throw UserNotAuthorizedException("Can't get the api key")
+    }
+
+    override suspend fun saveEmail(email: String) {
+        saveLocally(EMAIL, email)
     }
 
     override suspend fun saveUserId(userId: Int) {
@@ -44,11 +48,11 @@ internal class DefaultAuthentificator @Inject constructor(
 
 
     override suspend fun clear() {
-        // TODO
+        context.dataStore.edit { it.clear() }
     }
 
     override suspend fun isAuthorized(): Boolean {
-        return getLocallySaved(USERNAME) != null
+        return getLocallySaved(EMAIL) != null
                 && getLocallySaved(USER_ID) != null
                 && getLocallySaved(API_KEY) != null
     }
@@ -70,7 +74,7 @@ internal class DefaultAuthentificator @Inject constructor(
             DATA_STORE_NAME
         )
         private val USER_ID = intPreferencesKey("userId")
-        private val USERNAME = stringPreferencesKey("username")
+        private val EMAIL = stringPreferencesKey("email")
         private val API_KEY = stringPreferencesKey("apiKey")
     }
 }
