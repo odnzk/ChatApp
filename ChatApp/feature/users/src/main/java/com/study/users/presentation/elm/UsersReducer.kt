@@ -10,23 +10,29 @@ internal class UsersReducer @Inject constructor() :
             state { copy(isLoading = true) }
             commands { +UsersCommand.LoadUsers }
         } else Unit
+
         is UsersEvent.Internal.LoadingUsersError -> {
             state { copy(isLoading = false, error = event.error) }
         }
+
         is UsersEvent.Internal.LoadingUsersSuccess -> {
             state { copy(isLoading = false, users = event.users, error = null) }
         }
+
         UsersEvent.Ui.Reload -> {
             state { copy(isLoading = true, error = null) }
             commands { +UsersCommand.LoadUsers }
         }
+
         is UsersEvent.Ui.Search -> {
             state { copy(isLoading = true, error = null) }
             commands { +UsersCommand.SearchUsers(event.query) }
         }
+
         is UsersEvent.Internal.SearchError -> {
             state { copy(isLoading = false, error = event.error) }
         }
+
         is UsersEvent.Internal.SearchSuccess -> {
             state { copy(isLoading = false, users = event.users, error = null) }
         }

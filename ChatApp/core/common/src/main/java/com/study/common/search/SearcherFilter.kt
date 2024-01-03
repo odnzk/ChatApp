@@ -14,9 +14,9 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
-class Searcher(
+class SearcherFilter(
     scope: CoroutineScope,
-    private val searchListener: SearchListener
+    private val listener: Listener
 ) {
 
     private val allQueries: MutableSharedFlow<String> =
@@ -39,7 +39,7 @@ class Searcher(
 
         scope.launch {
             filteredQueries.collect { query ->
-                searchListener.onNewQuery(query)
+                listener.onNewQuery(query)
             }
         }
 
@@ -49,7 +49,12 @@ class Searcher(
         allQueries.tryEmit(newQuery)
     }
 
+    fun interface Listener {
+        fun onNewQuery(query: String)
+    }
+
     companion object {
         private const val SEARCH_DEBOUNCE = 500L
     }
+
 }
