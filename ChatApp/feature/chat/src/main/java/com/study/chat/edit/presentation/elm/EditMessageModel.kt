@@ -1,7 +1,7 @@
 package com.study.chat.edit.presentation.elm
 
-import com.study.chat.edit.presentation.model.EditableMessage
 import com.study.chat.common.domain.model.NOT_YET_SYNCHRONIZED_ID
+import com.study.chat.edit.presentation.model.EditableMessage
 
 internal data class EditMessageState(
     val messageId: Int = NOT_YET_SYNCHRONIZED_ID,
@@ -16,7 +16,7 @@ internal sealed interface EditMessageEvent {
     }
 
     sealed interface Internal : EditMessageEvent {
-        object Updated : Internal
+        data object Updated : Internal
         class MessageLoaded(val message: EditableMessage) : Internal
         class TopicSuggestionsLoaded(val topics: List<String>) : Internal
         class Error(val error: Throwable) : Internal
@@ -24,7 +24,7 @@ internal sealed interface EditMessageEvent {
 }
 
 internal sealed interface EditMessageEffect {
-    object Success : EditMessageEffect
+    data object Success : EditMessageEffect
     class ShowError(val error: Throwable) : EditMessageEffect
     class ShowSynchronizationError(val error: Throwable) : EditMessageEffect
 }

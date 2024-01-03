@@ -1,7 +1,7 @@
 package com.study.auth.api.di
 
-import com.study.auth.api.UserAuthRepository
+import com.study.auth.api.Authentificator
 
 interface AuthProvider {
-    val userAuthRepository: UserAuthRepository
+    val authentificator: Authentificator
 }

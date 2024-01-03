@@ -4,11 +4,11 @@ import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import com.kaspersky.kaspresso.testcases.api.testcase.TestCase
-import com.study.chat.data.StubUserAuthRepository
+import com.study.chat.common.presentation.util.toEmojiString
+import com.study.chat.data.StubAuthentificator
 import com.study.chat.data.local.MessageTestDatabase
 import com.study.chat.data.remote.RemoteDataSourceProvider
 import com.study.chat.di.launchChatFragment
-import com.study.chat.common.presentation.util.toEmojiString
 import com.study.chat.util.TEST_TOPIC
 import com.study.chat.util.screen.ChatScreen
 import com.study.chat.util.screen.TestState
@@ -31,7 +31,7 @@ internal class ChatFragmentTest : TestCase() {
     private lateinit var reactionDao: ReactionDao
     private lateinit var topicDao: ChannelTopicDao
 
-    private val authRepository = StubUserAuthRepository()
+    private val authRepository = StubAuthentificator()
     private val dispatcher = UnconfinedTestDispatcher()
     private val server = RemoteDataSourceProvider().createServer()
     private val remoteProvider = RemoteDataSourceProvider()

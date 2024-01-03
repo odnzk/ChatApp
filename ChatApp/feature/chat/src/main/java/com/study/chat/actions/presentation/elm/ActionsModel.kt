@@ -16,8 +16,8 @@ internal sealed interface ActionsEvent {
     }
 
     sealed interface Internal : ActionsEvent {
-        object MessageDeleted : Internal
-        object Copied : Internal
+        data object MessageDeleted : Internal
+        data object Copied : Internal
         class SuccessfullyReceivedUserRole(val userRole: UiUserRole) : Internal
         class Error(val error: Throwable) : Internal
     }

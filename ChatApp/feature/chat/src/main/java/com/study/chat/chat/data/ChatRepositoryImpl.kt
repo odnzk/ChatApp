@@ -103,7 +103,7 @@ internal class ChatRepositoryImpl @Inject constructor(
 
     private suspend fun uploadFile(message: OutcomeMessage.File): OutcomeMessage.Text {
         val file = readFile(Uri.parse(message.uri))
-        return remoteDS.upload(file).uri?.takeIf { it.isNotEmpty() }?.let { serverUri ->
+        return remoteDS.upload(file).uri.takeIf { it.isNotEmpty() }?.let { serverUri ->
             message.toTextMessage(file.name, serverUri)
         } ?: error("Invalid uri from server")
     }

@@ -1,7 +1,7 @@
 package com.study.users.di
 
 import com.study.common.di.FeatureScope
-import com.study.components.di.SingletoneStoreHolder
+import com.study.components.di.ManualStoreHolder
 import com.study.users.presentation.elm.UsersActor
 import com.study.users.presentation.elm.UsersEffect
 import com.study.users.presentation.elm.UsersEvent
@@ -21,6 +21,6 @@ internal class UsersModule {
         reducer: UsersReducer,
         actor: UsersActor
     ): StoreHolder<UsersEvent, UsersEffect, UsersState> =
-        SingletoneStoreHolder { ElmStoreCompat(UsersState(), reducer, actor) }
+        ManualStoreHolder { ElmStoreCompat(UsersState(), reducer, actor) }
 
 }

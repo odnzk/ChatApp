@@ -15,8 +15,8 @@ internal sealed interface EmojiListEvent {
     }
 
     sealed interface Ui : EmojiListEvent {
-        object Init : Ui
-        object Reload : Ui
+        data object Init : Ui
+        data object Reload : Ui
     }
 }
 

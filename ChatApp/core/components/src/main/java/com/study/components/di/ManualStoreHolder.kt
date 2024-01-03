@@ -18,7 +18,7 @@ import vivid.money.elmslie.core.store.Store
  * @param Effect The type of side effect that the store can produce.
  * @param State The type of state that the store manages.
  */
-class SingletoneStoreHolder<Event : Any, Effect : Any, State : Any>(storeProvider: () -> Store<Event, Effect, State>) :
+class ManualStoreHolder<Event : Any, Effect : Any, State : Any>(storeProvider: () -> Store<Event, Effect, State>) :
     StoreHolder<Event, Effect, State> {
 
     override var isStarted = false

@@ -1,7 +1,7 @@
 package com.study.chat.chat.presentation.elm
 
 import androidx.paging.cachedIn
-import com.study.auth.api.UserAuthRepository
+import com.study.auth.api.Authentificator
 import com.study.chat.chat.domain.usecase.AddReactionUseCase
 import com.study.chat.chat.domain.usecase.GetAllMessagesUseCase
 import com.study.chat.chat.domain.usecase.RemoveIrrelevantMessagesUseCase
@@ -32,7 +32,7 @@ import vivid.money.elmslie.coroutines.switch
 internal class ChatActor @AssistedInject constructor(
     @Assisted("channelId") private val channelId: Int,
     @Assisted("topicTitle") private val topicTitle: String?,
-    private val userAuthRepository: UserAuthRepository,
+    private val authentificator: Authentificator,
     private val getAllMessageUseCase: GetAllMessagesUseCase,
     private val sendMessageUseCase: SendMessageUseCase,
     private val addReactionUseCase: AddReactionUseCase,
@@ -57,7 +57,7 @@ internal class ChatActor @AssistedInject constructor(
                 .distinctUntilChanged()
                 .map {
                     it.toUiMessagesWithSeparators(
-                        userAuthRepository.getUserId(),
+                        authentificator.getUserId(),
                         topicTitle == null
                     )
                 }
@@ -76,7 +76,7 @@ internal class ChatActor @AssistedInject constructor(
             if (command.message.id == NOT_YET_SYNCHRONIZED_ID) throw SynchronizationException()
 
             val message = command.message
-            val reaction = command.emoji.toReaction(message.id, userAuthRepository.getUserId())
+            val reaction = command.emoji.toReaction(message.id, authentificator.getUserId())
             message.reactions
                 .find { it.emoji.code == command.emoji.code }
                 ?.takeIf { it.isSelected }
@@ -123,7 +123,7 @@ internal class ChatActor @AssistedInject constructor(
         )
             .map {
                 it.toUiMessagesWithSeparators(
-                    userAuthRepository.getUserId(),
+                    authentificator.getUserId(),
                     topicTitle == null
                 )
             }

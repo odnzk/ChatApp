@@ -1,4 +1,6 @@
 package com.study.auth.api
 
-// TODO() check usability
-class UserNotAuthorizedException(override val message: String? = null) : RuntimeException()
+import java.io.IOException
+
+class UserNotAuthorizedException(override val message: String? = null) : IOException()
+// IOException() for throeing this exception in OkHttp Interceptors

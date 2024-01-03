@@ -1,6 +1,6 @@
 package com.study.chat.chat.domain.usecase
 
-import com.study.auth.api.UserAuthRepository
+import com.study.auth.api.Authentificator
 import com.study.chat.chat.domain.repository.ChatRepository
 import com.study.chat.common.domain.model.OutcomeMessage
 import com.study.common.validation.Validator
@@ -9,7 +9,7 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 internal class UploadFileUseCase @Inject constructor(
-    private val userAuthRepository: UserAuthRepository,
+    private val authentificator: Authentificator,
     private val validator: Validator<OutcomeMessage>,
     private val repository: ChatRepository,
     private val dispatcher: CoroutineDispatcher
@@ -20,7 +20,7 @@ internal class UploadFileUseCase @Inject constructor(
                 channelId = channelId,
                 topicTitle = topicTitle,
                 uri = uri,
-                senderId = userAuthRepository.getUserId()
+                senderId = authentificator.getUserId()
             )
             validator.validate(message)
             repository.sendMessage(message)

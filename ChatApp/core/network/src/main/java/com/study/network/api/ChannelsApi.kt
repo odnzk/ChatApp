@@ -1,7 +1,7 @@
 package com.study.network.api
 
 
-import com.study.network.model.request.ChannelRequestDto
+import com.study.network.model.request.channel.ChannelRequestDto
 import com.study.network.model.response.stream.AddStreamResponse
 import com.study.network.model.response.stream.AllStreamsResponse
 import com.study.network.model.response.stream.StreamTopicsResponse

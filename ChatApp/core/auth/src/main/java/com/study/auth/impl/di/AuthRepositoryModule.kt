@@ -1,7 +1,7 @@
 package com.study.auth.impl.di
 
-import com.study.auth.api.UserAuthRepository
-import com.study.auth.impl.DefaultUserAuthRepository
+import com.study.auth.api.Authentificator
+import com.study.auth.impl.DefaultAuthentificator
 import dagger.Binds
 import dagger.Module
 import dagger.Reusable
@@ -10,5 +10,5 @@ import dagger.Reusable
 internal interface AuthRepositoryModule {
     @Binds
     @Reusable
-    fun bindsUserAuthRepository(impl: DefaultUserAuthRepository): UserAuthRepository
+    fun bindsUserAuthRepository(impl: DefaultAuthentificator): Authentificator
 }

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -28,12 +27,12 @@
         style="@style/PrimaryTextInputLayout"
         android:hint="@string/hint_channel_title"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:maxLength="50">
+        android:layout_height="wrap_content">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/fragment_add_et_channel"
             android:layout_width="match_parent"
+            android:maxLength="50"
             android:layout_height="wrap_content" />
     </com.google.android.material.textfield.TextInputLayout>
 
