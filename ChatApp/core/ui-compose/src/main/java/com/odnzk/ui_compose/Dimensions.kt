@@ -7,6 +7,7 @@ import androidx.compose.ui.unit.dp
 val LocalDim = compositionLocalOf { Dimensions() }
 
 data class Dimensions(
+    val extraSmall: Dp = 2.dp,
     val small: Dp = 8.dp,
     val medium: Dp = 16.dp,
     val large: Dp = 24.dp

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="common_error_empty_fields">Fields can\'t be empty </string>
+    <string name="common_field_password_hint">Enter password</string>
+    <string name="common_field_password">Password</string>
+    <string name="common_icon_password_visibility_content_description">Password visibility icon</string>
+    <string name="common_field_email">Email</string>
+    <string name="common_field_email_hint">Enter email</string>
+
+    <string name="screen_login_title">Login</string>
+    <string name="screen_login_button_login">Login</string>
+    <string name="screen_login_success">Login success</string>
+    <string name="screen_login_failure">Login failure: %s</string>
+    <string name="screen_login_user_does_not_have_an_account">Don’t have an account? Sign up</string>
+
+    <string name="screen_signup_title">Signup</string>
+    <string name="screen_signup_user_already_have_an_account">Already have an account? Login</string>
+    <string name="screen_signup_field_confirm_password">Password</string>
+    <string name="screen_signup_field_confirm_password_hint">Confirm password</string>
+    <string name="screen_signup_field_full_name">Full name</string>
+    <string name="screen_signup_filed_full_name_hint">Enter full name</string>
+    <string name="screen_signup_failure">Signup failure: %s</string>
+    <string name="screen_signup_success">Signup success</string>
+    <string name="screen_signup_error_passwords_do_not_match">Passwords don\'t match</string>
+</resources>

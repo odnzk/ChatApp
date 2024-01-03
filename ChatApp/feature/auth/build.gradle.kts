@@ -53,6 +53,8 @@ dependencies {
     implementation(libs.bundles.compose)
     platform(libs.compose.bom)
 
+    implementation(libs.test.mockito)
+
     implementation(project(":core:common"))
     implementation(project(":core:components"))
     implementation(project(":core:network"))

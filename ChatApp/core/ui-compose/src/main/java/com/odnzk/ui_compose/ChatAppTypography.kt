@@ -44,7 +44,7 @@ val ChatAppTypography = Typography(
     ),
     defaultFontFamily = FontFamily(Font(R.font.satoshi_regular)),
     body1 = TextStyle(
-        fontSize = 20.sp,
+        fontSize = 18.sp,
         fontWeight = FontWeight.Normal,
         lineHeight = 24.sp
     ),

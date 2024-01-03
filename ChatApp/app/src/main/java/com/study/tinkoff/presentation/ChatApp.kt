@@ -3,6 +3,7 @@ package com.study.tinkoff.presentation
 import android.app.Application
 import coil.ImageLoader
 import coil.ImageLoaderFactory
+import com.odnzk.auth.di.FeatureAuthDepStore
 import com.study.channels.common.di.ChannelsDepStore
 import com.study.chat.common.di.ChatDepStore
 import com.study.profile.di.ProfileDepStore
@@ -20,6 +21,7 @@ class ChatApp : Application(), ImageLoaderFactory {
         ChannelsDepStore.dep = appComponent
         UsersDepStore.dep = appComponent
         ChatDepStore.dep = appComponent
+        FeatureAuthDepStore.dep = appComponent
     }
 
     override fun newImageLoader(): ImageLoader =

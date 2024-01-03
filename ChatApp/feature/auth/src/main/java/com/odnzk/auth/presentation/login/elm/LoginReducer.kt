@@ -1,19 +1,22 @@
-package com.odnzk.auth.presentation.elm
+package com.odnzk.auth.presentation.login.elm
 
 import com.odnzk.auth.R
+import com.study.components.util.ResourcesProvider
 import vivid.money.elmslie.core.store.dsl_reducer.DslReducer
 import javax.inject.Inject
 
-internal class LoginReducer @Inject constructor(private val resourcesProvider: com.study.components.util.ResourcesProvider) :
+internal class LoginReducer @Inject constructor(
+    private val resourcesProvider: ResourcesProvider
+) :
     DslReducer<LoginEvent, LoginState, LoginEffect, LoginCommand>() {
     override fun Result.reduce(event: LoginEvent) = when (event) {
         is LoginEvent.Internal.LoginFailure -> {
             state { copy(isLoading = false) }
             effects {
-                +LoginEffect.Toast(
+                +LoginEffect.Snackbar(
                     resourcesProvider.getString(
                         R.string.screen_login_failure,
-                        event.error?.message.orEmpty()
+                        event.error.message.orEmpty()
                     )
                 )
             }
@@ -21,7 +24,7 @@ internal class LoginReducer @Inject constructor(private val resourcesProvider: c
 
         LoginEvent.Internal.LoginSuccess -> {
             state { copy(isLoading = false) }
-            effects { +LoginEffect.Toast(resourcesProvider.getString(R.string.screen_login_success)) }
+            effects { +LoginEffect.Snackbar(resourcesProvider.getString(R.string.screen_login_success)) }
         }
 
         is LoginEvent.Ui.Login -> {
@@ -32,5 +35,8 @@ internal class LoginReducer @Inject constructor(private val resourcesProvider: c
         }
 
         LoginEvent.Ui.Init -> Unit
+        LoginEvent.Ui.UserDoesNotHaveAnAccount -> {
+            effects { +LoginEffect.NavigateToSignup }
+        }
     }
 }

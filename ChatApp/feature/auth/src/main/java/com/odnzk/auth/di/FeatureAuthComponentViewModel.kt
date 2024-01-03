@@ -9,10 +9,10 @@ internal interface FeatureAuthDepsProvider {
     @get:RestrictTo(RestrictTo.Scope.LIBRARY)
     val dep: FeatureAuthDep
 
-    companion object : FeatureAuthDepsProvider by FeatureFeatureAuthDepStore
+    companion object : FeatureAuthDepsProvider by FeatureAuthDepStore
 }
 
-object FeatureFeatureAuthDepStore : FeatureAuthDepsProvider {
+object FeatureAuthDepStore : FeatureAuthDepsProvider {
     override var dep: FeatureAuthDep by notNull()
 }
 

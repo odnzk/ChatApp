@@ -9,7 +9,6 @@ import javax.inject.Inject
 internal class AuthRepositoryImpl @Inject constructor(
     private val remoteDataSource: RemoteAuthDataSource,
     private val authentificator: Authentificator
-
 ) : AuthRepository {
     override suspend fun login(username: String, password: String) {
         val user = remoteDataSource.login(username, password)
