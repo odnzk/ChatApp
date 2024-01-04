@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "490037832543",
+    "project_id": "chatapp-ac5d8",
+    "storage_bucket": "chatapp-ac5d8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:490037832543:android:cbdc6f0187853e9b2824ea",
+        "android_client_info": {
+          "package_name": "com.study.tinkoff"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCgsbbgtfGswKHsSmCoUdxt6BCLgSLrYIM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
