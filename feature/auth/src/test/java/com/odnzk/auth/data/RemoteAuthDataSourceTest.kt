@@ -20,7 +20,7 @@ private const val USER_ID = 999
 private const val FULL_NAME = "Name Surname"
 
 @RunWith(JUnit4::class)
-class RemoteAuthDataSourceTest {
+internal class RemoteAuthDataSourceTest {
 
     private val authApi: AuthApi = mockk()
     private val datasource: RemoteAuthDataSource = RemoteAuthDataSource(authApi)

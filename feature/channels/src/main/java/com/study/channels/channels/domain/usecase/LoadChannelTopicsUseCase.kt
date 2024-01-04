@@ -1,6 +1,6 @@
 package com.study.channels.channels.domain.usecase
 
-import com.study.channels.channels.domain.repository.ChannelRepository
+import com.study.channels.common.domain.repository.ChannelRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject

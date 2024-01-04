@@ -1,4 +1,5 @@
 import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+import com.google.firebase.crashlytics.buildtools.gradle.CrashlyticsExtension
 
 val baseUrl: String = gradleLocalProperties(rootDir).getProperty("base_url")
 
@@ -8,6 +9,9 @@ plugins {
     id("kotlin-kapt")
     id("androidx.navigation.safeargs.kotlin")
     id("org.jetbrains.kotlin.android")
+    alias(libs.plugins.google.services)
+    alias(libs.plugins.detekt)
+    alias(libs.plugins.firebase.crashlutics.gradle.plugin)
 }
 
 android {
@@ -30,6 +34,11 @@ android {
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
             )
+            configure<CrashlyticsExtension> {
+                nativeSymbolUploadEnabled = true
+                strippedNativeLibsDir = "build/intermediates/stripped_native_libs/release/out/lib"
+                unstrippedNativeLibsDir ="build/intermediates/merged_native_libs/release/out/lib"
+            }
         }
         debug {
             buildConfigField("String", "BASE_URL", baseUrl)
@@ -67,6 +76,10 @@ dependencies {
 
     implementation(libs.bundles.navigation)
     implementation(libs.bundles.elmslie)
+
+    // Firebase
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.bundles.firebase)
 
     implementation(project(":core:ui"))
     implementation(project(":core:components"))

@@ -56,7 +56,14 @@ shimmer = "0.5.0"
 core-ktx = "1.12.0"
 espresso-core = "3.5.1"
 kapt = "1.8.10"
+detekt = "1.23.3"
 
+#Firebase
+google_services = "4.4.0"
+firebase_bom = "32.7.0"
+firebase_crashlytics_gradle_plugin = "2.9.9"
+
+#Compose
 compose = "1.5.4"
 compose_activity = "1.7.2"
 compose_bom = "2022.10.00"
@@ -140,10 +147,19 @@ compose_bom = { module = "androidx.compose:compose-bom", version = "2023.10.01" 
 compose_tooling_preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose" }
 ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "uiTooling" }
 
+#Firebase
+firebase_bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase_bom" }
+firebase_analytics = { module = "com.google.firebase:firebase-analytics" }
+firebase_crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
+firebase_crashlytics_ndk = { module = "com.google.firebase:firebase-crashlytics-ndk" }
+firebase_performance = { module = "com.google.firebase:firebase-perf" }
+firebase_notifications = { module = "com.google.firebase:firebase-messaging" }
+
 [bundles]
 elmslie = ["elmslie_core", "elmslie_android", "elmslie_coroutines"]
 navigation = ["navigation_fragment", "navigation_ui_ktx"]
 compose = ["compose_ui", "compose_activty", "compose_material", "compose_runtime", "compose_tooling_preview"]
+firebase = ["firebase_analytics", "firebase_crashlytics", "firebase_notifications", "firebase_performance", "firebase_crashlytics_ndk"]
 
 [plugins]
 android_application = { id = "com.android.application", version.ref = "android_gradle_plugin" }
@@ -155,4 +171,6 @@ android_kotlin = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin_jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin_kapt = { id = "kotlin-kapt", version.ref = "kapt" }
 navigation_safeargs = { id = "androidx.navigation.safeargs.kotlin", version.ref = "navigation" }
-
+google_services = { id = "com.google.gms.google-services", version.ref = "google_services" }
+firebase_crashlutics_gradle_plugin = { id = "com.google.firebase.crashlytics", version.ref = "firebase_crashlytics_gradle_plugin" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }

@@ -51,6 +51,11 @@ dependencies {
     implementation(libs.shimmers)
     implementation(libs.bundles.navigation)
     implementation(libs.timber)
+    // Test
+    testImplementation(libs.test.mockk) // for mocking Screen's stores
+    testImplementation(libs.junit)
+    testImplementation(libs.test.core)
+    testImplementation(libs.test.coroutines)
 
     implementation(project(":core:common"))
     implementation(project(":core:components"))

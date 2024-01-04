@@ -1,9 +1,7 @@
 package com.study.channels.common.di
 
-import com.study.channels.addChannel.data.AddChannelRepositoryImpl
-import com.study.channels.addChannel.domain.repository.AddChannelRepository
-import com.study.channels.channels.data.ChannelRepositoryImpl
-import com.study.channels.channels.domain.repository.ChannelRepository
+import com.study.channels.common.data.ChannelRepositoryImpl
+import com.study.channels.common.domain.repository.ChannelRepository
 import com.study.channels.channels.presentation.model.SearchEvent
 import com.study.channels.common.domain.model.Channel
 import com.study.channels.common.domain.util.ChannelValidator
@@ -18,9 +16,6 @@ internal interface ChannelsBindsModule {
 
     @Binds
     fun bindsChannelRepository(impl: ChannelRepositoryImpl): ChannelRepository
-
-    @Binds
-    fun bindsAddChannelRepository(impl: AddChannelRepositoryImpl): AddChannelRepository
 
     @Binds
     fun bindsValidator(impl: ChannelValidator): Validator<Channel>

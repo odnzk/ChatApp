@@ -58,9 +58,7 @@ dependencies {
     implementation(libs.pagination)
     implementation(libs.bundles.navigation)
     implementation(libs.timber)
-
-
-    // Testing
+    // Test
     testImplementation(libs.junit)
     testImplementation(libs.test.core)
     androidTestImplementation(libs.test.mockk)

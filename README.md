@@ -33,7 +33,7 @@ base_url=<organization URL without `.zulipchat.com`>
 
 The application follows the principles of clean architecture, the presentation layer implements the UDF architectureusing using [Elmslie library](https://github.com/vivid-money/elmslie). **Example** implementation of the `feature:channel` module
 
-![ChatApp-Architecture](images/Acrhitecture.png)
+![ChatApp-Architecture](.github/images/Acrhitecture.png)
 
 ## Modules
 

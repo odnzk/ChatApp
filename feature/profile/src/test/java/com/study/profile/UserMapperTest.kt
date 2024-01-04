@@ -16,7 +16,7 @@ import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 
 @RunWith(JUnit4::class)
-class UserMapperTest {
+internal class UserMapperTest {
     private companion object {
         const val AVATAR_URL = "https://example.com/avatar.jpg"
         const val EMAIL = "user@example.com"

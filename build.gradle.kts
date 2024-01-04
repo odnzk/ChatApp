@@ -14,4 +14,7 @@ plugins {
     alias(libs.plugins.android.library) apply false
     alias(libs.plugins.android.kotlin) apply false
     alias(libs.plugins.kotlin.jvm) apply false
+    alias(libs.plugins.google.services) apply false
+    alias(libs.plugins.detekt) apply false
+    alias(libs.plugins.firebase.crashlutics.gradle.plugin) apply false
 }
