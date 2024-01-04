@@ -18,7 +18,10 @@ object ChatDepStore : ChatDepProvider {
 }
 
 internal class ChatComponentViewModel : ViewModel() {
-    val chatComponent = DaggerChatComponent.factory().create(ChatDepProvider.dep)
+    val chatComponent by lazy {
+        DaggerChatComponent.factory().create(ChatDepProvider.dep)
+    }
+
     override fun onCleared() {
         super.onCleared()
         chatComponent.run {

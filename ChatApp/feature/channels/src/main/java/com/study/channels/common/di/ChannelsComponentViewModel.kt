@@ -17,8 +17,10 @@ object ChannelsDepStore : ChannelsDepProvider {
 }
 
 internal class ChannelsComponentViewModel : ViewModel() {
-    val channelsComponent = DaggerChannelsComponent.factory()
-        .create(ChannelsDepStore.dep)
+    val channelsComponent by lazy {
+        DaggerChannelsComponent.factory()
+            .create(ChannelsDepStore.dep)
+    }
 
     override fun onCleared() {
         super.onCleared()

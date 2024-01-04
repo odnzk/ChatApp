@@ -17,7 +17,9 @@ object UsersDepStore : UsersDepProvider {
 }
 
 internal class UsersComponentViewModel : ViewModel() {
-    val usersComponent = DaggerUsersComponent.factory().create(UsersDepProvider.dep)
+    val usersComponent by lazy {
+        DaggerUsersComponent.factory().create(UsersDepProvider.dep)
+    }
 
     override fun onCleared() {
         super.onCleared()

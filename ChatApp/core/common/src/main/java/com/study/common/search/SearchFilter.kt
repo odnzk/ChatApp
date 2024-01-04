@@ -1,8 +1,11 @@
 package com.study.common.search
 
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.debounce
@@ -14,10 +17,9 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
-class SearcherFilter(
-    scope: CoroutineScope,
-    private val listener: Listener
-) {
+class SearchFilter(private val listener: Listener) {
+
+    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
 
     private val allQueries: MutableSharedFlow<String> =
         MutableSharedFlow(
@@ -47,6 +49,10 @@ class SearcherFilter(
 
     fun emitQuery(newQuery: String) {
         allQueries.tryEmit(newQuery)
+    }
+
+    fun clear() {
+        scope.cancel()
     }
 
     fun interface Listener {

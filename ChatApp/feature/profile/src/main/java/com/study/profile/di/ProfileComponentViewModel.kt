@@ -17,5 +17,7 @@ object ProfileDepStore : ProfileDepsProvider {
 }
 
 internal class ProfileComponentViewModel : ViewModel() {
-    val profileComponent = DaggerProfileComponent.factory().create(ProfileDepsProvider.dep)
+    val profileComponent by lazy {
+        DaggerProfileComponent.factory().create(ProfileDepsProvider.dep)
+    }
 }

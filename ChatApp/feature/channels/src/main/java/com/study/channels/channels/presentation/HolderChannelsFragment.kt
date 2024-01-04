@@ -1,23 +1,46 @@
 package com.study.channels.channels.presentation
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.get
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import com.study.channels.R
+import com.study.channels.channels.presentation.model.SearchEvent
+import com.study.channels.channels.presentation.model.UiChannelFilter
 import com.study.channels.channels.presentation.util.pager.ChannelFragmentFactory
 import com.study.channels.channels.presentation.util.pager.PagerAdapter
+import com.study.channels.common.di.ChannelsComponentViewModel
+import com.study.channels.common.di.SearchFlow
 import com.study.channels.common.presentation.navigateToAddChannel
 import com.study.channels.databinding.FragmentChannelsHolderBinding
+import kotlinx.coroutines.flow.MutableSharedFlow
+import javax.inject.Inject
 
 internal class HolderChannelsFragment : Fragment() {
+
+    @Inject
+    @SearchFlow
+    lateinit var searchFlow: MutableSharedFlow<SearchEvent>
+
     private var _binding: FragmentChannelsHolderBinding? = null
     private val binding: FragmentChannelsHolderBinding get() = _binding!!
     private var pagerAdapter: PagerAdapter? = null
     private var pagerMediator: TabLayoutMediator? = null
+    private var selectedFilter: UiChannelFilter? = null
+
+    override fun onAttach(context: Context) {
+        ViewModelProvider(requireActivity()).get<ChannelsComponentViewModel>().channelsComponent.inject(
+            this
+        )
+        super.onAttach(context)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -50,6 +73,13 @@ internal class HolderChannelsFragment : Fragment() {
         )
         with(binding) {
             fragmentChannelsHolderVp.adapter = pagerAdapter
+            fragmentChannelsHolderVp.registerOnPageChangeCallback(object :
+                ViewPager2.OnPageChangeCallback() {
+                override fun onPageSelected(position: Int) {
+                    super.onPageSelected(position)
+                    selectedFilter = pagerAdapter?.getFilterForPosition(position)
+                }
+            })
             pagerMediator = TabLayoutMediator(
                 fragmentChannelsHolderTb, fragmentChannelsHolderVp
             ) { tab, position ->
@@ -60,14 +90,16 @@ internal class HolderChannelsFragment : Fragment() {
             fragmentChannelsHolderSearchView.setOnQueryTextListener(object :
                 SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
-                    //TODO("implement search")
-//                    query?.let { store.accept(MainEvent.Ui.Search(query)) }
+                    selectedFilter?.let { filter ->
+                        searchFlow.tryEmit(SearchEvent(query.orEmpty(), filter))
+                    }
                     return false
                 }
 
                 override fun onQueryTextChange(query: String?): Boolean {
-                    //  TODO("implement search")
-//                    query?.let { store.accept(MainEvent.Ui.Search(query)) }
+                    selectedFilter?.let { filter ->
+                        searchFlow.tryEmit(SearchEvent(query.orEmpty(), filter))
+                    }
                     return false
                 }
             })

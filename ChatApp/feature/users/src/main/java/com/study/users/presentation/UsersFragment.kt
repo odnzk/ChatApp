@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.study.common.search.NothingFoundForThisQueryException
-import com.study.common.search.SearcherFilter
+import com.study.common.search.SearchFilter
 import com.study.components.customview.ScreenStateView.ViewState
 import com.study.components.ext.delegatesToList
 import com.study.components.ext.toBaseErrorMessage
@@ -23,33 +23,28 @@ import com.study.users.presentation.elm.UsersState
 import com.study.users.presentation.model.UserShimmer
 import com.study.users.presentation.util.delegate.UserDelegate
 import com.study.users.presentation.util.navigation.navigateToProfileFragment
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.cancel
 import vivid.money.elmslie.android.base.ElmFragment
 import vivid.money.elmslie.android.storeholder.StoreHolder
 import javax.inject.Inject
 
 internal class UsersFragment : ElmFragment<UsersEvent, UsersEffect, UsersState>(),
-    SearcherFilter.Listener {
-    private val binding: FragmentUsersBinding get() = _binding!!
-    private var _binding: FragmentUsersBinding? = null
-    private var adapter: GeneralAdapterDelegate? = null
-    override val initEvent: UsersEvent = UsersEvent.Ui.Init
-    override val storeHolder: StoreHolder<UsersEvent, UsersEffect, UsersState> get() = userStore
+    SearchFilter.Listener {
 
     @Inject
     lateinit var userStore: StoreHolder<UsersEvent, UsersEffect, UsersState>
 
-    private val searchScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
-    private val searcherFilter: SearcherFilter = SearcherFilter(
-        searchScope, this
-    )
+    override val initEvent: UsersEvent = UsersEvent.Ui.Init
+    override val storeHolder: StoreHolder<UsersEvent, UsersEffect, UsersState> get() = userStore
 
+    private val binding: FragmentUsersBinding get() = _binding!!
+    private var _binding: FragmentUsersBinding? = null
+    private var adapter: GeneralAdapterDelegate? = null
+    private val searchFilter: SearchFilter = SearchFilter(this)
 
     override fun onAttach(context: Context) {
-        ViewModelProvider(this).get<UsersComponentViewModel>().usersComponent.inject(this)
+        ViewModelProvider(requireActivity()).get<UsersComponentViewModel>().usersComponent.inject(
+            this
+        )
         super.onAttach(context)
     }
 
@@ -69,7 +64,7 @@ internal class UsersFragment : ElmFragment<UsersEvent, UsersEffect, UsersState>(
 
     override fun onDestroyView() {
         super.onDestroyView()
-        searchScope.cancel()
+        searchFilter.clear()
         adapter = null
         _binding = null
     }
@@ -109,12 +104,12 @@ internal class UsersFragment : ElmFragment<UsersEvent, UsersEffect, UsersState>(
         binding.fragmentUsersSearchView.setOnQueryTextListener(object :
             SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                searcherFilter.emitQuery(query.orEmpty())
+                searchFilter.emitQuery(query.orEmpty())
                 return false
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                searcherFilter.emitQuery(newText.orEmpty())
+                searchFilter.emitQuery(newText.orEmpty())
                 return false
             }
 

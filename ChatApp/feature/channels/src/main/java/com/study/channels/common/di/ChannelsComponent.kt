@@ -9,11 +9,10 @@ import com.study.channels.channels.presentation.HolderChannelsFragment
 import com.study.channels.channels.presentation.elm.ChannelsEffect
 import com.study.channels.channels.presentation.elm.ChannelsEvent
 import com.study.channels.channels.presentation.elm.ChannelsState
-import com.study.common.di.FeatureScope
 import dagger.Component
 import vivid.money.elmslie.android.storeholder.StoreHolder
 
-@FeatureScope
+@ChannelsScope
 @Component(
     dependencies = [ChannelsDep::class],
     modules = [ChannelsBindsModule::class, ChannelsModule::class]

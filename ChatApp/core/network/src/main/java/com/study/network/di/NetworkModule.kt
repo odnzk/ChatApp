@@ -53,10 +53,11 @@ internal class NetworkModule {
             val credentials = runBlocking {
                 Credentials.basic(authentificator.getEmail(), authentificator.getApiKey())
             }
-            val request = chain.request()
-                .takeIf { it.url.toString().contains(USER_UPLOADS_PATH) }?.newBuilder()
-                ?.addHeader(AUTH_HEADER, credentials)?.build()
-                ?: chain.request()
+            val request = if (chain.request().url.toString().contains(USER_UPLOADS_PATH)) {
+                chain.request().newBuilder().addHeader(AUTH_HEADER, credentials).build()
+            } else {
+                chain.request()
+            }
             chain.proceed(request)
         }
 

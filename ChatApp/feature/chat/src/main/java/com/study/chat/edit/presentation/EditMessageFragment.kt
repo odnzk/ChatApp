@@ -9,31 +9,33 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
 import androidx.navigation.fragment.navArgs
 import com.study.chat.R
+import com.study.chat.common.di.ChatComponentViewModel
+import com.study.chat.common.presentation.util.setupSuggestionsAdapter
+import com.study.chat.common.presentation.util.toErrorMessage
 import com.study.chat.databinding.FragmentEditMessageBinding
 import com.study.chat.edit.presentation.elm.EditMessageEffect
 import com.study.chat.edit.presentation.elm.EditMessageEvent
 import com.study.chat.edit.presentation.elm.EditMessageState
-import com.study.chat.common.di.ChatComponentViewModel
-import com.study.chat.common.presentation.util.setupSuggestionsAdapter
-import com.study.chat.common.presentation.util.toErrorMessage
-import com.study.components.ext.showToast
 import com.study.components.customview.BaseBottomSheetFragment
+import com.study.components.ext.showToast
 import vivid.money.elmslie.android.storeholder.StoreHolder
 import javax.inject.Inject
 
 internal class EditMessageFragment :
     BaseBottomSheetFragment<EditMessageEvent, EditMessageEffect, EditMessageState>() {
-    private var _binding: FragmentEditMessageBinding? = null
-    private val binding: FragmentEditMessageBinding get() = _binding!!
-    private val args: EditMessageFragmentArgs by navArgs()
-    override val initEvent: EditMessageEvent get() = EditMessageEvent.Ui.Init(args.messageId)
-    override val storeHolder: StoreHolder<EditMessageEvent, EditMessageEffect, EditMessageState> get() = editStoreHolder
-
     @Inject
     lateinit var editStoreHolder: StoreHolder<EditMessageEvent, EditMessageEffect, EditMessageState>
 
+    override val initEvent: EditMessageEvent get() = EditMessageEvent.Ui.Init(args.messageId)
+    override val storeHolder: StoreHolder<EditMessageEvent, EditMessageEffect, EditMessageState> get() = editStoreHolder
+
+    private var _binding: FragmentEditMessageBinding? = null
+    private val binding: FragmentEditMessageBinding get() = _binding!!
+    private val args: EditMessageFragmentArgs by navArgs()
+
+
     override fun onAttach(context: Context) {
-        ViewModelProvider(this).get<ChatComponentViewModel>().chatComponent.inject(this)
+        ViewModelProvider(requireActivity()).get<ChatComponentViewModel>().chatComponent.inject(this)
         super.onAttach(context)
     }
 

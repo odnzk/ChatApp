@@ -63,7 +63,9 @@ internal class ProfileFragment : ElmFragment<ProfileEvent, ProfileEffect, Profil
     }
 
     override fun onAttach(context: Context) {
-        ViewModelProvider(this).get<ProfileComponentViewModel>().profileComponent.inject(this)
+        ViewModelProvider(requireActivity()).get<ProfileComponentViewModel>().profileComponent.inject(
+            this
+        )
         super.onAttach(context)
     }
 

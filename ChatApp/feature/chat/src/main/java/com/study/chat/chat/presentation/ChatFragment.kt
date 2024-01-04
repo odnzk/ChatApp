@@ -36,7 +36,7 @@ import com.study.chat.common.presentation.util.setupSuggestionsAdapter
 import com.study.chat.common.presentation.util.toErrorMessage
 import com.study.chat.databinding.FragmentChatBinding
 import com.study.common.ext.fastLazy
-import com.study.common.search.SearcherFilter
+import com.study.common.search.SearchFilter
 import com.study.components.customview.ScreenStateView.ViewState
 import com.study.components.ext.delegatesToList
 import com.study.components.ext.safeGetParcelable
@@ -48,10 +48,6 @@ import com.study.ui.NavConstants.CHANNEL_ID_KEY
 import com.study.ui.NavConstants.CHANNEL_TITLE_KEY
 import com.study.ui.NavConstants.TOPIC_COLOR_KEY
 import com.study.ui.NavConstants.TOPIC_TITLE_KEY
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import vivid.money.elmslie.android.base.ElmFragment
 import vivid.money.elmslie.android.storeholder.LifecycleAwareStoreHolder
@@ -60,7 +56,7 @@ import vivid.money.elmslie.coroutines.ElmStoreCompat
 import javax.inject.Inject
 
 internal class ChatFragment : ElmFragment<ChatEvent, ChatEffect, ChatState>(),
-    SearcherFilter.Listener {
+    SearchFilter.Listener {
 
     @Inject
     lateinit var reducerFactory: ChatReducer.Factory
@@ -108,12 +104,10 @@ internal class ChatFragment : ElmFragment<ChatEvent, ChatEffect, ChatState>(),
                 )
             }
         }
-
-    private val searchScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
-    private val searcherFilter: SearcherFilter get() = SearcherFilter(searchScope, this)
+    private val searchFilter: SearchFilter get() = SearchFilter(this)
 
     override fun onAttach(context: Context) {
-        ViewModelProvider(this).get<ChatComponentViewModel>().chatComponent.inject(this)
+        ViewModelProvider(requireActivity()).get<ChatComponentViewModel>().chatComponent.inject(this)
         super.onAttach(context)
     }
 
@@ -139,7 +133,7 @@ internal class ChatFragment : ElmFragment<ChatEvent, ChatEffect, ChatState>(),
     override fun onDestroyView() {
         super.onDestroyView()
         clearFragmentResultListener(SELECTED_EMOJI_RESULT_KEY)
-        searchScope.cancel()
+        searchFilter.clear()
         adapter = null
         _binding = null
     }
@@ -267,12 +261,12 @@ internal class ChatFragment : ElmFragment<ChatEvent, ChatEffect, ChatState>(),
         binding.fragmentChatSearchView.setOnQueryTextListener(object :
             SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                searcherFilter.emitQuery(query.orEmpty())
+                searchFilter.emitQuery(query.orEmpty())
                 return false
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                searcherFilter.emitQuery(newText.orEmpty())
+                searchFilter.emitQuery(newText.orEmpty())
                 return false
             }
 

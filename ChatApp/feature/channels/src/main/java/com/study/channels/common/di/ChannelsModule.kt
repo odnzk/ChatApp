@@ -10,10 +10,11 @@ import com.study.channels.channels.presentation.elm.ChannelsEffect
 import com.study.channels.channels.presentation.elm.ChannelsEvent
 import com.study.channels.channels.presentation.elm.ChannelsReducer
 import com.study.channels.channels.presentation.elm.ChannelsState
-import com.study.common.di.FeatureScope
+import com.study.channels.channels.presentation.model.SearchEvent
 import com.study.components.di.ManualStoreHolder
 import dagger.Module
 import dagger.Provides
+import kotlinx.coroutines.flow.MutableSharedFlow
 import vivid.money.elmslie.android.storeholder.StoreHolder
 import vivid.money.elmslie.coroutines.ElmStoreCompat
 
@@ -21,17 +22,23 @@ import vivid.money.elmslie.coroutines.ElmStoreCompat
 internal class ChannelsModule {
 
     @Provides
-    @FeatureScope
+    @ChannelsScope
     fun providesAddChannelStore(
         actor: AddChannelActor
     ): StoreHolder<AddChannelEvent, AddChannelEffect, AddChannelState> =
         ManualStoreHolder { ElmStoreCompat(AddChannelState(), AddChannelReducer(), actor) }
 
     @Provides
-    @FeatureScope
+    @ChannelsScope
     fun providesChannelsStore(
         actor: ChannelsActor,
         reducer: ChannelsReducer
     ): StoreHolder<ChannelsEvent, ChannelsEffect, ChannelsState> =
         ManualStoreHolder { ElmStoreCompat(ChannelsState(), reducer, actor) }
+
+    @Provides
+    @ChannelsScope
+    @SearchFlow
+    fun providesSearchFlow(): MutableSharedFlow<SearchEvent> = MutableSharedFlow()
+
 }

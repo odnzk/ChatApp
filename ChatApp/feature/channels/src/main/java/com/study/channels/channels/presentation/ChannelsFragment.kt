@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.study.channels.channels.presentation.elm.ChannelsEffect
 import com.study.channels.channels.presentation.elm.ChannelsEvent
 import com.study.channels.channels.presentation.elm.ChannelsState
+import com.study.channels.channels.presentation.model.SearchEvent
 import com.study.channels.channels.presentation.model.UiChannelFilter
 import com.study.channels.channels.presentation.model.UiChannelShimmer
 import com.study.channels.channels.presentation.util.delegate.channel.ChannelDelegate
@@ -23,34 +24,44 @@ import com.study.channels.common.presentation.navigateToChatFragment
 import com.study.channels.common.presentation.toErrorMessage
 import com.study.channels.databinding.FragmentChannelsBinding
 import com.study.common.search.NothingFoundForThisQueryException
+import com.study.common.search.SearchFilter
 import com.study.components.customview.ScreenStateView.ViewState
+import com.study.components.ext.collectFlowSafely
 import com.study.components.ext.delegatesToList
 import com.study.components.ext.safeGetParcelable
 import com.study.components.ext.showErrorSnackbar
 import com.study.components.recycler.delegates.GeneralAdapterDelegate
+import kotlinx.coroutines.flow.Flow
 import vivid.money.elmslie.android.base.ElmFragment
 import vivid.money.elmslie.android.storeholder.StoreHolder
 import javax.inject.Inject
 
-internal class ChannelsFragment : ElmFragment<ChannelsEvent, ChannelsEffect, ChannelsState>() {
+internal class ChannelsFragment : ElmFragment<ChannelsEvent, ChannelsEffect, ChannelsState>(),
+    SearchFilter.Listener {
+
+    @Inject
+    lateinit var searchFlow: Flow<SearchEvent>
 
     @Inject
     lateinit var channelsStore: StoreHolder<ChannelsEvent, ChannelsEffect, ChannelsState>
-
-    private val binding: FragmentChannelsBinding get() = _binding!!
-    private var _binding: FragmentChannelsBinding? = null
-    private var channelsAdapter: GeneralAdapterDelegate? = null
-    private val channelFilter
-        get() = arguments?.safeGetParcelable<UiChannelFilter>(CHANNEL_SETTING_KEY)
-            ?: error("Invalid channel filter ")
 
     override val initEvent: ChannelsEvent get() = ChannelsEvent.Ui.Init(channelFilter)
 
     override val storeHolder: StoreHolder<ChannelsEvent, ChannelsEffect, ChannelsState>
         get() = channelsStore
 
+    private val binding: FragmentChannelsBinding get() = _binding!!
+    private var _binding: FragmentChannelsBinding? = null
+    private var channelsAdapter: GeneralAdapterDelegate? = null
+    private val searchFilter: SearchFilter = SearchFilter(this)
+    private val channelFilter
+        get() = arguments?.safeGetParcelable<UiChannelFilter>(CHANNEL_SETTING_KEY)
+            ?: error("Invalid channel filter ")
+
     override fun onAttach(context: Context) {
-        ViewModelProvider(this).get<ChannelsComponentViewModel>().channelsComponent.inject(this)
+        ViewModelProvider(requireActivity()).get<ChannelsComponentViewModel>().channelsComponent.inject(
+            this
+        )
         super.onAttach(context)
     }
 
@@ -69,6 +80,7 @@ internal class ChannelsFragment : ElmFragment<ChannelsEvent, ChannelsEffect, Cha
 
     override fun onDestroyView() {
         super.onDestroyView()
+        searchFilter.clear()
         channelsAdapter = null
         _binding = null
     }
@@ -115,6 +127,13 @@ internal class ChannelsFragment : ElmFragment<ChannelsEvent, ChannelsEffect, Cha
 
 
     private fun initUI() {
+        collectFlowSafely(searchFlow) { event ->
+            // TODO("fix channels search")
+            if (event.filter == channelFilter) {
+                searchFilter.emitQuery(event.query)
+            }
+        }
+
         channelsAdapter = GeneralAdapterDelegate(
             delegatesToList(
                 ChannelDelegate(
@@ -158,5 +177,9 @@ internal class ChannelsFragment : ElmFragment<ChannelsEvent, ChannelsEffect, Cha
                 arguments = bundleOf(CHANNEL_SETTING_KEY to settings)
             }
         }
+    }
+
+    override fun onNewQuery(query: String) {
+        store.accept(ChannelsEvent.Ui.Search(channelFilter, query))
     }
 }

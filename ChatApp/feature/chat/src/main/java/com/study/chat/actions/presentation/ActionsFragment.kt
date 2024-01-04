@@ -15,32 +15,35 @@ import com.study.chat.actions.presentation.elm.ActionsState
 import com.study.chat.actions.presentation.model.UiAction
 import com.study.chat.actions.presentation.model.UiUserRole
 import com.study.chat.actions.presentation.util.delegate.ActionDelegate
-import com.study.chat.databinding.FragmentBottomSheetListBinding
 import com.study.chat.common.di.ChatComponentViewModel
 import com.study.chat.common.presentation.util.navigateToEditMessageFragment
 import com.study.chat.common.presentation.util.navigateToEmojiListFragment
 import com.study.chat.common.presentation.util.toErrorMessage
+import com.study.chat.databinding.FragmentBottomSheetListBinding
+import com.study.components.customview.BaseBottomSheetFragment
 import com.study.components.ext.delegatesToList
 import com.study.components.ext.showToast
 import com.study.components.recycler.delegates.GeneralAdapterDelegate
-import com.study.components.customview.BaseBottomSheetFragment
 import vivid.money.elmslie.android.storeholder.StoreHolder
 import javax.inject.Inject
 
 internal class ActionsFragment :
     BaseBottomSheetFragment<ActionsEvent, ActionsEffect, ActionsState>() {
-    private var _binding: FragmentBottomSheetListBinding? = null
-    private val binding get() = _binding!!
-    private var adapter: GeneralAdapterDelegate? = null
-    private val args: ActionsFragmentArgs by navArgs()
-    override val initEvent: ActionsEvent get() = ActionsEvent.Ui.Init(args.messageId)
-    override val storeHolder: StoreHolder<ActionsEvent, ActionsEffect, ActionsState> get() = actionsStoreHolder
 
     @Inject
     lateinit var actionsStoreHolder: StoreHolder<ActionsEvent, ActionsEffect, ActionsState>
 
+    override val initEvent: ActionsEvent get() = ActionsEvent.Ui.Init(args.messageId)
+    override val storeHolder: StoreHolder<ActionsEvent, ActionsEffect, ActionsState> get() = actionsStoreHolder
+
+    private var _binding: FragmentBottomSheetListBinding? = null
+    private val binding get() = _binding!!
+    private var adapter: GeneralAdapterDelegate? = null
+    private val args: ActionsFragmentArgs by navArgs()
+
+
     override fun onAttach(context: Context) {
-        ViewModelProvider(this).get<ChatComponentViewModel>().chatComponent.inject(this)
+        ViewModelProvider(requireActivity()).get<ChatComponentViewModel>().chatComponent.inject(this)
         super.onAttach(context)
     }
 

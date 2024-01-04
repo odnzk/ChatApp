@@ -17,7 +17,9 @@ object FeatureAuthDepStore : FeatureAuthDepsProvider {
 }
 
 internal class FeatureAuthComponentViewModel : ViewModel() {
-    val component = DaggerFeatureAuthComponent.factory().create(FeatureAuthDepsProvider.dep)
+    val component by lazy {
+        DaggerFeatureAuthComponent.factory().create(FeatureAuthDepsProvider.dep)
+    }
 
     override fun onCleared() {
         super.onCleared()

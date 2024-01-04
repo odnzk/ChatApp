@@ -10,36 +10,37 @@ import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
 import androidx.navigation.fragment.navArgs
+import com.study.chat.common.di.ChatComponentViewModel
+import com.study.chat.common.presentation.util.toErrorMessage
 import com.study.chat.databinding.FragmentBottomSheetListBinding
 import com.study.chat.emoji.presentation.elm.EmojiListEffect
 import com.study.chat.emoji.presentation.elm.EmojiListEvent
 import com.study.chat.emoji.presentation.elm.EmojiListState
 import com.study.chat.emoji.presentation.util.EmojiDelegate
-import com.study.chat.common.di.ChatComponentViewModel
-import com.study.chat.common.presentation.util.toErrorMessage
+import com.study.components.customview.BaseBottomSheetFragment
 import com.study.components.ext.delegatesToList
 import com.study.components.ext.dp
 import com.study.components.ext.showErrorSnackbar
-import com.study.components.recycler.delegates.GeneralAdapterDelegate
 import com.study.components.recycler.VarSpanGridLayoutManager
-import com.study.components.customview.BaseBottomSheetFragment
+import com.study.components.recycler.delegates.GeneralAdapterDelegate
 import vivid.money.elmslie.android.storeholder.StoreHolder
 import javax.inject.Inject
 
 internal class EmojiListFragment :
     BaseBottomSheetFragment<EmojiListEvent, EmojiListEffect, EmojiListState>() {
+    @Inject
+    lateinit var emojiStoreHolder: StoreHolder<EmojiListEvent, EmojiListEffect, EmojiListState>
+
+    override val initEvent: EmojiListEvent = EmojiListEvent.Ui.Init
+    override val storeHolder: StoreHolder<EmojiListEvent, EmojiListEffect, EmojiListState> get() = emojiStoreHolder
+
     private var _binding: FragmentBottomSheetListBinding? = null
     private val binding get() = _binding!!
     private val args by navArgs<EmojiListFragmentArgs>()
     private var mainEmojiAdapter: GeneralAdapterDelegate? = null
-    override val initEvent: EmojiListEvent = EmojiListEvent.Ui.Init
-    override val storeHolder: StoreHolder<EmojiListEvent, EmojiListEffect, EmojiListState> get() = emojiStoreHolder
-
-    @Inject
-    lateinit var emojiStoreHolder: StoreHolder<EmojiListEvent, EmojiListEffect, EmojiListState>
 
     override fun onAttach(context: Context) {
-        ViewModelProvider(this).get<ChatComponentViewModel>().chatComponent.inject(this)
+        ViewModelProvider(requireActivity()).get<ChatComponentViewModel>().chatComponent.inject(this)
         super.onAttach(context)
     }
 
@@ -70,6 +71,7 @@ internal class EmojiListFragment :
                     storeHolder.store.accept(EmojiListEvent.Ui.Reload)
                 }
             }
+
             state.emojis.isNotEmpty() -> {
                 binding.bottomSheetPbLoading.hide()
                 mainEmojiAdapter?.submitList(state.emojis)
