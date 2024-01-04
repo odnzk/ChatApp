@@ -26,14 +26,15 @@ android {
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
             )
+            buildConfigField("String", "BASE_URL", baseUrl)
         }
         debug {
             buildConfigField("String", "BASE_URL", baseUrl)
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_20
+        targetCompatibility = JavaVersion.VERSION_20
     }
     kotlinOptions {
         jvmTarget = libs.versions.kotlinCompileOptions.jvmTarget.get()

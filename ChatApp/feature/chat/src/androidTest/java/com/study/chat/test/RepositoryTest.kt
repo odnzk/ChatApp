@@ -3,16 +3,16 @@ package com.study.chat.test
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.study.chat.common.data.source.remote.RemoteMessageDataSource
 import com.study.chat.data.local.LocalDataSourceProvider
 import com.study.chat.data.local.MessageTestDatabase
 import com.study.chat.data.remote.RemoteDataSourceProvider
 import com.study.chat.di.GeneralDepContainer
-import com.study.chat.common.data.source.remote.RemoteMessageDataSource
 import com.study.chat.util.TEST_CHANNEL
 import com.study.chat.util.TEST_TOPIC
 import com.study.database.dao.MessageDao
 import com.study.database.dao.ReactionDao
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import io.mockk.mockk
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.After
@@ -20,7 +20,6 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 
-@OptIn(ExperimentalCoroutinesApi::class)
 @RunWith(AndroidJUnit4::class)
 class RepositoryTest {
     private lateinit var db: MessageTestDatabase
@@ -54,7 +53,10 @@ class RepositoryTest {
         val localDS = LocalDataSourceProvider().provide(messageDao, reactionDao)
         val api = RemoteDataSourceProvider().provide(networkDep).messagesApi
         val repository =
-            GeneralDepContainer.createMessageRepositoryImpl(localDS, RemoteMessageDataSource(api))
+            GeneralDepContainer.createMessageRepositoryImpl(
+                localDS,
+                RemoteMessageDataSource(api, mockk())
+            )
 
         // Test verification goes simply by getting a list of PagingData,
         // if the repository did not get anything, the test would not pass due to a time limit

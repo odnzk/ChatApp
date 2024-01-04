@@ -92,7 +92,7 @@ private fun Content(store: SignupStore, modifier: Modifier) {
     var error by remember { mutableIntStateOf(EMPTY_ERROR) }
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .padding(LocalDim.current.medium),
         verticalArrangement = Arrangement.Center,

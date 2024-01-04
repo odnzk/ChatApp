@@ -30,8 +30,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_20
+        targetCompatibility = JavaVersion.VERSION_20
     }
     buildFeatures {
         viewBinding = true
@@ -63,6 +63,7 @@ dependencies {
     // Testing
     testImplementation(libs.junit)
     testImplementation(libs.test.core)
+    androidTestImplementation(libs.test.mockk)
     androidTestImplementation(libs.junit.android)
     androidTestImplementation(libs.kaspresso)
     debugImplementation(libs.test.fragments)
