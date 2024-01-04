@@ -2,7 +2,7 @@ package com.study.chat.common.data.mapper
 
 import com.study.chat.common.domain.model.Emoji
 import com.study.chat.common.domain.model.Reaction
-import com.study.database.model.ReactionEntity
+import com.study.chat.common.data.source.local.message.entity.ReactionEntity
 import com.study.network.model.response.message.ReactionDto
 
 internal fun Reaction.toReactionEntity() = ReactionEntity(

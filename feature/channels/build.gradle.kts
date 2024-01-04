@@ -56,10 +56,12 @@ dependencies {
     testImplementation(libs.junit)
     testImplementation(libs.test.core)
     testImplementation(libs.test.coroutines)
+    // Database
+    implementation(libs.bundles.room)
+    kapt(libs.room.compiler)
 
     implementation(project(":core:common"))
     implementation(project(":core:components"))
     implementation(project(":core:ui"))
     implementation(project(":core:network"))
-    implementation(project(":core:database"))
 }

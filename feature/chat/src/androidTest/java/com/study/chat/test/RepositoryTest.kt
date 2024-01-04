@@ -10,8 +10,8 @@ import com.study.chat.data.remote.RemoteDataSourceProvider
 import com.study.chat.di.GeneralDepContainer
 import com.study.chat.util.TEST_CHANNEL
 import com.study.chat.util.TEST_TOPIC
-import com.study.database.dao.MessageDao
-import com.study.database.dao.ReactionDao
+import com.study.chat.common.data.source.local.message.dao.MessageDao
+import com.study.chat.common.data.source.local.message.dao.ReactionDao
 import io.mockk.mockk
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest

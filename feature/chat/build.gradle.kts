@@ -55,7 +55,6 @@ dependencies {
     // Additional
     implementation(libs.coil)
     implementation(libs.fragment.ktx)
-    implementation(libs.pagination)
     implementation(libs.bundles.navigation)
     implementation(libs.timber)
     // Test
@@ -75,11 +74,15 @@ dependencies {
     androidTestImplementation(libs.pagination)
     kaptAndroidTest(libs.room.compiler)
     debugImplementation(libs.test.monitor)
+    // Database
+    implementation(libs.bundles.room)
+    kapt(libs.room.compiler)
+    // Pagination
+    implementation(libs.bundles.pagination)
 
     implementation(project(":core:common"))
     implementation(project(":core:ui"))
     implementation(project(":core:components"))
     implementation(project(":core:network"))
     implementation(project(":core:auth"))
-    implementation(project(":core:database"))
 }

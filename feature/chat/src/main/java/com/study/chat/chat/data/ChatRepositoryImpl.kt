@@ -13,7 +13,7 @@ import com.study.chat.common.data.mapper.toIncomeMessage
 import com.study.chat.common.data.mapper.toMessageEntity
 import com.study.chat.common.data.mapper.toReactionEntity
 import com.study.chat.common.data.mapper.toTextMessage
-import com.study.chat.common.data.source.local.LocalMessageDataSource
+import com.study.chat.common.data.source.local.message.LocalMessageDataSource
 import com.study.chat.common.data.source.remote.RemoteMessageDataSource
 import com.study.chat.common.domain.model.IncomeMessage
 import com.study.chat.common.domain.model.NOT_YET_SYNCHRONIZED_ID
@@ -21,7 +21,7 @@ import com.study.chat.common.domain.model.OutcomeMessage
 import com.study.chat.common.domain.model.Reaction
 import com.study.common.ext.onFailureRestorePrevStateAndThrowError
 import com.study.common.ext.runCatchingNonCancellation
-import com.study.database.model.tuple.MessageWithReactionsTuple
+import com.study.chat.common.data.source.local.message.entity.MessageWithReactionsTuple
 import com.study.network.model.request.message.FileMessageRequest
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map

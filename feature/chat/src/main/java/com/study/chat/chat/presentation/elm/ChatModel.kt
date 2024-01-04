@@ -27,7 +27,6 @@ internal sealed interface ChatCommand {
     ) : ChatCommand
 
     class RemoveIrrelevantMessages(val topic: String) : ChatCommand
-    data object LoadTopics : ChatCommand
     data object GetTopics : ChatCommand
     class UploadFile(
         val uri: String,

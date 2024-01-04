@@ -8,7 +8,7 @@ import com.study.chat.actions.domain.model.User
 import com.study.chat.actions.domain.repository.ActionsRepository
 import com.study.chat.common.data.mapper.toFirstMessageSenderId
 import com.study.chat.common.data.mapper.toIncomeMessage
-import com.study.chat.common.data.source.local.LocalMessageDataSource
+import com.study.chat.common.data.source.local.message.LocalMessageDataSource
 import com.study.chat.common.data.source.remote.RemoteMessageDataSource
 import com.study.chat.common.domain.model.IncomeMessage
 import com.study.chat.common.domain.model.MessageDoesNotExistException

@@ -6,6 +6,7 @@ import com.study.chat.edit.presentation.util.toEditableMessage
 import com.study.chat.common.domain.usecase.GetTopicsUseCase
 import com.study.common.ext.toFlow
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import vivid.money.elmslie.core.switcher.Switcher
 import vivid.money.elmslie.coroutines.Actor
 import vivid.money.elmslie.coroutines.switch
@@ -27,13 +28,17 @@ internal class EditMessageActor @Inject constructor(
                 errorMapper = EditMessageEvent.Internal::Error
             )
         }
+
         is EditMessageCommand.LoadMessage -> toFlow {
             getMessageUseCase(command.messageId).toEditableMessage()
         }.mapEvents(
             EditMessageEvent.Internal::MessageLoaded,
             EditMessageEvent.Internal::Error
         )
-        is EditMessageCommand.LoadTopicSuggestions -> getTopicsUseCase(command.channelId)
+
+        is EditMessageCommand.LoadTopicSuggestions -> flow {
+            emit(getTopicsUseCase(command.channelId))
+        }
             .mapEvents(
                 EditMessageEvent.Internal::TopicSuggestionsLoaded,
                 EditMessageEvent.Internal::Error

@@ -4,7 +4,7 @@ import android.app.Application
 import coil.ImageLoader
 import coil.ImageLoaderFactory
 import com.odnzk.auth.di.FeatureAuthDepStore
-import com.study.channels.common.di.ChannelsDepStore
+import com.study.channels.di.ChannelsDepStore
 import com.study.chat.common.di.ChatDepStore
 import com.study.profile.di.ProfileDepStore
 import com.study.tinkoff.di.AppComponent

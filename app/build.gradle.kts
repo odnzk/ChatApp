@@ -71,22 +71,26 @@ dependencies {
     implementation(libs.coil)
     implementation(libs.fragment.ktx)
     implementation(libs.timber)
+
     implementation(libs.dagger2)
     kapt(libs.dagger2.compiler)
 
     implementation(libs.bundles.navigation)
     implementation(libs.bundles.elmslie)
-
     // Firebase
     implementation(platform(libs.firebase.bom))
     implementation(libs.bundles.firebase)
+    // Database
+    implementation(libs.bundles.room)
+    kapt(libs.room.compiler)
+    // Pagination
+    implementation(libs.bundles.pagination)
 
     implementation(project(":core:ui"))
     implementation(project(":core:components"))
     implementation(project(":core:common"))
     implementation(project(":core:network"))
     implementation(project(":core:auth"))
-    implementation(project(":core:database"))
     implementation(project(":feature:channels"))
     implementation(project(":feature:chat"))
     implementation(project(":feature:profile"))

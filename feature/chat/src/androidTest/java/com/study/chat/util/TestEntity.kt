@@ -1,6 +1,6 @@
 package com.study.chat.util
 
-import com.study.database.model.MessageEntity
+import com.study.chat.common.data.source.local.message.entity.MessageEntity
 import java.util.Calendar
 
 

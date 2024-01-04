@@ -7,8 +7,8 @@ import com.study.chat.data.local.MessageTestDatabase
 import com.study.chat.util.TEST_CHANNEL
 import com.study.chat.util.TEST_TOPIC
 import com.study.chat.util.createMessageEntity
-import com.study.database.dao.MessageDao
-import com.study.database.dao.ReactionDao
+import com.study.chat.common.data.source.local.message.dao.MessageDao
+import com.study.chat.common.data.source.local.message.dao.ReactionDao
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before

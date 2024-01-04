@@ -2,10 +2,10 @@ package com.study.chat.data.local
 
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
-import com.study.chat.common.data.source.local.LocalMessageDataSource
+import com.study.chat.common.data.source.local.message.LocalMessageDataSource
 import com.study.common.ext.fastLazy
-import com.study.database.dao.MessageDao
-import com.study.database.dao.ReactionDao
+import com.study.chat.common.data.source.local.message.dao.MessageDao
+import com.study.chat.common.data.source.local.message.dao.ReactionDao
 
 internal class LocalDataSourceProvider {
     private val db by fastLazy {

@@ -15,7 +15,6 @@ import com.study.chat.chat.presentation.util.mapper.toUiMessagesWithSeparators
 import com.study.chat.common.domain.model.NOT_YET_SYNCHRONIZED_ID
 import com.study.chat.common.domain.model.SynchronizationException
 import com.study.chat.common.domain.usecase.GetTopicsUseCase
-import com.study.chat.common.domain.usecase.LoadTopicsUseCase
 import com.study.common.ext.toFlow
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -23,6 +22,7 @@ import dagger.assisted.AssistedInject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import vivid.money.elmslie.core.switcher.Switcher
 import vivid.money.elmslie.coroutines.Actor
@@ -38,13 +38,11 @@ internal class ChatActor @AssistedInject constructor(
     private val removeReactionUseCase: RemoveReactionUseCase,
     private val searchMessagesUseCase: SearchMessagesUseCase,
     private val removeIrrelevantMessages: RemoveIrrelevantMessagesUseCase,
-    private val loadTopicsUseCase: LoadTopicsUseCase,
     private val getTopicsUseCase: GetTopicsUseCase,
     private val uploadFileUseCase: UploadFileUseCase,
     private val chatScope: CoroutineScope
 ) : Actor<ChatCommand, Internal> {
 
-    private val topicsSwitcher = Switcher()
     private val messagesSwitcher = Switcher()
     override fun execute(command: ChatCommand): Flow<Internal> = when (command) {
         is ChatCommand.GetAllMessages -> messagesSwitcher.switch {
@@ -89,17 +87,13 @@ internal class ChatActor @AssistedInject constructor(
             toFlow { removeIrrelevantMessages(channelId, command.topic) }
                 .mapEvents(errorMapper = Internal::Error)
 
-        is ChatCommand.LoadTopics ->
-            toFlow { loadTopicsUseCase(channelId) }
-                .mapEvents(errorMapper = Internal::Error)
-
-        is ChatCommand.GetTopics -> topicsSwitcher.switch {
-            getTopicsUseCase(channelId)
-                .mapEvents(
-                    eventMapper = Internal::GettingTopicsSuccess,
-                    errorMapper = Internal::Error
-                )
+        is ChatCommand.GetTopics -> flow {
+            emit(getTopicsUseCase(channelId))
         }
+            .mapEvents(
+                eventMapper = Internal::GettingTopicsSuccess,
+                errorMapper = Internal::Error
+            )
 
         is ChatCommand.UploadFile -> toFlow {
             uploadFileUseCase(
@@ -108,7 +102,8 @@ internal class ChatActor @AssistedInject constructor(
                 uri = command.uri
             )
         }.mapEvents(
-            eventMapper = { Internal.FileUploaded },
+            eventMapper =
+            { Internal.FileUploaded },
             errorMapper = Internal::UploadingFileError
         )
 

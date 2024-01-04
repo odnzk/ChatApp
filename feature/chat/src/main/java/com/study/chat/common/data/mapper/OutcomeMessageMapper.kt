@@ -2,7 +2,7 @@ package com.study.chat.common.data.mapper
 
 import com.study.chat.common.domain.model.NOT_YET_SYNCHRONIZED_ID
 import com.study.chat.common.domain.model.OutcomeMessage
-import com.study.database.model.MessageEntity
+import com.study.chat.common.data.source.local.message.entity.MessageEntity
 
 internal fun OutcomeMessage.Text.toMessageEntity() =
     MessageEntity(

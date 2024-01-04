@@ -4,9 +4,8 @@ import android.content.Context
 import coil.ImageLoader
 import com.odnzk.auth.di.FeatureAuthDep
 import com.study.auth.api.di.AuthDep
-import com.study.channels.common.di.ChannelsDep
+import com.study.channels.di.ChannelsDep
 import com.study.chat.common.di.ChatDep
-import com.study.database.di.DatabaseDep
 import com.study.network.di.NetworkDep
 import com.study.profile.di.ProfileDep
 import com.study.tinkoff.di.module.AppAuthModule
@@ -26,12 +25,11 @@ import javax.inject.Singleton
         AppModule::class,
         AppNetworkModule::class,
         AppAuthModule::class,
-        AppDatabaseModule::class,
-        AppBindsModule::class
+        AppBindsModule::class,
+        AppDatabaseModule::class
     ]
 )
-interface AppComponent : ProfileDep, UsersDep, ChatDep, AuthDep, ChannelsDep, NetworkDep,
-    DatabaseDep, FeatureAuthDep {
+interface AppComponent : ProfileDep, UsersDep, ChatDep, AuthDep, ChannelsDep, NetworkDep, FeatureAuthDep {
     fun inject(activity: MainActivity)
 
     val imageLoader: ImageLoader

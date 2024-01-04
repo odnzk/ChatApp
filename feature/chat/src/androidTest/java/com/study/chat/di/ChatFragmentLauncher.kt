@@ -11,9 +11,9 @@ import com.study.chat.common.di.ChatDep
 import com.study.chat.common.di.ChatDepStore
 import com.study.chat.util.TEST_CHANNEL
 import com.study.chat.util.TEST_TOPIC
-import com.study.database.dao.ChannelTopicDao
-import com.study.database.dao.MessageDao
-import com.study.database.dao.ReactionDao
+import com.study.channels.data.source.local.ChannelTopicDao
+import com.study.chat.common.data.source.local.message.dao.MessageDao
+import com.study.chat.common.data.source.local.message.dao.ReactionDao
 import com.study.network.api.ChannelsApi
 import com.study.network.api.MessagesApi
 import com.study.network.api.UsersApi
@@ -31,7 +31,7 @@ internal fun launchChatFragment(
     channelsApi: ChannelsApi,
     reactionDao: ReactionDao,
     messageDao: MessageDao,
-    topicDao: ChannelTopicDao,
+    topicDao: com.study.channels.data.source.local.ChannelTopicDao,
     authentificator: Authentificator,
     context: Context,
     dispatcher: CoroutineDispatcher,
@@ -59,7 +59,7 @@ fun chatFragmentDep(
     channelsApi: ChannelsApi,
     reactionDao: ReactionDao,
     messageDao: MessageDao,
-    topicDao: ChannelTopicDao,
+    topicDao: com.study.channels.data.source.local.ChannelTopicDao,
     authentificator: Authentificator,
     context: Context,
     dispatcher: CoroutineDispatcher
@@ -70,7 +70,7 @@ fun chatFragmentDep(
     override val usersApi: UsersApi = mockk()
     override val messageDao: MessageDao = messageDao
     override val reactionDao: ReactionDao = reactionDao
-    override val topicDao: ChannelTopicDao = topicDao
+    override val topicDao: com.study.channels.data.source.local.ChannelTopicDao = topicDao
     override val authentificator: Authentificator = authentificator
     override val applicationContext: Context = context
 }

@@ -5,7 +5,7 @@ import androidx.test.core.app.ApplicationProvider
 import com.study.chat.chat.data.ChatRepositoryImpl
 import com.study.chat.chat.data.MessagesPagingMediator
 import com.study.chat.chat.domain.repository.ChatRepository
-import com.study.chat.common.data.source.local.LocalMessageDataSource
+import com.study.chat.common.data.source.local.message.LocalMessageDataSource
 import com.study.chat.common.data.source.remote.RemoteMessageDataSource
 import com.study.chat.util.TEST_CHANNEL
 import com.study.chat.util.TEST_TOPIC

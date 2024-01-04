@@ -6,9 +6,9 @@ import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import com.study.chat.common.data.mapper.getAllReactionEntities
 import com.study.chat.common.data.mapper.toMessageEntities
-import com.study.chat.common.data.source.local.LocalMessageDataSource
+import com.study.chat.common.data.source.local.message.LocalMessageDataSource
 import com.study.chat.common.data.source.remote.RemoteMessageDataSource
-import com.study.database.model.tuple.MessageWithReactionsTuple
+import com.study.chat.common.data.source.local.message.entity.MessageWithReactionsTuple
 import com.study.network.model.request.message.MessageNarrow
 import com.study.network.model.request.message.MessageNarrowList
 import com.study.network.model.request.message.MessageNarrowOperator

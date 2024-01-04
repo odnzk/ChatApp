@@ -3,12 +3,12 @@ package com.study.chat.data.local
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.study.database.dao.ChannelTopicDao
-import com.study.database.dao.MessageDao
-import com.study.database.dao.ReactionDao
-import com.study.database.model.MessageEntity
-import com.study.database.model.ReactionEntity
-import com.study.database.util.CalendarConverter
+import com.study.channels.data.source.local.ChannelTopicDao
+import com.study.chat.common.data.source.local.message.dao.MessageDao
+import com.study.chat.common.data.source.local.message.dao.ReactionDao
+import com.study.chat.common.data.source.local.message.entity.MessageEntity
+import com.study.chat.common.data.source.local.message.entity.ReactionEntity
+import com.study.tinkoff.di.CalendarConverter
 
 
 @Database(
@@ -19,11 +19,11 @@ import com.study.database.util.CalendarConverter
     exportSchema = false,
     version = 1
 )
-@TypeConverters(CalendarConverter::class)
+@TypeConverters(com.study.tinkoff.di.CalendarConverter::class)
 internal abstract class MessageTestDatabase : RoomDatabase() {
     abstract fun messageDao(): MessageDao
     abstract fun reactionDao(): ReactionDao
-    abstract fun topicDao(): ChannelTopicDao
+    abstract fun topicDao(): com.study.channels.data.source.local.ChannelTopicDao
 }
 
 

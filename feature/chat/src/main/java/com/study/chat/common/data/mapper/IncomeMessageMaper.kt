@@ -2,9 +2,9 @@ package com.study.chat.common.data.mapper
 
 import com.study.chat.common.domain.model.IncomeMessage
 import com.study.common.ext.unixToCalendar
-import com.study.database.model.MessageEntity
-import com.study.database.model.ReactionEntity
-import com.study.database.model.tuple.MessageWithReactionsTuple
+import com.study.chat.common.data.source.local.message.entity.MessageEntity
+import com.study.chat.common.data.source.local.message.entity.ReactionEntity
+import com.study.chat.common.data.source.local.message.entity.MessageWithReactionsTuple
 import com.study.network.model.response.message.AllMessagesResponse
 import com.study.network.model.response.message.MessageDto
 

@@ -82,7 +82,6 @@ internal class ChatReducer @AssistedInject constructor(
         commands {
             +ChatCommand.GetAllMessages
             if (topicTitle == null) {
-                +ChatCommand.LoadTopics
                 +ChatCommand.GetTopics
             }
         }

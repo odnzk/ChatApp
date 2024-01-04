@@ -134,8 +134,8 @@ leak_canary = { module = "com.squareup.leakcanary:leakcanary-android", version.r
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 datastore = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore" }
 shimmers = { module = "com.facebook.shimmer:shimmer", version.ref = "shimmer" }
-pagination = { module = "androidx.paging:paging-runtime", version.ref = "pagination" }
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
+pagination = { module = "androidx.paging:paging-runtime", version.ref = "pagination" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
 
 # Compose
@@ -156,6 +156,8 @@ firebase_performance = { module = "com.google.firebase:firebase-perf" }
 firebase_notifications = { module = "com.google.firebase:firebase-messaging" }
 
 [bundles]
+room = ["room", "room_ktx"]
+pagination = ["room_pagination", "pagination"]
 elmslie = ["elmslie_core", "elmslie_android", "elmslie_coroutines"]
 navigation = ["navigation_fragment", "navigation_ui_ktx"]
 compose = ["compose_ui", "compose_activty", "compose_material", "compose_runtime", "compose_tooling_preview"]

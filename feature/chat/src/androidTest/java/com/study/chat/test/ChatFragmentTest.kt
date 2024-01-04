@@ -12,9 +12,9 @@ import com.study.chat.di.launchChatFragment
 import com.study.chat.util.TEST_TOPIC
 import com.study.chat.util.screen.ChatScreen
 import com.study.chat.util.screen.TestState
-import com.study.database.dao.ChannelTopicDao
-import com.study.database.dao.MessageDao
-import com.study.database.dao.ReactionDao
+import com.study.channels.data.source.local.ChannelTopicDao
+import com.study.chat.common.data.source.local.message.dao.MessageDao
+import com.study.chat.common.data.source.local.message.dao.ReactionDao
 import io.github.kakaocup.kakao.common.views.KView
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -30,7 +30,7 @@ internal class ChatFragmentTest : TestCase() {
     private lateinit var db: MessageTestDatabase
     private lateinit var messageDao: MessageDao
     private lateinit var reactionDao: ReactionDao
-    private lateinit var topicDao: ChannelTopicDao
+    private lateinit var topicDao: com.study.channels.data.source.local.ChannelTopicDao
 
     private val authRepository = mockk<Authentificator>()
     private val dispatcher = UnconfinedTestDispatcher()

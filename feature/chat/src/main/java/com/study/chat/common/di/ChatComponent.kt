@@ -5,6 +5,8 @@ import com.study.chat.actions.presentation.elm.ActionsEffect
 import com.study.chat.actions.presentation.elm.ActionsEvent
 import com.study.chat.actions.presentation.elm.ActionsState
 import com.study.chat.chat.presentation.ChatFragment
+import com.study.chat.common.di.module.ChatBindsModule
+import com.study.chat.common.di.module.ChatModule
 import com.study.chat.edit.presentation.EditMessageFragment
 import com.study.chat.edit.presentation.elm.EditMessageEffect
 import com.study.chat.edit.presentation.elm.EditMessageEvent

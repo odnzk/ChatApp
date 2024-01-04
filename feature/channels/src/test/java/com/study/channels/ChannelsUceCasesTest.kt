@@ -1,7 +1,7 @@
 package com.study.channels
 
-import com.study.channels.common.domain.repository.ChannelRepository
-import com.study.channels.common.domain.model.Channel
+import com.study.channels.domain.repository.ChannelRepository
+import com.study.channels.domain.model.Channel
 import com.study.common.validation.Validator
 import io.mockk.mockk
 import io.mockk.spyk
