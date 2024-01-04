@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <color name="view_message_me_message_background_color">#858BFF</color>
-    <color name="view_message_other_user_message_background_color">@color/gray_mercury</color>
-</resources>

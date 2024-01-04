@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="error_description_cannot_synchronize">Error while synchronizing data with the server, please check the internet connection</string>
+    <string name="error_cannot_synchronize">Synchronization error</string>
+    <string name="error_content_has_not_loaded_yet">The content has not loaded yet</string>
+    <string name="error_description_content_has_not_loaded_yet">Loading error, check your internet connection</string>
+    <string name="error_invalid_topic_title">Invalid topic\'s title</string>
+    <string name="error_invalid_topic_title_description">Topic title cannot be blank, empty or contain more than %1$d characters</string>
+    <string name="error_invalid_message_content">Invalid message\'s content</string>
+    <string name="error_invalid_message_content_description">Message content cannot be blank, empty or contain more than %1$d characters</string>
+    <string name="error_message_is_not_synchronized">Message has not yet been synced with the server</string>
+
+    <string name="channel_topic_title">Topic: #%1$s</string>
+    <string name="hint_channel_topic">Topic</string>
+    <string name="date_delegate_item_title_format">%1$d %2$s</string>
+    <string name="content_description">Option image</string>
+    <string name="content_description_message_content">Message content</string>
+    <string name="hint_message_content">Content</string>
+    <string name="channel_title">#%1$s</string>
+
+    <string name="item_action_add_reaction">Add reaction</string>
+    <string name="item_action_copy">Copy to clipboard</string>
+    <string name="item_action_edit">Edit</string>
+    <string name="item_action_delete">Delete</string>
+
+    <string name="success_action_add_reaction">Added</string>
+    <string name="success_action_edit">Saved</string>
+    <string name="success_action_deleted">Deleted</string>
+    <string name="success_action_copied">Copied to clipboard</string>
+    <string name="success_update_message">Successfully updated</string>
+    <string name="success_uploading_file">Successfully uploaded</string>
+
+    <string name="fragment_chat_search_hint">Find message</string>
+
+</resources>

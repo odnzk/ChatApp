@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/margin_medium"
+    android:theme="@style/Base.Theme.ChatApp">
+
+    <AutoCompleteTextView
+        android:id="@+id/fragment_edit_et_topic"
+        style="@style/ChannelTopicAutoCompleteTextView"
+        android:layout_width="0dp"
+        android:textColor="@color/purple_light"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="LabelFor" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/fragment_edit_til_content"
+        style="@style/PrimaryTextInputLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_small"
+        android:layout_marginEnd="@dimen/margin_small"
+        android:hint="@string/hint_message_content"
+        app:layout_constraintEnd_toStartOf="@id/fragment_edit_btn_done"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/fragment_edit_et_topic">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/fragment_edit_et_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/fragment_edit_btn_done"
+        style="@style/PrimaryCircleButton"
+        app:icon="@drawable/ic_baseline_done_24"
+        app:layout_constraintBottom_toBottomOf="@id/fragment_edit_til_content"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

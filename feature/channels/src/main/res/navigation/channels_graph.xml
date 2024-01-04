@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/channels_graph"
+    app:startDestination="@id/holderChannelsFragment">
+
+    <fragment
+        android:id="@+id/holderChannelsFragment"
+        android:name="com.study.channels.channels.presentation.HolderChannelsFragment"
+        android:label="@string/default_search_hint"
+        tools:layout="@layout/fragment_channels_holder">
+        <action
+            android:id="@+id/action_holderChannelsFragment_to_addChannelFragment"
+            app:destination="@id/addChannelFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/channelsFragment"
+        android:name="com.study.channels.channels.presentation.ChannelsFragment"
+        android:label="ChannelsFragment"
+        tools:layout="@layout/fragment_recycler_view" />
+    <dialog
+        android:id="@+id/addChannelFragment"
+        android:name="com.study.channels.addChannel.presentation.AddChannelFragment"
+        android:label="AddChannelFragment"
+        tools:layout="@layout/fragment_add_channel" />
+</navigation>
+
