@@ -21,6 +21,6 @@ jobs:
           java-version: 20
       - name: Run unit tests
         env:
-          BASE_URL: ${{ secrets.base_url }}
+          base_url: ${{ secrets.base_url }}
         run: ./gradlew test
 
