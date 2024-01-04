@@ -10,7 +10,7 @@ internal fun AllUsersResponse.toUserList(): List<User> =
         ?: emptyList()
 
 
-private fun DetailedUserDto.toUser(): User = User(
+internal fun DetailedUserDto.toUser(): User = User(
     id = userId,
     name = fullName,
     email = email,

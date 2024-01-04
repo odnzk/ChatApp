@@ -51,6 +51,10 @@ dependencies {
     implementation(libs.shimmers)
     implementation(libs.bundles.navigation)
     implementation(libs.timber)
+    // Test
+    testImplementation(libs.test.mockk)
+    testImplementation(libs.junit)
+    testImplementation(libs.test.coroutines)
 
     implementation(project(":core:components"))
     implementation(project(":core:common"))
