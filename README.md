@@ -26,7 +26,7 @@ To fully work with the Zulip API used in the application, an account and organiz
 4. Start an app, log in using your email address and password
 
 ```
-base_url=<organization URL without `.zulipchat.com`>
+base_url=<organization URL`>
 ```
 
 ## Arhitecture
@@ -42,7 +42,6 @@ The application follows the principles of clean architecture, the presentation l
 | `:core:common`     | Java/Kotlin Library | Common Kotlin classes                                                                                                                 |
 | `:core:components` | Android Library     | UI components, extension functions, base Andorid classes                                                                              |
 | `:core:network`    | Android Library     | Network work                                                                                                                          |
-| `:core:database`   | Android Library     | Local database                                                                                                                        |
 | `:core:auth`       | Android Library     | Common authorization logic                                                                                                            |
 | `:core:ui`         | Android Library     | Themes, styles, shapes and other resources used by modules.                                                                           |
 | `:core:ui-compose` | Android Library     | Themes and base composables                                                                                                           |
