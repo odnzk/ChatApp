@@ -2,84 +2,71 @@
 
 ## Description
 
-A messaging application, a mobile client for the Zulip API.
+A mobile client for the Zulip API.
 
 ## Features
 
-- [X] Single Activity
-- [X] Multi-module architecture
-- [X] Light and Dark theme
-- [X] Ability to create your own channel ("+" button on the screen with
+- [X] Create your own channel ("+" button on the screen with
   channels `Channels Fragment`)
-- [X] The ability to open messages for both the channel (**long tap** on the channel
-  in `Channels Fragment`) and the
-  topic (click on the topic in `Channels Fragment`)
-- [X] The ability to write to different topics (only from the **chat channel** in `ChatFragment`)
-- [X] Ability to go to the channel topic from **channel chat** to `ChatFragment` (click on the
-  topic)
-- [X] The ability to put a reaction, delete, edit and copy a message (long tap on
-  message in `Chat Fragment`)
+- [X] Open messages for both the channel (**long tap** on the channel
+  in `Channels Fragment`) and the topic (click on the topic in `Channels Fragment`)
+- [X] Write to different topics with topics suggestions (possible only from the **chat channel** in `ChatFragment`)
+- [X] Open channel topic from **channel chat** to `ChatFragment` (click on the topic)
+- [X] Add and remove reaction to message
+- [X] Delete, edit and copy a message (long tap on message in `Chat Fragment`)
+- [X] Send message or upload a file (button in `Chat Fragment`)
+- [X] Search messages, users and channels (channels search temporarily is not working)
+- [X] Light and Dark theme
 
-## Requirements
+## To start
 
-To fully work with the Zulip API used in the application, an API key is required.
-[How to get an API key](https://zulip.com/api/api-keys ).
-After receiving the key, you need to add the following lines to the `local.properties` file:
+To fully work with the Zulip API used in the application, an account and organization are required.
+1. [Create account and organization](https://zulip.com/new/)
+2. Add the following line to the `local.properties` file, `base_url` is the URL of the organization that was used when creating the organization
+4. Start an app, log in using your email address and password
 
 ```
-username=<login>
-password=<API-key>
-base_url=<URL>
+base_url=<organization URL without `.zulipchat.com`>
 ```
 
 ## Arhitecture
 
-The application follows the principles of pure architecture, the representation layer implements the UDF architectureusing the `Elmslie` library. **Example** implementation of the `feature:channel` module
+The application follows the principles of clean architecture, the presentation layer implements the UDF architectureusing using [Elmslie library](https://github.com/vivid-money/elmslie). **Example** implementation of the `feature:channel` module
 
 ![ChatApp-Architecture](images/Acrhitecture.png)
 
-## Modularization
+## Modules
 
 | Module             | Type       | Description                                                                                                                                                                                       |
-|--------------------|---------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `:app`             | Android Application | Combines everything necessary for the correct operation of the application.                                                                                                                       |
-| `core:common`      | Java/Kotlin Library | Common classes, for use by other modules.                                                                                                                                                         |
-| `core:components`  | Android Library     | UI components, extension functions, base classes.                                                                                                                                                 |
-| `core:network`     | Android Library     | API for processing network requests and responses from a remote data source.                                                                                                                      |
-| `core:database`    | Android Library     | Implementation of a local database using the `Room` library.                                                                                                                                      |
-| `core:auth`        | Android Library     | Classes responsible for authorization logic.                                                                                                                                                      |
-| `core:ui`          | Android Library     | Resources used by modules.                                                                                                                                                                        |
-| `feature:channels` | Android Library     | Displaying channels using `Channel Fragment` and `HolderChannelFragment`, the ability to add a channel (`AddChannelFragment`).                                                                    |
-| `feature:chat`     | Android Library     | Displaying channel/topic messages (`ChatFragment`), the ability to change the message (`Action Fragment` and `EditMessageFragment`), choosing an emoji to add a reaction (`SelectEmojiFragment`). |
-| `feature:profile`  | Android Library     | Displaying the user profile using the `Profile Fragment`.                                                                                                                                         |
-| `feature:users`    | Android Library     | Displaying information about all users in the organization using the `Users Fragment`                                                                                                             |
+|--------------------|---------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|                                                       
+| `:core:common`     | Java/Kotlin Library | Common Kotlin classes                                                                                                                 |
+| `:core:components` | Android Library     | UI components, extension functions, base Andorid classes                                                                              |
+| `:core:network`    | Android Library     | Network work                                                                                                                          |
+| `:core:database`   | Android Library     | Local database                                                                                                                        |
+| `:core:auth`       | Android Library     | Common authorization logic                                                                                                            |
+| `:core:ui`         | Android Library     | Themes, styles, shapes and other resources used by modules.                                                                           |
+| `:core:ui-compose` | Android Library     | Themes and base composables                                                                                                           |
+| `:feature:channels`| Android Library     | Channels and topics                                                                                                                   |
+| `:feature:chat`    | Android Library     | Channel or topic messages, message mofifications (editing, deleting, adding or removing reactions etc)                                |
+| `:feature:profile` | Android Library     | User profile                                                                                                                          |
+| `:feature:users`   | Android Library     | Information about all users in the organization                                                                                       |
+| `:feature:auth`    | Android Library     | Login and signup                                                                                                                      |
 
 ## Tech stack
 
-- **Coroutines, Flow** - Asynchronous operation.
-- **Retrofit 2** - Requests to the network.
-- **OkHttp** - Requests to the network.
-- **Kotlin Serialization** - Serialization of data.
-- **Coil** - Uploading images over the network, caching downloaded images.
-- **Jetpack Paging 3** - Loading data in small parts.
-- **Android Navigation Component** - Navigation through the application.
-- **ViewBinding** - Improvement and optimization of the code associated with the view layer.
-- **Shimmer** - Data loading display.
-- **Dagger2** - Dependency injection.
-- **Elmslie** - Simplification of the implementation of the ELM architecture.
-- **Room** - Abstraction layer on top of SQLite, allowing free access to
-  the database.
-- **DataStore** - Storing data in the form of key-value pairs using Coroutines and Flow.
-- **Timber** is a Logger that provides a utility on top of the usual Log class.
-- **Leak Canary** - Detection of memory leaks.
-
-## Screenshots
-
-### Light theme
-
-![ChatApp-LightTheme](images/screeenshots_light_theme.png)
-
-### Dark theme
-
-![ChatApp-DarkTheme](images/screeenshots_dark_theme.png)
-
+- **Coroutines, Flow** 
+- **Retrofit 2** 
+- **OkHttp**
+- **Kotlin Serialization** 
+- **Coil**
+- **Jetpack Paging 3** 
+- **Android Navigation Component**
+- **ViewBinding**
+- **Compose**
+- **Facebook Shimmer**
+- **Dagger2**
+- **Elmslie**
+- **Room**
+- **DataStore**
+- **Timber**
+- **Leak Canary**
