@@ -20,8 +20,7 @@ jobs:
         with:
           java-version: 20
       - name: Run unit tests
-        with: # Set the secret as an input
-          base_url: ${{ secrets.base_url }}
-        env: # Or as an environment variable
-          base_url: ${{ secrets.base_url }}
+        env:
+          BASE_URL: ${{ secrets.base_url }}
         run: ./gradlew test
+
