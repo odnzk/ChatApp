@@ -17,7 +17,7 @@ fragments = "1.6.2"
 # Test
 test_junit = "4.13.2"
 test_junit_android = "1.1.5"
-test_mockito = "5.8.0"
+test_mockk = "1.13.8"
 test_runner = "1.5.2"
 test_orhestrator = "1.4.2"
 test_core = "1.5.0"
@@ -87,7 +87,7 @@ okhttp_mockserver = { module = "com.squareup.okhttp3:mockwebserver", version.ref
 test_coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
 test_monitor = { module = "androidx.test:monitor", version.ref = "test_monitor" }
 test_orhestrator = { module = "androidx.test:orchestrator", version.ref = "test_orhestrator" }
-test_mockito = { module = "org.mockito:mockito-android", version.ref = "test_mockito" }
+test_mockk = { module = "io.mockk:mockk", version.ref = "test_mockk" }
 
 # Navigation
 navigation_fragment = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigation" }

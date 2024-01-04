@@ -45,6 +45,11 @@ android {
     kotlinOptions {
         jvmTarget = libs.versions.kotlinCompileOptions.jvmTarget.get()
     }
+    packaging {
+        resources {
+            excludes += "/META-INF/*"
+        }
+    }
 }
 
 dependencies {

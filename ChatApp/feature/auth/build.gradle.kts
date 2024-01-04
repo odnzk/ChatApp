@@ -53,7 +53,10 @@ dependencies {
     implementation(libs.bundles.compose)
     platform(libs.compose.bom)
 
-    implementation(libs.test.mockito)
+    implementation(libs.test.mockk) // for mocking Screen's stores
+    testImplementation(libs.junit)
+    testImplementation(libs.test.core)
+    testImplementation(libs.test.coroutines)
 
     implementation(project(":core:common"))
     implementation(project(":core:components"))
