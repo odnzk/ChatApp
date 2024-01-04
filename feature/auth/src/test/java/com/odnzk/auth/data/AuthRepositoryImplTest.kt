@@ -18,7 +18,7 @@ private const val USER_ID = 999
 private const val FULL_NAME = "Name Surname"
 
 @RunWith(JUnit4::class)
-class AuthRepositoryImplTest {
+internal class AuthRepositoryImplTest {
 
     private val datasource: RemoteAuthDataSource = mockk()
     private val authentificator: Authentificator = spyk()

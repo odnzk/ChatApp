@@ -1,15 +1,20 @@
-package com.study.channels.channels.data
+package com.study.channels.common.data
 
 import com.study.channels.channels.data.mapper.toChannelTopicEntities
 import com.study.channels.channels.data.mapper.toChannelTopics
 import com.study.channels.channels.domain.model.ChannelTopic
-import com.study.channels.channels.domain.repository.ChannelRepository
+import com.study.channels.common.data.mapper.mapToIsChannelAlreadyExistBoolean
+import com.study.channels.common.data.mapper.toChannelEntity
+import com.study.channels.common.domain.repository.ChannelRepository
 import com.study.channels.common.data.mapper.toChannelEntityList
 import com.study.channels.common.data.mapper.toChannels
 import com.study.channels.common.data.source.LocalChannelDataSource
 import com.study.channels.common.data.source.RemoteChannelDataSource
 import com.study.channels.common.domain.model.Channel
+import com.study.channels.common.domain.model.ChannelAlreadyExistsException
 import com.study.channels.common.domain.model.ChannelDoesNotHaveTopicsException
+import com.study.common.ext.runCatchingNonCancellation
+import com.study.network.model.ConnectionLostException
 import dagger.Reusable
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -40,5 +45,27 @@ internal class ChannelRepositoryImpl @Inject constructor(
         val topics = remoteDS.getChannelTopics(channelId).takeIf { it.topics?.isNotEmpty() == true }
             ?.toChannelTopicEntities(channelId) ?: throw ChannelDoesNotHaveTopicsException()
         localDS.updateTopics(topics, channelId)
+    }
+
+    override suspend fun addChannel(channel: Channel) {
+        if (localDS.getChannelByTitle(channel.title) != null) throw ChannelAlreadyExistsException()
+        val entity = channel.toChannelEntity()
+        runCatchingNonCancellation {
+            remoteDS.addChannel(channel.title)
+        }.onSuccess { response ->
+            if (response.mapToIsChannelAlreadyExistBoolean()) {
+                remoteDS.unsubscribeFromChannel(channel.title)
+                throw ChannelAlreadyExistsException()
+            } else updateChannels()
+        }.onFailure {
+            localDS.deleteChannel(entity)
+            throw ConnectionLostException()
+        }
+    }
+
+    private suspend fun updateChannels() {
+        val isSubscribed = true
+        val remoteChannels = remoteDS.getChannels(isSubscribed).toChannelEntityList(isSubscribed)
+        localDS.updateChannels(remoteChannels, isSubscribed)
     }
 }
