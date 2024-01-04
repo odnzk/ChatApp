@@ -15,6 +15,10 @@ jobs:
       - uses: actions/setup-java@v1
         with:
           java-version: 20
+      - name: Update base url from Secrets
+        env:
+          base_url: ${{ secrets.base_url }}
+        run: echo base_url="$base_url" > ./local.properties
       - name: Create google-services.json
         run: cat /home/runner/work/ChatApp/ChatApp/app/google-services.json | base64
       - name: Put data into google-services.json
