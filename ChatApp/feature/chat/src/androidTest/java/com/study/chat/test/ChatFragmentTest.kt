@@ -4,8 +4,8 @@ import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import com.kaspersky.kaspresso.testcases.api.testcase.TestCase
+import com.study.auth.api.Authentificator
 import com.study.chat.common.presentation.util.toEmojiString
-import com.study.chat.data.StubAuthentificator
 import com.study.chat.data.local.MessageTestDatabase
 import com.study.chat.data.remote.RemoteDataSourceProvider
 import com.study.chat.di.launchChatFragment
@@ -16,6 +16,7 @@ import com.study.database.dao.ChannelTopicDao
 import com.study.database.dao.MessageDao
 import com.study.database.dao.ReactionDao
 import io.github.kakaocup.kakao.common.views.KView
+import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
@@ -31,7 +32,7 @@ internal class ChatFragmentTest : TestCase() {
     private lateinit var reactionDao: ReactionDao
     private lateinit var topicDao: ChannelTopicDao
 
-    private val authRepository = StubAuthentificator()
+    private val authRepository = mockk<Authentificator>()
     private val dispatcher = UnconfinedTestDispatcher()
     private val server = RemoteDataSourceProvider().createServer()
     private val remoteProvider = RemoteDataSourceProvider()

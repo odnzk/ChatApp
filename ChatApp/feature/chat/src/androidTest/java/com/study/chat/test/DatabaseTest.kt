@@ -9,14 +9,12 @@ import com.study.chat.util.TEST_TOPIC
 import com.study.chat.util.createMessageEntity
 import com.study.database.dao.MessageDao
 import com.study.database.dao.ReactionDao
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 
-@OptIn(ExperimentalCoroutinesApi::class)
 @RunWith(AndroidJUnit4::class)
 class DatabaseTest {
     private lateinit var db: MessageTestDatabase

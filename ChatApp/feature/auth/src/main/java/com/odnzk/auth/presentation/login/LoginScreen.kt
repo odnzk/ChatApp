@@ -38,8 +38,8 @@ import com.odnzk.ui_compose.ChatAppTypography
 import com.odnzk.ui_compose.LocalDim
 import com.odnzk.ui_compose.PrimaryButton
 import com.odnzk.ui_compose.PrimaryTextInputLayout
+import io.mockk.mockk
 import kotlinx.coroutines.launch
-import org.mockito.Mockito
 import vivid.money.elmslie.core.store.Store
 import vivid.money.elmslie.coroutines.effects
 import vivid.money.elmslie.coroutines.states
@@ -164,6 +164,6 @@ private fun LoginContent(store: LoginStore, modifier: Modifier) {
 @Preview
 @Composable
 fun DefaultPreview() {
-    LoginScreen(Mockito.mock()) {
+    LoginScreen(mockk()) {
     }
 }

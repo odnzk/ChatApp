@@ -23,6 +23,14 @@ internal fun UserDetailed.toUiUser(presence: UiUserPresenceStatus): UiUserDetail
     )
 
 
-internal fun UserPresence.toUserPresenceStatus(): UiUserPresenceStatus {
+internal fun UserPresence.toUiPresenceStatus(): UiUserPresenceStatus {
     return if (isIdle) UiUserPresenceStatus.IDLE else UiUserPresenceStatus.ACTIVE
+}
+
+internal fun UserDetailed.toUiPresenceStatus(presenceStatus: UiUserPresenceStatus): UiUserDetailed {
+    return when {
+        isBot -> toUiUser(UiUserPresenceStatus.BOT)
+        isActive -> toUiUser(presenceStatus)
+        else -> toUiUser(UiUserPresenceStatus.OFFLINE)
+    }
 }

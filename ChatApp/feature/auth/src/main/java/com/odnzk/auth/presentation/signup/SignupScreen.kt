@@ -37,8 +37,8 @@ import com.odnzk.ui_compose.ChatAppTypography
 import com.odnzk.ui_compose.LocalDim
 import com.odnzk.ui_compose.PrimaryButton
 import com.odnzk.ui_compose.PrimaryTextInputLayout
+import io.mockk.mockk
 import kotlinx.coroutines.launch
-import org.mockito.Mockito
 import vivid.money.elmslie.core.store.Store
 import vivid.money.elmslie.coroutines.effects
 import vivid.money.elmslie.coroutines.states
@@ -92,7 +92,7 @@ private fun Content(store: SignupStore, modifier: Modifier) {
     var error by remember { mutableIntStateOf(EMPTY_ERROR) }
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .padding(LocalDim.current.medium),
         verticalArrangement = Arrangement.Center,
@@ -183,5 +183,5 @@ private fun Content(store: SignupStore, modifier: Modifier) {
 @Composable
 @Preview
 private fun preview() {
-    SignupScreen(store = Mockito.mock())
+    SignupScreen(store = mockk())
 }

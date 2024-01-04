@@ -7,5 +7,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class AllUserPresenceDto(
     @SerialName("presences")
-    val presences: Map<String?, UserPresenceDto?>?
+    val presences: Map<String, UserPresenceDto?>?
 )

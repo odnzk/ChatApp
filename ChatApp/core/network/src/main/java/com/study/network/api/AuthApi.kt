@@ -18,6 +18,6 @@ interface AuthApi {
     ): ApiKeyResponse
 
     @POST("users")
-    suspend fun createUser(@Body request: CreateUserRequest): Int
+    suspend fun createUser(@Body request: CreateUserRequest)
 
 }

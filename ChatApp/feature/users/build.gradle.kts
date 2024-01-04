@@ -23,8 +23,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_20
+        targetCompatibility = JavaVersion.VERSION_20
     }
     buildFeatures {
         viewBinding = true
@@ -51,6 +51,10 @@ dependencies {
     implementation(libs.shimmers)
     implementation(libs.bundles.navigation)
     implementation(libs.timber)
+    // Test
+    testImplementation(libs.test.mockk)
+    testImplementation(libs.junit)
+    testImplementation(libs.test.coroutines)
 
     implementation(project(":core:components"))
     implementation(project(":core:common"))

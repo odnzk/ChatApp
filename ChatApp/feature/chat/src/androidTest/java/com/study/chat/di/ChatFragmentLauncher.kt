@@ -16,8 +16,10 @@ import com.study.database.dao.MessageDao
 import com.study.database.dao.ReactionDao
 import com.study.network.api.ChannelsApi
 import com.study.network.api.MessagesApi
+import com.study.network.api.UsersApi
 import com.study.ui.NavConstants
 import com.study.ui.R
+import io.mockk.mockk
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
@@ -63,9 +65,9 @@ fun chatFragmentDep(
     dispatcher: CoroutineDispatcher
 ) = object : ChatDep {
     override val dispatcher: CoroutineDispatcher = dispatcher
-    override val searchFlow: Flow<String> = searchQueryFlow
     override val messagesApi: MessagesApi = zulipApi
     override val channelsApi: ChannelsApi = channelsApi
+    override val usersApi: UsersApi = mockk()
     override val messageDao: MessageDao = messageDao
     override val reactionDao: ReactionDao = reactionDao
     override val topicDao: ChannelTopicDao = topicDao
