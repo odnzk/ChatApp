@@ -19,8 +19,10 @@ jobs:
       - uses: actions/setup-java@v1
         with:
           java-version: 20
-      - name: Run unit tests
+      - name: Update base url from Secrets
         env:
           base_url: ${{ secrets.base_url }}
+        run: echo base_url="$base_url" > ./local.properties
+      - name: Run unit tests
         run: ./gradlew test
 
