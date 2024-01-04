@@ -49,6 +49,10 @@ dependencies {
     implementation(libs.coil)
     implementation(libs.fragment.ktx)
     implementation(libs.bundles.navigation)
+    // Test
+    testImplementation(libs.test.mockk)
+    testImplementation(libs.junit)
+    testImplementation(libs.test.coroutines)
 
     implementation(project(":core:components"))
     implementation(project(":core:common"))

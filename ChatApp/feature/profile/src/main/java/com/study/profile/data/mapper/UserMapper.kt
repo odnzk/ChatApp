@@ -19,8 +19,17 @@ internal fun DetailedUserDto.toDetailedUser(): UserDetailed = UserDetailed(
     isOwner = isOwner
 )
 
-
 internal fun UserPresenceResponse.toUserPresenceStatus(): UserPresence = UserPresence(
-    presence?.zulipMobile?.status != PresenceStatusDto.ACTIVE
-            && presence?.website?.status != PresenceStatusDto.ACTIVE
+    isIdle = when {
+        presence == null || (presence!!.zulipMobile == null && presence!!.zulipMobile == null) -> true
+        presence!!.zulipMobile?.status == null -> presence!!.website?.status != PresenceStatusDto.ACTIVE
+        presence!!.website?.status == null -> presence!!.zulipMobile?.status != PresenceStatusDto.ACTIVE
+        else -> {
+            if (presence!!.zulipMobile!!.timestamp > presence!!.website!!.timestamp) {
+                presence!!.zulipMobile?.status != PresenceStatusDto.ACTIVE
+            } else {
+                presence!!.website?.status != PresenceStatusDto.ACTIVE
+            }
+        }
+    }
 )
