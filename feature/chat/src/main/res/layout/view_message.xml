@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:padding="2dp"
+    tools:parentTag="com.study.chat.chat.presentation.util.view.MessageView">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/view_message_iv_avatar"
+        android:layout_width="@dimen/avatar_size_small"
+        android:layout_height="@dimen/avatar_size_small"
+        android:layout_marginEnd="8dp"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.ImageView.Circle"
+        tools:src="@color/purple_light" />
+
+    <TextView
+        android:id="@+id/view_message_tv_user"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/message_view_margin_horizontal"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:paddingTop="4dp"
+        android:textAppearance="@style/TextAppearance.ChatApp.Body.Small"
+        android:textColor="@color/purple_light"
+        tools:text="Darrel Steward" />
+
+
+    <TextView
+        android:id="@+id/view_message_tv_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/message_view_margin_horizontal"
+        android:layout_marginVertical="4dp"
+        android:textAppearance="@style/TextAppearance.ChatApp.Body"
+        tools:text="Hello" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/view_message_iv_content"
+        android:layout_width="@dimen/view_message_image_content_size"
+        android:layout_height="@dimen/view_message_image_content_size"
+        android:padding="4dp"
+        android:contentDescription="@string/content_description_message_content"
+        android:scaleType="centerCrop"
+        android:visibility="gone"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.ImageView.RoundCorners.Message" />
+
+    <com.study.chat.chat.presentation.util.view.FlexBoxLayout
+        android:id="@+id/view_message_fl_emoji"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        app:item_spacing="2"
+        app:line_spacing="4" />
+</merge>
